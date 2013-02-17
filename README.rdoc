@@ -1,0 +1,6 @@
+= syctask
+
+Describe your project here
+
+:include:syctask.rdoc
+

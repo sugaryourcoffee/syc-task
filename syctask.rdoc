@@ -1,0 +1,5 @@
+= syctask
+
+Generate this with
+    syctask rdoc
+After you have described your command line interface

@@ -19,9 +19,15 @@ module SycTask
       create_dir(dir)
       @title = title
       @options = options
-      create_task_number
+      create_task_id
     end
     
+    def update(options)
+      options.keys.each do |key|
+        @options[key] = options[key]
+      end 
+    end
+
     private
 
     # Creates the directory if it does not exist
@@ -30,9 +36,9 @@ module SycTask
     end
 
     # Creates the task's ID based on the tasks available in the task directory.
-    # The task's file name is in the form ID.task. create_task_number determines
+    # The task's file name is in the form ID.task. create_task_id determines
     # the biggest number and adds one to create the task's ID.
-    def create_task_number
+    def create_task_id
       tasks = Dir.glob("#{@dir}/*")
       ids = []
       tasks.each {|task| ids << task.scan(/^\d+(?=\.task)/)[0].to_i }

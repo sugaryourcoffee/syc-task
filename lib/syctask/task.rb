@@ -10,22 +10,53 @@ module SycTask
     attr_reader :title
     # ID of the task
     attr_reader :id
+    # Creation date
+    attr_reader :creation_date
+    # Update date
+    attr_reader :update_date
+    # Done date
+    attr_reader :done_date
     # Directory where the file of the task is located
     attr_reader :dir
 
-    # Creates a new task and saves it to the directory specified in the dir
-    # attribute. If the directory doesn't exist the directory is created.
-    def initialize(dir, options, title)
-      create_dir(dir)
+    # Creates a new task. If the options contain a note than the current date
+    # and time is added.
+    def initialize(options={}, title, id)
       @title = title
       @options = options
-      create_task_id
+      @options[:n] = "#{Time.now}\n #{@options[:n]}\n" if @options[:n]
+      @id = id
+      @creation_date = Time.now
     end
     
     def update(options)
       options.keys.each do |key|
-        @options[key] = options[key]
+        new_value = options[key]
+        
+        case key
+        when :n
+          new_value = "#{Time.now}\n #{new_value}\n #{@options[key]}"
+        when :t
+          new_value = "#{@options[key]},#{new_value}"
+        end
+
+        @options[key] = new_value
       end 
+      @update_date = Time.now
+    end
+
+    def done(note="")
+      if note
+        options[:n] = "#{Time.now}\n #{note}\n #{@options[:n]}"
+      end
+      @done_date = Time.now
+    end
+
+    def print_pretty
+      
+    end
+
+    def print_csv
     end
 
     private

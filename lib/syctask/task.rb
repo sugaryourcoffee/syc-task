@@ -1,6 +1,6 @@
 require 'fileutils'
 
-module SycTask
+module Syctask
 
   class Task
 
@@ -22,55 +22,63 @@ module SycTask
     # Creates a new task. If the options contain a note than the current date
     # and time is added.
     def initialize(options={}, title, id)
+      @creation_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
       @title = title
       @options = options
-      @options[:n] = "#{Time.now}\n #{@options[:n]}\n" if @options[:n]
+      @options[:n] = "#{@creation_date}\n#{@options[:n]}\n" if @options[:n]
       @id = id
-      @creation_date = Time.now
     end
     
+    # Updates the task with new values. Except for note and tags which are
+    # supplemented with the new values and not overridden.
     def update(options)
+      @update_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
       options.keys.each do |key|
         new_value = options[key]
         
         case key
         when :n
-          new_value = "#{Time.now}\n #{new_value}\n #{@options[key]}"
+          new_value = "#{@update_date}\n#{new_value}\n#{@options[key]}"
         when :t
           new_value = "#{@options[key]},#{new_value}"
         end
 
         @options[key] = new_value
       end 
-      @update_date = Time.now
     end
 
+    # Marks the task as done. When done than the done date is set. Optionally a
+    # note can be provided.
     def done(note="")
+      @done_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
       if note
-        options[:n] = "#{Time.now}\n #{note}\n #{@options[:n]}"
+        options[:n] = "#{@done_date}\n#{note}\n#{@options[:n]}"
       end
-      @done_date = Time.now
     end
 
-    def print_pretty
-      
+    # Prints the task in a formatted way eather all values when type is "all"
+    # or only id, title, prio, follow-up and due date.
+    def print_pretty(type="short")
+      STDOUT.puts(pretty_string(type))
     end
 
+    # Prints the task as a CSV
     def print_csv
+      STDOUT.puts(csv_string)
     end
 
     private
 
     # Creates the directory if it does not exist
     def create_dir(dir)
-      FileUtils.mkdir_p dir unless File.exists? dir
+      fileutils.mkdir_p dir unless file.exists? dir
     end
 
-    # Creates the task's ID based on the tasks available in the task directory.
-    # The task's file name is in the form ID.task. create_task_id determines
-    # the biggest number and adds one to create the task's ID.
+    # creates the task's id based on the tasks available in the task directory.
+    # the task's file name is in the form id.task. create_task_id determines
+    # the biggest number and adds one to create the task's id.
     def create_task_id
-      tasks = Dir.glob("#{@dir}/*")
+      tasks = dir.glob("#{@dir}/*")
       ids = []
       tasks.each {|task| ids << task.scan(/^\d+(?=\.task)/)[0].to_i }
       if ids.empty?
@@ -78,6 +86,48 @@ module SycTask
       elsif
         @id = ids[ids.size-1] + 1
       end
+    end
+
+    # Prints the task formatted. Values that are nil are not printed. A type all
+    # will print all available values. Otherwise only ID, title, description,
+    # prio, follow-up and due date are printed.
+    def pretty_string(type)
+      printf("\n%04d - %s\n", @id, @title)
+      printf("%6s %s\n", " ", @options[:description]) if @options[:description]
+      printf("%6s Prio:      %s\n", " ", @options[:p]) if @options[:p]
+      #@options[:p] and @options[:f] ? printf("%s", " | ") : printf("%6s", " ")
+      printf("%6s Follow-up: %s\n", " ", @options[:f]) if @options[:f]
+      #printf("%s", " | ") if @options[:d] and (@options[:f] or @options[:d])
+      printf("%6s Due:       %s", " ", @options[:d]) if @options[:d]
+      if type == "all"
+        if @options[:n]
+          note = @options[:n].chomp.
+            gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*9}") 
+          note = note.
+            gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*7}")
+          printf("\n%6s %s", " ", note.chomp)
+        end
+        printf("\n%6s Tags:    %s", " ", @options[:t]) if @options[:t]
+        printf("\n%6s Created: %s", " ", @creation_date)
+        printf("\n%6s Updated: %s", " ", @update_date) if @update_date
+        printf("\n%6s Closed:  %s", " ", @done_date) if @done_date
+      end
+    end
+
+    # Prints all values as a csv separated with ";". This string can be read by
+    # another application. The values are
+    # id;title;description;prio;follow-up;due;note;tags;created;
+    # updated|UNCHANGED;DONE|OPEN
+    def csv_string
+      string = "\n#{@id};#{@title};"
+      string +" #{@options[:description]};#{@options[:p]};"
+      string += "#{@options[:f]};#{@options[:d]};"
+      string += "#{@options[:n].gsub(/\n/, '\\n')};"
+      string += "#{@options[:t]};"
+      string += "#{@creation_date};"
+      string += "#{@udpate_date ? @update_date : "UNCHANGED"};"
+      string += "#{@done_date ? "DONE" : "OPEN"}\n"
+      string
     end
 
   end

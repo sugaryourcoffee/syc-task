@@ -1,4 +1,5 @@
 require 'syctask/version.rb'
+require 'syctask/task.rb'
 require 'syctask/task_service.rb'
 
 # Add requires for other files you add to your project here, so

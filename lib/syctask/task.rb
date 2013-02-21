@@ -56,6 +56,23 @@ module Syctask
       end
     end
 
+    def matches?(filter = {})
+      return false if filter.empty?
+      filter.each do |key, value|
+        matches = false
+        case key
+        when :title
+          matches = @title == value
+        when :id
+          matches = @id == value
+        else
+          matches = @options[key] == value
+        end
+        return false unless matches
+      end
+      true
+    end
+
     # Prints the task in a formatted way eather all values when type is "all"
     # or only id, title, prio, follow-up and due date.
     def print_pretty(type="short")

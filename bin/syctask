@@ -19,9 +19,13 @@ desc 'Describe some switch here'
 switch [:s,:switch]
 
 desc 'The directory where tasks are saved to'
-default_value '~/.tasks'
+default_value File.expand_path('~/.tasks')
 arg_name 'TASK_DIR'
 flag [:t,:taskdir]
+
+desc 'Project name where tasks are saved'
+arg_name 'PROJECT'
+flag [:p, :project]
 
 desc 'Create a new task'
 arg_name 'TASK_TITLE'
@@ -29,10 +33,36 @@ command :new do |c|
   c.desc 'Describe a switch to new'
   c.switch :s
 
+  c.desc 'Priority of the task, 1 highes priority'
+  c.default_value 3
+  c.arg_name 'PRIO'
+  c.flag [:p, :prio]
+
+  c.desc 'Follow-up date'
+  c.arg_name 'FOLLOW-UP'
+  c.flag [:f, :follow_up]
+  
+  c.desc 'Due date'
+  c.arg_name 'DUE'
+  c.flag [:d, :due_date]
+
   c.desc 'Description of the task'
+  c.arg_name 'DESCRIPTION'
   c.flag :description
+
+  c.desc 'Note on progress of the task'
+  c.arg_name 'NOTE'
+  c.flag [:n, :note]
+
+  c.desc 'Tags that describe the task'
+  c.arg_name 'TAG1,TAG2,TAG3'
+  c.flag [:t, :tags]  
+
   c.action do |global_options,options,args|
-    task_number = TaskService.create(global_options, options, args)
+    dir = global_options[:t]
+    title = args[0]
+    service = Syctask::TaskService.new
+    task_number = service.create(dir, options, title)
     STDOUT.puts "--> created Task with task number #{task_number}"
   end
 end

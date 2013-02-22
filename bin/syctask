@@ -15,9 +15,6 @@ program_desc 'A simple task manager'
 
 version Syctask::VERSION
 
-desc 'Describe some switch here'
-switch [:s,:switch]
-
 desc 'The directory where tasks are saved to'
 default_value File.expand_path('~/.tasks')
 arg_name 'TASK_DIR'
@@ -30,21 +27,18 @@ flag [:p, :project]
 desc 'Create a new task'
 arg_name 'TASK_TITLE'
 command :new do |c|
-  c.desc 'Describe a switch to new'
-  c.switch :s
-
   c.desc 'Priority of the task, 1 highes priority'
   c.default_value 3
   c.arg_name 'PRIO'
-  c.flag [:p, :prio]
+  c.flag [:p, :prio], :type => Integer
 
   c.desc 'Follow-up date'
   c.arg_name 'FOLLOW-UP'
-  c.flag [:f, :follow_up]
+  c.flag [:f, :follow_up], :must_match => /\d{4}-\d{2}-\d{2}/
   
   c.desc 'Due date'
   c.arg_name 'DUE'
-  c.flag [:d, :due_date]
+  c.flag [:d, :due_date], :must_match => /\d{4}-\d{2}-\d{2}/
 
   c.desc 'Description of the task'
   c.arg_name 'DESCRIPTION'
@@ -56,14 +50,17 @@ command :new do |c|
 
   c.desc 'Tags that describe the task'
   c.arg_name 'TAG1,TAG2,TAG3'
-  c.flag [:t, :tags]  
+  c.flag [:t, :tags], :type => Array
+
 
   c.action do |global_options,options,args|
-    dir = global_options[:t]
+    #dir = File.expand_path(global_options[:t]) + "/"
+    #dir += global_options[:p] if global_options[:p]
+    #dir.squeeze("/")
     title = args[0]
-    service = Syctask::TaskService.new
-    task_number = service.create(dir, options, title)
-    STDOUT.puts "--> created Task with task number #{task_number}"
+    #service = Syctask::TaskService.new
+    task_number = @service.create(global_options[:t], options, title)
+    STDOUT.puts "--> created task with task number #{task_number}"
   end
 end
 
@@ -77,7 +74,45 @@ end
 
 desc 'List tasks'
 command :list do |c|
+
+  c.desc 'List all tasks done and open'
+  c.switch [:a, :all]
+  
+  c.desc 'Filter for ID'
+  c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
+  c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|^[<|=|>]\d+/ 
+
+  c.desc 'REGEXP as filter for title'
+  c.arg_name 'REGEXP'
+  c.flag [:title]
+
+  c.desc 'Filter for priority'
+  c.arg_name '[<|=|>]PRIO'
+  c.flag [:p, :prio], :must_match => /^\d+|^[<|=|>]\d+/
+
+  c.desc 'Filter for follow-up date'
+  c.arg_name '[<|=|>]DATE'
+  c.flag [:f, :follow_up], :must_match => /^(?:[<|=|>])?\d{4}-\d{2}-\d{2}/
+  
+  c.desc 'Filter for due date'
+  c.arg_name '[<|=|>]DATE'
+  c.flag [:d, :due_date], :must_match => /^(?:[<|=|>])?\d{4}-\d{2}-\d{2}/
+
+  c.desc 'REGEXP as filter for description'
+  c.arg_name 'REGEXP'
+  c.flag :description
+
+  c.desc 'REGEXP as filter for note'
+  c.arg_name 'REGEXP'
+  c.flag [:n, :note]
+
+  c.desc 'Tags or REGEXP as filter for tags'
+  c.arg_name 'TAG1,TAG2,TAG3|REGEXP'
+  c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*|\/.*\//
+
   c.action do |global_options,options,args|
+    puts global_options.inspect
+    puts options.inspect
     puts "list command ran"
   end
 end
@@ -122,8 +157,23 @@ end
 desc 'Mark task as done'
 arg_name 'TASK_NUMBER'
 command :done do |c|
+  c.desc 'Print task after marked as done'
+  c.switch [:p, :print]
+  c.desc 'Print long form of task'
+  c.switch [:l, :long]
+
+  c.desc 'Final note for the task'
+  c.arg_name 'NOTE'
+  c.flag [:n, :note]
+
   c.action do |global_options,options,args|
-    puts "done command ran"
+    help_now!('TASK_NUMBER is required') if args.empty?
+    task = @service.read(global_options[:t], args[0])
+    exit_now!('Task with TASK_NUMBER #{args[0]} does not exist') unless task
+    task.done(options[:n])
+    @service.save(global_options[:t], task)
+    STDOUT.puts "Marked task with TASK_NUMBER #{args[0]} as done"
+    task.print_pretty(options[:l]) if options[:p] 
   end
 end
 
@@ -133,6 +183,13 @@ pre do |global,command,options,args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
+
+  @service = Syctask::TaskService.new
+
+  dir = File.expand_path(global[:t])
+  dir += "/" + global[:p] if global[:p]
+  global[:taskdir] = global[:t] = dir.squeeze("/")
+  
   true
 end
 

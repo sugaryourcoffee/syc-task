@@ -73,10 +73,10 @@ module Syctask
       true
     end
 
-    # Prints the task in a formatted way eather all values when type is "all"
+    # Prints the task in a formatted way eather all values when long is true
     # or only id, title, prio, follow-up and due date.
-    def print_pretty(type="short")
-      STDOUT.puts(pretty_string(type))
+    def print_pretty(long=false)
+      STDOUT.puts(pretty_string(long))
     end
 
     # Prints the task as a CSV
@@ -108,15 +108,13 @@ module Syctask
     # Prints the task formatted. Values that are nil are not printed. A type all
     # will print all available values. Otherwise only ID, title, description,
     # prio, follow-up and due date are printed.
-    def pretty_string(type)
+    def pretty_string(long)
       printf("\n%04d - %s\n", @id, @title)
       printf("%6s %s\n", " ", @options[:description]) if @options[:description]
       printf("%6s Prio:      %s\n", " ", @options[:p]) if @options[:p]
-      #@options[:p] and @options[:f] ? printf("%s", " | ") : printf("%6s", " ")
       printf("%6s Follow-up: %s\n", " ", @options[:f]) if @options[:f]
-      #printf("%s", " | ") if @options[:d] and (@options[:f] or @options[:d])
       printf("%6s Due:       %s", " ", @options[:d]) if @options[:d]
-      if type == "all"
+      if long
         if @options[:n]
           note = @options[:n].chomp.
             gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*9}") 

@@ -25,26 +25,26 @@ class TestTaskService < Test::Unit::TestCase
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task"
     end
 
-    should "read task with id 1" do
+    should "find task with id 1" do
       @service.create("test/tasks", {d: "2013-02-19"}, "This is another task")
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task"
       filter = {id: 1}
-      refute_empty @service.read("test/tasks", filter)
-      assert_equal @service.read("test/tasks", filter)[0].id, 1
+      refute_empty @service.find("test/tasks", filter)
+      assert_equal @service.find("test/tasks", filter)[0].id, 1
     end
 
-    should "read task with non tasks in task directory" do
+    should "find task with non tasks in task directory" do
       @service.create("test/tasks", {}, "This is a task")
       FileUtils.touch "test/tasks/no_task"
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task"
       filter = {id: 1}
-      refute_empty @service.read("test/tasks", filter)
+      refute_empty @service.find("test/tasks", filter)
     end
 
     should "update task" do
       @service.create("test/tasks", {}, "This is a task to update")
       @service.update("test/tasks", 1, {f: "2013-02-22", n: "Requested help"})
-      refute_empty @service.read("test/tasks", {f: "2013-02-22", id: 1})
+      refute_empty @service.find("test/tasks", {f: "2013-02-22", id: 1})
     end
 
   end

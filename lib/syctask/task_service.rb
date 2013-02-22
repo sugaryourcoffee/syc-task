@@ -11,7 +11,25 @@ module Syctask
       task.id
     end
 
-    def read(dir, filter={})
+    # Reads the task with given ID id located in given directory dir. If task
+    # does not exist nil is returned otherwise the task is returned
+    def read(dir, id)
+      task = nil
+      Dir.glob("#{dir}/*").each do |file|
+        task = YAML.load_file(file) if File.file? file
+        break if task and task.id == id
+      end
+      task
+    end
+
+    # Finds all tasks that match the given filter. The filter can be provided
+    # for :id, :title, :description, :follow_up, :due, :tags and :prio.
+    # :id can be eather a selection of IDs ID1,ID2,ID3 or a comparison <|=|>ID.
+    # :title and :description can be a REGEX as /look for \d+ examples/
+    # :follow-up and :due can be <|=|>DATE
+    # :tags can be eather a selection TAG1,TAG2,TAG3 or a REGEX /[Ll]ecture/
+    # :prio can be <|=|>PRIO 
+    def find(dir, filter={})
       tasks = []
       Dir.glob("#{dir}/*").each do |file|
         task = YAML.load_file(file)
@@ -30,6 +48,11 @@ module Syctask
         updated = true
       end
       updated
+    end
+
+    # Saves the task to the task directory
+    def save(dir, task)
+      File.open("#{dir}/#{task.id}.task", 'w') {|f| YAML.dump(task, f)}
     end
 
     private
@@ -56,11 +79,6 @@ module Syctask
     end
 
  
-    # Saves the task to the task directory
-    def save(dir, task)
-      File.open("#{dir}/#{task.id}.task", 'w') {|f| YAML.dump(task, f)}
-    end
-
   end
 end
 

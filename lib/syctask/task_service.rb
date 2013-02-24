@@ -29,11 +29,13 @@ module Syctask
     # :follow-up and :due can be <|=|>DATE
     # :tags can be eather a selection TAG1,TAG2,TAG3 or a REGEX /[Ll]ecture/
     # :prio can be <|=|>PRIO 
-    def find(dir, filter={})
+    def find(dir, filter={}, all=true)
       tasks = []
       Dir.glob("#{dir}/*").each do |file|
         File.file?(file) ? task = YAML.load_file(file) : next
-        tasks << task if task and task.matches?(filter)
+        next if task and not all and task.done?
+        next if not task 
+        tasks << task if task.matches?(filter)
       end
       tasks
     end

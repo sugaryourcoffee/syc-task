@@ -26,7 +26,8 @@ module Syctask
       @creation_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
       @title = title
       @options = options
-      @options[:n] = "#{@creation_date}\n#{@options[:n]}\n" if @options[:n]
+      @options[:note] = 
+                  "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]
       @id = id
     end
     
@@ -38,14 +39,24 @@ module Syctask
         new_value = options[key]
         
         case key
-        when :n
+        when :note
           new_value = "#{@update_date}\n#{new_value}\n#{@options[key]}"
-        when :t
-          new_value = "#{@options[key]},#{new_value}"
+        when :tags
+          if @options[key].include? new_value
+            new_value = @options[key]
+          else
+            new_value = "#{@options[key]},#{new_value}"
+          end
         end
 
         @options[key] = new_value
       end 
+    end
+
+    # Checks whether this task has been updated. Returns true if updated
+    # otherwise false
+    def update?
+      !@updated_date.nil?
     end
 
     # Marks the task as done. When done than the done date is set. Optionally a
@@ -53,25 +64,26 @@ module Syctask
     def done(note="")
       @done_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
       if note
-        options[:n] = "#{@done_date}\n#{note}\n#{@options[:n]}"
+        options[:note] = "#{@done_date}\n#{note}\n#{@options[:note]}"
       end
     end
 
+    # Checks if this task is done. Returns true if done otherwise false
+    def done?
+      !@done_date.nil?
+    end
+
     def matches?(filter = {})
-      return false if filter.empty?
+      return true if filter.empty?
       evaluator = Evaluator.new
-      puts self.id
-      puts filter.inspect
       filter.each do |key, value|
-        puts "key = #{key} = #{value}"
         matches = false
         case key
         when :title, :t
-          matches = evaluator.matches?(@title, value)#@title == value
+          matches = evaluator.matches?(@title, value)
         when :description
           matches = evaluator.matches?(@options[:description], value)
         when :id, :i, "id", "i"
-          puts "in id"
           matches = (evaluator.includes?(@id, value) or 
                      evaluator.compare_numbers(@id, value))
         when :prio, :p
@@ -82,7 +94,6 @@ module Syctask
         when :follow_up, :f, :d, :due_date
           matches = evaluator.compare_dates(@options[key], value)
         end
-        puts "matches?>#{matches}<"
         return false unless matches
       end
       true
@@ -124,23 +135,24 @@ module Syctask
     # will print all available values. Otherwise only ID, title, description,
     # prio, follow-up and due date are printed.
     def pretty_string(long)
-      printf("\n%04d - %s\n", @id, @title)
-      printf("%6s %s\n", " ", @options[:description]) if @options[:description]
-      printf("%6s Prio:      %s\n", " ", @options[:p]) if @options[:p]
-      printf("%6s Follow-up: %s\n", " ", @options[:f]) if @options[:f]
-      printf("%6s Due:       %s", " ", @options[:d]) if @options[:d]
+      printf("\n%04d - %s", @id, @title)
+      printf("\n%6s %s", " ", @options[:description]) if @options[:description]
+      printf("\n%6s Prio: %s", " ", @options[:prio]) if @options[:prio]
+      printf("\n%6s Follow-up: %s", " ", @options[:follow_up]) if @options[:follow_up]
+      printf("\n%6s Due: %s", " ", @options[:due]) if @options[:due]
       if long
-        if @options[:n]
-          note = @options[:n].chomp.
+        if @options[:note]
+          note = split_lines(@options[:note].chomp, 70)
+          note = note.chomp.
             gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*9}") 
           note = note.
             gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*7}")
           printf("\n%6s %s", " ", note.chomp)
         end
-        printf("\n%6s Tags:    %s", " ", @options[:t]) if @options[:t]
+        printf("\n%6s Tags: %s", " ", @options[:tags]) if @options[:tags]
         printf("\n%6s Created: %s", " ", @creation_date)
         printf("\n%6s Updated: %s", " ", @update_date) if @update_date
-        printf("\n%6s Closed:  %s", " ", @done_date) if @done_date
+        printf("\n%6s Closed: %s", " ", @done_date) if @done_date
       end
     end
 
@@ -150,14 +162,36 @@ module Syctask
     # updated|UNCHANGED;DONE|OPEN
     def csv_string
       string = "\n#{@id};#{@title};"
-      string +" #{@options[:description]};#{@options[:p]};"
-      string += "#{@options[:f]};#{@options[:d]};"
-      string += "#{@options[:n].gsub(/\n/, '\\n')};"
-      string += "#{@options[:t]};"
+      string +" #{@options[:description]};#{@options[:prio]};"
+      string += "#{@options[:follow_up]};#{@options[:due]};"
+      string += "#{@options[:note].gsub(/\n/, '\\n')};"
+      string += "#{@options[:tags]};"
       string += "#{@creation_date};"
-      string += "#{@udpate_date ? @update_date : "UNCHANGED"};"
+      string += "#{@udpate_date ? "UPDATED" : "UNCHANGED"};"
       string += "#{@done_date ? "DONE" : "OPEN"}\n"
       string
+    end
+
+    def split_lines(string, length)
+      lines = string.squeeze(" ").split("\n")
+      i = 0
+      new_lines = []
+      new_lines[i] = ""
+      lines.each do |line|
+        line.squeeze(" ").split.each do |w|
+          if new_lines[i].length + w.length < length
+            new_lines[i] += "#{w} "
+          else
+            i += 1
+            new_lines[i] = "#{w} "
+          end
+        end
+        i += 1
+        new_lines[i] = ""
+      end
+      text = ""
+      new_lines.each {|l| text << "#{l}\n"}
+      text.chomp
     end
 
   end

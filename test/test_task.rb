@@ -13,37 +13,37 @@ class TestTask < Test::Unit::TestCase
     end
 
     should "update existing attribute in task" do
-      task = Syctask::Task.new({d: "2013-02-17"}, "Some task", 1)
-      assert_equal "2013-02-17", task.options[:d]
-      options = {d: "2013-02-27"}
+      task = Syctask::Task.new({due: "2013-02-17"}, "Some task", 1)
+      assert_equal "2013-02-17", task.options[:due]
+      options = {due: "2013-02-27"}
       task.update(options)
-      assert_equal "2013-02-27", task.options[:d]
+      assert_equal "2013-02-27", task.options[:due]
     end
 
     should "update task with inexistent attribute" do
       task = Syctask::Task.new({}, "Some task", 1)
-      assert_nil task.options[:d]
-      options = {d: "2013-02-28", f: "2013-02-18"}
+      assert_nil task.options[:due]
+      options = {due: "2013-02-28", follow_up: "2013-02-18"}
       task.update(options)
-      assert_equal "2013-02-28", task.options[:d]
-      assert_equal "2013-02-18", task.options[:f]
+      assert_equal "2013-02-28", task.options[:due]
+      assert_equal "2013-02-18", task.options[:follow_up]
     end
 
     should "add note to task's existing note" do
-      task = Syctask::Task.new({n: "This is my first note"}, "Some task", 1)
-      assert_match /This is my first note/, task.options[:n]
-      options = {n: "And this is my second note"}
+      task = Syctask::Task.new({note: "This is my first note"}, "Some task", 1)
+      assert_match /This is my first note/, task.options[:note]
+      options = {note: "And this is my second note"}
       task.update(options)
-      assert_match /And this is my second note/, task.options[:n]
+      assert_match /And this is my second note/, task.options[:note]
     end
 
     should "add tag to task's existing tags" do
-      task = Syctask::Task.new({t: "presentation,workshop"}, "Some task", 1)
-      assert_equal "presentation,workshop", task.options[:t]
-      options = {t: "customer"}
+      task = Syctask::Task.new({tags: "presentation,workshop"}, "Some task", 1)
+      assert_equal "presentation,workshop", task.options[:tags]
+      options = {tags: "customer"}
       task.update(options)
       refute_nil task.update_date
-      assert_equal "presentation,workshop,customer", task.options[:t]
+      assert_equal "presentation,workshop,customer", task.options[:tags]
     end
 
     should "mark task as done" do
@@ -56,26 +56,26 @@ class TestTask < Test::Unit::TestCase
       task = Syctask::Task.new("Some task", 1)
       task.done("Finalize task")
       refute_nil task.done_date
-      assert_match "Finalize task", task.options[:n]
+      assert_match "Finalize task", task.options[:note]
     end
 
     should "pretty print the task" do
-      options = {f: "2013-02-28", d: "2013-03-15", p: 2,
+      options = {follow_up: "2013-02-28", due: "2013-03-15", prio: 2,
                  description: "This is a description of the task",
-                 n: "This is a note on the task",
-                 t: "presentation,workshop"}
+                 note: "This is a note on the task",
+                 tags: "presentation,workshop"}
       task = Syctask::Task.new(options, "Some new task", 1)
       task.print_pretty
     end
 
     should "pretting print all fields of the task" do
-      options = {f: "2013-02-28", d: "2013-03-15", p: 2,
+      options = {follow_up: "2013-02-28", d: "2013-03-15", p: 2,
                  description: "This is all of the description of the task",
-                 n: "This is a long note\nthat is over more\nthan on line",
-                 t: "presentation,work"}
+                 note: "This is a long note\nthat is over more\nthan on line",
+                 tags: "presentation,work"}
       task = Syctask::Task.new(options, "Some long new task", 12)
       task.print_pretty(true)
-      options = {n: "This is another note for a very long task, that has been\nwritten over more than one line.\nBut this is not neccessarily good"}
+      options = {note: "This is another note for a very long task, that has been\nwritten over more than one line.\nBut this is not neccessarily good"}
       task.update(options)
       task.print_pretty(true)
       task.done("This is the end of the task")
@@ -83,10 +83,10 @@ class TestTask < Test::Unit::TestCase
     end
 
     should "print the task as csv" do
-      options = {f: "2013-02-28", d: "2013-03-15", p: 2,
+      options = {follow_up: "2013-02-28", d: "2013-03-15", p: 2,
                  description: "This is a description of the task",
-                 n: "This is a note on the task",
-                 t: "presentation,workshop"}
+                 note: "This is a note on the task",
+                 tags: "presentation,workshop"}
       task = Syctask::Task.new(options, "Some new task", 1)
       task.print_csv
     end

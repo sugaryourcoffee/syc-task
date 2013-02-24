@@ -50,17 +50,31 @@ command :new do |c|
 
   c.desc 'Tags that describe the task'
   c.arg_name 'TAG1,TAG2,TAG3'
-  c.flag [:t, :tags], :type => Array
-
+  c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*/
 
   c.action do |global_options,options,args|
-    #dir = File.expand_path(global_options[:t]) + "/"
-    #dir += global_options[:p] if global_options[:p]
-    #dir.squeeze("/")
-    title = args[0]
-    #service = Syctask::TaskService.new
-    task_number = @service.create(global_options[:t], options, title)
-    STDOUT.puts "--> created task with task number #{task_number}"
+    filter = [:tags, :description, :prio, :due_date, :follow_up, 
+              :note]
+    options.keep_if {|key, value| filter.find_index(key)}
+    if args.empty?
+      puts "Reading new tasks from STDIN now... (end with CTRL-D)"
+      args = STDIN.readlines.map {|t| t.chomp}
+    end
+    task_numbers = nil
+    args.each do |title|
+      task_number = @service.create(global_options[:t], options, title)
+      if task_numbers.nil? 
+        task_numbers = task_number.to_s 
+      else 
+        task_numbers += ", #{task_number}"
+      end
+    end
+    if args.empty?
+      puts
+      help_now! "You have to provide at least a title to create a task"
+    else
+      STDOUT.puts "--> created tasks with task numbers #{task_numbers}"
+    end
   end
 end
 
@@ -119,10 +133,12 @@ command :list do |c|
     all = options[:all]
     complete = options[:complete]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
-    @service.find(global_options[:t], options).each do |task|
+    count = 0
+    @service.find(global_options[:t], options, all).each do |task|
       task.print_pretty(complete)
+      count += 1
     end      
-    puts "list command ran"
+    puts "\nfound #{count} tasks"
   end
 end
 
@@ -158,8 +174,41 @@ end
 desc 'Update the task'
 arg_name 'TASK_NUMBER'
 command :update do |c|
+  c.desc 'Priority of the task, 1 highes priority'
+  c.arg_name 'PRIO'
+  c.flag [:p, :prio], :type => Integer
+
+  c.desc 'Follow-up date'
+  c.arg_name 'FOLLOW-UP'
+  c.flag [:f, :follow_up], :must_match => /\d{4}-\d{2}-\d{2}/
+  
+  c.desc 'Due date'
+  c.arg_name 'DUE'
+  c.flag [:d, :due_date], :must_match => /\d{4}-\d{2}-\d{2}/
+
+  c.desc 'Description of the task'
+  c.arg_name 'DESCRIPTION'
+  c.flag :description
+
+  c.desc 'Note on progress of the task'
+  c.arg_name 'NOTE'
+  c.flag [:n, :note]
+
+  c.desc 'Tags that describe the task'
+  c.arg_name 'TAG1,TAG2,TAG3'
+  c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*/
+
   c.action do |global_options,options,args|
-    puts "update command ran"
+    help_now! "TASK_NUMBER required" if args.empty?
+    filter = [:tags, :description, :prio, :due_date, :follow_up, 
+              :note]
+    options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    puts options.inspect
+
+    success = @service.update(global_options[:t], args[0], options) 
+    puts
+    puts "sucessfully updated task with TASK_NUMBER #{args[0]}" if success
+    puts "could not update task with TASK_NUMBER #{args[0]}" unless success
   end
 end
 
@@ -168,8 +217,8 @@ arg_name 'TASK_NUMBER'
 command :done do |c|
   c.desc 'Print task after marked as done'
   c.switch [:p, :print]
-  c.desc 'Print long form of task'
-  c.switch [:l, :long]
+  c.desc 'Print complete task'
+  c.switch [:c, :complete]
 
   c.desc 'Final note for the task'
   c.arg_name 'NOTE'
@@ -182,7 +231,7 @@ command :done do |c|
     task.done(options[:n])
     @service.save(global_options[:t], task)
     STDOUT.puts "Marked task with TASK_NUMBER #{args[0]} as done"
-    task.print_pretty(options[:l]) if options[:p] 
+    task.print_pretty(options[:c]) if options[:p] 
   end
 end
 
@@ -199,6 +248,7 @@ pre do |global,command,options,args|
   dir += "/" + global[:p] if global[:p]
   global[:taskdir] = global[:t] = dir.squeeze("/")
   
+ 
   true
 end
 

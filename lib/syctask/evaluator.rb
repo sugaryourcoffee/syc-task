@@ -9,7 +9,6 @@ module Syctask
     NON_COMPARE_PATTERN = /[^<=>]*/
 
     def compare_numbers(value, pattern)
-      puts "#{value} and #{pattern}"
       return false if value.nil? or pattern.nil?
       return false if value.class == String and value.empty?
       result = pattern.match(NUMBER_COMPARE_PATTERN)
@@ -29,7 +28,6 @@ module Syctask
     end
 
     def compare(value, operands)
-      puts operands.inspect
 
       if operands[2]
         operands[0] = "=="
@@ -39,12 +37,10 @@ module Syctask
       end
 
       expression = "#{value} #{operands[0]} #{operands[1]}"
-      puts expression
       eval(expression) 
     end
 
     def includes?(value, pattern)
-      puts "#{value} whith #{pattern}"
       return false if value.nil? or pattern.nil?
       captures = pattern.scan(CSV_PATTERN)
       !captures.find_index(value.to_s).nil?

@@ -15,16 +15,14 @@ class TestTaskService < Test::Unit::TestCase
   context "TaskService" do
     should "save task with id 1" do
       options = {d: "2013-02-20", f: "2013-02-19", description: "Description"}
-      service = Syctask::TaskService.new
-      service.create("test/tasks", options, "This is a new task")
+      @service.create("test/tasks", options, "This is a new task")
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task" 
     end
 
     should "save each task with individual id" do
-      service = Syctask::TaskService.new
-      service.create("test/tasks", {}, "Task with id 1")
+      @service.create("test/tasks", {}, "Task with id 1")
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task"
-      service.create("test/tasks", {}, "Task with id 2")
+      @service.create("test/tasks", {}, "Task with id 2")
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/2.task"
       assert_equal 2, Dir.glob("test/tasks/*").size
     end
@@ -42,20 +40,24 @@ class TestTaskService < Test::Unit::TestCase
       assert_equal @service.find("test/tasks", filter)[0].id, 1
     end
 
-    should "find tasks with id 1 and 2" do
+    should "find tasks with id 1, 2 and 3" do
       @service.create("test/tasks", {}, "This is the first task")
       @service.create("test/tasks", {}, "This is the second task")
       @service.create("test/tasks", {}, "This is the third task")
       filter = {id: "1,2"}
       assert_equal 2, @service.find("test/tasks", filter).size
-      puts "now we are talking about the topic"
       filter = {id: "<3"}
       assert_equal 2, @service.find("test/tasks", filter).size
+      filter = {id: ">2"}
+      assert_equal 1, @service.find("test/tasks", filter).size
+      filter = {id: "=2"}
+      assert_equal 1, @service.find("test/tasks", filter).size
     end
 
     should "find task with non tasks in task directory" do
       @service.create("test/tasks", {}, "This is a task")
       FileUtils.touch "test/tasks/no_task"
+      FileUtils.mkdir "test/tasks/directory"
       assert_contains Dir.glob("test/tasks/*"), "test/tasks/1.task"
       filter = {id: "1"}
       refute_empty @service.find("test/tasks", filter)
@@ -65,6 +67,17 @@ class TestTaskService < Test::Unit::TestCase
       @service.create("test/tasks", {}, "This is a task to update")
       @service.update("test/tasks", 1, {f: "2013-02-22", n: "Requested help"})
       refute_empty @service.find("test/tasks", {f: "2013-02-22", id: "1"})
+    end
+
+    should "mark task as done and don's show in find" do
+      @service.create("test/tasks", {}, "This is task one")
+      @service.create("test/tasks", {}, "This is task two")
+      @service.create("test/tasks", {}, "This is task three")
+      task = @service.read("test/tasks", 1)
+      task.done("Finalize task")
+      @service.save("test/tasks", task)
+      assert_equal 2, @service.find("test/tasks", {}, false).size
+      assert_equal 3, @service.find("test/tasks").size
     end
 
   end

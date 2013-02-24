@@ -17,9 +17,9 @@ module Syctask
       task = nil
       Dir.glob("#{dir}/*").each do |file|
         task = YAML.load_file(file) if File.file? file
-        break if task and task.id == id
+        return task if task and task.id == id.to_i
       end
-      task
+      nil
     end
 
     # Finds all tasks that match the given filter. The filter can be provided
@@ -31,7 +31,7 @@ module Syctask
     # :prio can be <|=|>PRIO 
     def find(dir, filter={}, all=true)
       tasks = []
-      Dir.glob("#{dir}/*").each do |file|
+      Dir.glob("#{dir}/*").sort.each do |file|
         File.file?(file) ? task = YAML.load_file(file) : next
         next if task and not all and task.done?
         next if not task 

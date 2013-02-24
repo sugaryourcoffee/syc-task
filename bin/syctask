@@ -57,7 +57,7 @@ command :new do |c|
               :note]
     options.keep_if {|key, value| filter.find_index(key)}
     if args.empty?
-      puts "Reading new tasks from STDIN now... (end with CTRL-D)"
+      STDOUT.puts "Reading new tasks from STDIN now... (end with CTRL-D)"
       args = STDIN.readlines.map {|t| t.chomp}
     end
     task_numbers = nil
@@ -73,7 +73,8 @@ command :new do |c|
       puts
       help_now! "You have to provide at least a title to create a task"
     else
-      STDOUT.puts "--> created tasks with task numbers #{task_numbers}"
+      STDOUT.puts sprintf("%s %s", "--> created tasks with task numbers",
+                          " #{task_numbers}").color(:green)
     end
   end
 end
@@ -138,7 +139,7 @@ command :list do |c|
       task.print_pretty(complete)
       count += 1
     end      
-    puts "\nfound #{count} tasks"
+    STDOUT.puts sprintf("--> found %d tasks", count).color(:green)
   end
 end
 
@@ -203,12 +204,10 @@ command :update do |c|
     filter = [:tags, :description, :prio, :due_date, :follow_up, 
               :note]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
-    puts options.inspect
 
     success = @service.update(global_options[:t], args[0], options) 
-    puts
-    puts "sucessfully updated task with TASK_NUMBER #{args[0]}" if success
-    puts "could not update task with TASK_NUMBER #{args[0]}" unless success
+    STDOUT.puts sprintf("sucessfully updated task with TASK_NUMBER ", args[0]).color(:green) if success
+    STDOUT.puts sprintf("could not update task with TASK_NUMBER ", args[0]).color(:red) unless success
   end
 end
 
@@ -227,10 +226,10 @@ command :done do |c|
   c.action do |global_options,options,args|
     help_now!('TASK_NUMBER is required') if args.empty?
     task = @service.read(global_options[:t], args[0])
-    exit_now!('Task with TASK_NUMBER #{args[0]} does not exist') unless task
-    task.done(options[:n])
+    exit_now!("Task with TASK_NUMBER #{args[0]} does not exist") unless task
+    task.done(options[:note])
     @service.save(global_options[:t], task)
-    STDOUT.puts "Marked task with TASK_NUMBER #{args[0]} as done"
+    STDOUT.puts sprintf("Marked task with TASK_NUMBER %d as done", args[0]).color(:green)
     task.print_pretty(options[:c]) if options[:p] 
   end
 end

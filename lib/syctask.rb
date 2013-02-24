@@ -1,4 +1,5 @@
 require 'syctask/version.rb'
+require 'rainbow'
 require 'syctask/task.rb'
 require 'syctask/task_service.rb'
 

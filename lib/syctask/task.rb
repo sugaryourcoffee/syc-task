@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'rainbow'
 require_relative 'evaluator'
 
 module Syctask
@@ -102,7 +103,8 @@ module Syctask
     # Prints the task in a formatted way eather all values when long is true
     # or only id, title, prio, follow-up and due date.
     def print_pretty(long=false)
-      STDOUT.puts(pretty_string(long))
+      #STDOUT.puts(pretty_string(long))
+      pretty_string(long)
     end
 
     # Prints the task as a CSV
@@ -135,11 +137,14 @@ module Syctask
     # will print all available values. Otherwise only ID, title, description,
     # prio, follow-up and due date are printed.
     def pretty_string(long)
-      printf("\n%04d - %s", @id, @title)
-      printf("\n%6s %s", " ", @options[:description]) if @options[:description]
-      printf("\n%6s Prio: %s", " ", @options[:prio]) if @options[:prio]
-      printf("\n%6s Follow-up: %s", " ", @options[:follow_up]) if @options[:follow_up]
-      printf("\n%6s Due: %s", " ", @options[:due]) if @options[:due]
+      color = :default
+      color = :green if self.done?
+
+      puts sprintf("%04d - %s", @id, @title.bright).color(color)
+      puts sprintf("%6s %s", " ", @options[:description]).color(color) if @options[:description]
+      puts sprintf("%6s Prio: %s", " ", @options[:prio]).color(color) if @options[:prio]
+      puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).color(color) if @options[:follow_up]
+      puts sprintf("%6s Due: %s", " ", @options[:due]).color(color) if @options[:due]
       if long
         if @options[:note]
           note = split_lines(@options[:note].chomp, 70)
@@ -147,12 +152,12 @@ module Syctask
             gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*9}") 
           note = note.
             gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*7}")
-          printf("\n%6s %s", " ", note.chomp)
+          puts sprintf("%6s %s", " ", note.chomp).color(color)
         end
-        printf("\n%6s Tags: %s", " ", @options[:tags]) if @options[:tags]
-        printf("\n%6s Created: %s", " ", @creation_date)
-        printf("\n%6s Updated: %s", " ", @update_date) if @update_date
-        printf("\n%6s Closed: %s", " ", @done_date) if @done_date
+        puts sprintf("%6s Tags: %s", " ", @options[:tags]).color(color) if @options[:tags]
+        puts sprintf("%6s Created: %s", " ", @creation_date).color(color)
+        puts sprintf("%6s Updated: %s", " ", @update_date).color(color) if @update_date
+        puts sprintf("%6s Closed: %s", " ", @done_date).color(color) if @done_date
       end
     end
 

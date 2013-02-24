@@ -69,7 +69,7 @@ class TestTaskService < Test::Unit::TestCase
       refute_empty @service.find("test/tasks", {f: "2013-02-22", id: "1"})
     end
 
-    should "mark task as done and don's show in find" do
+    should "mark task as done and don't show in find" do
       @service.create("test/tasks", {}, "This is task one")
       @service.create("test/tasks", {}, "This is task two")
       @service.create("test/tasks", {}, "This is task three")

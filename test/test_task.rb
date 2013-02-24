@@ -56,6 +56,7 @@ class TestTask < Test::Unit::TestCase
       task = Syctask::Task.new("Some task", 1)
       task.done("Finalize task")
       refute_nil task.done_date
+      assert_match "Finalize task", task.options[:n]
     end
 
     should "pretty print the task" do
@@ -73,12 +74,12 @@ class TestTask < Test::Unit::TestCase
                  n: "This is a long note\nthat is over more\nthan on line",
                  t: "presentation,work"}
       task = Syctask::Task.new(options, "Some long new task", 12)
-      task.print_pretty("all")
+      task.print_pretty(true)
       options = {n: "This is another note for a very long task, that has been\nwritten over more than one line.\nBut this is not neccessarily good"}
       task.update(options)
-      task.print_pretty("all")
+      task.print_pretty(true)
       task.done("This is the end of the task")
-      task.print_pretty("all")
+      task.print_pretty(true)
     end
 
     should "print the task as csv" do

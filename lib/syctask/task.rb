@@ -1,4 +1,5 @@
 require 'fileutils'
+require_relative 'evaluator'
 
 module Syctask
 
@@ -58,16 +59,30 @@ module Syctask
 
     def matches?(filter = {})
       return false if filter.empty?
+      evaluator = Evaluator.new
+      puts self.id
+      puts filter.inspect
       filter.each do |key, value|
+        puts "key = #{key} = #{value}"
         matches = false
         case key
-        when :title
-          matches = @title == value
-        when :id
-          matches = @id == value
-        else
-          matches = @options[key] == value
+        when :title, :t
+          matches = evaluator.matches?(@title, value)#@title == value
+        when :description
+          matches = evaluator.matches?(@options[:description], value)
+        when :id, :i, "id", "i"
+          puts "in id"
+          matches = (evaluator.includes?(@id, value) or 
+                     evaluator.compare_numbers(@id, value))
+        when :prio, :p
+          matches = (evaluator.includes?(@options[:prio], value) or
+                     evaluator.compare(@options[:prio], value))
+        when :tags
+          matches = evaluator.matches?(@options[:tags], value)
+        when :follow_up, :f, :d, :due_date
+          matches = evaluator.compare_dates(@options[key], value)
         end
+        puts "matches?>#{matches}<"
         return false unless matches
       end
       true

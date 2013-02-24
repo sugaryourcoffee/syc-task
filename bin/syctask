@@ -78,6 +78,9 @@ command :list do |c|
   c.desc 'List all tasks done and open'
   c.switch [:a, :all]
   
+  c.desc 'Print complete task'
+  c.switch [:c, :complete]
+
   c.desc 'Filter for ID'
   c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
   c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|^[<|=|>]\d+/ 
@@ -111,8 +114,14 @@ command :list do |c|
   c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*|\/.*\//
 
   c.action do |global_options,options,args|
-    puts global_options.inspect
-    puts options.inspect
+    filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
+              :note, :title]
+    all = options[:all]
+    complete = options[:complete]
+    options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    @service.find(global_options[:t], options).each do |task|
+      task.print_pretty(complete)
+    end      
     puts "list command ran"
   end
 end

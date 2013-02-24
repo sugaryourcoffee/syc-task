@@ -32,7 +32,7 @@ module Syctask
     def find(dir, filter={})
       tasks = []
       Dir.glob("#{dir}/*").each do |file|
-        task = YAML.load_file(file)
+        File.file?(file) ? task = YAML.load_file(file) : next
         tasks << task if task and task.matches?(filter)
       end
       tasks
@@ -68,15 +68,12 @@ module Syctask
     def create_id(dir)
       tasks = Dir.glob("#{dir}/*")
       ids = []
-      tasks.each {|task| ids << task.scan(/^\d+(?=\.task)/)[0].to_i}
-      ids.compact!
-      id = ids.empty? ? 1 : ids[ids.size-1] + 1
-#      id = 1
-#      unless ids.empty?
-#        id = ids[ids.size-1] + 1
-#      end
-#      id
-    end
+      tasks.each do |task| 
+        id = File.basename(task).scan(/^\d+(?=\.task)/)[0]
+        ids << id.to_i if id
+      end
+      ids.empty? ? 1 : ids.sort[ids.size-1] + 1
+   end
 
  
   end

@@ -55,13 +55,9 @@ There is a rake file available to run all tests
     $ rake test
 
 ==License
-syc-task is released under the {MIT License}[http://www.opensource.org/licenses/IT]
+syc-task is released under the {MIT License}[http://opensource.org/licenses/MIT]
 
 ==Links
 * [http://www.github.com/sugaryourcoffee/syc-task] - Source code on GitHub
 * [http://syc.dyndns.org/drupal/wiki/syc-task] - Development notebook
 * [https://rubygems.org/gems/syc-backup] - RubyGems
-Describe your project here
-
-:include:syctask.rdoc
-

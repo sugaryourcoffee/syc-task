@@ -1,5 +1,66 @@
-= syctask
+= Simple task organizer
+With syctask you can organize your tasks (inspired by David Bryant Copland's book <b>Build Awesome Command-Line Applications in Ruby</b>.
 
+==Install
+The application can be installed with
+    $ gem install syc-task
+
+== Usage
+syctask provides basic task organizer functions as create, update, list und complete a task. Addtional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file.
+
+===Create tasks with new
+Create a new task in the default task directory ~/.tasks
+    $ syctask "My first task"
+
+Provide a description
+    $ syctask "My first task" --description "Explanation of my first task"
+
+Schedule a task with a follow-up and due date
+    $ syctask "My first task" --follow-up "2013-02-25" --due "2013-03-11"
+
+Set a proirity for a task
+    $ syctask "My first task" --prio 3
+
+Except for --description you can also provide short forms for the options.
+
+===List tasks
+List tasks that are not marked as done in short form
+    $ syctask list
+
+List all tasks in long form
+    $ syctask list --all --complete
+
+Search tasks that match a pattern
+    $ syctask list --id "<10" --follow_up ">2013-02-25" --title "My \w task"
+
+===Update tasks
+Except for title and id all values can be updated. Note and tags are not
+overridden rather supplemented with the update value.
+
+    $ syctask update --note "Some explanation about the progress on the task"
+
+===Complete tasks
+Complete a task and provide a final note
+    $ syctask done --note "Finalize my first task"
+
+==Supported platform
+syc-task has been tested with 1.9.3
+
+==Notes
+As with version 0.0.1 only new, update, list and done is implemented.
+
+The test files live in the folder test and start with test_.
+
+There is a rake file available to run all tests
+    $ rake test
+
+==License
+syc-task is released under the {MIT License}[http://www.opensource.org/licenses/IT]
+
+==Links
+* [http://www.github.com/sugaryourcoffee/syc-task] - Source code on GitHub
+* [http://syc.dyndns.org/drupal/wiki/syc-task] - Development notebook
+* [https://rubygems.org/gems/syc-backup] - RubyGems
 Describe your project here
 
 :include:syctask.rdoc

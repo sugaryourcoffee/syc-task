@@ -2,6 +2,7 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task'
 
+# Tests for the Task
 class TestTask < Test::Unit::TestCase
 
   context "Task" do

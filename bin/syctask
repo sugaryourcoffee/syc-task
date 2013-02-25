@@ -1,14 +1,6 @@
 #!/usr/bin/env ruby
 require 'gli'
-begin # XXX: Remove this begin/rescue before distributing your app
 require 'syctask'
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/syctask` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/syctask now"
-  exit 64
-end
-
 include GLI::App
 
 program_desc 'A simple task manager'
@@ -83,7 +75,7 @@ desc 'Extract tasks from a file'
 arg_name 'TASK_FILE'
 command :scan do |c|
   c.action do |global_options,options,args|
-    puts "scan command ran"
+    puts "scan command not implemented yet"
   end
 end
 
@@ -146,14 +138,14 @@ end
 desc 'Plan tasks for today'
 command :plan do |c|
   c.action do |global_options,options,args|
-    puts "plan command ran"
+    puts "plan command not implemented yet"
   end
 end
 
 desc 'Prioritize tasks'
 command :prio do |c|
   c.action do |global_options,options,args|
-    puts "prio command ran"
+    puts "prio command not implemented yet"
   end
 end
 
@@ -161,14 +153,14 @@ desc 'Start and time a task'
 arg_name 'TASK_NUMBER'
 command :start do |c|
   c.action do |global_options,options,args|
-    puts "start command ran"
+    puts "start command not implemented yet"
   end
 end
 
 desc 'Stop the running task'
 command :stop do |c|
   c.action do |global_options,options,args|
-    puts "stop command ran"
+    puts "stop command not implemented yet"
   end
 end
 

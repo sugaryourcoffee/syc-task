@@ -2,11 +2,21 @@ require 'fileutils'
 require 'rainbow'
 require_relative 'evaluator'
 
+# Syctask provides functions for managing tasks in a task list
 module Syctask
 
+  # A Task is the basic element of the task list and holds all information
+  # about a task.
   class Task
 
-    # Holds the options of the task
+    # Holds the options of the task. 
+    # Options are
+    # * description - additional information about the task
+    # * follow_up - follow-up date of the task
+    # * due - due date of the task
+    # * prio - priority of the task
+    # * note - information about the progress or state of the task
+    # * tags - can be used to search for tasks that belong to a certain category
     attr_accessor :options
     # Title of the class
     attr_reader :title
@@ -74,6 +84,21 @@ module Syctask
       !@done_date.nil?
     end
 
+    # Compares the provided elements in the filter with the correspondent
+    # elements in the task. When all comparissons match than true is returned.
+    # If one comparisson does not match false is returned. If filter is empty
+    # than true is returned. The values can be compared regarding <, =, > or 
+    # whether the task's value is part of a list of provided values. It is also
+    # possible to provide a regex as a filter. Following comparissons are
+    # available
+    # Value                           Compare
+    # :title                          regex
+    # :description                    regex
+    # :id                             contains, <|=|> no operator same as =
+    # :prio                           contains, <|=|> no operator same as =
+    # :tags                           contains, regex
+    # :follow_up                      <|=|>
+    # :due                            <|=|>
     def matches?(filter = {})
       return true if filter.empty?
       evaluator = Evaluator.new
@@ -103,7 +128,6 @@ module Syctask
     # Prints the task in a formatted way eather all values when long is true
     # or only id, title, prio, follow-up and due date.
     def print_pretty(long=false)
-      #STDOUT.puts(pretty_string(long))
       pretty_string(long)
     end
 
@@ -177,6 +201,7 @@ module Syctask
       string
     end
 
+    # Splits a string to size (chars) less or equal to length
     def split_lines(string, length)
       lines = string.squeeze(" ").split("\n")
       i = 0

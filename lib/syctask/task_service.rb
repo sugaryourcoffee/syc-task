@@ -1,9 +1,22 @@
 require 'yaml'
 
+# Syctask provides functions for managing tasks in a task list
 module Syctask
 
+  # Provides services to operate tasks as create, read, find, update and save
+  # Task objects
   class TaskService
 
+    # Creates a new task in the specified directory, with the specified options
+    # and the specified title. If the directory doesn't exist it is created.
+    # When the task is created it is assigned a unique ID within the directory.
+    # Options are
+    # * description - additional information about the task
+    # * follow_up - follow-up date of the task
+    # * due  - due date of the task
+    # * prio - priority of the task
+    # * note - information about the progress or state of the task
+    # * tags - can be used to searching tasks that belong to a certain category
     def create(dir, options, title)
       create_dir(dir)
       task = Task.new(options, title, create_id(dir))
@@ -24,11 +37,11 @@ module Syctask
 
     # Finds all tasks that match the given filter. The filter can be provided
     # for :id, :title, :description, :follow_up, :due, :tags and :prio.
-    # :id can be eather a selection of IDs ID1,ID2,ID3 or a comparison <|=|>ID.
-    # :title and :description can be a REGEX as /look for \d+ examples/
-    # :follow-up and :due can be <|=|>DATE
-    # :tags can be eather a selection TAG1,TAG2,TAG3 or a REGEX /[Ll]ecture/
-    # :prio can be <|=|>PRIO 
+    # id can be eather a selection of IDs ID1,ID2,ID3 or a comparison <|=|>ID.
+    # title and :description can be a REGEX as /look for \d+ examples/
+    # follow-up and :due can be <|=|>DATE
+    # tags can be eather a selection TAG1,TAG2,TAG3 or a REGEX /[Ll]ecture/
+    # prio can be <|=|>PRIO 
     def find(dir, filter={}, all=true)
       tasks = []
       Dir.glob("#{dir}/*").sort.each do |file|
@@ -40,6 +53,18 @@ module Syctask
       tasks
     end
 
+    # Updates the task with the given id in the given directory dir with the
+    # provided options. 
+    # Options are
+    # * description - additional information about the task
+    # * follow_up - follow-up date of the task
+    # * due - due date of the task
+    # * prio - priority of the task
+    # * note - information about the progress or state of the task
+    # * tags - can be used to searching tasks that belong to a certain category
+    # Except for note and tags the values of the task are overridden with the
+    # new value. If note and tags are provided these are added to the existing
+    # values.
     def update(dir, id, options)
       task_file = Dir.glob("#{dir}/#{id}.task")[0]
       task = YAML.load_file(task_file) if task_file
@@ -76,7 +101,6 @@ module Syctask
       end
       ids.empty? ? 1 : ids.sort[ids.size-1] + 1
    end
-
  
   end
 end

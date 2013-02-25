@@ -2,12 +2,15 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_service'
 
+# Tests for the TaskService
 class TestTaskService < Test::Unit::TestCase
 
+  # Creates a TaskService object used in each shoulda
   def setup
     @service = Syctask::TaskService.new
   end
 
+  # Removes files and directories created by the tests
   def teardown
     FileUtils.rm_r "test/tasks" if File.exists? "test/tasks"
   end

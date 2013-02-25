@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syctask (0.0.1)
+    syc-task (0.0.1)
       gli (= 2.5.4)
       rainbow
 
@@ -40,4 +40,4 @@ DEPENDENCIES
   aruba
   rake
   rdoc
-  syctask!
+  syc-task!

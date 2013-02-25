@@ -1,13 +1,9 @@
 require 'test_helper'
 
-class DefaultTest < Test::Unit::TestCase
+# Dummy test
+class TestDefault < Test::Unit::TestCase
 
-  def setup
-  end
-
-  def teardown
-  end
-
+  # Always passes the test
   def test_the_truth
     assert true
   end

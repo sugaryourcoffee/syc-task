@@ -37,11 +37,12 @@ Search tasks that match a pattern
 Except for title and id all values can be updated. Note and tags are not
 overridden rather supplemented with the update value.
 
-    $ syctask update --note "Some explanation about the progress on the task"
+Update task with ID 1 and provide some informative note
+    $ syctask update 1 --note "Some explanation about the progress on the task"
 
 ===Complete tasks
-Complete a task and provide a final note
-    $ syctask done --note "Finalize my first task"
+Complete the task with ID 1 and provide a final note
+    $ syctask done 1 --note "Finalize my first task"
 
 ==Supported platform
 syc-task has been tested with 1.9.3

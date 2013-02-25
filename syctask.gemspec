@@ -1,17 +1,21 @@
 # Ensure we require the local version and not one we might have installed already
 require File.join([File.dirname(__FILE__),'lib','syctask','version.rb'])
 spec = Gem::Specification.new do |s| 
-  s.name = 'syctask'
+  s.name = 'syc-task'
   s.version = Syctask::VERSION
-  s.author = 'Your Name Here'
-  s.email = 'your@email.address.com'
-  s.homepage = 'http://your.website.com'
+  s.author = 'Pierre Sugar'
+  s.email = 'pierre@sugaryourcoffee.de'
+  s.homepage = 'http://syc.dyndns.org/drupal/syc-task'
   s.platform = Gem::Platform::RUBY
-  s.summary = 'A description of your project'
+  s.summary = 'Simple task organizer'
+  s.description = File.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 # Add your other files here if you make them
   s.files = %w(
 bin/syctask
 lib/syctask/version.rb
+lib/syctask/task.rb
+lib/syctask/task_service.rb
+lib/syctask/evaluator.rb
 lib/syctask.rb
   )
   s.require_paths << 'lib'

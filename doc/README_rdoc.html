@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>README - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./syctask_rdoc.html">syctask</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Syctask.html">Syctask</a>
+  
+    <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="./Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Test.html">Test</a>
+  
+    <li><a href="./Test/Unit.html">Test::Unit</a>
+  
+    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./TestDefault.html">TestDefault</a>
+  
+    <li><a href="./TestEvaluator.html">TestEvaluator</a>
+  
+    <li><a href="./TestTask.html">TestTask</a>
+  
+    <li><a href="./TestTaskService.html">TestTaskService</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h1 id="label-Simple+task+organizer">Simple task organizer</h1>
+
+<p>With syctask you can organize your tasks (inspired by David Bryant
+Copland’s book <strong>Build Awesome Command-Line Applications in
+Ruby</strong>.</p>
+
+<h2 id="label-Install">Install</h2>
+
+<p>The application can be installed with</p>
+
+<pre>$ gem install syc-task</pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>syctask provides basic task organizer functions as create, update, list und
+complete a task. Addtional functions are to plan tasks you want to
+accomplish today. If you are not sure in which sequence to conduct the task
+you can prioritize them with a pair wise comparisson. You can time tasks
+with start and stop and you can finally extract tasks from a minutes of
+meetings file.</p>
+
+<h3 id="label-Create+tasks+with+new">Create tasks with new</h3>
+
+<p>Create a new task in the default task directory ~/.tasks</p>
+
+<pre>$ syctask &quot;My first task&quot;</pre>
+
+<p>Provide a description</p>
+
+<pre>$ syctask &quot;My first task&quot; --description &quot;Explanation of my first task&quot;</pre>
+
+<p>Schedule a task with a follow-up and due date</p>
+
+<pre>$ syctask &quot;My first task&quot; --follow-up &quot;2013-02-25&quot; --due &quot;2013-03-11&quot;</pre>
+
+<p>Set a proirity for a task</p>
+
+<pre>$ syctask &quot;My first task&quot; --prio 3</pre>
+
+<p>Except for –description you can also provide short forms for the options.</p>
+
+<h3 id="label-List+tasks">List tasks</h3>
+
+<p>List tasks that are not marked as done in short form</p>
+
+<pre>$ syctask list</pre>
+
+<p>List all tasks in long form</p>
+
+<pre>$ syctask list --all --complete</pre>
+
+<p>Search tasks that match a pattern</p>
+
+<pre>$ syctask list --id &quot;&lt;10&quot; --follow_up &quot;&gt;2013-02-25&quot; --title &quot;My \w task&quot;</pre>
+
+<h3 id="label-Update+tasks">Update tasks</h3>
+
+<p>Except for title and id all values can be updated. Note and tags are not
+overridden rather supplemented with the update value.</p>
+
+<p>Update task with ID 1 and provide some informative note</p>
+
+<pre>$ syctask update 1 --note &quot;Some explanation about the progress on the task&quot;</pre>
+
+<h3 id="label-Complete+tasks">Complete tasks</h3>
+
+<p>Complete the task with ID 1 and provide a final note</p>
+
+<pre>$ syctask done 1 --note &quot;Finalize my first task&quot;</pre>
+
+<h2 id="label-Supported+platform">Supported platform</h2>
+
+<p>syc-task has been tested with 1.9.3</p>
+
+<h2 id="label-Notes">Notes</h2>
+
+<p>As with version 0.0.1 only new, update, list and done is implemented.</p>
+
+<p>The test files live in the folder test and start with test_.</p>
+
+<p>There is a rake file available to run all tests</p>
+
+<pre>$ rake test</pre>
+
+<h2 id="label-License">License</h2>
+
+<p>syc-task is released under the <a
+href="http://opensource.org/licenses/MIT">MIT License</a></p>
+
+<h2 id="label-Links">Links</h2>
+<ul><li><dl class="rdoc-list label-list"><dt><a href="http://www.github.com/sugaryourcoffee/syc-task">www.github.com/sugaryourcoffee/syc-task</a>
+<dd><ul><li>
+<p>Source code on GitHub</p>
+</li></ul>
+</dd></dl>
+</li><li><dl class="rdoc-list label-list"><dt><a href="http://syc.dyndns.org/drupal/wiki/syc-task">syc.dyndns.org/drupal/wiki/syc-task</a>
+<dd><ul><li>
+<p>Development notebook</p>
+</li></ul>
+</dd></dl>
+</li><li><dl class="rdoc-list label-list"><dt><a href="https://rubygems.org/gems/syc-backup">rubygems.org/gems/syc-backup</a>
+<dd><ul><li>
+<p>RubyGems</p>
+</li></ul>
+</dd></dl>
+</li></ul>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

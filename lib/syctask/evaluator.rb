@@ -1,13 +1,26 @@
+# Syctask provides functions for managing tasks in a task list.
 module Syctask
 
+  # Evaluator provides different evaluatons for comparing numbers,
+  # dates and strings. Also provides methods to check whether a value is part 
+  # of a list
   class Evaluator
+    # Pattern to match operands <|=|> followed by a number or a single number
     NUMBER_COMPARE_PATTERN = /^(<|=|>)(\d+)|^(\d+)/
+    # Pattern to match comma separated values
     CSV_PATTERN = /\w+(?=,)|(?<!<|=|>)\w+$/
+    # Pattern to match comma separated numbers
     NUMBER_CSV_PATTERN = /\d+(?=,)|\d+$/
+    # Pattern to match a date prepended by <|=|> or a single date
     DATE_COMPARE_PATTERN = /^(<|=|>)(\d{4}-\d{2}-\d{2})|(\d{4}-\d{2}-\d{2})/
+    # Pattern to match a date in the form of yyyy-mm-dd
     DATE_PATTERN = /^\d{4}-\d{2}-\d{2}/
+    # Pattern that matches anything that is not prepended with <|=|>
     NON_COMPARE_PATTERN = /[^<=>]*/
 
+    # Compares two numbers regarding <|=|>. Returns true if the comparisson
+    # succeeds otherwise false. If eather value or pattern is nil false is
+    # returned. If value is empty false is returned. 
     def compare_numbers(value, pattern)
       return false if value.nil? or pattern.nil?
       return false if value.class == String and value.empty?
@@ -16,6 +29,9 @@ module Syctask
       compare(value, result.captures)
     end
 
+    # Compares two dates regarding <|=|>. Returns true if the comparisson
+    # succeeds otherwise false. If eather value or pattern is nil false is
+    # returned. 
     def compare_dates(value, pattern)
       return false if value.nil? or pattern.nil?
       result = pattern.match(DATE_COMPARE_PATTERN)
@@ -27,6 +43,9 @@ module Syctask
       compare(value, captures)
     end
 
+    # Compares two values regarding <|=|>. Returns true if the comparisson
+    # succeeds otherwise false. If eather value or operand is nil false is
+    # returned. 
     def compare(value, operands)
 
       if operands[2]
@@ -40,12 +59,17 @@ module Syctask
       eval(expression) 
     end
 
+    # Evaluates whether value is part of the provided csv pattern. Returns true
+    # if it evaluates to true otherwise false. If value or pattern is nil false
+    # is returned. 
     def includes?(value, pattern)
       return false if value.nil? or pattern.nil?
       captures = pattern.scan(CSV_PATTERN)
       !captures.find_index(value.to_s).nil?
     end
 
+    # Evaluates if value matches the provided regex. Returns true if a match is
+    # found. If value or regex is nil false is returned.
     def matches?(value, regex)
       return false if value.nil? or regex.nil?
       !value.match(Regexp.new(regex, true)).nil?

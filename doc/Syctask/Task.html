@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::Task - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/task.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-done">#done</a>
+    
+    <li><a href="#method-i-done-3F">#done?</a>
+    
+    <li><a href="#method-i-matches-3F">#matches?</a>
+    
+    <li><a href="#method-i-print_csv">#print_csv</a>
+    
+    <li><a href="#method-i-print_pretty">#print_pretty</a>
+    
+    <li><a href="#method-i-update">#update</a>
+    
+    <li><a href="#method-i-update-3F">#update?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../syctask_rdoc.html">syctask</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Test.html">Test</a>
+  
+    <li><a href="../Test/Unit.html">Test::Unit</a>
+  
+    <li><a href="../Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../TestDefault.html">TestDefault</a>
+  
+    <li><a href="../TestEvaluator.html">TestEvaluator</a>
+  
+    <li><a href="../TestTask.html">TestTask</a>
+  
+    <li><a href="../TestTaskService.html">TestTaskService</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::Task</h1>
+
+  <div id="description" class="description">
+    
+<p>A <a href="Task.html">Task</a> is the basic element of the task list and
+holds all information about a task.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-creation_date" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">creation_date</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Creation date</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-dir" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">dir</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Directory where the file of the task is located</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-done_date" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">done_date</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Done date</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-id" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">id</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>ID of the task</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-options" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">options</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Holds the options of the task.  Options are</p>
+<ul><li>
+<p>description - additional information about the task</p>
+</li><li>
+<p>follow_up - follow-up date of the task</p>
+</li><li>
+<p>due - due date of the task</p>
+</li><li>
+<p>prio - priority of the task</p>
+</li><li>
+<p>note - information about the progress or state of the task</p>
+</li><li>
+<p>tags - can be used to search for tasks that belong to a certain category</p>
+</li></ul>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-title" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">title</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Title of the class</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-update_date" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">update_date</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Update date</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(options={}, title, id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new task. If the options contain a note than the current date and
+time is added.</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">id</span>)
+  <span class="ruby-ivar">@creation_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
+  <span class="ruby-ivar">@title</span> = <span class="ruby-identifier">title</span>
+  <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">options</span>
+  <span class="ruby-ivar">@options</span>[<span class="ruby-value">:note</span>] = 
+              <span class="ruby-node">&quot;#{@creation_date}\n#{@options[:note]}\n&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:note</span>]
+  <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-done" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">done</span><span
+            class="method-args">(note="")</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Marks the task as done. When done than the done date is set. Optionally a
+note can be provided.</p>
+          
+
+          
+          <div class="method-source-code" id="done-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">done</span>(<span class="ruby-identifier">note</span>=<span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-ivar">@done_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>
+    <span class="ruby-identifier">options</span>[<span class="ruby-value">:note</span>] = <span class="ruby-node">&quot;#{@done_date}\n#{note}\n#{@options[:note]}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- done-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- done-method -->
+
+    
+      <div id="method-i-done-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">done?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks if this task is done. Returns true if done otherwise false</p>
+          
+
+          
+          <div class="method-source-code" id="done-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">done?</span>
+  <span class="ruby-operator">!</span><span class="ruby-ivar">@done_date</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- done-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- done-3F-method -->
+
+    
+      <div id="method-i-matches-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">matches?</span><span
+            class="method-args">(filter = {})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Compares the provided elements in the filter with the correspondent
+elements in the task. When all comparissons match than true is returned. If
+one comparisson does not match false is returned. If filter is empty than
+true is returned. The values can be compared regarding &lt;, =, &gt; or 
+whether the task’s value is part of a list of provided values. It is also
+possible to provide a regex as a filter. Following comparissons are
+available Value                           Compare :title                   
+regex :description                    regex :id                            
+contains, &lt;|=|&gt; no operator same as = :prio                          
+contains, &lt;|=|&gt; no operator same as = :tags                          
+contains, regex :follow_up                      &lt;|=|&gt; :due           
+&lt;|=|&gt;</p>
+          
+
+          
+          <div class="method-source-code" id="matches-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span> = {})
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">evaluator</span> = <span class="ruby-constant">Evaluator</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">matches</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">key</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:title</span>, <span class="ruby-value">:t</span>
+      <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-ivar">@title</span>, <span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:description</span>
+      <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:description</span>], <span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:id</span>, <span class="ruby-value">:i</span>, <span class="ruby-string">&quot;id&quot;</span>, <span class="ruby-string">&quot;i&quot;</span>
+      <span class="ruby-identifier">matches</span> = (<span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">includes?</span>(<span class="ruby-ivar">@id</span>, <span class="ruby-identifier">value</span>) <span class="ruby-keyword">or</span> 
+                 <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">compare_numbers</span>(<span class="ruby-ivar">@id</span>, <span class="ruby-identifier">value</span>))
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:prio</span>, <span class="ruby-value">:p</span>
+      <span class="ruby-identifier">matches</span> = (<span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">includes?</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:prio</span>], <span class="ruby-identifier">value</span>) <span class="ruby-keyword">or</span>
+                 <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">compare</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:prio</span>], <span class="ruby-identifier">value</span>))
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:tags</span>
+      <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-value">:tags</span>], <span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:follow_up</span>, <span class="ruby-value">:f</span>, <span class="ruby-value">:d</span>, <span class="ruby-value">:due_date</span>
+      <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">evaluator</span>.<span class="ruby-identifier">compare_dates</span>(<span class="ruby-ivar">@options</span>[<span class="ruby-identifier">key</span>], <span class="ruby-identifier">value</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">matches</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- matches-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- matches-3F-method -->
+
+    
+      <div id="method-i-print_csv" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print_csv</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prints the task as a CSV</p>
+          
+
+          
+          <div class="method-source-code" id="print_csv-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 135</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_csv</span>
+  <span class="ruby-constant">STDOUT</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">csv_string</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- print_csv-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- print_csv-method -->
+
+    
+      <div id="method-i-print_pretty" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print_pretty</span><span
+            class="method-args">(long=false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prints the task in a formatted way eather all values when long is true or
+only id, title, prio, follow-up and due date.</p>
+          
+
+          
+          <div class="method-source-code" id="print_pretty-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 130</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_pretty</span>(<span class="ruby-identifier">long</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">pretty_string</span>(<span class="ruby-identifier">long</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- print_pretty-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- print_pretty-method -->
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">(options)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Updates the task with new values. Except for note and tags which are
+supplemented with the new values and not overridden.</p>
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>)
+  <span class="ruby-ivar">@update_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
+  <span class="ruby-identifier">options</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">new_value</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">key</span>]
+    
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">key</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:note</span>
+      <span class="ruby-identifier">new_value</span> = <span class="ruby-node">&quot;#{@update_date}\n#{new_value}\n#{@options[key]}&quot;</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:tags</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">new_value</span>
+        <span class="ruby-identifier">new_value</span> = <span class="ruby-ivar">@options</span>[<span class="ruby-identifier">key</span>]
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">new_value</span> = <span class="ruby-node">&quot;#{@options[key]},#{new_value}&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@options</span>[<span class="ruby-identifier">key</span>] = <span class="ruby-identifier">new_value</span>
+  <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update-method -->
+
+    
+      <div id="method-i-update-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks whether this task has been updated. Returns true if updated
+otherwise false</p>
+          
+
+          
+          <div class="method-source-code" id="update-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update?</span>
+  <span class="ruby-operator">!</span><span class="ruby-ivar">@updated_date</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

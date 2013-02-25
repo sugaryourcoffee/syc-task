@@ -2,10 +2,12 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/evaluator.rb'
 
+# Tests for the Evaluator class
 class TestEvaluator < Test::Unit::TestCase
 
   context "TestEvaluator" do
 
+    # Creates the evaluator object before each shoulda
     def setup
       @evaluator = Syctask::Evaluator.new
     end

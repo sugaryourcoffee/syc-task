@@ -165,7 +165,11 @@ module Syctask
       color = :green if self.done?
 
       puts sprintf("%04d - %s", @id, @title.bright).color(color)
-      puts sprintf("%6s %s", " ", @options[:description]).color(color) if @options[:description]
+      if @options[:description]
+        description = split_lines(@options[:description].chomp, 70)
+        description = description.chomp.gsub(/\n/, "\n#{' '*7}")
+        puts sprintf("%6s %s", " ", description.chomp).color(color) 
+      end
       puts sprintf("%6s Prio: %s", " ", @options[:prio]).color(color) if @options[:prio]
       puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).color(color) if @options[:follow_up]
       puts sprintf("%6s Due: %s", " ", @options[:due]).color(color) if @options[:due]

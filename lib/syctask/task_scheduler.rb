@@ -9,6 +9,7 @@ module Syctask
     GRAPH_PATTERN = /[\|-]+|\/+/
     BUSY_PATTERN = /\/+/
     FREE_PATTERN = /[\|-]+/
+    WORK_PATTERN = /\++/
 
     def initialize(work_time, busy_time)
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
@@ -17,6 +18,18 @@ module Syctask
         normalize_time
         create_graph(@work_time, @busy_time)
       end
+    end
+
+    #Assigns available free time slots to the tasks and prints the visual
+    #representation of the schedule.
+    def schedule_tasks(tasks)
+      tasks.each do |task|
+        free_time = scan_free(task.duration)
+        next unless free_time
+        puts "free #{free_time} #{task.duration}"
+        @schedule_graph[free_time[0]..free_time[0] + task.duration] = '+' * task.duration
+      end
+      print_graph
     end
 
     def range_is_sequential?
@@ -62,6 +75,7 @@ module Syctask
       @schedule_graph.scan(GRAPH_PATTERN) do |part|
         print sprintf("%s", part).color(:red) unless part.scan(BUSY_PATTERN).empty?
         print sprintf("%s", part).color(:green) unless part.scan(FREE_PATTERN).empty?
+        print sprintf("%s", part).color(:blue) unless part.scan(WORK_PATTERN).empty?
       end
       puts
       puts @schedule_units
@@ -79,6 +93,9 @@ module Syctask
         @schedule_graph[busy[0]..busy[1]] = '/' * (busy[1] - busy[0]+1)
       end
 
+    end
+
+    def create_caption
     end
 
     def scan_free(count)

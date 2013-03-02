@@ -6,6 +6,7 @@ module Syctask
   # Provides services to operate tasks as create, read, find, update and save
   # Task objects
   class TaskService
+    DEFAULT_DIR = File.expand_path("~/.tasks")
 
     # Creates a new task in the specified directory, with the specified options
     # and the specified title. If the directory doesn't exist it is created.
@@ -30,7 +31,9 @@ module Syctask
       task = nil
       Dir.glob("#{dir}/*").each do |file|
         task = YAML.load_file(file) if File.file? file
-        return task if task and task.id == id.to_i
+        if not task.nil? and task.class == Syctask::Task and task.id == id.to_i
+          return task 
+        end
       end
       nil
     end
@@ -42,12 +45,19 @@ module Syctask
     # follow-up and :due can be <|=|>DATE
     # tags can be eather a selection TAG1,TAG2,TAG3 or a REGEX /[Ll]ecture/
     # prio can be <|=|>PRIO 
+    # dir is the directory where find looks for tasks
+    # all specifies whether to consider also completed tasks (default) or only
+    # open tasks
     def find(dir, filter={}, all=true)
       tasks = []
       Dir.glob("#{dir}/*").sort.each do |file|
-        File.file?(file) ? task = YAML.load_file(file) : next
-        next if task and not all and task.done?
-        next if not task 
+        begin
+          File.file?(file) ? task = YAML.load_file(file) : next
+        rescue Exception => e
+          next # If the file is no task but read by YAML ignore it
+        end
+        next unless not task.nil? and task.class == Syctask::Task
+        next if not all and task.done?
         tasks << task if task.matches?(filter)
       end
       tasks
@@ -77,9 +87,11 @@ module Syctask
       updated
     end
 
-    # Saves the task to the task directory
+    # Saves the task to the task directory. If dir is nil the default dir
+    # ~/.tasks will be set.
     def save(dir, task)
-      File.open("#{dir}/#{task.id}.task", 'w') {|f| YAML.dump(task, f)}
+      task.dir = dir.nil? ? DEFAULT_DIR : File.expand_path(dir)
+      File.open("#{task.dir}/#{task.id}.task", 'w') {|f| YAML.dump(task, f)}
     end
 
     private

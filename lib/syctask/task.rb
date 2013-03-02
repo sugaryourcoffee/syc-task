@@ -22,6 +22,8 @@ module Syctask
     attr_reader :title
     # ID of the task
     attr_reader :id
+    # Duration specifies the planned time for processing the task
+    attr_accessor :duration
     # Creation date
     attr_reader :creation_date
     # Update date
@@ -29,7 +31,7 @@ module Syctask
     # Done date
     attr_reader :done_date
     # Directory where the file of the task is located
-    attr_reader :dir
+    attr_accessor :dir
 
     # Creates a new task. If the options contain a note than the current date
     # and time is added.

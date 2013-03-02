@@ -6,10 +6,13 @@ module Syctask
     TIME_PATTERN = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9])/
     WORK_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}/ 
     BUSY_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}(?=,)|#{TIME_PATTERN}-#{TIME_PATTERN}$/
-    GRAPH_PATTERN = /[\|-]+|\/+/
+    GRAPH_PATTERN = /[\|-]+|\/+|[xo]+/
     BUSY_PATTERN = /\/+/
     FREE_PATTERN = /[\|-]+/
-    WORK_PATTERN = /\++/
+    WORK_PATTERN = /[xo]+/
+    BUSY_COLOR = :red
+    FREE_COLOR = :green
+    WORK_COLOR = :blue
 
     def initialize(work_time, busy_time)
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
@@ -23,13 +26,29 @@ module Syctask
     #Assigns available free time slots to the tasks and prints the visual
     #representation of the schedule.
     def schedule_tasks(tasks)
-      tasks.each do |task|
-        free_time = scan_free(task.duration)
-        next unless free_time
-        puts "free #{free_time} #{task.duration}"
-        @schedule_graph[free_time[0]..free_time[0] + task.duration] = '+' * task.duration
+      max_id_size = 1
+      signs = ['x','o']
+      positions = {}
+      position = 0
+      tasks.each.with_index do |task, index|
+        free_time = scan_free(task.duration, position)
+        #TODO if no free time available for the complete duration than
+        #distribute in all free spaces. Return all not assigned time chunks
+        next unless free_time 
+        position = free_time[0]
+        @schedule_graph[position..(position + task.duration-1)] = 
+          signs[index%2] * task.duration
+        positions[position] = task.id
+        max_id_size = [max_id_size, task.duration.to_s.size].max
       end
+      tasks.each do |task|
+        puts sprintf("%#{max_id_size}d - %s", task.id, task.title).color(WORK_COLOR)
+      end
+
       print_graph
+      create_caption(positions).each do |caption| 
+        puts sprintf("%s", caption.color(WORK_COLOR))
+      end
     end
 
     def range_is_sequential?
@@ -73,9 +92,9 @@ module Syctask
     def print_graph
       return -1 unless @schedule_graph
       @schedule_graph.scan(GRAPH_PATTERN) do |part|
-        print sprintf("%s", part).color(:red) unless part.scan(BUSY_PATTERN).empty?
-        print sprintf("%s", part).color(:green) unless part.scan(FREE_PATTERN).empty?
-        print sprintf("%s", part).color(:blue) unless part.scan(WORK_PATTERN).empty?
+        print sprintf("%s", part).color(BUSY_COLOR) unless part.scan(BUSY_PATTERN).empty?
+        print sprintf("%s", part).color(FREE_COLOR) unless part.scan(FREE_PATTERN).empty?
+        print sprintf("%s", part).color(WORK_COLOR) unless part.scan(WORK_PATTERN).empty?
       end
       puts
       puts @schedule_units
@@ -95,16 +114,37 @@ module Syctask
 
     end
 
-    def create_caption
+    def create_caption(positions)
+      counter = 0
+      lines = [""]
+      positions.each do |position,id|
+        line_id = next_line(position,lines,counter)
+        legend = ' ' * [0, position - lines[line_id].size].max + id.to_s
+        lines[line_id] += legend
+        counter += 1
+      end
+      #print_graph
+      #lines.each {|line| puts line}
+      lines
     end
 
-    def scan_free(count)
+    def next_line(position, lines, counter)
+      line = lines[counter%lines.size]
+      #puts "line.size = #{line.size} position = #{position}"
+      return counter%lines.size if line.size == 0 or line.size < position - 1
+      lines.each.with_index do |line, index|
+        #puts "index = #{index.class}"
+        return index if line.size < position - 1
+      end
+      lines << ""
+      return lines.size - 1
+    end
+
+    def scan_free(count, position)
       pattern = /(?!\/)[\|-]{#{count}}(?<=-|\||\/)/
-      puts pattern
-      puts @schedule_graph
 
       positions = []
-      index = 0
+      index = position
       while index and index < @schedule_graph.size
         index = @schedule_graph.index(pattern, index)
         if index

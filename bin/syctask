@@ -135,10 +135,115 @@ command :list do |c|
   end
 end
 
-desc 'Plan tasks for today'
-command :plan do |c|
+desc 'Show planned tasks'
+arg_name 'DATE'
+command :showplan do |c|
+
+  c.desc 'Print complete task'
+  c.switch [:c, :complete]
+
   c.action do |global_options,options,args|
-    puts "plan command not implemented yet"
+    case args[0]
+    when 'today'
+      date = Time.now.strftime("%Y-%m-%d")
+    when 'tomorrow'
+      date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
+    else
+      if args[0] and args[0].match(/\d{4}-\d{2}-\d{2}/)
+        date = args[0] 
+      elsif args[0].nil?
+        date = Time.now.strftime("%Y-%m-%d")
+      end
+    end
+    count = 0
+    @planner.get_tasks(date).each do |task|
+      task.print_pretty(options[:complete])
+      count += 1
+    end
+    STDOUT.puts sprintf("--> planned %d tasks for %s", count, date).
+                        color(:green)
+  end
+
+end
+
+desc 'Plan tasks for today, tomorrow or another day'
+arg_name 'DATE'
+command :plan do |c|
+  
+  c.desc 'Filter for ID'
+  c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
+  c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|^[<|=|>]\d+/ 
+
+  c.desc 'REGEXP as filter for title'
+  c.arg_name 'REGEXP'
+  c.flag [:title]
+
+  c.desc 'Filter for priority'
+  c.arg_name '[<|=|>]PRIO'
+  c.flag [:p, :prio], :must_match => /^\d+|^[<|=|>]\d+/
+
+  c.desc 'Filter for follow-up date'
+  c.arg_name '[<|=|>]DATE'
+  c.flag [:f, :follow_up], :must_match => /^(?:[<|=|>])?\d{4}-\d{2}-\d{2}/
+  
+  c.desc 'Filter for due date'
+  c.arg_name '[<|=|>]DATE'
+  c.flag [:d, :due_date], :must_match => /^(?:[<|=|>])?\d{4}-\d{2}-\d{2}/
+
+  c.desc 'REGEXP as filter for description'
+  c.arg_name 'REGEXP'
+  c.flag :description
+
+  c.desc 'REGEXP as filter for note'
+  c.arg_name 'REGEXP'
+  c.flag [:n, :note]
+
+  c.desc 'Tags or REGEXP as filter for tags'
+  c.arg_name 'TAG1,TAG2,TAG3|REGEXP'
+  c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*|\/.*\//
+ 
+  c.action do |global_options,options,args|
+    ARGV.clear
+    filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
+              :note, :title]
+    options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    case args[0]
+    when 'today'
+      date = Time.now.strftime("%Y-%m-%d")
+    when 'tomorrow'
+      date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
+    else
+      if args[0] and args[0].match(/\d{4}-\d{2}-\d{2}/)
+        date = args[0] 
+      elsif args[0].nil?
+        date = Time.now.strftime("%Y-%m-%d")
+      end
+    end
+    puts "date #{date} #{args[0]} #{options} #{global_options} #{args}"
+    count = @planner.plan_tasks(@service.find(global_options[:t], options, 
+                                              false), date)
+    STDOUT.puts sprintf("--> planned %d tasks", count).color(:green)
+  end
+end
+
+desc 'Create schedule for planned tasks'
+command :schedule do |c|
+  c.desc 'List all tasks done and open'
+  c.switch [:a, :all]
+  
+  c.desc 'Print complete task'
+  c.switch [:c, :complete]
+
+  c.desc 'Work time'
+  c.arg_name 'TIME_RANGE'
+  c.flag [:w, :work_time], :must_match => Syctask::TaskScheduler::WORK_TIME_PATTERN
+
+  c.desc 'Busy time'
+  c.arg_name 'TIME_RANGE1,TIME_RANGE2,...'
+  c.flag [:b, :busy_time], :must_match => Syctask::TaskScheduler::BUSY_TIME_PATTERN
+
+  c.action do |global_options,options,args|
+    puts "schedule command not implemented yet"
   end
 end
 
@@ -234,6 +339,7 @@ pre do |global,command,options,args|
   # on that command only
 
   @service = Syctask::TaskService.new
+  @planner = Syctask::TaskPlanner.new
 
   dir = File.expand_path(global[:t])
   dir += "/" + global[:p] if global[:p]

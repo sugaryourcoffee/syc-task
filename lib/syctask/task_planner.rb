@@ -19,11 +19,15 @@ module Syctask
     # duration will be set to 30 minutes which equals two time chunks. The
     # count of planned tasks is returned
     def plan_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
-      make_todo_today_file(date)
+      already_planned = self.get_tasks(date)
+      puts already_planned
+      #make_todo_today_file(date)
       count = 0
       re_display = false
       planned = []
       tasks.each do |task|
+        puts "#{task.id} #{task.dir}"
+        next if already_planned.find_index {|t| t == task}
         unless re_display
           task.print_pretty
         else
@@ -57,15 +61,15 @@ module Syctask
       save_tasks(tasks)
     end
 
-    def get_tasks(date=Time.now.strftime("%Y-%m-%d"))
+    def get_tasks(date=Time.now.strftime("%Y-%m-%d"), filter={})
+      puts "filter #{filter}"
       make_todo_today_file(date)
       tasks = []
       File.open(@todo_today_file, 'r') do |file|
         file.each do |line|
           dir, id = line.chomp.split(",")
           task = @service.read(dir, id)
-          puts task
-          tasks << task unless task.nil?
+          tasks << task if not task.nil? and task.matches?(filter)
         end
       end if File.exists? @todo_today_file
       tasks

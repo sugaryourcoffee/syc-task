@@ -8,6 +8,7 @@ module Syctask
   # A Task is the basic element of the task list and holds all information
   # about a task.
   class Task
+    include Comparable
 
     # Holds the options of the task. 
     # Options are
@@ -44,6 +45,11 @@ module Syctask
       @id = id
     end
     
+    def <=>(other)
+      @id <=> other.id
+      @dir <=> other.dir
+    end
+
     # Updates the task with new values. Except for note and tags which are
     # supplemented with the new values and not overridden.
     def update(options)

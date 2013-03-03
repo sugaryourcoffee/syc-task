@@ -166,10 +166,18 @@ command :showplan do |c|
 
 end
 
-desc 'Plan tasks for today, tomorrow or another day'
+desc 'Plan tasks or show planned tasks for today, tomorrow or another day'
 arg_name 'DATE'
 command :plan do |c|
   
+  c.desc 'Show planned tasks'
+  c.arg_name 'show'
+  c.switch :show
+
+  c.desc 'Show complete tasks'
+  c.arg_name 'complete'
+  c.switch [:c, :complete]
+
   c.desc 'Filter for ID'
   c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
   c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|^[<|=|>]\d+/ 
@@ -204,25 +212,40 @@ command :plan do |c|
  
   c.action do |global_options,options,args|
     ARGV.clear
+    show = options[:show]
+    complete = options[:complete]
+
     filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
               :note, :title]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    args[0] = 'today' if args[0].nil?
     case args[0]
     when 'today'
       date = Time.now.strftime("%Y-%m-%d")
     when 'tomorrow'
       date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
     else
-      if args[0] and args[0].match(/\d{4}-\d{2}-\d{2}/)
+      if args[0].match(/\d{4}-\d{2}-\d{2}/)
         date = args[0] 
-      elsif args[0].nil?
+      elsif nil
         date = Time.now.strftime("%Y-%m-%d")
+      else
+        help_now! "Arguments may be 'today', 'tomorrow', YYYY-MM-DD or <RETURN>"
       end
     end
-    puts "date #{date} #{args[0]} #{options} #{global_options} #{args}"
-    count = @planner.plan_tasks(@service.find(global_options[:t], options, 
-                                              false), date)
-    STDOUT.puts sprintf("--> planned %d tasks", count).color(:green)
+    if show
+      count = 0
+      @planner.get_tasks(date, options).each do |task|
+        task.print_pretty(complete)
+        count += 1
+      end
+      STDOUT.puts sprintf("--> found %d planned task(s) for %s", count, date).
+                         color(:green)
+     else
+      count = @planner.plan_tasks(@service.find(global_options[:t], options, 
+                                                false), date)
+      STDOUT.puts sprintf("--> %d task(s) planned", count).color(:green)
+    end
   end
 end
 

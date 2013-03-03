@@ -83,6 +83,16 @@ class TestTaskService < Test::Unit::TestCase
       assert_equal 3, @service.find("test/tasks").size
     end
 
+    should "delete tasks" do
+      @service.create("test/tasks", {}, "Task one")
+      @service.create("test/tasks", {}, "Task two")
+      @service.create("test/tasks", {}, "Task three")
+      tasks = @service.find("test/tasks")
+      ids = []
+      tasks.each {|task| ids << task.id}
+      deleted = @service.delete("test/tasks", {id: ids.join(',')})
+      assert_equal tasks.size, deleted
+    end
   end
 
 end

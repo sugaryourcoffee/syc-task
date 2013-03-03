@@ -87,6 +87,25 @@ module Syctask
       updated
     end
 
+    # Deletes tasks in the specified directory that match the provided filter.
+    # If no filter is provide no task is deleted. The count of deleted tasks is
+    # returned
+    def delete(dir, filter)
+      deleted = 0
+      Dir.glob("#{dir}/*").each do |file|
+        begin
+          File.file?(file) ? task = YAML.load_file(file) : next
+        rescue Exception => e
+          next # If the file is no task but read by YAML ignore it
+        end
+        next unless not task.nil? and task.class == Syctask::Task
+        if task.matches?(filter)
+          deleted += File.delete(file)
+        end
+      end
+      deleted
+    end
+
     # Saves the task to the task directory. If dir is nil the default dir
     # ~/.tasks will be set.
     def save(dir, task)

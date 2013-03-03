@@ -45,9 +45,10 @@ module Syctask
       @id = id
     end
     
+    # Compares this task with another task regarding less than, equal or greater
+    # than returning -1, 0 and 1 respectively.
     def <=>(other)
-      @id <=> other.id
-      @dir <=> other.dir
+      @id <=> other.id and @dir <=> other.dir
     end
 
     # Updates the task with new values. Except for note and tags which are

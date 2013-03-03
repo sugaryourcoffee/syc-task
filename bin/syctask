@@ -79,6 +79,47 @@ command :scan do |c|
   end
 end
 
+desc 'Delete tasks from task list or from task plan'
+command :delete do |c|
+  c.desc 'Remove tasks from task plan of today, tomorrow or another date'
+  c.arg_name 'DATE'
+  c.flag :plan, :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+
+  c.desc 'IDs of the tasks to remove'
+  c.arg_name 'ID1,ID2,..,IDn'
+  c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|\d+/ 
+
+  c.action do |global_options,options,args|
+    help_now! "You must provide tasks ids to delete" unless options[:id]
+    plan = options[:plan]
+    filter = [:id]
+    options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    if plan
+      case plan
+      when 'today'
+        date = Time.now.strftime("%Y-%m-%d")
+      when 'tomorrow'
+        date = (Time.now + (60*60*24)).strftime("%Y-%m-%d")
+      else
+        if plan.match(/\d{4}-\d{2}-\d{2}/)
+          date = plan
+        elsif nil
+          date = Time.now.strftime("%Y-%m-%d")
+        else
+          help_now! "Arguments may be TODAY, TOMORROW, YYYY-MM-DD or <RETURN>"
+        end
+      end
+      count = @planner.remove_tasks(date, options)
+      STDOUT.puts sprintf("--> removed %d tasks from task plan of %s", 
+                          count, date).color(:green)
+    else
+      count = @service.delete(global_options[:t], options) 
+      STDOUT.puts sprintf("--> removed %d tasks from %s", 
+                          count, global_options[:t]).color(:green)
+     end    
+  end
+end
+
 desc 'List tasks'
 command :list do |c|
 
@@ -166,7 +207,7 @@ command :showplan do |c|
 
 end
 
-desc 'Plan tasks or show planned tasks for today, tomorrow or another day'
+desc 'Plan or show planned tasks for today, tomorrow or another day'
 arg_name 'DATE'
 command :plan do |c|
   
@@ -241,7 +282,7 @@ command :plan do |c|
       end
       STDOUT.puts sprintf("--> found %d planned task(s) for %s", count, date).
                          color(:green)
-     else
+    else
       count = @planner.plan_tasks(@service.find(global_options[:t], options, 
                                                 false), date)
       STDOUT.puts sprintf("--> %d task(s) planned", count).color(:green)
@@ -259,11 +300,13 @@ command :schedule do |c|
 
   c.desc 'Work time'
   c.arg_name 'TIME_RANGE'
-  c.flag [:w, :work_time], :must_match => Syctask::TaskScheduler::WORK_TIME_PATTERN
+  c.flag [:w, :work_time], 
+    :must_match => Syctask::TaskScheduler::WORK_TIME_PATTERN
 
   c.desc 'Busy time'
   c.arg_name 'TIME_RANGE1,TIME_RANGE2,...'
-  c.flag [:b, :busy_time], :must_match => Syctask::TaskScheduler::BUSY_TIME_PATTERN
+  c.flag [:b, :busy_time], 
+    :must_match => Syctask::TaskScheduler::BUSY_TIME_PATTERN
 
   c.action do |global_options,options,args|
     puts "schedule command not implemented yet"
@@ -326,8 +369,10 @@ command :update do |c|
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
 
     success = @service.update(global_options[:t], args[0], options) 
-    STDOUT.puts sprintf("sucessfully updated task with TASK_NUMBER ", args[0]).color(:green) if success
-    STDOUT.puts sprintf("could not update task with TASK_NUMBER ", args[0]).color(:red) unless success
+    STDOUT.puts sprintf("sucessfully updated task with TASK_NUMBER ", 
+                        args[0]).color(:green) if success
+    STDOUT.puts sprintf("could not update task with TASK_NUMBER ", 
+                        args[0]).color(:red) unless success
   end
 end
 

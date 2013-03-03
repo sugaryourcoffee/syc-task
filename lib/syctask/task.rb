@@ -8,7 +8,6 @@ module Syctask
   # A Task is the basic element of the task list and holds all information
   # about a task.
   class Task
-    include Comparable
 
     # Holds the options of the task. 
     # Options are
@@ -45,10 +44,10 @@ module Syctask
       @id = id
     end
     
-    # Compares this task with another task regarding less than, equal or greater
-    # than returning -1, 0 and 1 respectively.
-    def <=>(other)
-      @id <=> other.id and @dir <=> other.dir
+    # Compares this task with another task regarding id and dir. If both are 
+    # equal true is returned otherwise false
+    def ==(other)
+      @id == other.id and @dir == other.dir
     end
 
     # Updates the task with new values. Except for note and tags which are

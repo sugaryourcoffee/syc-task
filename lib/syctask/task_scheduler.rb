@@ -2,9 +2,32 @@ require 'rainbow'
 
 module Syctask
 
+  # The TaskScheduler creates a graphical representation of a working schedule
+  # with busy times visualized. A typical invokation would be
+  #     work_time = "8:00-18:00"
+  #     busy_time = "9:00-9:30,13:00-14:30"
+  #     scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+  #     scheduler.print_graph
+  # The output would be
+  #     |---///-|---|---|---///////-|---|---|---|
+  #     8   9  10  11  12  13  14  15  16  17  18
+  # To add tasks to the schedule tasks have to provided (see Task). A task has
+  # a duration which indicates the time it is planned to process a task. The
+  # duration is an Integer 1,2,.. where 1 is 15 minutes and 2 is 30 minutes and
+  # so on. Assuming we have 5 tasks with a duration of 2, 5, 3, 2 and 3 15
+  # minute chunks. Then the invokation of 
+  #     scheduler.schedule_tasks(tasks)
+  # would output the schedule
+  #     |xx-///ooooo|xxx|oo-///////xxx--|---|---|
+  #     8   9  10  11  12  13  14  15  16  17  18
+  # The tasks are added to the schedule dependent on the time chunks and the
+  # available free time gaps. 
   class TaskScheduler
+    # Time pattern that matches 24 hour times
     TIME_PATTERN = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9])/
+    # Work time pattern scans time like "8:00-18:00"
     WORK_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}/ 
+    # Busy time pattern scans times like "9:00-9:30,11:00-11:45"
     BUSY_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}(?=,)|#{TIME_PATTERN}-#{TIME_PATTERN}$/
     GRAPH_PATTERN = /[\|-]+|\/+|[xo]+/
     BUSY_PATTERN = /\/+/
@@ -14,12 +37,18 @@ module Syctask
     FREE_COLOR = :green
     WORK_COLOR = :blue
 
+    # Creates a TaskScheduler with the provided work_time and busy_time. The
+    # work_time has to be in the form like "8:00-18:00", the busy_time has
+    # comma separated busy times like "9:00-10:30,11:00-11:30". If the begin
+    # and end time is not sequential an Exception is raised.
     def initialize(work_time, busy_time)
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
       @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
       if range_is_sequential?
         normalize_time
         create_graph(@work_time, @busy_time)
+      else
+        raise Exception, "Begin time has to be before end time"
       end
     end
 
@@ -42,7 +71,8 @@ module Syctask
         max_id_size = [max_id_size, task.duration.to_s.size].max
       end
       tasks.each do |task|
-        puts sprintf("%#{max_id_size}d - %s", task.id, task.title).color(WORK_COLOR)
+        puts sprintf("%#{max_id_size}d - %s", task.id, task.title).
+                color(WORK_COLOR)
       end
 
       print_graph
@@ -51,22 +81,30 @@ module Syctask
       end
     end
 
+    private
+
+    # Checks whether the begin and end time of work_time and busy_time is 
+    # sequential. If the begin is before the end time of all time ranges true
+    # is returned otherwise false
     def range_is_sequential?
-      return false unless check_range(@work_time)
+      return false unless check_sequence(@work_time)
       @busy_time.each do |busy|
-        return false unless check_range(busy)
+        return false unless check_sequence(busy)
       end
       true
     end
 
-    def check_range(range)
-      return false unless range[0].to_i < range[2].to_i
+    # Checks the sequence of begin and end time. Returns true if begin is before
+    # end time otherwise false
+    def check_sequence(range)
+      return true if range[0].to_i < range[2].to_i
       if range[0].to_i == range[2].to_i
-        return false unless range[1].to_i < range[3].to_i
+        return true if range[1].to_i < range[3].to_i
       end
-      true
+      false
     end
  
+    # Transposes the time ranges to the graph size of the schedule
     def normalize_time
       @graph_ranges = []
       @graph_ranges[0] = @work_time[0].to_i
@@ -81,14 +119,19 @@ module Syctask
       end
     end
 
+    # Transposes a time hour to a graph hour
     def hour_offset(starts, ends)
       (ends - starts) * 4
     end
 
+    # Transposes a time minute to a graph minute
     def minute_offset(minutes)
       minutes.to_i.div(15)
     end
 
+    public
+
+    # Prints the schedule graph
     def print_graph
       return -1 unless @schedule_graph
       @schedule_graph.scan(GRAPH_PATTERN) do |part|
@@ -100,6 +143,9 @@ module Syctask
       puts @schedule_units
     end
 
+    private
+
+    # Cretes a graph based on work_time and busy_time
     def create_graph(work_time, busy_time)
       @schedule_graph = '|---' * (@graph_ranges[1]-@graph_ranges[0]) + '|'
 
@@ -114,6 +160,8 @@ module Syctask
 
     end
 
+    # creates the caption of the graph with hours in 1 hour steps and task IDs
+    # that indicate where in the schedule a task is scheduled.
     def create_caption(positions)
       counter = 0
       lines = [""]
@@ -128,6 +176,16 @@ module Syctask
       lines
     end
 
+    # Creates a new line if the the task ID in the caption would override the
+    # task ID of a previous task. The effect is shown below
+    #     |xx-|//o|x--|
+    #     8   9  10  10
+    #      10    101 
+    #       11     2
+    # position is the position (time) within the schedule
+    # lines is the available ID lines (above we have 2 ID lines)
+    # counter is the currently displayed line. IDs are displayed alternating in
+    # each line, when we have 2 lines IDs will be printed in line 1,2,1,2...
     def next_line(position, lines, counter)
       line = lines[counter%lines.size]
       #puts "line.size = #{line.size} position = #{position}"
@@ -140,6 +198,9 @@ module Syctask
       return lines.size - 1
     end
 
+    # Scans the schedule for free time where a task can be added to. Count
+    # specifies the length of the free time and the position where to start
+    # scanning within the schedule
     def scan_free(count, position)
       pattern = /(?!\/)[\|-]{#{count}}(?<=-|\||\/)/
 

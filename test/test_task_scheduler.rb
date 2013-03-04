@@ -6,9 +6,11 @@ class TestTaskScheduler < Test::Unit::TestCase
 
   context "TaskScheduler" do
     def setup
+      @dir = "test/tasks"
     end
 
     def teardown
+      FileUtils.rm_r @dir if File.exists? @dir
     end
 
     should "create new TaskScheduler" do
@@ -32,15 +34,53 @@ class TestTaskScheduler < Test::Unit::TestCase
     end
 
     should "raise Exception due to empty work time" do
+      work_time = ""
+      busy_time = "9:00-10:00"
+      assert_raise(Exception) do
+        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      end
     end
 
     should "not raise exception due to empty busy time" do
+      work_time = "8:00-18:00"
+      busy_time = ""
+      assert_nothing_raised(Exception) do
+        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      end
     end
 
     should "print schedule graph" do
+      puts
+      work_time = "8:00-18:00"
+      busy_time = "9:00-10:00,11:15-12:00,13:30-15:00"
+      scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      assert_equal true, scheduler.print_graph
+      busy_time = ""
+      scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      assert_equal true, scheduler.print_graph
     end
 
     should "schedule task" do
+      puts
+      ids = []
+      service = Syctask::TaskService.new
+      1..5.times do |i|
+        options = {follow_up: Time.now.strftime("%Y-%m-%d")}
+        ids << service.create(@dir, options, "Task number #{i+1}")
+      end 
+
+      tasks = service.find(@dir, {id: ids.join(',')}, false)
+      assert_equal 5, tasks.size
+
+      tasks.each.with_index do |task, index|
+        task.duration = index + 1
+        service.save(@dir, task)
+      end
+
+      work_time = "8:00-18:15"
+      busy_time = "8:00-8:20,10:00-11:30,14:15-15:30"
+      scheduler = Syctask::TaskScheduler.new(work_time,busy_time)
+      assert scheduler.schedule_tasks(tasks)
     end
   end
 

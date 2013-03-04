@@ -23,12 +23,16 @@ module Syctask
   # The tasks are added to the schedule dependent on the time chunks and the
   # available free time gaps. 
   class TaskScheduler
+    # Time matcher that matches a 24 hour time
+    TIME_MATCHER = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9])/
     # Time pattern that matches 24 hour times
     TIME_PATTERN = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9])/
     # Work time pattern scans time like "8:00-18:00"
     WORK_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}/ 
+    WORK_TIME_MATCHER = /^#{TIME_MATCHER}-#{TIME_MATCHER}/
     # Busy time pattern scans times like "9:00-9:30,11:00-11:45"
     BUSY_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}(?=,)|#{TIME_PATTERN}-#{TIME_PATTERN}$/
+    BUSY_TIME_MATCHER = /^#{TIME_MATCHER}-#{TIME_MATCHER}(?:,#{TIME_MATCHER}-#{TIME_MATCHER})*/
     GRAPH_PATTERN = /[\|-]+|\/+|[xo]+/
     BUSY_PATTERN = /\/+/
     FREE_PATTERN = /[\|-]+/
@@ -36,6 +40,7 @@ module Syctask
     BUSY_COLOR = :red
     FREE_COLOR = :green
     WORK_COLOR = :blue
+    UNSCHEDULED_COLOR = :yellow
 
     # Creates a TaskScheduler with the provided work_time and busy_time. The
     # work_time has to be in the form like "8:00-18:00", the busy_time has
@@ -43,6 +48,8 @@ module Syctask
     # and end time is not sequential an Exception is raised.
     def initialize(work_time, busy_time)
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
+      raise Exception, "Work time cannot be empty" if work_time.nil? or work_time.empty?
+      busy_time = "" if busy_time.nil?
       @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
       if range_is_sequential?
         normalize_time
@@ -55,30 +62,41 @@ module Syctask
     #Assigns available free time slots to the tasks and prints the visual
     #representation of the schedule.
     def schedule_tasks(tasks)
+      unscheduled_tasks = []
       max_id_size = 1
       signs = ['x','o']
       positions = {}
       position = 0
       tasks.each.with_index do |task, index|
-        free_time = scan_free(task.duration, position)
+        duration = task.duration.to_i
+        free_time = scan_free(duration, position)
         #TODO if no free time available for the complete duration than
         #distribute in all free spaces. Return all not assigned time chunks
         next unless free_time 
         position = free_time[0]
-        @schedule_graph[position..(position + task.duration-1)] = 
-          signs[index%2] * task.duration
+        max_id_size = [max_id_size, duration.to_s.size].max
+        if position.nil?
+          unscheduled_tasks << task
+          next
+        end
+        @schedule_graph[position..(position + duration-1)] = 
+          signs[index%2] * duration
         positions[position] = task.id
-        max_id_size = [max_id_size, task.duration.to_s.size].max
       end
       tasks.each do |task|
+        if unscheduled_tasks.find_index(task)
+          color = UNSCHEDULED_COLOR
+        else
+          color = WORK_COLOR
+        end
         puts sprintf("%#{max_id_size}d - %s", task.id, task.title).
-                color(WORK_COLOR)
+                color(color)
       end
 
-      print_graph
       create_caption(positions).each do |caption| 
         puts sprintf("%s", caption.color(WORK_COLOR))
       end
+      print_graph
     end
 
     private
@@ -108,7 +126,7 @@ module Syctask
     def normalize_time
       @graph_ranges = []
       @graph_ranges[0] = @work_time[0].to_i
-      @graph_ranges[1] = @work_time[3].to_i > 0 ? @work_time[2].succ.to_i : @work_time[2]
+      @graph_ranges[1] = @work_time[3].to_i > 0 ? @work_time[2].succ.to_i : @work_time[2].to_i
       
       @busy_ranges = []
       @busy_time.each do |busy|
@@ -133,7 +151,6 @@ module Syctask
 
     # Prints the schedule graph
     def print_graph
-      return -1 unless @schedule_graph
       @schedule_graph.scan(GRAPH_PATTERN) do |part|
         print sprintf("%s", part).color(BUSY_COLOR) unless part.scan(BUSY_PATTERN).empty?
         print sprintf("%s", part).color(FREE_COLOR) unless part.scan(FREE_PATTERN).empty?
@@ -141,11 +158,12 @@ module Syctask
       end
       puts
       puts @schedule_units
+      true
     end
 
     private
 
-    # Cretes a graph based on work_time and busy_time
+    # Creates a graph based on work_time and busy_time
     def create_graph(work_time, busy_time)
       @schedule_graph = '|---' * (@graph_ranges[1]-@graph_ranges[0]) + '|'
 

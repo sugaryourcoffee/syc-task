@@ -292,24 +292,31 @@ end
 
 desc 'Create schedule for planned tasks'
 command :schedule do |c|
-  c.desc 'List all tasks done and open'
-  c.switch [:a, :all]
-  
-  c.desc 'Print complete task'
-  c.switch [:c, :complete]
 
   c.desc 'Work time'
   c.arg_name 'TIME_RANGE'
-  c.flag [:w, :work_time], 
-    :must_match => Syctask::TaskScheduler::WORK_TIME_PATTERN
+  c.flag [:w, :work] 
 
   c.desc 'Busy time'
   c.arg_name 'TIME_RANGE1,TIME_RANGE2,...'
-  c.flag [:b, :busy_time], 
-    :must_match => Syctask::TaskScheduler::BUSY_TIME_PATTERN
+  c.flag [:b, :busy] 
 
   c.action do |global_options,options,args|
-    puts "schedule command not implemented yet"
+    if options[:work].nil?
+      help_now! "Work time missing"
+    elsif options[:work].scan(Syctask::TaskScheduler::WORK_TIME_PATTERN).nil?
+      help_now! "Work time has to be in yyyy-mm-dd" 
+    end
+
+    if options[:busy].nil?
+      options[:busy] = ""
+    elsif options[:busy].scan(Syctask::TaskScheduler::BUSY_TIME_PATTERN).nil?
+      help_now! "Busy time has to be in yyyy-mm-dd"
+    end
+    
+    scheduler = Syctask::TaskScheduler.new(options[:work], options[:busy])
+
+    scheduler.schedule_tasks(@planner.get_tasks) 
   end
 end
 

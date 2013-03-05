@@ -1,4 +1,5 @@
 require 'rainbow'
+require_relative 'task_service.rb'
 
 module Syctask
 
@@ -42,13 +43,20 @@ module Syctask
     WORK_COLOR = :blue
     UNSCHEDULED_COLOR = :yellow
 
+    # Working directory
+    WORK_DIR = File.expand_path("~/.tasks")
+    # File where the last work and busy time is save to
+    TIME_FILE = File.expand_path("~/.tasks/.schedule_times")
+    # File where the last scheduled tasks are save to
+    TASK_FILE = File.expand_path("~/.tasks/.schedule_tasks")
+
     # Creates a TaskScheduler with the provided work_time and busy_time. The
     # work_time has to be in the form like "8:00-18:00", the busy_time has
     # comma separated busy times like "9:00-10:30,11:00-11:30". If the begin
     # and end time is not sequential an Exception is raised.
     def initialize(work_time, busy_time)
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
-      raise Exception, "Work time cannot be empty" if work_time.nil? or work_time.empty?
+      raise Exception, "Work time cannot be empty" if work_time.nil? or @work_time.empty?
       busy_time = "" if busy_time.nil?
       @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
       if range_is_sequential?
@@ -57,6 +65,17 @@ module Syctask
       else
         raise Exception, "Begin time has to be before end time"
       end
+      save_times work_time, busy_time
+    end
+
+    # Shows the last created schedule
+    def show_schedule
+      work_time, busy_time = load_times
+      @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
+      @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
+      normalize_time
+      create_graph(@work_time, @busy_time)
+      schedule_tasks(load_tasks) 
     end
 
     #Assigns available free time slots to the tasks and prints the visual
@@ -96,6 +115,7 @@ module Syctask
       create_caption(positions).each do |caption| 
         puts sprintf("%s", caption.color(WORK_COLOR))
       end
+      save_tasks tasks
       print_graph
     end
 
@@ -232,6 +252,41 @@ module Syctask
         end
       end
       positions
+    end
+
+    # Saves the work and busy time to a file for later retrieval with
+    # load_times method
+    def save_times(work_time, busy_time)
+      FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
+      File.open(TIME_FILE, 'w') do |file|
+        file.puts work_time
+        file.puts busy_time
+      end
+    end
+
+    def load_times
+      File.readlines(TIME_FILE)
+    end
+    
+    def save_tasks(tasks)
+      FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
+      File.open(TASK_FILE, 'w') do |file|
+        tasks.each do |task|
+          file.puts "#{task.dir},#{task.id}"
+        end
+      end
+    end
+
+    def load_tasks
+      service = Syctask::TaskService.new
+      tasks = []
+      task_keys = File.readlines(TASK_FILE)
+      task_keys.each do |task_key|
+        dir, id = task_key.split(',')
+        task = service.read(dir, id)
+        tasks << task if task
+      end
+      tasks
     end
 
   end

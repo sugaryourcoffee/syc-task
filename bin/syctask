@@ -301,6 +301,9 @@ command :schedule do |c|
   c.arg_name 'TIME_RANGE1,TIME_RANGE2,...'
   c.flag [:b, :busy] 
 
+  c.desc 'Show schedule'
+  c.switch :switch
+
   c.action do |global_options,options,args|
     if options[:work].nil?
       help_now! "Work time missing"

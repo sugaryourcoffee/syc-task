@@ -82,6 +82,16 @@ class TestTaskScheduler < Test::Unit::TestCase
       scheduler = Syctask::TaskScheduler.new(work_time,busy_time)
       assert scheduler.schedule_tasks(tasks)
     end
+
+    should "show schedule" do
+      work_time = "8:00-18:00"
+      busy_time = "8:30-9:00,10:00-11:00,13:00-17:00"
+      scheduler = Syctask::TaskScheduler.new(work_time,busy_time)
+      puts
+      assert scheduler.print_graph
+      assert scheduler.show_schedule
+    end
+
   end
 
 end

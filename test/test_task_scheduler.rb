@@ -17,7 +17,8 @@ class TestTaskScheduler < Test::Unit::TestCase
       work_time = "8:30-18:30"
       busy_time = "9:00-9:30,10:00-11:45,14:00-15:30"
       assert_nothing_raised(Exception) do
-        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+        scheduler = Syctask::TaskScheduler.new
+        scheduler.set_times(work_time, busy_time)
       end
     end
 
@@ -25,11 +26,13 @@ class TestTaskScheduler < Test::Unit::TestCase
       work_time = "18:30-8:30"
       busy_time = "9:00-9:30,10:00-11:45"
       assert_raise(Exception) do
-        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+        scheduler = Syctask::TaskScheduler.new
+        scheduler.set_times(work_time, busy_time)
       end
       busy_time = "9:00-9:30,10:00-10:00"
       assert_raise(Exception) do
-        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+        scheduler = Syctask::TaskScheduler.new
+        scheduler.set_times(work_time, busy_time)
       end
     end
 
@@ -37,7 +40,8 @@ class TestTaskScheduler < Test::Unit::TestCase
       work_time = ""
       busy_time = "9:00-10:00"
       assert_raise(Exception) do
-        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+        scheduler = Syctask::TaskScheduler.new
+        scheduler.set_times(work_time, busy_time)
       end
     end
 
@@ -45,7 +49,8 @@ class TestTaskScheduler < Test::Unit::TestCase
       work_time = "8:00-18:00"
       busy_time = ""
       assert_nothing_raised(Exception) do
-        scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+        scheduler = Syctask::TaskScheduler.new
+        scheduler.set_times(work_time, busy_time)
       end
     end
 
@@ -53,10 +58,11 @@ class TestTaskScheduler < Test::Unit::TestCase
       puts
       work_time = "8:00-18:00"
       busy_time = "9:00-10:00,11:15-12:00,13:30-15:00"
-      scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_times(work_time, busy_time)
       assert_equal true, scheduler.print_graph
       busy_time = ""
-      scheduler = Syctask::TaskScheduler.new(work_time, busy_time)
+      scheduler.set_times(work_time, busy_time)
       assert_equal true, scheduler.print_graph
     end
 
@@ -79,14 +85,16 @@ class TestTaskScheduler < Test::Unit::TestCase
 
       work_time = "8:00-18:15"
       busy_time = "8:00-8:20,10:00-11:30,14:15-15:30"
-      scheduler = Syctask::TaskScheduler.new(work_time,busy_time)
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_times(work_time,busy_time)
       assert scheduler.schedule_tasks(tasks)
     end
 
     should "show schedule" do
       work_time = "8:00-18:00"
       busy_time = "8:30-9:00,10:00-11:00,13:00-17:00"
-      scheduler = Syctask::TaskScheduler.new(work_time,busy_time)
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_times(work_time,busy_time)
       puts
       assert scheduler.print_graph
       assert scheduler.show_schedule

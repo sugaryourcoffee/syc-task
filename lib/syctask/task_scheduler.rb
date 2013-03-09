@@ -1,5 +1,6 @@
 require 'rainbow'
 require_relative 'task_service.rb'
+require_relative '../sycutil/console.rb'
 
 module Syctask
 
@@ -46,17 +47,25 @@ module Syctask
     # Working directory
     WORK_DIR = File.expand_path("~/.tasks")
     # File where the last work and busy time is save to
-    TIME_FILE = File.expand_path("~/.tasks/.schedule_times")
+    TIME_FILE = "schedule_times"
     # File where the last scheduled tasks are save to
-    TASK_FILE = File.expand_path("~/.tasks/.schedule_tasks")
+    TASK_FILE = "schedule_tasks"
 
-    # Creates a TaskScheduler with the provided work_time and busy_time. The
-    # work_time has to be in the form like "8:00-18:00", the busy_time has
+    # Creates a new TaskScheduler. A previous invokation at the same day will
+    # load the work and busy times previuosly provided.
+    def initialize
+    end
+
+    # Adds the work time and optionally the busy time. Busy time is a time
+    # block that is not available for tasks. A busy time might be a meeting. A
+    # busy time can also amended with at title.
+    # The work_time has to be in the form "8:00-18:00", the busy_time has
     # comma separated busy times like "9:00-10:30,11:00-11:30". If the begin
     # and end time is not sequential an Exception is raised.
-    def initialize(work_time, busy_time)
+    def set_times(work_time, busy_time, busy_titles=[])
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
-      raise Exception, "Work time cannot be empty" if work_time.nil? or @work_time.empty?
+      raise Exception, 
+        "Work time cannot be empty" if work_time.nil? or @work_time.empty?
       busy_time = "" if busy_time.nil?
       @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
       if range_is_sequential?
@@ -68,6 +77,15 @@ module Syctask
       save_times work_time, busy_time
     end
 
+    # Restore the schedule from a previuos invokation from the same date. If no
+    # times are available false is returned otherwise true
+    def restore_times
+      work_time, busy_time = load_times
+      return false if work_time.empty?
+      set_times(work_time, busy_time)
+      true
+    end
+    
     # Shows the last created schedule
     def show_schedule
       work_time, busy_time = load_times
@@ -117,6 +135,25 @@ module Syctask
       end
       save_tasks tasks
       print_graph
+    end
+
+    # Prompts the scheduled tasks to add them to the busy times
+    def assign_tasks_to_meetings
+      tasks = load_tasks
+      console = Sycutil::Console.new
+      work_time, busy_time = load_times
+      meetings = busy_time.split(',').size
+      meeting_number = "A"
+      1..meetings.times do |i|
+        assign_prompt += "(#{meeting_number}), "
+        meeting_number.next!
+      end
+      assign_prompt += "(s)kip, (q)uit? "  
+      tasks.each do |task|
+        answer = console.prompt assign_prompt
+      end
+
+
     end
 
     private
@@ -179,6 +216,31 @@ module Syctask
       puts
       puts @schedule_units
       true
+    end
+
+    def show_graph
+      puts sprintf("%s", "Meetings")
+      meeting_number = "A"
+      @schedule.meetings.each do |meeting|
+        puts sprintf("%s - %s", meeting_number, meeting.title).color(BUSY_COLOR)
+        meeting_number.next!
+        meeting.tasks.each do |task|
+          puts sprintf("%5s - %s", task.id, task.title)
+        end  
+      end
+
+      puts sprintf("%s", "Tasks").color(WORK_COLOR)
+      task_number = "a"
+      @schedule.tasks.each do |task|
+        puts sprintf("%s - %s: %s", task_number, task.id, task.title)
+        task_number.next!
+      end
+
+      puts sprintf("%s", @schedule.meeting_caption).color(BUSY_COLOR)
+
+      create_timeline(@schedule.meetings, @schedule.tasks)
+
+      puts sprintf("%s", @schedule.task_caption).color(WORK_COLOR)
     end
 
     private
@@ -258,19 +320,25 @@ module Syctask
     # load_times method
     def save_times(work_time, busy_time)
       FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
-      File.open(TIME_FILE, 'w') do |file|
+      time_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
+      File.open(time_file, 'w') do |file|
         file.puts work_time
         file.puts busy_time
       end
     end
 
+    # Loads the work and busy times from a previous invokation. If no times 
+    # are available empty work and busy times are returned
     def load_times
-      File.readlines(TIME_FILE)
+      time_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
+      return ["", ""] unless File.exists? time_file
+      File.readlines(time_file)
     end
     
     def save_tasks(tasks)
       FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
-      File.open(TASK_FILE, 'w') do |file|
+      task_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_task_schedule")
+      File.open(task_file, 'w') do |file|
         tasks.each do |task|
           file.puts "#{task.dir},#{task.id}"
         end
@@ -278,9 +346,10 @@ module Syctask
     end
 
     def load_tasks
+      task_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_task_schedule")
       service = Syctask::TaskService.new
       tasks = []
-      task_keys = File.readlines(TASK_FILE)
+      task_keys = File.readlines(task_file)
       task_keys.each do |task_key|
         dir, id = task_key.split(',')
         task = service.read(dir, id)

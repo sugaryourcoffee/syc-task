@@ -294,32 +294,49 @@ desc 'Create schedule for planned tasks'
 command :schedule do |c|
 
   c.desc 'Work time'
-  c.arg_name 'TIME_RANGE'
+  c.arg_name 'HH:MM'
   c.flag [:w, :work] 
 
   c.desc 'Busy time'
-  c.arg_name 'TIME_RANGE1,TIME_RANGE2,...'
+  c.arg_name 'HH:MM,HH:MM,...'
   c.flag [:b, :busy] 
 
+  c.desc 'Meeting Titles'
+  c.arg_name 'MEETING1,MEETING2,...'
+  c.flag [:m, :meeting]
+
+  c.desc 'Assign tasks to meetings'
+  c.switch [:a, :assign]
+
   c.desc 'Show schedule'
-  c.switch :switch
+  c.switch :show
 
   c.action do |global_options,options,args|
-    if options[:work].nil?
-      help_now! "Work time missing"
-    elsif options[:work].scan(Syctask::TaskScheduler::WORK_TIME_PATTERN).nil?
-      help_now! "Work time has to be in yyyy-mm-dd" 
-    end
-
-    if options[:busy].nil?
-      options[:busy] = ""
-    elsif options[:busy].scan(Syctask::TaskScheduler::BUSY_TIME_PATTERN).nil?
-      help_now! "Busy time has to be in yyyy-mm-dd"
-    end
     
-    scheduler = Syctask::TaskScheduler.new(options[:work], options[:busy])
+    scheduler = Syctask::TaskScheduler.new
+
+    if options[:work].nil?
+      help_now! "No work time set" unless scheduler.restore_times
+    else
+      if options[:work].scan(Syctask::TaskScheduler::WORK_TIME_PATTERN).nil?
+        help_now! "Work time has to be in yyyy-mm-dd" 
+      end
+
+      if options[:busy].nil?
+        options[:busy] = ""
+      elsif options[:busy].scan(Syctask::TaskScheduler::BUSY_TIME_PATTERN).nil?
+        help_now! "Busy time has to be in yyyy-mm-dd"
+      end
+
+      scheduler.set_times(options[:work], options[:busy], options[:meeting])
+    end
 
     scheduler.schedule_tasks(@planner.get_tasks) 
+
+    if options[:assign]
+      scheduler.assign_tasks_to_meetings
+    end
+    
   end
 end
 

@@ -69,9 +69,19 @@
   
     <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
   
+    <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
     <li><a href="./Syctask/Task.html">Syctask::Task</a>
   
+    <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="./Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
     <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Syctask/Times.html">Syctask::Times</a>
   
     <li><a href="./Test.html">Test</a>
   
@@ -79,15 +89,29 @@
   
     <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
   
+    <li><a href="./Sycutil.html">Sycutil</a>
+  
+    <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
+  
     <li><a href="./Object.html">Object</a>
   
     <li><a href="./TestDefault.html">TestDefault</a>
   
     <li><a href="./TestEvaluator.html">TestEvaluator</a>
   
+    <li><a href="./TestMeeting.html">TestMeeting</a>
+  
+    <li><a href="./TestSchedule.html">TestSchedule</a>
+  
     <li><a href="./TestTask.html">TestTask</a>
   
+    <li><a href="./TestTaskPlanner.html">TestTaskPlanner</a>
+  
+    <li><a href="./TestTaskScheduler.html">TestTaskScheduler</a>
+  
     <li><a href="./TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="./TestTimes.html">TestTimes</a>
   
   </ul>
 </nav>
@@ -99,9 +123,7 @@
   
 <h1 id="label-Simple+task+organizer">Simple task organizer</h1>
 
-<p>With syctask you can organize your tasks (inspired by David Bryant
-Copland’s book <strong>Build Awesome Command-Line Applications in
-Ruby</strong>.</p>
+<p>With syctask you can organize your tasks.</p>
 
 <h2 id="label-Install">Install</h2>
 
@@ -112,31 +134,110 @@ Ruby</strong>.</p>
 <h2 id="label-Usage">Usage</h2>
 
 <p>syctask provides basic task organizer functions as create, update, list und
-complete a task. Addtional functions are to plan tasks you want to
+complete a task. Additional functions are to plan tasks you want to
 accomplish today. If you are not sure in which sequence to conduct the task
 you can prioritize them with a pair wise comparisson. You can time tasks
 with start and stop and you can finally extract tasks from a minutes of
-meetings file.</p>
+meetings file. The schedule task will print a graphical timeline of the
+working day assigning the planned tasks to the timeline. Busy times are
+marked red. Meetings are listed with associated tasks that are assigned to
+the meetings.</p>
 
 <h3 id="label-Create+tasks+with+new">Create tasks with new</h3>
 
 <p>Create a new task in the default task directory ~/.tasks</p>
 
-<pre>$ syctask &quot;My first task&quot;</pre>
+<pre>$ syctask new &quot;My first task&quot;</pre>
 
 <p>Provide a description</p>
 
-<pre>$ syctask &quot;My first task&quot; --description &quot;Explanation of my first task&quot;</pre>
+<pre>$ syctask new &quot;My first task&quot; --description &quot;Explanation of my first task&quot;</pre>
 
 <p>Schedule a task with a follow-up and due date</p>
 
-<pre>$ syctask &quot;My first task&quot; --follow-up &quot;2013-02-25&quot; --due &quot;2013-03-11&quot;</pre>
+<pre>$ syctask new &quot;My first task&quot; --follow-up &quot;2013-02-25&quot; --due &quot;2013-03-11&quot;</pre>
 
 <p>Set a proirity for a task</p>
 
-<pre>$ syctask &quot;My first task&quot; --prio 3</pre>
+<pre>$ syctask new &quot;My first task&quot; --prio 3</pre>
+
+<p>Prompt for task input</p>
+
+<pre>$ syctask new</pre>
+
+<p>will prompt for task titles. When read C-D will end input.</p>
 
 <p>Except for –description you can also provide short forms for the options.</p>
+
+<h3 id="label-Plan+tasks">Plan tasks</h3>
+
+<p>The plan command will print tasks and prompts whether to (a)dd or (s)kip
+the task. If (q)uit is selected the tasks already added will be add to the
+today’s task list. If ©omplete is selected the complete task will be
+printed and the user will be prompted again for adding the task.</p>
+
+<p>Invoke plan without filter</p>
+
+<pre>$ syctask plan
+1 - My first task
+(a)dd, (c)omplete, (s)kip, (q)uit? a
+Duration (1 = 15 minutes, return 30 minutes): 3
+--&gt; 1 task(s) planned</pre>
+
+<p>Invoke plan with a filter</p>
+
+<pre>$ syctask plan --id &quot;1,3,5,8&quot;
+1 - My first task
+(a)dd, (c)omplete, (s)kip, (q)uit?</pre>
+
+<h3 id="label-Create+schedule">Create schedule</h3>
+
+<p>The schedule command will print a graphical schedule with assigning the
+tasks added with plan.</p>
+
+<p>Create a schedule with working time from 8a.m. to 6p.m. and meetings
+between 9a.m. and 9.30a.m. and 1p.m. and 2.45p.m.</p>
+
+<pre>$ syctask schedule -w &quot;8:00-18:00&quot; -b &quot;9:00-9:30,13:00-14:45&quot;</pre>
+
+<p>Add titles to the meetings</p>
+
+<pre>$ syctask schedule -m &quot;Project status,Management meeting&quot;</pre>
+
+<p>The output will be</p>
+
+<pre>Meetings
+--------
+A - Project status
+B - Management meeting
+
+    A               B
+xxx-///-|---|---|---///////-|---|---|---|
+8   9  10  11  12  13  14  15  16  17  18
+1
+
+Tasks
+-----
+0 - 1: My first task</pre>
+
+<p>Adding a task to a meeting</p>
+
+<pre>$ syctask schedule -a &quot;A:1&quot;</pre>
+
+<p>will print</p>
+
+<pre>Meetings
+--------
+A - Project status
+    1 - My first task
+B - Management meeting
+
+    A               B
+----///-|---|---|---///////-|---|---|---|
+8   9  10  11  12  13  14  15  16  17  18
+
+Tasks
+-----</pre>
 
 <h3 id="label-List+tasks">List tasks</h3>
 

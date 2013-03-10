@@ -72,6 +72,8 @@
     
     <li><a href="#method-i-create">#create</a>
     
+    <li><a href="#method-i-delete">#delete</a>
+    
     <li><a href="#method-i-find">#find</a>
     
     <li><a href="#method-i-read">#read</a>
@@ -111,9 +113,19 @@
   
     <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
   
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
     <li><a href="../Syctask/Task.html">Syctask::Task</a>
   
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
     <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
   
     <li><a href="../Test.html">Test</a>
   
@@ -121,15 +133,29 @@
   
     <li><a href="../Test/Unit/TestCase.html">Test::Unit::TestCase</a>
   
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
     <li><a href="../Object.html">Object</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
   
     <li><a href="../TestEvaluator.html">TestEvaluator</a>
   
+    <li><a href="../TestMeeting.html">TestMeeting</a>
+  
+    <li><a href="../TestSchedule.html">TestSchedule</a>
+  
     <li><a href="../TestTask.html">TestTask</a>
   
+    <li><a href="../TestTaskPlanner.html">TestTaskPlanner</a>
+  
+    <li><a href="../TestTaskScheduler.html">TestTaskScheduler</a>
+  
     <li><a href="../TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="../TestTimes.html">TestTimes</a>
   
   </ul>
 </nav>
@@ -155,6 +181,19 @@
 
     
 
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="DEFAULT_DIR">DEFAULT_DIR
+        
+        <dd class="description">
+        
+      
+      </dl>
+    </section>
     
 
     
@@ -197,7 +236,7 @@ Options are</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 20</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">title</span>)
   <span class="ruby-identifier">create_dir</span>(<span class="ruby-identifier">dir</span>)
   <span class="ruby-identifier">task</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">options</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">create_id</span>(<span class="ruby-identifier">dir</span>))
@@ -212,6 +251,50 @@ Options are</p>
 
         
       </div><!-- create-method -->
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">(dir, filter)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Deletes tasks in the specified directory that match the provided filter. If
+no filter is provide no task is deleted. The count of deleted tasks is
+returned</p>
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 93</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">filter</span>)
+  <span class="ruby-identifier">deleted</span> = <span class="ruby-value">0</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-comment"># If the file is no task but read by YAML ignore it</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span>)
+      <span class="ruby-identifier">deleted</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">file</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">deleted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delete-method -->
 
     
       <div id="method-i-find" class="method-detail ">
@@ -230,18 +313,24 @@ Options are</p>
 eather a selection of IDs ID1,ID2,ID3 or a comparison &lt;|=|&gt;ID. title
 and :description can be a REGEX as /look for d+ examples/ follow-up and
 :due can be &lt;|=|&gt;DATE tags can be eather a selection TAG1,TAG2,TAG3
-or a REGEX /[Ll]ecture/ prio can be &lt;|=|&gt;PRIO</p>
+or a REGEX /[Ll]ecture/ prio can be &lt;|=|&gt;PRIO  dir is the directory
+where find looks for tasks all specifies whether to consider also completed
+tasks (default) or only open tasks</p>
           
 
           
           <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 45</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 51</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">filter</span>={}, <span class="ruby-identifier">all</span>=<span class="ruby-keyword">true</span>)
   <span class="ruby-identifier">tasks</span> = []
   <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*&quot;</span>).<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
-    <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">next</span>
-    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">all</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">done?</span>
-    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span> 
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-comment"># If the file is no task but read by YAML ignore it</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">all</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">done?</span>
     <span class="ruby-identifier">tasks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">tasks</span>
@@ -273,12 +362,14 @@ does not exist nil is returned otherwise the task is returned</p>
 
           
           <div class="method-source-code" id="read-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 29</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">read</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">id</span>)
   <span class="ruby-identifier">task</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span> <span class="ruby-identifier">file</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">task</span> 
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">nil</span>
 <span class="ruby-keyword">end</span></pre>
@@ -303,14 +394,16 @@ does not exist nil is returned otherwise the task is returned</p>
 
         <div class="method-description">
           
-          <p>Saves the task to the task directory</p>
+          <p>Saves the task to the task directory. If dir is nil the default dir
+~/.tasks will be set.</p>
           
 
           
           <div class="method-source-code" id="save-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 81</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 111</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
-  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;#{dir}/#{task.id}.task&quot;</span>, <span class="ruby-string">'w'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">f</span>)}
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span> = <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-constant">DEFAULT_DIR</span> <span class="ruby-operator">:</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;#{task.dir}/#{task.id}.task&quot;</span>, <span class="ruby-string">'w'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">f</span>)}
 <span class="ruby-keyword">end</span></pre>
           </div><!-- save-source -->
           
@@ -356,7 +449,7 @@ values.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 68</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 78</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">id</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">task_file</span> = <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/#{id}.task&quot;</span>)[<span class="ruby-value">0</span>]
   <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">task_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">task_file</span>

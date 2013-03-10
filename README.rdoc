@@ -1,28 +1,93 @@
 = Simple task organizer
-With syctask you can organize your tasks (inspired by David Bryant Copland's book <b>Build Awesome Command-Line Applications in Ruby</b>.
+With syctask you can organize your tasks.
 
 ==Install
 The application can be installed with
     $ gem install syc-task
 
 == Usage
-syctask provides basic task organizer functions as create, update, list und complete a task. Addtional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file.
+syctask provides basic task organizer functions as create, update, list und complete a task. Additional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file. The schedule task will print a graphical timeline of the working day assigning the planned tasks to the timeline. Busy times are marked red. Meetings are listed with associated tasks that are assigned to the meetings.
 
 ===Create tasks with new
 Create a new task in the default task directory ~/.tasks
-    $ syctask "My first task"
+    $ syctask new "My first task"
 
 Provide a description
-    $ syctask "My first task" --description "Explanation of my first task"
+    $ syctask new "My first task" --description "Explanation of my first task"
 
 Schedule a task with a follow-up and due date
-    $ syctask "My first task" --follow-up "2013-02-25" --due "2013-03-11"
+    $ syctask new "My first task" --follow-up "2013-02-25" --due "2013-03-11"
 
 Set a proirity for a task
-    $ syctask "My first task" --prio 3
+    $ syctask new "My first task" --prio 3
+
+Prompt for task input
+    $ syctask new
+will prompt for task titles. When read C-D will end input.
 
 Except for --description you can also provide short forms for the options.
 
+===Plan tasks
+The plan command will print tasks and prompts whether to (a)dd or (s)kip the task. If (q)uit is selected the tasks already added will be add to the today's task
+list. If (c)omplete is selected the complete task will be printed and the user
+will be prompted again for adding the task.
+
+Invoke plan without filter
+    $ syctask plan
+    1 - My first task
+    (a)dd, (c)omplete, (s)kip, (q)uit? a
+    Duration (1 = 15 minutes, return 30 minutes): 3
+    --> 1 task(s) planned
+
+Invoke plan with a filter
+    $ syctask plan --id "1,3,5,8"
+    1 - My first task
+    (a)dd, (c)omplete, (s)kip, (q)uit?
+
+===Create schedule
+The schedule command will print a graphical schedule with assigning the tasks
+added with plan.
+
+Create a schedule with working time from 8a.m. to 6p.m. and meetings between
+9a.m. and 9.30a.m. and 1p.m. and 2.45p.m.
+    $ syctask schedule -w "8:00-18:00" -b "9:00-9:30,13:00-14:45"
+
+Add titles to the meetings
+    $ syctask schedule -m "Project status,Management meeting"
+
+The output will be
+    Meetings
+    --------
+    A - Project status
+    B - Management meeting
+
+        A               B
+    xxx-///-|---|---|---///////-|---|---|---|
+    8   9  10  11  12  13  14  15  16  17  18
+    1
+
+    Tasks
+    -----
+    0 - 1: My first task
+
+Adding a task to a meeting
+    $ syctask schedule -a "A:1"
+
+will print
+    Meetings
+    --------
+    A - Project status
+        1 - My first task
+    B - Management meeting
+
+        A               B
+    ----///-|---|---|---///////-|---|---|---|
+    8   9  10  11  12  13  14  15  16  17  18
+    
+
+    Tasks
+    -----
+ 
 ===List tasks
 List tasks that are not marked as done in short form
     $ syctask list

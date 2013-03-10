@@ -86,24 +86,8 @@ module Syctask
       @tasks = tasks
     end
 
-    # TODO: delete
-    def x_meeting(titles)
-      @meetings.each.with_index do |meeting|
-        meeting.title = titles[index] if titles[index]
-      end
-    end
-
-    # TODO: delete
-    def x_assign(meeting, tasks)
-      number = meeting.upcase.ord - "A".ord
-      return false if number < 0 or number > @meetings.size
-      tasks.each do |index|
-        @meetings[number].tasks << @tasks[index] if @tasks[index]
-      end
-      @meetings[number].tasks.uniq!
-      true
-    end
-
+    # Sets the assignments containing tasks that are assigned to meetings.
+    # Returns true if succeeds
     def assign(assignments)
       assignments.each do |assignment|
         number = assignment[0].upcase.ord - "A".ord
@@ -116,25 +100,7 @@ module Syctask
       true
     end
 
-    # TODO: delete
-    def x_unassign(meeting, tasks)
-      number = meeting.upcase.ord - "A".ord
-      return false if number < 0 or number > @meetings.size
-      tasks.each do |index|
-        @meetings[number].tasks.delete_at(index)
-      end
-      true
-    end
-
-    # TODO: delete
-    def x_tasks_for(meeting)
-      if meeting
-        meeting.tasks
-      else
-        @tasks
-      end
-    end
-
+    # Creates a meeting list for printing. Returns the meeting list
     def meeting_list
       list = sprintf("%s", "Meetings\n").color(:red)
       list << sprintf("%s", "--------\n").color(:red)
@@ -150,6 +116,7 @@ module Syctask
       list
     end
 
+    # Creates a meeting caption and returns it for printing
     def meeting_caption
       work_time, meeting_times = get_times
       caption = ""
@@ -161,6 +128,7 @@ module Syctask
       sprintf("%s", caption).color(:red)
     end
 
+    # Creates the time caption for the time line
     def time_caption
       work_time = get_times[0]
       caption = ""
@@ -199,6 +167,8 @@ module Syctask
 
     private 
 
+    # Colors the time line free time green, busy time red and tasks blue. The
+    # past time is colored black
     def colorize(time_line)
       time_line, future = split_time_line(time_line)
       future.scan(GRAPH_PATTERN) do |part|
@@ -209,6 +179,8 @@ module Syctask
       time_line
     end
 
+    # Splits the time line at the current time. Returning the past part and the
+    # future part.
     def split_time_line(time_line)
       time = Time.now
       offset = (time.hour - @starts.h) * 4 + time.min.div(15)      
@@ -217,6 +189,8 @@ module Syctask
       [past, future]
     end
 
+    # Assigns the tasks to the timeline in alternation x and o subsequent tasks.
+    # Returns the task list and the task caption
     def assign_tasks_to_graph(time_line)
       unscheduled_tasks = []
       signs = ['x','o']
@@ -314,6 +288,7 @@ module Syctask
       positions
     end
 
+    # Returns the tasks that are not assigned to meetings
     def unassigned_tasks
       assigned = []
       @meetings.each do |meeting|
@@ -328,6 +303,7 @@ module Syctask
 
     public
 
+    # Retrieves the work and busy times transformed to the time line scale
     def get_times
       work_time = [@starts.h, @ends.round_up]
       meeting_times = []

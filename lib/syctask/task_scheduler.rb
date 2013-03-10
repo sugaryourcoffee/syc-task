@@ -1,6 +1,7 @@
 require 'rainbow'
 require_relative 'task_service.rb'
 require_relative '../sycutil/console.rb'
+require_relative 'schedule.rb'
 
 module Syctask
 
@@ -35,6 +36,7 @@ module Syctask
     # Busy time pattern scans times like "9:00-9:30,11:00-11:45"
     BUSY_TIME_PATTERN = /#{TIME_PATTERN}-#{TIME_PATTERN}(?=,)|#{TIME_PATTERN}-#{TIME_PATTERN}$/
     BUSY_TIME_MATCHER = /^#{TIME_MATCHER}-#{TIME_MATCHER}(?:,#{TIME_MATCHER}-#{TIME_MATCHER})*/
+    ASSIGNMENT_PATTERN = /([a-zA-Z]):(\d+(?:,\d+|\d+;)*)/ 
     GRAPH_PATTERN = /[\|-]+|\/+|[xo]+/
     BUSY_PATTERN = /\/+/
     FREE_PATTERN = /[\|-]+/
@@ -62,12 +64,10 @@ module Syctask
     # The work_time has to be in the form "8:00-18:00", the busy_time has
     # comma separated busy times like "9:00-10:30,11:00-11:30". If the begin
     # and end time is not sequential an Exception is raised.
-    def set_times(work_time, busy_time, busy_titles=[])
-      @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
-      raise Exception, 
-        "Work time cannot be empty" if work_time.nil? or @work_time.empty?
-      busy_time = "" if busy_time.nil?
-      @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
+    def set_times(work_time, busy_time, busy_titles="")
+      @work_time = process_work_time(work_time)
+      @busy_time = process_busy_time(busy_time)
+      @meetings = busy_titles.split(",") if busy_titles
       if range_is_sequential?
         normalize_time
         create_graph(@work_time, @busy_time)
@@ -77,6 +77,62 @@ module Syctask
       save_times work_time, busy_time
     end
 
+    def set_work_time(work_time)
+      @work_time = process_work_time(work_time)
+      unless sequential?(@work_time)
+        raise Exception, "Begin time has to be before end time" 
+      end
+    end
+
+    def set_busy_times(busy_time)
+      @busy_time = process_busy_time(busy_time)
+      @busy_time.each do |busy|
+        unless sequential?(busy)
+          raise Exception, "Begin time has to be before end time" 
+        end
+      end
+    end
+
+    def set_meeting_titles(titles)
+      @meetings = titles.split(",") if titles
+    end
+
+    def set_tasks(tasks)
+      @tasks = tasks
+    end
+
+    # Add scheduled tasks to busy times
+    def set_task_assignments(assignments)
+      @assignments = assignments.scan(ASSIGNMENT_PATTERN)
+      raise "No valid assignment" if @assignments.empty? 
+    end
+
+    private
+
+    # Checks the sequence of begin and end time. Returns true if begin is before
+    # end time otherwise false
+    def sequential?(range)
+      return true if range[0].to_i < range[2].to_i
+      if range[0].to_i == range[2].to_i
+        return true if range[1].to_i < range[3].to_i
+      end
+      false
+    end
+    
+    def process_work_time(work_time)
+      raise Exception, "Work time must not be nil" if work_time.nil?
+      time = work_time.scan(WORK_TIME_PATTERN).flatten
+      raise Exception, "Work time cannot be empty" if time.empty?
+      time
+    end
+
+    def process_busy_time(busy_time)
+      busy_time = "" if busy_time.nil?
+      busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
+    end
+
+    public
+
     # Restore the schedule from a previuos invokation from the same date. If no
     # times are available false is returned otherwise true
     def restore_times
@@ -85,7 +141,43 @@ module Syctask
       set_times(work_time, busy_time)
       true
     end
+
+    def restore(value)
+      work_time, busy_time, meetings, assignments = restore_state
+      @work_time   = work_time   if value == :work_time
+      @busy_time   = busy_time   if value == :busy_time
+      @meetings    = meetings    if value == :meetings
+      @assignments = assignments if value == :assignments
+      return false if value == :work_time   and (@work_time.nil? or @work_time.empty?)
+      return false if value == :busy_time   and (@busy_time.nil? or @busy_time.empty?)
+      return false if value == :meetings    and (@busy_time.nil? or @meetings.empty?)
+      return false if value == :assignments and (@assignments.nil? or @assignments.empty?)
+      true
+    end
     
+    def show
+      schedule = Syctask::Schedule.new(@work_time, @busy_time, @meetings, @tasks)
+      schedule.assign_all(@assignments) if @assignments
+      schedule.graph.each {|output| puts output}
+      save_state @work_time, @busy_time, @meetings, @assignments
+    end
+
+    def save_state(work_time, busy_time, meetings, assignments)
+      state = {work_time: work_time, busy_time: busy_time, meetings: meetings, assignments: assignments}
+      FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
+      state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
+      File.open(state_file, 'w') do |file|
+        YAML.dump(state, file)
+      end
+    end
+
+    def restore_state
+      state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
+      return [[], [], [], []] unless File.exists? state_file
+      state = YAML.load_file(state_file)
+      [state[:work_time], state[:busy_time], state[:meetings], state[:assignments]]
+    end
+
     # Shows the last created schedule
     def show_schedule
       work_time, busy_time = load_times
@@ -137,23 +229,10 @@ module Syctask
       print_graph
     end
 
-    # Prompts the scheduled tasks to add them to the busy times
-    def assign_tasks_to_meetings
-      tasks = load_tasks
-      console = Sycutil::Console.new
-      work_time, busy_time = load_times
-      meetings = busy_time.split(',').size
-      meeting_number = "A"
-      1..meetings.times do |i|
-        assign_prompt += "(#{meeting_number}), "
-        meeting_number.next!
-      end
-      assign_prompt += "(s)kip, (q)uit? "  
-      tasks.each do |task|
-        answer = console.prompt assign_prompt
-      end
-
-
+    # Add scheduled tasks to busy times
+    def assign_tasks_to_meetings(assignments)
+      @assignments = assignments.scan(ASSIGNMENT_PATTERN)
+      raise "No valid assignment" if @assignments.empty? 
     end
 
     private
@@ -271,8 +350,6 @@ module Syctask
         lines[line_id] += legend
         counter += 1
       end
-      #print_graph
-      #lines.each {|line| puts line}
       lines
     end
 

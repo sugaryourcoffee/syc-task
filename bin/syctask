@@ -294,24 +294,20 @@ desc 'Create schedule for planned tasks'
 command :schedule do |c|
 
   c.desc 'Work time'
-  c.arg_name 'HH:MM'
+  c.arg_name 'HH:MM-HH:MM'
   c.flag [:w, :work] 
 
   c.desc 'Busy time'
-  c.arg_name 'HH:MM,HH:MM,...'
+  c.arg_name 'HH:MM-HH:MM,...'
   c.flag [:b, :busy] 
 
   c.desc 'Meeting Titles'
-  c.arg_name 'MEETING1,MEETING2,...'
+  c.arg_name 'TITLE,...'
   c.flag [:m, :meeting]
 
   c.desc 'Assign tasks to a meeting'
-  c.arg_name 'MEETING:TASK_NO1,TASK_NO2,...'
+  c.arg_name 'MEETING:TASK#1,...'
   c.flag [:a, :assign]
-
-  c.desc 'Remove tasks from a meeting'
-  c.arg_name 'MEETING:TASK_NO1,TASK_NO2,...'
-  c.flag [:u, :unassign]
 
   c.desc 'Show schedule'
   c.switch :show
@@ -321,25 +317,37 @@ command :schedule do |c|
     scheduler = Syctask::TaskScheduler.new
 
     if options[:work].nil?
-      help_now! "No work time set" unless scheduler.restore_times
+      help_now! "No work time set" unless scheduler.restore(:work_time)
+    elsif options[:work].scan(Syctask::TaskScheduler::WORK_TIME_PATTERN).nil?
+      help_now! "Work time has to be in yyyy-mm-dd" 
     else
-      if options[:work].scan(Syctask::TaskScheduler::WORK_TIME_PATTERN).nil?
-        help_now! "Work time has to be in yyyy-mm-dd" 
-      end
-
-      if options[:busy].nil?
-        options[:busy] = ""
-      elsif options[:busy].scan(Syctask::TaskScheduler::BUSY_TIME_PATTERN).nil?
-        help_now! "Busy time has to be in yyyy-mm-dd"
-      end
-
-      scheduler.set_times(options[:work], options[:busy], options[:meeting])
+      scheduler.set_work_time(options[:work])
     end
 
-    scheduler.schedule_tasks(@planner.get_tasks) 
+    if options[:busy].nil?
+      scheduler.set_busy_times("") unless scheduler.restore(:busy_time)
+    elsif options[:busy].scan(Syctask::TaskScheduler::BUSY_TIME_PATTERN).nil?
+      help_now! "Busy time has to be in yyyy-mm-dd"
+    else
+      scheduler.set_busy_times(options[:busy])
+    end
 
-    if options[:assign]
-      scheduler.assign_tasks_to_meetings
+    if options[:meeting].nil?
+      scheduler.set_meeting_titles("") unless scheduler.restore(:meetings)
+    elsif options[:meeting].split(',').empty?
+      help_now! "Meeting titles have to be in 'Title1,Title2,...'"
+    else
+      scheduler.set_meeting_titles(options[:meeting])
+    end
+
+    scheduler.set_tasks(@planner.get_tasks)
+
+    if options[:assign].nil?
+      scheduler.restore(:assignments)
+    elsif options[:assign].scan(Syctask::TaskScheduler::ASSIGNMENT_PATTERN).nil?
+      help_now! "Task assignments to meetings have to be in 'A:1,2,3;B:1;...'"
+    else
+      scheduler.set_task_assignments(options[:assign])
     end
 
     scheduler.show

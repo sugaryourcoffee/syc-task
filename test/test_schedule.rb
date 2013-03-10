@@ -22,7 +22,7 @@ class TestSchedule < Test::Unit::TestCase
     should "add meeting and retrieve the start and end time" do
       time = ["8","0","18","0"]
       schedule = Syctask::Schedule.new(time)
-      meeting_time = [["9","30"],["11","0"]]
+      meeting_time = ["9","30","11","0"]
       title = "Test the meeting class"
       meeting = Syctask::Meeting.new(meeting_time, title)
       assert_equal 9, meeting.starts.h
@@ -43,11 +43,11 @@ class TestSchedule < Test::Unit::TestCase
       time = ["8","0","18","30"]
       schedule = Syctask::Schedule.new(time)
       
-      meeting_time = [["9","30"],["11","0"]]
+      meeting_time = ["9","30","11","0"]
       title = "Test the meeting class"
       schedule.meetings << Syctask::Meeting.new(meeting_time, title)
 
-      meeting_time = [["13","30"],["14","45"]]
+      meeting_time = ["13","30","14","45"]
       title = "Test the task schedule"
       schedule.meetings << Syctask::Meeting.new(meeting_time, title)
  

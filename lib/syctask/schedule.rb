@@ -1,4 +1,5 @@
 require_relative 'times.rb'
+require_relative 'meeting.rb'
 
 module Syctask
 
@@ -21,11 +22,24 @@ module Syctask
 
     # Sets the work time for the schedule. The work time has to be provided as
     # [start_hour,start_minute,end_hour,end_minute]
-    def initialize(work_time, meetings=[], tasks=[])
+    def initialize(work_time, busy_time=[], titles=[], tasks=[])
       @starts = Syctask::Times.new([work_time[0], work_time[1]])
       @ends = Syctask::Times.new([work_time[2], work_time[3]])
-      @meetings = meetings
+      @meetings = []
+      titles ||= []
+      puts "in Schedule"
+      puts busy_time.inspect
+      busy_time.each.with_index do |busy,index|
+        title = titles[index] ? titles[index] : "Meeting #{index}"
+        @meetings << Syctask::Meeting.new(busy, title) 
+      end
       @tasks = tasks
+    end
+
+    def meeting(titles)
+      @meetings.each.with_index do |meeting|
+        meeting.title = titles[index] if titles[index]
+      end
     end
 
     def assign(meeting, tasks)
@@ -35,6 +49,19 @@ module Syctask
         @meetings[number].tasks << @tasks[index] if @tasks[index]
       end
       @meetings[number].tasks.uniq!
+      true
+    end
+
+    def assign_all(assignments)
+      puts assignments.inspect
+      assignments.each do |assignment|
+        number = assignment[0].upcase.ord - "A".ord
+        return false if number < 0 or number > @meetings.size
+        assignment[1].split(',').each do |index|
+          @meetings[number].tasks << @tasks[index.to_i] if @tasks[index.to_i]
+        end
+        @meetings[number].tasks.uniq!
+      end
       true
     end
 
@@ -105,6 +132,8 @@ module Syctask
     # list
     def graph
       work_time, meeting_times = get_times
+      puts work_time.inspect
+      puts meeting_times.inspect
       time_line = "|---" * (work_time[1]-work_time[0]) + "|"
       meeting_times.each do |time|
         time_line[time[0]..time[1]] = '/' * (time[1] - time[0]+1)
@@ -253,6 +282,9 @@ module Syctask
       meeting_times = []
       @meetings.each do |meeting|
         meeting_time = Array.new(2)
+        puts meeting.title
+        puts "#{meeting.starts.h}:#{meeting.starts.m}"
+        puts "#{meeting.ends.h}:#{meeting.ends.m}"
         meeting_time[0] = hour_offset(@starts.h, meeting.starts.h) + 
           minute_offset(meeting.starts.m)
         meeting_time[1] = hour_offset(@starts.h, meeting.ends.h) + 

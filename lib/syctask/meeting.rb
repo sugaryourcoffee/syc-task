@@ -12,8 +12,8 @@ module Syctask
     # Sets the busy time for the schedule. The busy times have to be provided
     # as hh:mm-hh:mm. Optionally a title for the busy time can be provided 
     def initialize(time, title="", tasks=[])
-      @starts = Syctask::Times.new(time[0])
-      @ends = Syctask::Times.new(time[1])
+      @starts = Syctask::Times.new(time[0..1])
+      @ends = Syctask::Times.new(time[2..3])
       @title = title
       @tasks = tasks
     end

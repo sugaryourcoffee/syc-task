@@ -53,9 +53,12 @@ module Syctask
     # File where the last scheduled tasks are save to
     TASK_FILE = "schedule_tasks"
 
-    # Creates a new TaskScheduler. A previous invokation at the same day will
-    # load the work and busy times previuosly provided.
+    # Creates a new TaskScheduler. 
     def initialize
+      @work_time = []
+      @busy_time = []
+      @meetings = []
+      @tasks = []
     end
 
     # Adds the work time and optionally the busy time. Busy time is a time
@@ -64,7 +67,7 @@ module Syctask
     # The work_time has to be in the form "8:00-18:00", the busy_time has
     # comma separated busy times like "9:00-10:30,11:00-11:30". If the begin
     # and end time is not sequential an Exception is raised.
-    def set_times(work_time, busy_time, busy_titles="")
+    def x_set_times(work_time, busy_time, busy_titles="")
       @work_time = process_work_time(work_time)
       @busy_time = process_busy_time(busy_time)
       @meetings = busy_titles.split(",") if busy_titles
@@ -135,7 +138,7 @@ module Syctask
 
     # Restore the schedule from a previuos invokation from the same date. If no
     # times are available false is returned otherwise true
-    def restore_times
+    def x_restore_times
       work_time, busy_time = load_times
       return false if work_time.empty?
       set_times(work_time, busy_time)
@@ -157,13 +160,17 @@ module Syctask
     
     def show
       schedule = Syctask::Schedule.new(@work_time, @busy_time, @meetings, @tasks)
-      schedule.assign_all(@assignments) if @assignments
+      schedule.assign(@assignments) if @assignments
       schedule.graph.each {|output| puts output}
       save_state @work_time, @busy_time, @meetings, @assignments
+      true
     end
 
     def save_state(work_time, busy_time, meetings, assignments)
-      state = {work_time: work_time, busy_time: busy_time, meetings: meetings, assignments: assignments}
+      state = {work_time: work_time, 
+               busy_time: busy_time, 
+               meetings: meetings, 
+               assignments: assignments}
       FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       File.open(state_file, 'w') do |file|
@@ -175,11 +182,14 @@ module Syctask
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       return [[], [], [], []] unless File.exists? state_file
       state = YAML.load_file(state_file)
-      [state[:work_time], state[:busy_time], state[:meetings], state[:assignments]]
+      [state[:work_time], 
+       state[:busy_time], 
+       state[:meetings], 
+       state[:assignments]]
     end
 
     # Shows the last created schedule
-    def show_schedule
+    def x_show_schedule
       work_time, busy_time = load_times
       @work_time = work_time.scan(WORK_TIME_PATTERN).flatten
       @busy_time = busy_time.scan(BUSY_TIME_PATTERN).each {|busy| busy.compact!}
@@ -190,7 +200,7 @@ module Syctask
 
     #Assigns available free time slots to the tasks and prints the visual
     #representation of the schedule.
-    def schedule_tasks(tasks)
+    def x_schedule_tasks(tasks)
       unscheduled_tasks = []
       max_id_size = 1
       signs = ['x','o']
@@ -230,7 +240,7 @@ module Syctask
     end
 
     # Add scheduled tasks to busy times
-    def assign_tasks_to_meetings(assignments)
+    def x_assign_tasks_to_meetings(assignments)
       @assignments = assignments.scan(ASSIGNMENT_PATTERN)
       raise "No valid assignment" if @assignments.empty? 
     end
@@ -240,7 +250,7 @@ module Syctask
     # Checks whether the begin and end time of work_time and busy_time is 
     # sequential. If the begin is before the end time of all time ranges true
     # is returned otherwise false
-    def range_is_sequential?
+    def x_range_is_sequential?
       return false unless check_sequence(@work_time)
       @busy_time.each do |busy|
         return false unless check_sequence(busy)
@@ -250,7 +260,7 @@ module Syctask
 
     # Checks the sequence of begin and end time. Returns true if begin is before
     # end time otherwise false
-    def check_sequence(range)
+    def x_check_sequence(range)
       return true if range[0].to_i < range[2].to_i
       if range[0].to_i == range[2].to_i
         return true if range[1].to_i < range[3].to_i
@@ -259,7 +269,7 @@ module Syctask
     end
  
     # Transposes the time ranges to the graph size of the schedule
-    def normalize_time
+    def x_normalize_time
       @graph_ranges = []
       @graph_ranges[0] = @work_time[0].to_i
       @graph_ranges[1] = @work_time[3].to_i > 0 ? @work_time[2].succ.to_i : @work_time[2].to_i
@@ -274,19 +284,19 @@ module Syctask
     end
 
     # Transposes a time hour to a graph hour
-    def hour_offset(starts, ends)
+    def x_hour_offset(starts, ends)
       (ends - starts) * 4
     end
 
     # Transposes a time minute to a graph minute
-    def minute_offset(minutes)
+    def x_minute_offset(minutes)
       minutes.to_i.div(15)
     end
 
     public
 
     # Prints the schedule graph
-    def print_graph
+    def x_print_graph
       @schedule_graph.scan(GRAPH_PATTERN) do |part|
         print sprintf("%s", part).color(BUSY_COLOR) unless part.scan(BUSY_PATTERN).empty?
         print sprintf("%s", part).color(FREE_COLOR) unless part.scan(FREE_PATTERN).empty?
@@ -297,7 +307,7 @@ module Syctask
       true
     end
 
-    def show_graph
+    def x_show_graph
       puts sprintf("%s", "Meetings")
       meeting_number = "A"
       @schedule.meetings.each do |meeting|
@@ -325,7 +335,7 @@ module Syctask
     private
 
     # Creates a graph based on work_time and busy_time
-    def create_graph(work_time, busy_time)
+    def x_create_graph(work_time, busy_time)
       @schedule_graph = '|---' * (@graph_ranges[1]-@graph_ranges[0]) + '|'
 
       @schedule_units = ""
@@ -341,7 +351,7 @@ module Syctask
 
     # creates the caption of the graph with hours in 1 hour steps and task IDs
     # that indicate where in the schedule a task is scheduled.
-    def create_caption(positions)
+    def x_create_caption(positions)
       counter = 0
       lines = [""]
       positions.each do |position,id|
@@ -363,7 +373,7 @@ module Syctask
     # lines is the available ID lines (above we have 2 ID lines)
     # counter is the currently displayed line. IDs are displayed alternating in
     # each line, when we have 2 lines IDs will be printed in line 1,2,1,2...
-    def next_line(position, lines, counter)
+    def x_next_line(position, lines, counter)
       line = lines[counter%lines.size]
       #puts "line.size = #{line.size} position = #{position}"
       return counter%lines.size if line.size == 0 or line.size < position - 1
@@ -378,7 +388,7 @@ module Syctask
     # Scans the schedule for free time where a task can be added to. Count
     # specifies the length of the free time and the position where to start
     # scanning within the schedule
-    def scan_free(count, position)
+    def x_scan_free(count, position)
       pattern = /(?!\/)[\|-]{#{count}}(?<=-|\||\/)/
 
       positions = []
@@ -395,7 +405,7 @@ module Syctask
 
     # Saves the work and busy time to a file for later retrieval with
     # load_times method
-    def save_times(work_time, busy_time)
+    def x_save_times(work_time, busy_time)
       FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
       time_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       File.open(time_file, 'w') do |file|
@@ -406,13 +416,13 @@ module Syctask
 
     # Loads the work and busy times from a previous invokation. If no times 
     # are available empty work and busy times are returned
-    def load_times
+    def x_load_times
       time_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       return ["", ""] unless File.exists? time_file
       File.readlines(time_file)
     end
     
-    def save_tasks(tasks)
+    def x_save_tasks(tasks)
       FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
       task_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_task_schedule")
       File.open(task_file, 'w') do |file|
@@ -422,7 +432,7 @@ module Syctask
       end
     end
 
-    def load_tasks
+    def x_load_tasks
       task_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_task_schedule")
       service = Syctask::TaskService.new
       tasks = []

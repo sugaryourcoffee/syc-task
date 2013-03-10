@@ -3,32 +3,82 @@ require_relative 'meeting.rb'
 
 module Syctask
 
+  # Schedule represents a working day with a start and end time, meeting times
+  # and titles and tasks. Tasks can also be associated to meetings as in an
+  # agenda.
+  # Invokation example
+  #     work = ["8","30","18","45"]
+  #     busy = [["9","0","10","0"],["11","30","12","15"]]
+  #     titles = ["Ruby class room training","Discuss Ruby"]
+  #     tasks = [task1,task2,task3,task4,task5,task6]
+  #     schedule = Syctask::Schedule.new(work,busy,titles,tasks)
+  #     schedule.graph.each {|output| puts output}
+  #     
+  # This will create following output
+  #     Meetings
+  #     --------
+  #     A - Ruby class room training
+  #     B - Discuss Ruby
+  #
+  #         A         B
+  #     xxoo/////xxx|-////oooooxoooo|---|---|---|---|
+  #     8   9  10  11  12  13  14  15  16  17  18  19
+  #     1 2      3        4    5    
+  #                             6
+  #
+  #     Tasks
+  #     -----
+  #     0 - 1: task1
+  #     1 - 2: task2
+  #     2 - 3: task3
+  #     3 - 4: task4
+  #     4 - 5: task5
+  #     5 - 6: task6
+  #         
+  # Subsequent tasks are are displayed in the graph alternating with x and o.
+  # Meetings are indicated with / and the start is marked with A, B and so on.
+  # Task IDs are shown below the graph. The graph will be printed colored.
+  # Meetings in red, free times in green and tasks in blue. The past time is
+  # shown in black.
   class Schedule
+    # Color of meetings
     BUSY_COLOR = :red
+    # Color of free times
     FREE_COLOR = :green
+    # Color of tasks
     WORK_COLOR = :blue
+    # If tasks cannot be assigned to the working time this color is used
     UNSCHEDULED_COLOR = :yellow
+    # Regex scans tasks and free times in the graph
     GRAPH_PATTERN = /[\|-]+|\/+|[xo]+/
+    # Regex scans meetings in the graph
     BUSY_PATTERN = /\/+/
+    # Regex scans free times in the graph
     FREE_PATTERN = /[\|-]+/
+    # Regex scans tasks in the graph
     WORK_PATTERN = /[xo]+/
  
+    # Start time of working day
     attr_reader :starts
+    # End time of working day
     attr_reader :ends
     # Meetings assigned to the work time
     attr_accessor :meetings
     # Tasks assigned to the work time
     attr_accessor :tasks
 
-    # Sets the work time for the schedule. The work time has to be provided as
-    # [start_hour,start_minute,end_hour,end_minute]
+    # Creates a new Schedule and initializes work time, busy times, titles and
+    # tasks. Work time is mandatory, busy times, titles and tasks are optional.
+    # Values have to be provided as
+    # * work time: [start_hour, start_minute, end_hour, end_minute]
+    # * busy time: [[start_hour, start_minute, end_hour, end_minute],[...]]
+    # * titles:    [title,...]
+    # * tasks:     [task,...]
     def initialize(work_time, busy_time=[], titles=[], tasks=[])
       @starts = Syctask::Times.new([work_time[0], work_time[1]])
       @ends = Syctask::Times.new([work_time[2], work_time[3]])
       @meetings = []
       titles ||= []
-      puts "in Schedule"
-      puts busy_time.inspect
       busy_time.each.with_index do |busy,index|
         title = titles[index] ? titles[index] : "Meeting #{index}"
         @meetings << Syctask::Meeting.new(busy, title) 
@@ -36,13 +86,15 @@ module Syctask
       @tasks = tasks
     end
 
-    def meeting(titles)
+    # TODO: delete
+    def x_meeting(titles)
       @meetings.each.with_index do |meeting|
         meeting.title = titles[index] if titles[index]
       end
     end
 
-    def assign(meeting, tasks)
+    # TODO: delete
+    def x_assign(meeting, tasks)
       number = meeting.upcase.ord - "A".ord
       return false if number < 0 or number > @meetings.size
       tasks.each do |index|
@@ -52,8 +104,7 @@ module Syctask
       true
     end
 
-    def assign_all(assignments)
-      puts assignments.inspect
+    def assign(assignments)
       assignments.each do |assignment|
         number = assignment[0].upcase.ord - "A".ord
         return false if number < 0 or number > @meetings.size
@@ -65,7 +116,8 @@ module Syctask
       true
     end
 
-    def unassign(meeting, tasks)
+    # TODO: delete
+    def x_unassign(meeting, tasks)
       number = meeting.upcase.ord - "A".ord
       return false if number < 0 or number > @meetings.size
       tasks.each do |index|
@@ -74,7 +126,8 @@ module Syctask
       true
     end
 
-    def tasks_for(meeting)
+    # TODO: delete
+    def x_tasks_for(meeting)
       if meeting
         meeting.tasks
       else
@@ -132,8 +185,6 @@ module Syctask
     # list
     def graph
       work_time, meeting_times = get_times
-      puts work_time.inspect
-      puts meeting_times.inspect
       time_line = "|---" * (work_time[1]-work_time[0]) + "|"
       meeting_times.each do |time|
         time_line[time[0]..time[1]] = '/' * (time[1] - time[0]+1)
@@ -282,9 +333,6 @@ module Syctask
       meeting_times = []
       @meetings.each do |meeting|
         meeting_time = Array.new(2)
-        puts meeting.title
-        puts "#{meeting.starts.h}:#{meeting.starts.m}"
-        puts "#{meeting.ends.h}:#{meeting.ends.m}"
         meeting_time[0] = hour_offset(@starts.h, meeting.starts.h) + 
           minute_offset(meeting.starts.m)
         meeting_time[1] = hour_offset(@starts.h, meeting.ends.h) + 

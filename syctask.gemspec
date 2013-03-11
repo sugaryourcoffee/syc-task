@@ -15,8 +15,14 @@ bin/syctask
 lib/syctask/version.rb
 lib/syctask/task.rb
 lib/syctask/task_service.rb
+lib/syctask/task_planner.rb
 lib/syctask/evaluator.rb
 lib/syctask.rb
+lib/syctask/task_scheduler.rb
+lib/syctask/meeting.rb
+lib/syctask/times.rb
+lib/syctask/schedule.rb
+lib/sycutil/console.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true

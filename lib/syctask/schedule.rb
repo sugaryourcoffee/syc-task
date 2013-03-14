@@ -83,6 +83,7 @@ module Syctask
         title = titles[index] ? titles[index] : "Meeting #{index}"
         @meetings << Syctask::Meeting.new(busy, title) 
       end
+      raise Exception, "Busy times have to be within work time" unless within?(@meetings, @starts, @ends)
       @tasks = tasks
     end
 
@@ -167,6 +168,20 @@ module Syctask
 
     private 
 
+    # Checks if meetings are within work times. Returns true if fullfilled
+    # otherwise false
+    def within?(meetings, starts, ends)
+      meetings.each do |meeting|
+        return false if meeting.starts.h < starts.h
+        return false if meeting.starts.h == starts.h and 
+                        meeting.starts.m < starts.m 
+        return false if meeting.ends.h > ends.h
+        return false if meeting.ends.h == ends.h and 
+                        meeting.ends.m > ends.m
+      end
+      true
+    end
+
     # Colors the time line free time green, busy time red and tasks blue. The
     # past time is colored black
     def colorize(time_line)
@@ -183,9 +198,14 @@ module Syctask
     # future part.
     def split_time_line(time_line)
       time = Time.now
-      offset = (time.hour - @starts.h) * 4 + time.min.div(15)      
-      past = time_line.slice(0,offset)
-      future = time_line.slice(offset, time_line.size - offset)
+      if time.hour < @starts.h
+        past = ""
+        future = time_line
+      else
+        offset = (time.hour - @starts.h) * 4 + time.min.div(15)      
+        past = time_line.slice(0,offset)
+        future = time_line.slice(offset, time_line.size - offset)
+      end
       [past, future]
     end
 

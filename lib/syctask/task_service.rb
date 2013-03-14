@@ -60,7 +60,7 @@ module Syctask
         next if not all and task.done?
         tasks << task if task.matches?(filter)
       end
-      tasks
+      tasks.sort
     end
 
     # Updates the task with the given id in the given directory dir with the

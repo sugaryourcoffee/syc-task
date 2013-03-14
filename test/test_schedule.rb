@@ -19,6 +19,26 @@ class TestSchedule < Test::Unit::TestCase
       assert_equal 19, work[1]
     end
 
+    should "create schedule with start in future and end in past" do
+      expected = [/[\e\[\dm]*(Meetings\n)[\e\[\dm]*/,
+                  /\e\[\d+m\e\[\d+m/,
+                  /[\e\[\dm]*(\|---\|)[\e\[\dm]*/,
+                  /\d+\s+\d+\s+/,
+                  /\e\[\d+m\n\e\[\d+m/,
+                  /[\e\[\dm]*(Tasks\n)[\e\[\dm]*-----\n[\e\[\dm]/]
+      time = ["1","0","2","0"]
+      schedule = Syctask::Schedule.new(time) 
+      schedule.graph.each_with_index do |output,i| 
+        assert_match expected[i], output
+      end
+
+      time = ["22","0","23","45"]
+      schedule = Syctask::Schedule.new(time)
+      schedule.graph.each_with_index do |output,i| 
+        assert_match expected[i], output
+      end
+    end
+
     should "add meeting and retrieve the start and end time" do
       time = ["8","0","18","0"]
       schedule = Syctask::Schedule.new(time)
@@ -37,6 +57,35 @@ class TestSchedule < Test::Unit::TestCase
       assert_equal 18, work[1]
       assert_equal 6, meetings[0][0]
       assert_equal 12, meetings[0][1]      
+    end
+
+    should "raise error when busy time before or after work time" do
+      time = ["7","9","18","45"]
+
+      busy_times = [["7","9","10","35"],["17","10","18","45"]]
+      assert_nothing_raised Exception do
+        Syctask::Schedule.new(time, busy_times)
+      end
+
+      busy_times = [["6","0","8","50"],["9","0","10","35"]]
+      assert_raises Exception do
+        Syctask::Schedule.new(time, busy_times)
+      end
+
+      busy_times = [["16","33","17","44"],["19","45","20","15"]]
+      assert_raises Exception do
+        Syctask::Schedule.new(time, busy_times)
+      end
+
+      busy_times = [["7","8","11","11"],["12","02","14","34"]]
+      assert_raises Exception do
+        Syctask::Schedule.new(time, busy_times)
+      end
+
+      busy_times = [["15","55","18","45"],["18","46","19","22"]]
+      assert_raises Exception do
+        Syctask::Schedule.new(time, busy_times)
+      end
     end
 
     should "add tasks and print time line" do

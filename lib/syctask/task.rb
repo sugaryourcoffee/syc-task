@@ -9,6 +9,8 @@ module Syctask
   # about a task.
   class Task
 
+    include Comparable
+
     # Holds the options of the task. 
     # Options are
     # * description - additional information about the task
@@ -48,6 +50,17 @@ module Syctask
     # equal true is returned otherwise false
     def ==(other)
       @id == other.id and @dir == other.dir
+    end
+
+    # Compares this Task to the other task and compares them regarding the ID 
+    # and the dir. If ID is equal then dir is compared
+    def <=>(other)
+      id_compare = @id.to_i <=> other.id.to_i
+      if id_compare == 0
+        @dir <=> other.dir
+      else
+        id_compare
+      end
     end
 
     # Updates the task with new values. Except for note and tags which are

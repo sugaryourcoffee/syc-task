@@ -39,7 +39,13 @@ module Syctask
     # and time is added.
     def initialize(options={}, title, id)
       @creation_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
-      @title = title
+      if title.size > 60
+        @title = title[0..57] + '...'
+        options[:note] += "\n..." + title if options[:note]
+        options[:note] = "..." + title unless options[:note]
+      else
+        @title = title
+      end
       @options = options
       @options[:note] = 
                   "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]

@@ -312,7 +312,7 @@ previous call is available otherwise false</p>
 
           
           <div class="method-source-code" id="restore-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 120</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 121</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restore</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">busy_time</span>, <span class="ruby-identifier">meetings</span>, <span class="ruby-identifier">assignments</span> = <span class="ruby-identifier">restore_state</span>
   <span class="ruby-ivar">@work_time</span>   = <span class="ruby-identifier">work_time</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-value">:work_time</span>
@@ -420,7 +420,7 @@ href="http://"A","1,2,3"">set_task_assignments([</a>,[“B”,“2,5,6,7”]])</
 
           
           <div class="method-source-code" id="set_task_assignments-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 83</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 84</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_task_assignments</span>(<span class="ruby-identifier">assignments</span>)
   <span class="ruby-ivar">@assignments</span> = <span class="ruby-identifier">assignments</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-constant">ASSIGNMENT_PATTERN</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;No valid assignment&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@assignments</span>.<span class="ruby-identifier">empty?</span> 
@@ -446,12 +446,12 @@ href="http://"A","1,2,3"">set_task_assignments([</a>,[“B”,“2,5,6,7”]])</
 
         <div class="method-description">
           
-          
+          <p>Sets the tasks for scheduling</p>
           
 
           
           <div class="method-source-code" id="set_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 77</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 78</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_tasks</span>(<span class="ruby-identifier">tasks</span>)
   <span class="ruby-ivar">@tasks</span> = <span class="ruby-identifier">tasks</span>
 <span class="ruby-keyword">end</span></pre>
@@ -515,7 +515,7 @@ Invokation: <a href="http://"8","0","18","30"">set_work_time(</a>)</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 134</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">schedule</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Schedule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@work_time</span>, <span class="ruby-ivar">@busy_time</span>, <span class="ruby-ivar">@meetings</span>, <span class="ruby-ivar">@tasks</span>)
   <span class="ruby-identifier">schedule</span>.<span class="ruby-identifier">assign</span>(<span class="ruby-ivar">@assignments</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@assignments</span>

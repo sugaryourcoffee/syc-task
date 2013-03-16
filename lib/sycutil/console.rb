@@ -1,6 +1,6 @@
 require 'io/wait'
 
-# Module Inspector contains functions related to the Console that is helpers
+# Module Sycutil contains functions related to the Console that is helpers
 # for user input
 module Sycutil
   

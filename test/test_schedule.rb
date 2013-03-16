@@ -2,6 +2,7 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/schedule.rb'
 
+# Tests for the Schedule class
 class TestSchedule < Test::Unit::TestCase
 
   context "Schedule" do

@@ -2,6 +2,7 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/times.rb'
 
+# Tests for the Times class
 class TestTimes < Test::Unit::TestCase
 
   context "Time" do

@@ -77,7 +77,17 @@
   </ul>
 </nav>
 
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-i-extract_time">#extract_time</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -190,6 +200,58 @@
 
     <!-- Methods -->
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-extract_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_time</span><span
+            class="method-args">(time_string)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the time out of a time string. Accepts ‘today’, ‘tomorrow’ or a
+date in the form ‘YYYY-MM-DD’. Returns the date contained in the
+time_string</p>
+          
+
+          
+          <div class="method-source-code" id="extract_time-source">
+            <pre><span class="ruby-comment"># File bin/syctask, line 480</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>)
+  <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">downcase</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'today'</span>
+    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-string">'tomorrow'</span>
+    <span class="ruby-identifier">date</span> = (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> (<span class="ruby-value">60</span> * <span class="ruby-value">60</span> * <span class="ruby-value">24</span>)).<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>)
+      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">time_string</span> 
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">nil</span>
+      <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">help_now!</span> <span class="ruby-string">&quot;Arguments may be 'today', 'tomorrow', YYYY-MM-DD or &lt;RETURN&gt;&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- extract_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- extract_time-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

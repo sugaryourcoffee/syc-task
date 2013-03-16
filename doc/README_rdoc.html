@@ -123,7 +123,7 @@
   
 <h1 id="label-Simple+task+organizer">Simple task organizer</h1>
 
-<p>With syctask you can organize your tasks.</p>
+<p>syctask can be used to create, plan, prioritize and schedule tasks.</p>
 
 <h2 id="label-Install">Install</h2>
 
@@ -133,7 +133,7 @@
 
 <h2 id="label-Usage">Usage</h2>
 
-<p>syctask provides basic task organizer functions as create, update, list und
+<p>syctask provides basic task organizer functions as create, update, list and
 complete a task. Additional functions are to plan tasks you want to
 accomplish today. If you are not sure in which sequence to conduct the task
 you can prioritize them with a pair wise comparisson. You can time tasks
@@ -165,7 +165,7 @@ the meetings.</p>
 
 <pre>$ syctask new</pre>
 
-<p>will prompt for task titles. When read C-D will end input.</p>
+<p>will prompt for task titles. Ctrl-D will end input.</p>
 
 <p>Except for –description you can also provide short forms for the options.</p>
 
@@ -189,6 +189,35 @@ Duration (1 = 15 minutes, return 30 minutes): 3
 <pre>$ syctask plan --id &quot;1,3,5,8&quot;
 1 - My first task
 (a)dd, (c)omplete, (s)kip, (q)uit?</pre>
+
+<h3 id="label-Prioritize+tasks">Prioritize tasks</h3>
+
+<p>Planned tasks can be prioritized in a pair wise comparisson. So each task
+is compared to all other tasks. The task with the highest priority will
+bubble on top followed by the task with the next highest priority and so
+on.</p>
+
+<pre>$ syctask prio
+ 1: My first task
+ 2: My second task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: h
+ 1: My first task
+ 2: My third task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: l
+ 1: My third task
+ 2: My fourth task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: h
+...</pre>
+
+<p>syctask schedule will then print tasks as follows</p>
+
+<pre>Tasks
+-----
+0: 10 - My fourth task
+1:  7 - My third task
+2:  3 - My first task
+3:  9 - My second task 
+...</pre>
 
 <h3 id="label-Create+schedule">Create schedule</h3>
 
@@ -268,13 +297,205 @@ overridden rather supplemented with the update value.</p>
 
 <pre>$ syctask done 1 --note &quot;Finalize my first task&quot;</pre>
 
+<h3 id="label-Delete+tasks">Delete tasks</h3>
+
+<p>Delete tasks with ID 1,3 and 5 from the default task directory</p>
+
+<pre>$ syctask delete --id 1,3,5</pre>
+
+<p>Delete tasks with ID 8 and 12 from the planned tasks of today. The tasks
+are only removed from the planned tasks and not physically deleted.</p>
+
+<pre>$ syctask delete --plan today --id 8,12</pre>
+
+<h3 id="label-Task+directory+and+project+directory">Task directory and project directory</h3>
+
+<p>The global options –taskdir and –project determine where the command finds
+or creates the tasks. The default task directory is ~/.tasks, so if no task
+directory is specified all commands obtain tasks from or create tasks in
+~/.tasks. If a project is specified the tasks will be saved to or obtained
+from the task directories subdirectory specified with the –project flag.</p>
+
+<pre>--taskdir  --project   Tasks in
+    -           -      default_task_dir
+    x           -      task_dir
+    -           x      default_task_dir/project
+    x           x      task_dir/project</pre>
+
+<p>In the table the relation of commands to –taskdir and –project are listed.</p>
+
+<pre>Command  --taskdir  --project  Comment
+delete        x          x     deletes the tasks in taskdir/project 
+done          x          x     marks tasks in taskdir/project as done
+help          -          -          
+list          x          x     lists tasks in taskdir/project
+new           x          x     creates tasks in taskdir/project
+plan          x          x     retrieves tasks to plan from taskdir/projekt
+prio          -          -     input to prio are planned tasks (see plan)
+scan          x          x     creates scanned tasks in taskdir/project
+schedule      -          -     schedules the planned tasks (see plan)
+start         -          -     starts task from planned tasks (see plan)
+stop          -          -     stops task from planned task
+update        x          x     updates task in taskdir/project</pre>
+
+<h3 id="label-Files">Files</h3>
+<ul><li>
+<p>Task files</p>
+</li></ul>
+
+<p>The tasks are named ID.task where ID is any Integer as 10.task. The files
+are saved as YAML files and can be edited directly.</p>
+<ul><li>
+<p>Planned tasks files</p>
+</li></ul>
+
+<p>The planned tasks are save to YYYY-MM-DD_planned_tasks in the default task
+directory. Each task is saved with the tasks directory and the ID.</p>
+<ul><li>
+<p>Schedule files</p>
+</li></ul>
+
+<p>The schedule is saved to YYYY-MM-DD_schedule in the default task directory.
+The files are saved as YAML files and can be changed manually.</p>
+
+<h2 id="label-Working+with+syctask">Working with syctask</h2>
+
+<p>To work with syctask and get the most out of it there is to follow a
+certain process.</p>
+
+<h3 id="label-Creating+a+schedule">Creating a schedule</h3>
+
+<h4 id="label-View+tasks">View tasks</h4>
+
+<p>In the morning before I start to work I scan my tasks with syctask list to
+get an overview of my open tasks.</p>
+
+<pre>$ syctask list</pre>
+
+<h4 id="label-Plan+tasks">Plan tasks</h4>
+
+<p>Next I start the planning phase with syctask plan. If I have a specific
+schedule for the day I will filter for the respective tasks</p>
+
+<pre>$ syctask plan</pre>
+
+<h4 id="label-Prioritize+tasks+%28optionally%29">Prioritize tasks (optionally)</h4>
+
+<p>If I want to process the tasks in a specific sequence I prioritize the
+tasks with</p>
+
+<pre>$ syctask prio</pre>
+
+<h4 id="label-Create+schedule">Create schedule</h4>
+
+<p>I create a schedule with my working hours and meetings that have been
+scheduled with</p>
+
+<pre>$ syctask -w &quot;8:00-18:00&quot; -b &quot;9:00-10:00,14:30-16:00&quot; -m &quot;Team,Status&quot;</pre>
+
+<h4 id="label-Create+an+agenda">Create an agenda</h4>
+
+<p>I assign the topics I want to discuss in the meetings to the meetings with</p>
+
+<pre>syctask schedule -a &quot;A:1,3,6;B:3,5&quot;</pre>
+
+<h4 id="label-Start+a+task">Start a task</h4>
+
+<p>To begin I start the first task in the schedule with syctask start 0 (where
+0 is the sequence of the planned tasks, the ID is different e.g. 23)</p>
+
+<pre>$ syctask start 0</pre>
+
+<h4 id="label-End+a+task">End a task</h4>
+
+<p>To end the task I invoke</p>
+
+<pre>$ syctask stop</pre>
+
+<p>This will stop the last started task</p>
+
+<h4 id="label-Complete+a+task">Complete a task</h4>
+
+<p>When the task is done I call</p>
+
+<pre>$ syctask done 23</pre>
+
+<h3 id="label-Attachements">Attachements</h3>
+<ul><li>
+<p>E-mails</p>
+</li></ul>
+
+<p>If an e-mail creates a task I create a new task with syctask new
+title_of_task. The subject of the e-mail I prepend with the ID and move the
+e-mail to a <strong>open topics</strong> directory.</p>
+<ul><li>
+<p>Files</p>
+</li></ul>
+
+<p>If I create files in the course of a task I create a folder in the task
+directory with the ID and save the files in this directory. If there is an
+existing directory I link to the file from the ID directory</p>
+
 <h2 id="label-Supported+platform">Supported platform</h2>
 
 <p>syc-task has been tested with 1.9.3</p>
 
+<h2 id="label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</h2>
+
+<p>To activate bash’s TAB-completion following lines have to be added to
+~/.bashrc</p>
+
+<pre>complete -F get_syctask_commands syctask
+
+function get_syctask_commands
+{
+  if [ -z $2 ] ; then
+    COMPREPLY=(`syctask help -c`)
+  else
+    COMPREPLY=(`syctask help -c $2`)
+  fi
+}</pre>
+
+<p>After ~/.bashrc has been updated the shell session has to be restarted with</p>
+
+<pre>$ source ~/.bashrc</pre>
+
+<p>Now syctask followed by TAB TAB will print</p>
+
+<pre>$ syctask &lt;TAB&gt;&lt;TAB&gt;
+delete done list plan scan stop _doc help new prio schedule start update</pre>
+
+<p>To complete a command we can type</p>
+
+<pre>$ syctask sch&lt;TAB&gt;</pre>
+
+<p>which will complete to</p>
+
+<pre>$ syctask schedule</pre>
+
+<h2 id="label-Output+to+Printer">Output to Printer</h2>
+
+<p>To print syctask’s output to a printer pipe the command to lpr</p>
+
+<pre>$ syctask schedule | lpr</pre>
+
+<p>This will print the schedule to the default printer.</p>
+
+<p>To determine all available printer lpstat can be used with the lpstat -a
+command</p>
+
+<pre>$ lpstat -a
+Canon-LBP6650-3470 accepting requests since Sat 16 Mar 2013 04:26:15 PM CET
+Dell-B1160w-Mono accepting requests since Sat 16 Mar 2013 04:27:45 PM CET</pre>
+
+<p>To print to Dell-B1160w-Mono the following command can be used</p>
+
+<pre>$ syctask schedule | lpr -P Dell-B1160w-Mono</pre>
+
 <h2 id="label-Notes">Notes</h2>
 
-<p>As with version 0.0.1 only new, update, list and done is implemented.</p>
+<p>With version 0.0.1 new, update, list and done is implemented. with version
+0.0.4 start, stop, scan and prio is not implemented.</p>
 
 <p>The test files live in the folder test and start with test_.</p>
 

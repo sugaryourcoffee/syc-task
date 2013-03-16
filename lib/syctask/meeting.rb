@@ -2,11 +2,17 @@ require_relative 'times.rb'
 
 module Syctask
 
- class Meeting
+  # Meeting represents a meeting containing the begin and end time, a title and
+  # an agenda consisting of tasks
+  class Meeting
 
+    # The start time of the meeting
     attr_accessor :starts
+    # The end time of the meeting
     attr_accessor :ends
+    # The title of the meeting
     attr_accessor :title
+    # The agenda or tasks of the meeting
     attr_accessor :tasks
 
     # Sets the busy time for the schedule. The busy times have to be provided

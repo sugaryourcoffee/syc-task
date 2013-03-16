@@ -3,11 +3,18 @@ require_relative '../sycutil/console.rb'
 require_relative 'task_service.rb'
 
 module Syctask
+  # String that is prompted during planning
   PROMPT_STRING = '(a)dd, (c)omplete, (s)kip, (q)uit: '
+  # String that is prompted during prioritization
+  PRIORITIZE_STRING = 'Task 1 has (h)igher or (l)ower priority, or (q)uit: '
 
+  # A TaskPlanner prompts the user to select tasks for today. These tasks can
+  # be prioritized to determine the most to the least important tasks.
   class TaskPlanner
+    # The task where the planned tasks are saved to
     WORK_DIR = File.expand_path("~/.tasks")
 
+    # Creates a new TaskPlanner
     def initialize
       @console = Sycutil::Console.new
       @service = TaskService.new
@@ -52,6 +59,33 @@ module Syctask
       end
       save_tasks(planned)
       count
+    end
+
+    # Prioritize tasks by pair wise comparisson. Each task is compared to the
+    # other tasks and the user can select the task with the higher priority. So
+    # the task with highest priority will bubble on top followed by the task
+    # with second highest priority and so on.
+    def prioritize_tasks(date=Time.now.strftime("%Y-%m-%d"), filter={})
+      tasks = get_tasks(date, filter)
+      return false if tasks.nil?
+      quit = false
+      0.upto(tasks.size-1) do |i|
+        (i+1).upto(tasks.size-1) do |j|
+          puts " 1: #{tasks[i].title}"
+          puts " 2: #{tasks[j].title}"
+          choice = @console.prompt PRIORITIZE_STRING
+          case choice
+          when 'q'
+            quit = true
+            break
+          when 'l'
+            tasks[i],tasks[j] = tasks[j],tasks[i]
+          end
+        end
+        break if quit
+      end
+      save_tasks(tasks, true)
+      true
     end
 
     # Add the tasks to the planned tasks

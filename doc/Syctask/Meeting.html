@@ -158,6 +158,9 @@
 
   <div id="description" class="description">
     
+<p><a href="Meeting.html">Meeting</a> represents a meeting containing the
+begin and end time, a title and an agenda consisting of tasks</p>
+
   </div><!-- description -->
 
   
@@ -184,7 +187,7 @@
 
         <div class="method-description">
         
-        
+        <p>The end time of the meeting</p>
         
         </div>
       </div>
@@ -197,7 +200,7 @@
 
         <div class="method-description">
         
-        
+        <p>The start time of the meeting</p>
         
         </div>
       </div>
@@ -210,7 +213,7 @@
 
         <div class="method-description">
         
-        
+        <p>The agenda or tasks of the meeting</p>
         
         </div>
       </div>
@@ -223,7 +226,7 @@
 
         <div class="method-description">
         
-        
+        <p>The title of the meeting</p>
         
         </div>
       </div>
@@ -254,7 +257,7 @@ hh:mm-hh:mm. Optionally a title for the busy time can be provided</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/meeting.rb, line 14</span>
+            <pre><span class="ruby-comment"># File lib/syctask/meeting.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">title</span>=<span class="ruby-string">&quot;&quot;</span>, <span class="ruby-identifier">tasks</span>=[])
   <span class="ruby-ivar">@starts</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">time</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">1</span>])
   <span class="ruby-ivar">@ends</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">time</span>[<span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">3</span>])

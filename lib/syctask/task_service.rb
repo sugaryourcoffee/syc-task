@@ -6,6 +6,8 @@ module Syctask
   # Provides services to operate tasks as create, read, find, update and save
   # Task objects
   class TaskService
+    # Default directory where the tasks are saved to if no directory is
+    # specified
     DEFAULT_DIR = File.expand_path("~/.tasks")
 
     # Creates a new task in the specified directory, with the specified options

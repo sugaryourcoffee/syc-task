@@ -3,10 +3,12 @@ require 'shoulda'
 require_relative '../lib/syctask/task_service.rb'
 require_relative '../lib/syctask/task_planner.rb'
 
+# Tests for the TaskPlanner class
 class TestTaskPlanner < Test::Unit::TestCase
 
   context "TaskPlanner" do
     
+    # Sets up the test and initializes variables used in the tests
     def setup
       @plan_date = '2013-03-01'
       @planned_tasks_file = File.
@@ -23,6 +25,7 @@ class TestTaskPlanner < Test::Unit::TestCase
       end
     end
 
+    # Removes files and directories created during the tests
     def teardown
       FileUtils.rm_r @dir if File.exists? @dir
       FileUtils.rm @planned_tasks_file if File.exists? @planned_tasks_file
@@ -64,6 +67,21 @@ class TestTaskPlanner < Test::Unit::TestCase
         assert true
       end
     end
+
+    # A scenario would be to have Task 1 to 5 prioritized to have a result of
+    # * Task 1
+    # * Task 3
+    # * Task 5
+    # * Task 4
+    # * Task 2
+    should "prioritize tasks" do
+      puts "\nTest prioritize tasks"
+      puts "---------------------"
+      tasks = @service.find(@dir, {}, false)
+      @planner.plan_tasks(tasks, @plan_date)     
+      @planner.prioritize_tasks(@plan_date, {})
+    end
+
   end
 
 end

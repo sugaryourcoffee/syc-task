@@ -160,6 +160,9 @@
 
   <div id="description" class="description">
     
+<p><a href="Times.html">Times</a> class represents a time consisting of hour
+and minutes</p>
+
   </div><!-- description -->
 
   
@@ -186,7 +189,7 @@
 
         <div class="method-description">
         
-        
+        <p>Hour of the <a href="Times.html">Times</a> object</p>
         
         </div>
       </div>
@@ -199,7 +202,7 @@
 
         <div class="method-description">
         
-        
+        <p>Minute of the <a href="Times.html">Times</a> object</p>
         
         </div>
       </div>
@@ -224,12 +227,14 @@
 
         <div class="method-description">
           
-          
+          <p>Creates a new <a href="Times.html">Times</a> object. time has to be
+provided as an array with the content as [“hour”,“minute”] e.g. [“10”,“15”]
+is 15 past 10</p>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 8</span>
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">time</span>)
   <span class="ruby-ivar">@h</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
   <span class="ruby-ivar">@m</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
@@ -261,12 +266,12 @@
 
         <div class="method-description">
           
-          
+          <p>Rounds the time to the next hour if minutes is greater than 0</p>
           
 
           
           <div class="method-source-code" id="round_up-source">
-            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">round_up</span>
   <span class="ruby-ivar">@m</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@h</span><span class="ruby-operator">+</span><span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@h</span>
 <span class="ruby-keyword">end</span></pre>

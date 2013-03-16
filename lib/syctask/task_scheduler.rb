@@ -74,6 +74,7 @@ module Syctask
       @meetings = titles.split(",") if titles
     end
 
+    # Sets the tasks for scheduling
     def set_tasks(tasks)
       @tasks = tasks
     end

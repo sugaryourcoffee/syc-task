@@ -355,10 +355,14 @@ command :schedule do |c|
   end
 end
 
-desc 'Prioritize tasks'
+desc 'Prioritize tasks of today, tomorrow or another day'
+arg_name 'DATE'
+default_value 'today'
 command :prio do |c|
   c.action do |global_options,options,args|
-    puts "prio command not implemented yet"
+    time = extract_time(args[0])
+    planner = Syctask::TaskPlanner.new
+    planner.prioritize_tasks(time)
   end
 end
 
@@ -469,6 +473,26 @@ on_error do |exception|
   # Error logic here
   # return false to skip default error handling
   true
+end
+
+# Extracts the time out of a time string. Accepts 'today', 'tomorrow' or a date
+# in the form 'YYYY-MM-DD'. Returns the date contained in the time_string
+def extract_time(time_string)
+  time_string = 'today' if time_string.nil?
+  case time_string.downcase
+  when 'today'
+    date = Time.now.strftime("%Y-%m-%d")
+  when 'tomorrow'
+    date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
+  else
+    if time_string.match(/\d{4}-\d{2}-\d{2}/)
+      date = time_string 
+    elsif nil
+      date = Time.now.strftime("%Y-%m-%d")
+    else
+      help_now! "Arguments may be 'today', 'tomorrow', YYYY-MM-DD or <RETURN>"
+    end
+  end
 end
 
 exit run(ARGV)

@@ -160,6 +160,8 @@
 
   <div id="description" class="description">
     
+<p>Tests for the TaskScheduler class</p>
+
   </div><!-- description -->
 
   
@@ -191,12 +193,13 @@
 
         <div class="method-description">
           
-          
+          <p>Sets up the test case and initializes the directory for the test tasks to
+live</p>
           
 
           
           <div class="method-source-code" id="setup-source">
-            <pre><span class="ruby-comment"># File test/test_task_scheduler.rb, line 8</span>
+            <pre><span class="ruby-comment"># File test/test_task_scheduler.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
   <span class="ruby-ivar">@dir</span> = <span class="ruby-string">&quot;test/tasks&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -221,12 +224,12 @@
 
         <div class="method-description">
           
-          
+          <p>Removes after each test the test task directory</p>
           
 
           
           <div class="method-source-code" id="teardown-source">
-            <pre><span class="ruby-comment"># File test/test_task_scheduler.rb, line 12</span>
+            <pre><span class="ruby-comment"># File test/test_task_scheduler.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
   <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span> <span class="ruby-ivar">@dir</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@dir</span>
 <span class="ruby-keyword">end</span></pre>

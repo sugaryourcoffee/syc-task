@@ -38,11 +38,28 @@
       <li><a href="README_rdoc.html#label-Usage">Usage</a>
       <li><a href="README_rdoc.html#label-Create+tasks+with+new">Create tasks with new</a>
       <li><a href="README_rdoc.html#label-Plan+tasks">Plan tasks</a>
+      <li><a href="README_rdoc.html#label-Prioritize+tasks">Prioritize tasks</a>
       <li><a href="README_rdoc.html#label-Create+schedule">Create schedule</a>
       <li><a href="README_rdoc.html#label-List+tasks">List tasks</a>
       <li><a href="README_rdoc.html#label-Update+tasks">Update tasks</a>
       <li><a href="README_rdoc.html#label-Complete+tasks">Complete tasks</a>
+      <li><a href="README_rdoc.html#label-Delete+tasks">Delete tasks</a>
+      <li><a href="README_rdoc.html#label-Task+directory+and+project+directory">Task directory and project directory</a>
+      <li><a href="README_rdoc.html#label-Files">Files</a>
+      <li><a href="README_rdoc.html#label-Working+with+syctask">Working with syctask</a>
+      <li><a href="README_rdoc.html#label-Creating+a+schedule">Creating a schedule</a>
+      <li><a href="README_rdoc.html#label-View+tasks">View tasks</a>
+      <li><a href="README_rdoc.html#label-Plan+tasks">Plan tasks</a>
+      <li><a href="README_rdoc.html#label-Prioritize+tasks+%28optionally%29">Prioritize tasks (optionally)</a>
+      <li><a href="README_rdoc.html#label-Create+schedule">Create schedule</a>
+      <li><a href="README_rdoc.html#label-Create+an+agenda">Create an agenda</a>
+      <li><a href="README_rdoc.html#label-Start+a+task">Start a task</a>
+      <li><a href="README_rdoc.html#label-End+a+task">End a task</a>
+      <li><a href="README_rdoc.html#label-Complete+a+task">Complete a task</a>
+      <li><a href="README_rdoc.html#label-Attachements">Attachements</a>
       <li><a href="README_rdoc.html#label-Supported+platform">Supported platform</a>
+      <li><a href="README_rdoc.html#label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</a>
+      <li><a href="README_rdoc.html#label-Output+to+Printer">Output to Printer</a>
       <li><a href="README_rdoc.html#label-Notes">Notes</a>
       <li><a href="README_rdoc.html#label-License">License</a>
       <li><a href="README_rdoc.html#label-Links">Links</a>
@@ -142,17 +159,19 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
-    <li class="method"><a href="Syctask/Meeting.html#method-c-new">::new &mdash; Syctask::Meeting</a>
+    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
   
-    <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
+    <li class="method"><a href="Syctask/Meeting.html#method-c-new">::new &mdash; Syctask::Meeting</a>
   
     <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-c-new">::new &mdash; Syctask::TaskScheduler</a>
   
-    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
-  
     <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
+  
+    <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
+  
+    <li class="method"><a href="Syctask/Task.html#method-i-3C-3D-3E">#<=> &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-3D-3D">#== &mdash; Syctask::Task</a>
   
@@ -175,6 +194,8 @@
     <li class="method"><a href="Syctask/Task.html#method-i-done">#done &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-done-3F">#done? &mdash; Syctask::Task</a>
+  
+    <li class="method"><a href="Object.html#method-i-extract_time">#extract_time &mdash; Object</a>
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-find">#find &mdash; Syctask::TaskService</a>
   
@@ -200,6 +221,8 @@
   
     <li class="method"><a href="Syctask/Task.html#method-i-print_pretty">#print_pretty &mdash; Syctask::Task</a>
   
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-i-prioritize_tasks">#prioritize_tasks &mdash; Syctask::TaskPlanner</a>
+  
     <li class="method"><a href="Sycutil/Console.html#method-i-prompt">#prompt &mdash; Sycutil::Console</a>
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-read">#read &mdash; Syctask::TaskService</a>
@@ -222,29 +245,29 @@
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-set_work_time">#set_work_time &mdash; Syctask::TaskScheduler</a>
   
-    <li class="method"><a href="TestTaskService.html#method-i-setup">#setup &mdash; TestTaskService</a>
-  
-    <li class="method"><a href="TestTaskScheduler.html#method-i-setup">#setup &mdash; TestTaskScheduler</a>
-  
     <li class="method"><a href="TestEvaluator.html#method-i-setup">#setup &mdash; TestEvaluator</a>
   
+    <li class="method"><a href="TestTaskService.html#method-i-setup">#setup &mdash; TestTaskService</a>
+  
     <li class="method"><a href="TestTaskPlanner.html#method-i-setup">#setup &mdash; TestTaskPlanner</a>
+  
+    <li class="method"><a href="TestTaskScheduler.html#method-i-setup">#setup &mdash; TestTaskScheduler</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-show">#show &mdash; Syctask::TaskScheduler</a>
   
     <li class="method"><a href="TestTaskService.html#method-i-teardown">#teardown &mdash; TestTaskService</a>
   
-    <li class="method"><a href="TestTaskScheduler.html#method-i-teardown">#teardown &mdash; TestTaskScheduler</a>
-  
     <li class="method"><a href="TestTaskPlanner.html#method-i-teardown">#teardown &mdash; TestTaskPlanner</a>
+  
+    <li class="method"><a href="TestTaskScheduler.html#method-i-teardown">#teardown &mdash; TestTaskScheduler</a>
   
     <li class="method"><a href="TestDefault.html#method-i-test_the_truth">#test_the_truth &mdash; TestDefault</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-i-time_caption">#time_caption &mdash; Syctask::Schedule</a>
   
-    <li class="method"><a href="Syctask/TaskService.html#method-i-update">#update &mdash; Syctask::TaskService</a>
-  
     <li class="method"><a href="Syctask/Task.html#method-i-update">#update &mdash; Syctask::Task</a>
+  
+    <li class="method"><a href="Syctask/TaskService.html#method-i-update">#update &mdash; Syctask::TaskService</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-update-3F">#update? &mdash; Syctask::Task</a>
   

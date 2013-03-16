@@ -2,13 +2,17 @@ require 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_scheduler.rb'
 
+# Tests for the TaskScheduler class
 class TestTaskScheduler < Test::Unit::TestCase
 
   context "TaskScheduler" do
+    # Sets up the test case and initializes the directory for the test tasks to
+    # live
     def setup
       @dir = "test/tasks"
     end
 
+    # Removes after each test the test task directory
     def teardown
       FileUtils.rm_r @dir if File.exists? @dir
     end

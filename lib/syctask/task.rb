@@ -26,6 +26,8 @@ module Syctask
     attr_reader :id
     # Duration specifies the planned time for processing the task
     attr_accessor :duration
+    # Lead time is the time this task has been processed
+    attr_accessor :lead_time
     # Creation date
     attr_reader :creation_date
     # Update date

@@ -27,9 +27,28 @@ class TestTaskTracker < Test::Unit::TestCase
 
     should "create task tracker" do
       tracker = Syctask::TaskTracker.new
-      assert tracker.start(@service.read @dir, @ids[0])
-      refute tracker.start(@service.read @dir, @ids[0])
-      assert_equal 0, tracker.stop.size
+
+      result = tracker.start(@service.read @dir, @ids[0])
+      assert_equal [true, nil], result
+      
+      result = tracker.start(@service.read @dir, @ids[0])
+      assert_equal [false, nil], result
+
+      refute_nil tracker.stop
+
+      result = tracker.start(@service.read @dir, @ids[1])
+      assert_equal [true, nil], result
+
+      refute_nil tracker.tracked_task
+
+      result = tracker.start(@service.read @dir, @ids[2])
+      assert result[0]
+      refute_nil result[1]
+
+      refute_nil tracker.stop
+
+      assert_nil tracker.tracked_task
+
     end
 
   end

@@ -15,6 +15,8 @@ module Syctask
     
     # File name of the file where the tracked files are saved to
     TRACKED_TASKS_FILE = Syctask::WORK_DIR + '/' + 'tracked_tasks'
+    # File name of the task log file
+    TASK_LOG_FILE = Syctask::WORK_DIR + '/' + 'tasks.log'
 
     # Creates a new TaskTracker
     def initialize
@@ -22,39 +24,40 @@ module Syctask
       load_tracks
     end
 
-    # When a task is started it is saved to the started_tasks file with the
-    # start time. When it is stopped (see #stop) it is removed from the
-    # started_tasks file and the processing time is added to the lead_time
-    # field of the task. A started task will print every 15 minutes a message
-    # to the console. Returns true if the task is started. To try to start an
-    # already running task will return false indicating that the task has
-    # already been started. True is returned if the task has been started.
+    # When a task is started it is saved with the start time. If a task is
+    # already tracked it is stopped (see #stop).  A started task will print 
+    # every 15 minutes a message to the console. 
+    # start returns
+    # * [false, nil ] if the task is already tracked 
+    # * [true,  nil ] if the task is started and no task was running. 
+    # * [true,  task] if task is started and the previously running task stopped
     def start(task)
       index = @tasks.find_index(task)
-      return false if not index.nil? and index == 0
+      return [false, nil] if not index.nil? and index == 0
 
-      if index.nil?
-        track = Track.new(task)
-      else
-        stop
-        track = @tracks.delete_at(index)
-      end
+      stopped_task = stop
+      track = Track.new(task)
 
       track.start
+      log_task(:start, track)
+
       @tracks.insert(0,track)
 
       @tasks.insert(0,task)
 
       save_tracks
 
-      true
+      [true, stopped_task]
       
     end
 
     # When a task is stopped it is removed from the started_tasks file and the
     # processing time is added to the lead_time field of the task. #stop
-    # returns the currently started but idling tasks in the started_tasks file.
+    # returns the stopped task in an Array or an empty Array if no task is
+    # running an hence no task can be stopped.
     def stop
+      return nil unless @tasks[0]
+
       task = @tasks[0]
       if task.lead_time
         task.lead_time += @tracks[0].stop
@@ -63,9 +66,17 @@ module Syctask
       end
 
       @service.save(task.dir, task)
+      log_task(:stop, @tracks[0])
+
       @tracks.delete_at(0)
       @tasks.delete_at(0)
-      @tasks
+      save_tracks
+      task
+    end
+
+    # Retrieves the currently tracked task returns nil if no task is tracked
+    def tracked_task
+      @tasks[0]
     end
 
     private
@@ -92,6 +103,19 @@ module Syctask
       end
     end
 
+    # Logs the start and stop of a task.
+    def log_task(type, track)
+      FileUtils.mkdir_r Syctask::WORK_DIR unless File.exists? Syctask::WORK_DIR
+      File.open(TASK_LOG_FILE, 'a') do |file|
+        log_entry =  "#{type.to_s};"
+        log_entry += "#{track.id}-#{track.dir};"
+        log_entry += "#{track.title};"
+        log_entry += "#{track.started};"
+        log_entry += "#{track.stopped}" 
+        file.puts log_entry
+      end
+    end
+
   end
 
   # A Track holds a task and stops the time the task is processed. The Track
@@ -104,6 +128,11 @@ module Syctask
     # ID of the tracked task
     attr_reader :id
     # Title of the tracked task
+    attr_reader :title
+    # When tracking started
+    attr_reader :started
+    # When tracking stopped
+    attr_reader :stopped
 
     # Creates a new Track for the provided task
     def initialize(task)

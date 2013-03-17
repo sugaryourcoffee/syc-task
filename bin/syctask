@@ -366,18 +366,48 @@ command :prio do |c|
   end
 end
 
-desc 'Start and time a task'
-arg_name 'TASK_NUMBER'
+desc 'Start tracking a task'
+arg_name 'TASK_NUMBER|PLAN|TALK|PHONE|EMAIL'
 command :start do |c|
+
+  c.desc 'Show currently tracked task'
+  c.switch [:t, :task] 
+ 
   c.action do |global_options,options,args|
-    puts "start command not implemented yet"
+    tracker = Syctask::TaskTracker.new
+    if args[0]
+      task = @service.read(global_options[:taskdir], args[0])
+      started, stopped = tracker.start(task)
+      if started
+        puts sprintf("--> tracking %s", 
+                     "#{task.id} - #{task.title}").color(:green)
+      else
+        puts sprintf("--> allready tracking %s", 
+                     "#{task.id} - #{task.title}").color(:red)
+      end
+      if stopped
+        puts sprintf("--> stopped %s",
+                     "#{stopped.id} - #{stopped.title}").color(:green)
+      end
+    end
+    if options[:task]
+      task = tracker.tracked_task
+      puts sprintf("%s", "--> no task tracked").color(:red) unless task
+      puts sprintf("%s", "--> #{task.id} - #{task.title}").color(:green) if task
+    end
   end
 end
 
-desc 'Stop the running task'
+desc 'Stop the tracked task'
 command :stop do |c|
   c.action do |global_options,options,args|
-    puts "stop command not implemented yet"
+    tracker = Syctask::TaskTracker.new
+    task = tracker.stop
+    if task
+      puts sprintf("--> stopped %s", "#{task.id} - #{task.title}").color(:green)
+    else
+      puts sprintf("--> %s", "no task tracked").color(:red)
+    end
   end
 end
 

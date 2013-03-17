@@ -31,7 +31,7 @@ module Syctask
     # does not exist nil is returned otherwise the task is returned
     def read(dir, id)
       task = nil
-      Dir.glob("#{dir}/*").each do |file|
+      Dir.glob("#{dir}/*.task").each do |file|
         task = YAML.load_file(file) if File.file? file
         if not task.nil? and task.class == Syctask::Task and task.id == id.to_i
           return task 

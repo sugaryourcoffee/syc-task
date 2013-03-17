@@ -23,6 +23,8 @@ lib/syctask/meeting.rb
 lib/syctask/times.rb
 lib/syctask/schedule.rb
 lib/sycutil/console.rb
+lib/syctask/environment.rb
+lib/syctask/task_tracker.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true

@@ -8,6 +8,7 @@ class TestTaskTracker < Test::Unit::TestCase
 
   context "TaskTracker" do
 
+    # Create variables and tasks for tests
     def setup
       @origin = Syctask::TaskTracker::TRACKED_TASKS_FILE
       @copy = @origin + '.copy'
@@ -20,6 +21,7 @@ class TestTaskTracker < Test::Unit::TestCase
       end
     end
 
+    # Remove created files and directories during tests
     def teardown
       FileUtils.mv @copy, @origin if File.exists? @copy
       FileUtils.rm_r @dir if File.exists? @dir

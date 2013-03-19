@@ -93,6 +93,10 @@ module Syctask
       save_tasks(tasks)
     end
 
+    # Moves the specified tasks to the specified date
+    def move_tasks(tasks, date)
+    end
+
     # Remove planned tasks from the task plan based on the provided filter
     # (filter options see Task#matches?). Returns the count of removed tasks
     def remove_tasks(date=Time.now.strftime("%Y-%m-%d"), filter={})

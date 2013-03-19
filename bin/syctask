@@ -2,6 +2,7 @@
 require 'gli'
 require 'syctask'
 include GLI::App
+include Syctime
 
 program_desc 'A simple task manager'
 
@@ -288,6 +289,9 @@ command :plan do |c|
       STDOUT.puts sprintf("--> found %d planned task(s) for %s", count, date).
                          color(:green)
     elsif move
+      count = @planner.move_tasks(@service.find(global_options[:t], options, 
+                                                false), date)
+      STDOUT.puts sprintf("--> %d task(s) moved", count).color(:green)
       puts "move not implemented yet"
     else
       count = @planner.plan_tasks(@service.find(global_options[:t], options, 
@@ -404,6 +408,7 @@ command :start do |c|
       if stopped
         puts sprintf("--> stopped %s",
                      "#{stopped.id} - #{stopped.title}").color(:green)
+        puts sprintf("    %s", "#{string_for_seconds(stopped.lead_time)}").color(:green)
       end
     end
     if options[:list]
@@ -421,7 +426,8 @@ command :stop do |c|
     task = tracker.stop
     if task
       puts sprintf("--> stopped %s", "#{task.id} - #{task.title}").color(:green)
-    else
+      puts sprintf("    %4s", "#{string_for_seconds(task.lead_time)}").color(:green)
+     else
       puts sprintf("--> %s", "no task tracked").color(:red)
     end
   end

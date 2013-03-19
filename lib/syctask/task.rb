@@ -82,10 +82,12 @@ module Syctask
         when :note
           new_value = "#{@update_date}\n#{new_value}\n#{@options[key]}"
         when :tags
-          if @options[key].include? new_value
-            new_value = @options[key]
-          else
-            new_value = "#{@options[key]},#{new_value}"
+          unless @options[key].nil?
+            if @options[key].include? new_value
+              new_value = @options[key]
+            else
+              new_value = "#{@options[key]},#{new_value}"
+            end
           end
         end
 

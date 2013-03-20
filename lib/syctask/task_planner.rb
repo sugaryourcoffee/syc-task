@@ -93,8 +93,13 @@ module Syctask
       save_tasks(tasks)
     end
 
-    # Moves the specified tasks to the specified date
-    def move_tasks(tasks, date)
+    # Moves the specified tasks to the specified date. Returns the count of
+    # moved files
+    def move_tasks(filter={}, from_date=Time.now.strftime("%Y-%m-%d"), to_date)
+      moved = get_tasks(from_date, filter)
+      make_todo_today_file(to_date)
+      save_tasks(moved)
+      remove_tasks(from_date, filter)
     end
 
     # Remove planned tasks from the task plan based on the provided filter

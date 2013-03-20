@@ -258,9 +258,11 @@ command :plan do |c|
  
   c.action do |global_options,options,args|
     ARGV.clear
+
+    # Any option that is no filter has to be captured before filter is created
     show = options[:show]
-    move = options[:move]
     complete = options[:complete]
+    to_date = extract_time(options[:move]) if options[:move]
 
     filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
               :note, :title]
@@ -288,11 +290,9 @@ command :plan do |c|
       end
       STDOUT.puts sprintf("--> found %d planned task(s) for %s", count, date).
                          color(:green)
-    elsif move
-      count = @planner.move_tasks(@service.find(global_options[:t], options, 
-                                                false), date)
+    elsif to_date
+      count = @planner.move_tasks(options, date, to_date)
       STDOUT.puts sprintf("--> %d task(s) moved", count).color(:green)
-      puts "move not implemented yet"
     else
       count = @planner.plan_tasks(@service.find(global_options[:t], options, 
                                                 false), date)

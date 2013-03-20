@@ -97,6 +97,10 @@ module Syctask
     # moved files
     def move_tasks(filter={}, from_date=Time.now.strftime("%Y-%m-%d"), to_date)
       moved = get_tasks(from_date, filter)
+      moved.each do |task| 
+        task.options[:follow_up] = to_date
+        @service.save(task.dir, task)
+      end
       make_todo_today_file(to_date)
       save_tasks(moved)
       remove_tasks(from_date, filter)

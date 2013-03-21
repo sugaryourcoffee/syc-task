@@ -88,8 +88,14 @@ module Syctask
       true
     end
 
+    # Add the task to the planned tasks of the specified date
+    def add_task(task, date=Time.now.strftime("%Y-%m-%d"))
+      make_todo_today_file(date)
+      save_tasks([task])
+    end
+
     # Add the tasks to the planned tasks
-    def add_tasks(tasks)
+    def add_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
       save_tasks(tasks)
     end
 

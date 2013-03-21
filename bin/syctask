@@ -56,6 +56,7 @@ command :new do |c|
     task_numbers = nil
     args.each do |title|
       task_number = @service.create(global_options[:t], options, title)
+      add_task_to_plan @service.read(global_options[:t], task_number)
       if task_numbers.nil? 
         task_numbers = task_number.to_s 
       else 
@@ -467,9 +468,12 @@ command :update do |c|
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
 
     success = @service.update(global_options[:t], args[0], options) 
-    STDOUT.puts sprintf("sucessfully updated task with TASK_NUMBER ", 
+
+    add_task_to_plan @service.read(global_options[:t], args[0]) if success
+
+    STDOUT.puts sprintf("--> sucessfully updated task with TASK_NUMBER %s ", 
                         args[0]).color(:green) if success
-    STDOUT.puts sprintf("could not update task with TASK_NUMBER ", 
+    STDOUT.puts sprintf("--> could not update task with TASK_NUMBER %s ", 
                         args[0]).color(:red) unless success
   end
 end
@@ -546,6 +550,16 @@ def extract_time(time_string)
       help_now! "Arguments may be 'today', 'tomorrow', YYYY-MM-DD or <RETURN>"
     end
   end
+end
+
+# Add task to task plan
+def add_task_to_plan(task)
+  if task.options[:follow_up]
+    @planner.add_task(task, task.options[:follow_up])
+  end
+  if task.options[:due_date]
+    @planner.add_task(task, task.options[:due_date])
+  end  
 end
 
 exit run(ARGV)

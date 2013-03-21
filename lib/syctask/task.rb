@@ -203,7 +203,7 @@ module Syctask
       end
       puts sprintf("%6s Prio: %s", " ", @options[:prio]).color(color) if @options[:prio]
       puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).color(color) if @options[:follow_up]
-      puts sprintf("%6s Due: %s", " ", @options[:due]).color(color) if @options[:due]
+      puts sprintf("%6s Due: %s", " ", @options[:due_date]).color(color) if @options[:due_date]
       if long
         if @options[:note]
           note = split_lines(@options[:note].chomp, 70)
@@ -227,7 +227,7 @@ module Syctask
     def csv_string
       string = "\n#{@id};#{@title};"
       string +" #{@options[:description]};#{@options[:prio]};"
-      string += "#{@options[:follow_up]};#{@options[:due]};"
+      string += "#{@options[:follow_up]};#{@options[:due_date]};"
       string += "#{@options[:note].gsub(/\n/, '\\n')};"
       string += "#{@options[:tags]};"
       string += "#{@creation_date};"

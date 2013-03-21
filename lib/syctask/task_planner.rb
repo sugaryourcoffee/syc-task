@@ -96,6 +96,7 @@ module Syctask
     # Moves the specified tasks to the specified date. Returns the count of
     # moved files
     def move_tasks(filter={}, from_date=Time.now.strftime("%Y-%m-%d"), to_date)
+      return 0 if from_date == to_date
       moved = get_tasks(from_date, filter)
       moved.each do |task| 
         task.options[:follow_up] = to_date

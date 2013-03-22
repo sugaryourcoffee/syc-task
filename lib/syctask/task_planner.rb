@@ -88,15 +88,20 @@ module Syctask
       true
     end
 
-    # Add the task to the planned tasks of the specified date
+    # Add the task to the planned tasks of the specified date. The task is only
+    # added if not already present
     def add_task(task, date=Time.now.strftime("%Y-%m-%d"))
-      make_todo_today_file(date)
-      save_tasks([task])
+      add_tasks([task], date)
     end
 
-    # Add the tasks to the planned tasks
+    # Add the tasks to the planned tasks. A task is only added if not already
+    # present
     def add_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
-      save_tasks(tasks)
+      planned = get_tasks(date)
+      tasks.each do |task|
+        planned << task unless planned.find_index {|t| t == task}
+      end
+      save_tasks(planned, true)
     end
 
     # Moves the specified tasks to the specified date. Returns the count of
@@ -108,8 +113,7 @@ module Syctask
         task.options[:follow_up] = to_date
         @service.save(task.dir, task)
       end
-      make_todo_today_file(to_date)
-      save_tasks(moved)
+      add_tasks(moved, to_date)
       remove_tasks(from_date, filter)
     end
 

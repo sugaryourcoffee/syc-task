@@ -61,6 +61,21 @@ module Syctask
       count
     end
 
+    # Order tasks in the provided IDs sequence at the specified date. If not
+    # IDs are provided than rest of tasks is appended to the end of the plan.
+    # Returns the count of ordered tasks and the count of the rest of the tasks.
+    def order_tasks(date, ids)
+      tasks = get_tasks(date)
+      ordered = []
+      ids.each do |id|
+        index = tasks.find_index {|t| t.id == id.to_i}
+        ordered << tasks.delete_at(index) if index
+      end
+      ordered << tasks
+      save_tasks(ordered.flatten!, true)
+      [ordered.size - tasks.size, tasks.size]
+    end
+
     # Prioritize tasks by pair wise comparisson. Each task is compared to the
     # other tasks and the user can select the task with the higher priority. So
     # the task with highest priority will bubble on top followed by the task

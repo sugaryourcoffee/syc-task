@@ -371,10 +371,21 @@ desc 'Prioritize tasks of today, tomorrow or another day'
 arg_name 'DATE'
 default_value 'today'
 command :prio do |c|
+
+  c.desc 'Prioritize in specified order'
+  c.arg_name 'ID1,ID2,ID3,...'
+  c.flag [:o, :order], :must_match => /^\d+(?:,\d+)*/ 
+
   c.action do |global_options,options,args|
     time = extract_time(args[0])
     planner = Syctask::TaskPlanner.new
-    planner.prioritize_tasks(time)
+    if options[:order]
+      ordered, rest = planner.order_tasks(time, options[:order].split(","))
+      puts sprintf("--> put %d task%s into new order and %d appended to end", 
+                   ordered, "#{'s' if ordered > 1}", rest).color(:green)
+    else
+      planner.prioritize_tasks(time)
+    end
   end
 end
 

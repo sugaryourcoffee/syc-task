@@ -1,5 +1,7 @@
 require_relative 'times.rb'
 require_relative 'meeting.rb'
+require_relative '../sycstring/string_util.rb'
+include Sycstring
 
 module Syctask
 
@@ -243,8 +245,11 @@ module Syctask
         else
           color = WORK_COLOR
         end
-        task_list << sprintf("%#{max_ord_size}d: %#{max_id_size}s - %s\n", i, task.id, task.title).
-                       color(color)
+        offset = max_ord_size + max_id_size + 5
+        title = split_lines(task.title, 80-offset)
+        title = title.chomp.gsub(/\n/, "\n#{' '*offset}")
+        task_list << sprintf("%#{max_ord_size}d: %#{max_id_size}s - %s\n", 
+                             i, task.id, title).color(color)
       end
 
       task_caption = ""

@@ -125,6 +125,15 @@ module Syctask
       tasks.each do |task|
         planned << task unless task.matches?(filter)
       end
+      (tasks - planned).each do |task|
+        if task.options[:follow_up] == date
+          task.options[:follow_up] = nil
+        end
+        if task.options[:due_date] == date
+          task.options[:due_date] = nil
+        end
+        @service.save(task.dir, task)
+      end
       save_tasks(planned, true)
       tasks.size - planned.size
     end

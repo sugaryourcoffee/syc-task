@@ -41,13 +41,7 @@ module Syctask
     # and time is added.
     def initialize(options={}, title, id)
       @creation_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
-      if title.size > 60
-        @title = title[0..57] + '...'
-        options[:note] += "\n..." + title if options[:note]
-        options[:note] = "..." + title unless options[:note]
-      else
-        @title = title
-      end
+      @title = title
       @options = options
       @options[:note] = 
                   "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]
@@ -194,16 +188,22 @@ module Syctask
     def pretty_string(long)
       color = :default
       color = :green if self.done?
+      
+      title = split_lines(@title, 70)
+      title = title.chomp.gsub(/\n/, "\n#{' '*7}")
+      puts sprintf("%04d - %s", @id, title.bright).color(color)
 
-      puts sprintf("%04d - %s", @id, @title.bright).color(color)
       if @options[:description]
         description = split_lines(@options[:description].chomp, 70)
         description = description.chomp.gsub(/\n/, "\n#{' '*7}")
         puts sprintf("%6s %s", " ", description.chomp).color(color) 
       end
-      puts sprintf("%6s Prio: %s", " ", @options[:prio]).color(color) if @options[:prio]
-      puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).color(color) if @options[:follow_up]
-      puts sprintf("%6s Due: %s", " ", @options[:due_date]).color(color) if @options[:due_date]
+      puts sprintf("%6s Prio: %s", " ", @options[:prio]).
+        color(color) if @options[:prio]
+      puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).
+        color(color) if @options[:follow_up]
+      puts sprintf("%6s Due: %s", " ", @options[:due_date]).
+        color(color) if @options[:due_date]
       if long
         if @options[:note]
           note = split_lines(@options[:note].chomp, 70)
@@ -213,10 +213,13 @@ module Syctask
             gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*7}")
           puts sprintf("%6s %s", " ", note.chomp).color(color)
         end
-        puts sprintf("%6s Tags: %s", " ", @options[:tags]).color(color) if @options[:tags]
+        puts sprintf("%6s Tags: %s", " ", @options[:tags]).
+          color(color) if @options[:tags]
         puts sprintf("%6s Created: %s", " ", @creation_date).color(color)
-        puts sprintf("%6s Updated: %s", " ", @update_date).color(color) if @update_date
-        puts sprintf("%6s Closed: %s", " ", @done_date).color(color) if @done_date
+        puts sprintf("%6s Updated: %s", " ", @update_date).
+          color(color) if @update_date
+        puts sprintf("%6s Closed: %s", " ", @done_date).
+          color(color) if @done_date
       end
     end
 

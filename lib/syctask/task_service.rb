@@ -1,4 +1,5 @@
 require 'yaml'
+require_relative 'environment.rb'
 
 # Syctask provides functions for managing tasks in a task list
 module Syctask
@@ -23,6 +24,7 @@ module Syctask
     def create(dir, options, title)
       create_dir(dir)
       task = Task.new(options, title, create_id(dir))
+      puts "id = #{next_id}"
       save(dir, task)
       task.id
     end
@@ -133,7 +135,15 @@ module Syctask
         ids << id.to_i if id
       end
       ids.empty? ? 1 : ids.sort[ids.size-1] + 1
-   end
+    end
+
+    # Retrieves a new ID for a task.
+    def next_id
+      id = File.readlines(Syctask::ID)[0] if File.exists? Syctask::ID
+      id = id ? id.to_i + 1 : 1
+      File.open(Syctask::ID, 'w') {|f| f.puts id}
+      id      
+    end
  
   end
 end

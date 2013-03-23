@@ -106,7 +106,13 @@
     <a href="Syctask/TaskService.html">Syctask::TaskService</a>
   </li>
     <li class="class">
+    <a href="Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  </li>
+    <li class="class">
     <a href="Syctask/Times.html">Syctask::Times</a>
+  </li>
+    <li class="class">
+    <a href="Syctask/Track.html">Syctask::Track</a>
   </li>
     <li class="module">
     <a href="Test.html">Test</a>
@@ -125,6 +131,12 @@
   </li>
     <li class="class">
     <a href="Object.html">Object</a>
+  </li>
+    <li class="module">
+    <a href="Sycstring.html">Sycstring</a>
+  </li>
+    <li class="module">
+    <a href="Syctime.html">Syctime</a>
   </li>
     <li class="class">
     <a href="TestDefault.html">TestDefault</a>
@@ -151,6 +163,9 @@
     <a href="TestTaskService.html">TestTaskService</a>
   </li>
     <li class="class">
+    <a href="TestTaskTracker.html">TestTaskTracker</a>
+  </li>
+    <li class="class">
     <a href="TestTimes.html">TestTimes</a>
   </li>
   
@@ -159,21 +174,29 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
-    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
-  
-    <li class="method"><a href="Syctask/Meeting.html#method-c-new">::new &mdash; Syctask::Meeting</a>
-  
-    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-c-new">::new &mdash; Syctask::TaskScheduler</a>
   
-    <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
+    <li class="method"><a href="Syctask/Meeting.html#method-c-new">::new &mdash; Syctask::Meeting</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-c-new">::new &mdash; Syctask::TaskTracker</a>
+  
+    <li class="method"><a href="Syctask/Track.html#method-c-new">::new &mdash; Syctask::Track</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
+  
+    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
+  
+    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-3C-3D-3E">#<=> &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-3D-3D">#== &mdash; Syctask::Task</a>
+  
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-i-add_task">#add_task &mdash; Syctask::TaskPlanner</a>
+  
+    <li class="method"><a href="Object.html#method-i-add_task_to_plan">#add_task_to_plan &mdash; Object</a>
   
     <li class="method"><a href="Syctask/TaskPlanner.html#method-i-add_tasks">#add_tasks &mdash; Syctask::TaskPlanner</a>
   
@@ -207,13 +230,17 @@
   
     <li class="method"><a href="Syctask/Evaluator.html#method-i-includes-3F">#includes? &mdash; Syctask::Evaluator</a>
   
-    <li class="method"><a href="Syctask/Task.html#method-i-matches-3F">#matches? &mdash; Syctask::Task</a>
-  
     <li class="method"><a href="Syctask/Evaluator.html#method-i-matches-3F">#matches? &mdash; Syctask::Evaluator</a>
+  
+    <li class="method"><a href="Syctask/Task.html#method-i-matches-3F">#matches? &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-i-meeting_caption">#meeting_caption &mdash; Syctask::Schedule</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-i-meeting_list">#meeting_list &mdash; Syctask::Schedule</a>
+  
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-i-move_tasks">#move_tasks &mdash; Syctask::TaskPlanner</a>
+  
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-i-order_tasks">#order_tasks &mdash; Syctask::TaskPlanner</a>
   
     <li class="method"><a href="Syctask/TaskPlanner.html#method-i-plan_tasks">#plan_tasks &mdash; Syctask::TaskPlanner</a>
   
@@ -235,6 +262,8 @@
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-save">#save &mdash; Syctask::TaskService</a>
   
+    <li class="method"><a href="Syctime.html#method-i-seconds_to_time">#seconds_to_time &mdash; Syctime</a>
+  
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-set_busy_times">#set_busy_times &mdash; Syctask::TaskScheduler</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-set_meeting_titles">#set_meeting_titles &mdash; Syctask::TaskScheduler</a>
@@ -247,27 +276,45 @@
   
     <li class="method"><a href="TestEvaluator.html#method-i-setup">#setup &mdash; TestEvaluator</a>
   
+    <li class="method"><a href="TestTaskScheduler.html#method-i-setup">#setup &mdash; TestTaskScheduler</a>
+  
     <li class="method"><a href="TestTaskService.html#method-i-setup">#setup &mdash; TestTaskService</a>
+  
+    <li class="method"><a href="TestTaskTracker.html#method-i-setup">#setup &mdash; TestTaskTracker</a>
   
     <li class="method"><a href="TestTaskPlanner.html#method-i-setup">#setup &mdash; TestTaskPlanner</a>
   
-    <li class="method"><a href="TestTaskScheduler.html#method-i-setup">#setup &mdash; TestTaskScheduler</a>
-  
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-show">#show &mdash; Syctask::TaskScheduler</a>
+  
+    <li class="method"><a href="Sycstring.html#method-i-split_lines">#split_lines &mdash; Sycstring</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-i-start">#start &mdash; Syctask::TaskTracker</a>
+  
+    <li class="method"><a href="Syctask/Track.html#method-i-start">#start &mdash; Syctask::Track</a>
+  
+    <li class="method"><a href="Syctask/Track.html#method-i-stop">#stop &mdash; Syctask::Track</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-i-stop">#stop &mdash; Syctask::TaskTracker</a>
+  
+    <li class="method"><a href="Syctime.html#method-i-string_for_seconds">#string_for_seconds &mdash; Syctime</a>
+  
+    <li class="method"><a href="TestTaskTracker.html#method-i-teardown">#teardown &mdash; TestTaskTracker</a>
+  
+    <li class="method"><a href="TestTaskScheduler.html#method-i-teardown">#teardown &mdash; TestTaskScheduler</a>
   
     <li class="method"><a href="TestTaskService.html#method-i-teardown">#teardown &mdash; TestTaskService</a>
   
     <li class="method"><a href="TestTaskPlanner.html#method-i-teardown">#teardown &mdash; TestTaskPlanner</a>
   
-    <li class="method"><a href="TestTaskScheduler.html#method-i-teardown">#teardown &mdash; TestTaskScheduler</a>
-  
     <li class="method"><a href="TestDefault.html#method-i-test_the_truth">#test_the_truth &mdash; TestDefault</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-i-time_caption">#time_caption &mdash; Syctask::Schedule</a>
   
-    <li class="method"><a href="Syctask/Task.html#method-i-update">#update &mdash; Syctask::Task</a>
+    <li class="method"><a href="Syctask/TaskTracker.html#method-i-tracked_task">#tracked_task &mdash; Syctask::TaskTracker</a>
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-update">#update &mdash; Syctask::TaskService</a>
+  
+    <li class="method"><a href="Syctask/Task.html#method-i-update">#update &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-update-3F">#update? &mdash; Syctask::Task</a>
   

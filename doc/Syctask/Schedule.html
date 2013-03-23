@@ -127,7 +127,11 @@
   
     <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
   
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
     <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
   
     <li><a href="../Test.html">Test</a>
   
@@ -140,6 +144,10 @@
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
     <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
   
@@ -156,6 +164,8 @@
     <li><a href="../TestTaskScheduler.html">TestTaskScheduler</a>
   
     <li><a href="../TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="../TestTaskTracker.html">TestTaskTracker</a>
   
     <li><a href="../TestTimes.html">TestTimes</a>
   
@@ -366,7 +376,7 @@ href="http://...">end_minute],</a>]</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 77</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">busy_time</span>=[], <span class="ruby-identifier">titles</span>=[], <span class="ruby-identifier">tasks</span>=[])
   <span class="ruby-ivar">@starts</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]])
   <span class="ruby-ivar">@ends</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">work_time</span>[<span class="ruby-value">2</span>], <span class="ruby-identifier">work_time</span>[<span class="ruby-value">3</span>]])
@@ -412,7 +422,7 @@ Returns true if succeeds</p>
 
           
           <div class="method-source-code" id="assign-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 92</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 94</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">assign</span>(<span class="ruby-identifier">assignments</span>)
   <span class="ruby-identifier">assignments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">assignment</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">number</span> = <span class="ruby-identifier">assignment</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">ord</span> <span class="ruby-operator">-</span> <span class="ruby-string">&quot;A&quot;</span>.<span class="ruby-identifier">ord</span>
@@ -450,7 +460,7 @@ Returns true if succeeds</p>
 
           
           <div class="method-source-code" id="get_times-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 327</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 332</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_times</span>
   <span class="ruby-identifier">work_time</span> = [<span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">h</span>, <span class="ruby-ivar">@ends</span>.<span class="ruby-identifier">round_up</span>]
   <span class="ruby-identifier">meeting_times</span> = []
@@ -513,7 +523,7 @@ meeting list</p>
 
           
           <div class="method-source-code" id="graph-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 155</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 157</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">graph</span>
   <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span> = <span class="ruby-identifier">get_times</span>
   <span class="ruby-identifier">time_line</span> = <span class="ruby-string">&quot;|---&quot;</span> * (<span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>]) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;|&quot;</span>
@@ -553,7 +563,7 @@ meeting list</p>
 
           
           <div class="method-source-code" id="meeting_caption-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 123</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">meeting_caption</span>
   <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span> = <span class="ruby-identifier">get_times</span>
   <span class="ruby-identifier">caption</span> = <span class="ruby-string">&quot;&quot;</span>
@@ -590,7 +600,7 @@ meeting list</p>
 
           
           <div class="method-source-code" id="meeting_list-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 107</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">meeting_list</span>
   <span class="ruby-identifier">list</span> = <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-string">&quot;Meetings\n&quot;</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
   <span class="ruby-identifier">list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-string">&quot;--------\n&quot;</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
@@ -631,7 +641,7 @@ meeting list</p>
 
           
           <div class="method-source-code" id="time_caption-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 133</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">time_caption</span>
   <span class="ruby-identifier">work_time</span> = <span class="ruby-identifier">get_times</span>[<span class="ruby-value">0</span>]
   <span class="ruby-identifier">caption</span> = <span class="ruby-string">&quot;&quot;</span>

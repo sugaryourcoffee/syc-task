@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>module Test - RDoc Documentation</title>
+<title>module Sycstring - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -47,6 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
+    <li>lib/sycstring/string_util.rb
   </ul>
 </nav>
 
@@ -57,7 +58,17 @@
     
     
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-i-split_lines">#split_lines</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -147,10 +158,13 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="module">module Test</h1>
+  <h1 class="module">module Sycstring</h1>
 
   <div id="description" class="description">
     
+<p><a href="Sycstring.html">Sycstring</a> provides functions for string
+operations</p>
+
   </div><!-- description -->
 
   
@@ -167,6 +181,60 @@
 
     <!-- Methods -->
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-split_lines" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">split_lines</span><span
+            class="method-args">(string, length)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Splits a string to size (chars) less or equal to length</p>
+          
+
+          
+          <div class="method-source-code" id="split_lines-source">
+            <pre><span class="ruby-comment"># File lib/sycstring/string_util.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">split_lines</span>(<span class="ruby-identifier">string</span>, <span class="ruby-identifier">length</span>)
+  <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">string</span>.<span class="ruby-identifier">squeeze</span>(<span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+  <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">new_lines</span> = []
+  <span class="ruby-identifier">new_lines</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">line</span>.<span class="ruby-identifier">squeeze</span>(<span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">split</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_lines</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">length</span>
+        <span class="ruby-identifier">new_lines</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{w} &quot;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">new_lines</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-node">&quot;#{w} &quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">new_lines</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">text</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">new_lines</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-identifier">text</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{l}\n&quot;</span>}
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">chomp</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- split_lines-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- split_lines-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

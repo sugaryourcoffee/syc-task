@@ -1,3 +1,4 @@
+# Sycstring provides functions for string operations
 module Sycstring
   
   # Splits a string to size (chars) less or equal to length

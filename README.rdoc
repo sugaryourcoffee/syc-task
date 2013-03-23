@@ -44,6 +44,11 @@ Invoke plan with a filter
     1 - My first task
     (a)dd, (c)omplete, (s)kip, (q)uit?
 
+Move tasks to another days plan
+    $ syctask plan today --move tomorrow --id 3,5
+
+This will move the tasks with ID 3 and 5 from the today's plan to the tomorrow's plan
+
 ===Prioritize tasks
 Planned tasks can be prioritized in a pair wise comparisson. So each task is
 compared to all other tasks. The task with the highest priority will bubble on
@@ -70,6 +75,21 @@ syctask schedule will then print tasks as follows
     3:  9 - My second task 
     ...
     
+Instead of conducting pairwise comparisson the order of the tasks in the plan
+can be specified with the -o flag
+    $ syctask plan -o 7,3,10,9
+
+The plan or schedule command will print the tasks in the specified order
+    Tasks
+    -----
+    0:  7 - My third task
+    1:  3 - My first task
+    2: 10 - My fourth task
+    3:  9 - My second task
+
+If only a part of the tasks is provided the rest of the tasks is appended to
+the end of the task plan.
+
 ===Create schedule
 The schedule command will print a graphical schedule with assigning the tasks
 added with plan.
@@ -97,7 +117,7 @@ The output will be
     0 - 1: My first task
 
 Adding a task to a meeting
-    $ syctask schedule -a "A:1"
+    $ syctask schedule -a "A:0"
 
 will print
     Meetings
@@ -113,7 +133,8 @@ will print
 
     Tasks
     -----
- 
+    0: 1 - My first task
+
 ===List tasks
 List tasks that are not marked as done in short form
     $ syctask list
@@ -288,8 +309,30 @@ To print to Dell-B1160w-Mono the following command can be used
     $ syctask schedule | lpr -P Dell-B1160w-Mono
 
 ==Notes
-With version 0.0.1 new, update, list and done is implemented.
-with version 0.0.4 start, stop, scan and prio is not implemented.
+Version 0.0.1 
+new, update, list and done is implemented.
+
+Version 0.0.4
+* delete: deleting tasks or remove tasks from a task plan
+* plan: plan tasks and add them to the task plan
+* schedule: create a schedule with work and busy time and assign the tasks from
+  the task plan to the free times
+
+Version 0.0.6
+* start: start a task and track the lead time
+* stop: stop the tracking and print the lead time of the task
+* start, stop: the task is logged in the ~/.tasks/task.log file when added and
+  when stopped
+* prio: prioritize tasks in the task plan, that is specifying the sequence in
+  that the tasks should be conducted
+* plan: --move flag added to move tasks from the specified plan to another days
+  task plan
+* update, new: when a follow-up or a due date is provided the task is added to
+  the provided dates task plan. If both dates are set the task is added to both
+  dates task plans
+
+Version 0.0.7
+* updated rdoc
 
 The test files live in the folder test and start with test_.
 

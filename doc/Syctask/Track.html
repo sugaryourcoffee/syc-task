@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class Syctask::Times - RDoc Documentation</title>
+<title>class Syctask::Track - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/syctask/times.rb
+    <li>lib/syctask/task_tracker.rb
   </ul>
 </nav>
 
@@ -72,7 +72,9 @@
     
     <li><a href="#method-c-new">::new</a>
     
-    <li><a href="#method-i-round_up">#round_up</a>
+    <li><a href="#method-i-start">#start</a>
+    
+    <li><a href="#method-i-stop">#stop</a>
     
   </ul>
 </nav>
@@ -166,12 +168,14 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class Syctask::Times</h1>
+  <h1 class="class">class Syctask::Track</h1>
 
   <div id="description" class="description">
     
-<p><a href="Times.html">Times</a> class represents a time consisting of hour
-and minutes</p>
+<p>A <a href="Track.html">Track</a> holds a task and stops the time the task
+is processed. The <a href="Track.html">Track</a> will print every 5 minutes
+the elapsed time and the time left to the specified <a
+href="Task.html#attribute-i-duration">Syctask::Task#duration</a>.</p>
 
   </div><!-- description -->
 
@@ -191,28 +195,67 @@ and minutes</p>
       <h3 class="section-header">Attributes</h3>
 
       
-      <div id="attribute-i-h" class="method-detail">
+      <div id="attribute-i-dir" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">h</span><span
+          <span class="method-name">dir</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>Hour of the <a href="Times.html">Times</a> object</p>
+        <p>Directory where the tracked task is saved</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-m" class="method-detail">
+      <div id="attribute-i-id" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">m</span><span
+          <span class="method-name">id</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>Minute of the <a href="Times.html">Times</a> object</p>
+        <p>ID of the tracked task</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-started" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">started</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>When tracking started</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-stopped" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">stopped</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>When tracking stopped</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-title" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">title</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Title of the tracked task</p>
         
         </div>
       </div>
@@ -230,24 +273,23 @@ and minutes</p>
         
         <div class="method-heading">
           <span class="method-name">new</span><span
-            class="method-args">(time)</span>
+            class="method-args">(task)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Creates a new <a href="Times.html">Times</a> object. time has to be
-provided as an array with the content as [“hour”,“minute”] e.g. [“10”,“15”]
-is 15 past 10</p>
+          <p>Creates a new <a href="Track.html">Track</a> for the provided task</p>
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 13</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">time</span>)
-  <span class="ruby-ivar">@h</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
-  <span class="ruby-ivar">@m</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 138</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">task</span>)
+  <span class="ruby-ivar">@dir</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>
+  <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">title</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -265,10 +307,10 @@ is 15 past 10</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-round_up" class="method-detail ">
+      <div id="method-i-start" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">round_up</span><span
+          <span class="method-name">start</span><span
             class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
@@ -276,23 +318,57 @@ is 15 past 10</p>
 
         <div class="method-description">
           
-          <p>Rounds the time to the next hour if minutes is greater than 0</p>
+          <p>Starts the tracking and a timer that will print to STDOUT every 5 minutes
+the elapsed time and the time left until <a
+href="Task.html#attribute-i-duration">Syctask::Task#duration</a></p>
           
 
           
-          <div class="method-source-code" id="round_up-source">
-            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 19</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">round_up</span>
-  <span class="ruby-ivar">@m</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@h</span><span class="ruby-operator">+</span><span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@h</span>
+          <div class="method-source-code" id="start-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+  <span class="ruby-ivar">@started</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-comment"># start a timer that prints title and elapsed time every 5 minutes</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- round_up-source -->
+          </div><!-- start-source -->
           
         </div>
 
         
 
         
-      </div><!-- round_up-method -->
+      </div><!-- start-method -->
+
+    
+      <div id="method-i-stop" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Stops the task tracking and returns the lead time of the task</p>
+          
+
+          
+          <div class="method-source-code" id="stop-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+  <span class="ruby-ivar">@stopped</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-ivar">@stopped</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@started</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop-method -->
 
     
     </section><!-- public-instance-method-details -->

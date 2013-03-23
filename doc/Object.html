@@ -47,6 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
+    <li>lib/syctask/schedule.rb
     <li>features/support/env.rb
     <li>bin/syctask
   </ul>
@@ -71,7 +72,15 @@
   <ul class="link-list">
   
   
+    <li><a class="include" href="Sycstring.html">Sycstring</a>
+  
+  
+  
     <li><span class="include">GLI::App</span>
+  
+  
+  
+    <li><a class="include" href="Syctime.html">Syctime</a>
   
   
   </ul>
@@ -82,6 +91,8 @@
   <h3 class="section-header">Methods</h3>
 
   <ul class="link-list">
+    
+    <li><a href="#method-i-add_task_to_plan">#add_task_to_plan</a>
     
     <li><a href="#method-i-extract_time">#extract_time</a>
     
@@ -128,7 +139,11 @@
   
     <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
   
+    <li><a href="./Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
     <li><a href="./Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="./Syctask/Track.html">Syctask::Track</a>
   
     <li><a href="./Test.html">Test</a>
   
@@ -141,6 +156,10 @@
     <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
   
     <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Sycstring.html">Sycstring</a>
+  
+    <li><a href="./Syctime.html">Syctime</a>
   
     <li><a href="./TestDefault.html">TestDefault</a>
   
@@ -157,6 +176,8 @@
     <li><a href="./TestTaskScheduler.html">TestTaskScheduler</a>
   
     <li><a href="./TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="./TestTaskTracker.html">TestTaskTracker</a>
   
     <li><a href="./TestTimes.html">TestTimes</a>
   
@@ -204,6 +225,41 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-add_task_to_plan" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_task_to_plan</span><span
+            class="method-args">(task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Add task to task plan</p>
+          
+
+          
+          <div class="method-source-code" id="add_task_to_plan-source">
+            <pre><span class="ruby-comment"># File bin/syctask, line 567</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task_to_plan</span>(<span class="ruby-identifier">task</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>]
+    <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>])
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>]
+    <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>])
+  <span class="ruby-keyword">end</span>  
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add_task_to_plan-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add_task_to_plan-method -->
+
+    
       <div id="method-i-extract_time" class="method-detail ">
         
         <div class="method-heading">
@@ -222,7 +278,7 @@ time_string</p>
 
           
           <div class="method-source-code" id="extract_time-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 480</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 548</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>)
   <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">downcase</span>

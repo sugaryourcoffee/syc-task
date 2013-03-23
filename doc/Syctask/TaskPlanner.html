@@ -72,9 +72,15 @@
     
     <li><a href="#method-c-new">::new</a>
     
+    <li><a href="#method-i-add_task">#add_task</a>
+    
     <li><a href="#method-i-add_tasks">#add_tasks</a>
     
     <li><a href="#method-i-get_tasks">#get_tasks</a>
+    
+    <li><a href="#method-i-move_tasks">#move_tasks</a>
+    
+    <li><a href="#method-i-order_tasks">#order_tasks</a>
     
     <li><a href="#method-i-plan_tasks">#plan_tasks</a>
     
@@ -125,7 +131,11 @@
   
     <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
   
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
     <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
   
     <li><a href="../Test.html">Test</a>
   
@@ -138,6 +148,10 @@
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
     <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
   
@@ -154,6 +168,8 @@
     <li><a href="../TestTaskScheduler.html">TestTaskScheduler</a>
   
     <li><a href="../TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="../TestTaskTracker.html">TestTaskTracker</a>
   
     <li><a href="../TestTimes.html">TestTimes</a>
   
@@ -243,25 +259,61 @@ the least important tasks.</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-add_tasks" class="method-detail ">
+      <div id="method-i-add_task" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">add_tasks</span><span
-            class="method-args">(tasks)</span>
+          <span class="method-name">add_task</span><span
+            class="method-args">(task, date=Time.now.strftime("%Y-%m-%d"))</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Add the tasks to the planned tasks</p>
+          <p>Add the task to the planned tasks of the specified date. The task is only
+added if not already present</p>
+          
+
+          
+          <div class="method-source-code" id="add_task-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>))
+  <span class="ruby-identifier">add_tasks</span>([<span class="ruby-identifier">task</span>], <span class="ruby-identifier">date</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add_task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add_task-method -->
+
+    
+      <div id="method-i-add_tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_tasks</span><span
+            class="method-args">(tasks, date=Time.now.strftime("%Y-%m-%d"))</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Add the tasks to the planned tasks. A task is only added if not already
+present</p>
           
 
           
           <div class="method-source-code" id="add_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 92</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_tasks</span>(<span class="ruby-identifier">tasks</span>)
-  <span class="ruby-identifier">save_tasks</span>(<span class="ruby-identifier">tasks</span>)
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_tasks</span>(<span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>))
+  <span class="ruby-identifier">planned</span> = <span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">date</span>)
+  <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">planned</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">planned</span>.<span class="ruby-identifier">find_index</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">task</span>}
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">save_tasks</span>(<span class="ruby-identifier">planned</span>, <span class="ruby-keyword">true</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- add_tasks-source -->
           
@@ -291,7 +343,7 @@ href="Task.html#method-i-matches-3F">Syctask::Task#matches?</a>)</p>
 
           
           <div class="method-source-code" id="get_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 110</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 158</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>), <span class="ruby-identifier">filter</span>={})
   <span class="ruby-identifier">make_todo_today_file</span>(<span class="ruby-identifier">date</span>)
   <span class="ruby-identifier">tasks</span> = []
@@ -312,6 +364,84 @@ href="Task.html#method-i-matches-3F">Syctask::Task#matches?</a>)</p>
 
         
       </div><!-- get_tasks-method -->
+
+    
+      <div id="method-i-move_tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">move_tasks</span><span
+            class="method-args">(filter={}, from_date=Time.now.strftime("%Y-%m-%d"), to_date)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Moves the specified tasks to the specified date. Returns the count of moved
+files</p>
+          
+
+          
+          <div class="method-source-code" id="move_tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_tasks</span>(<span class="ruby-identifier">filter</span>={}, <span class="ruby-identifier">from_date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>), <span class="ruby-identifier">to_date</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-value">0</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">from_date</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">to_date</span>
+  <span class="ruby-identifier">moved</span> = <span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">filter</span>)
+  <span class="ruby-identifier">moved</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span> 
+    <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] = <span class="ruby-identifier">to_date</span>
+    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">add_tasks</span>(<span class="ruby-identifier">moved</span>, <span class="ruby-identifier">to_date</span>)
+  <span class="ruby-identifier">remove_tasks</span>(<span class="ruby-identifier">from_date</span>, <span class="ruby-identifier">filter</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- move_tasks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- move_tasks-method -->
+
+    
+      <div id="method-i-order_tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">order_tasks</span><span
+            class="method-args">(date, ids)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Order tasks in the provided IDs sequence at the specified date. If not IDs
+are provided than rest of tasks is appended to the end of the plan. Returns
+the count of ordered tasks and the count of the rest of the tasks.</p>
+          
+
+          
+          <div class="method-source-code" id="order_tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">order_tasks</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">ids</span>)
+  <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">date</span>)
+  <span class="ruby-identifier">ordered</span> = []
+  <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">index</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">find_index</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>}
+    <span class="ruby-identifier">ordered</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-identifier">index</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">ordered</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tasks</span>
+  <span class="ruby-identifier">save_tasks</span>(<span class="ruby-identifier">ordered</span>.<span class="ruby-identifier">flatten!</span>, <span class="ruby-keyword">true</span>)
+  [<span class="ruby-identifier">ordered</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span>, <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- order_tasks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- order_tasks-method -->
 
     
       <div id="method-i-plan_tasks" class="method-detail ">
@@ -398,7 +528,7 @@ second highest priority and so on.</p>
 
           
           <div class="method-source-code" id="prioritize_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 68</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 83</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">prioritize_tasks</span>(<span class="ruby-identifier">date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>), <span class="ruby-identifier">filter</span>={})
   <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">filter</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">nil?</span>
@@ -450,12 +580,21 @@ the count of removed tasks</p>
 
           
           <div class="method-source-code" id="remove_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 98</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_planner.rb, line 137</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_tasks</span>(<span class="ruby-identifier">date</span>=<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>), <span class="ruby-identifier">filter</span>={})
   <span class="ruby-identifier">planned</span> = []
   <span class="ruby-identifier">tasks</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_tasks</span>(<span class="ruby-identifier">date</span>)
   <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">planned</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span>)
+  <span class="ruby-keyword">end</span>
+  (<span class="ruby-identifier">tasks</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">planned</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">date</span>
+      <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">date</span>
+      <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>] = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">save_tasks</span>(<span class="ruby-identifier">planned</span>, <span class="ruby-keyword">true</span>)
   <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">planned</span>.<span class="ruby-identifier">size</span>

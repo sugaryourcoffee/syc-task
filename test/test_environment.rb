@@ -46,6 +46,10 @@ class TestEnvironment < Test::Unit::TestCase
       end
     end
 
+    # Fills the log file with entries and returns these in a hash
+    def make_log_file
+    end
+
     should "retrieve files via get_files" do
       current_dir = File.expand_path(".")
       tasks = Syctask::get_files(@work_dir, "*.task")
@@ -137,9 +141,51 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update tasks log" do
+      time = Time.now
+      tasks = {}
+      "a".upto("b") do |j|
+        1.upto(10) do |i|
+          tasks["#{j}#{i}"] = {id:       i,
+                               title:    "Task #{i}",
+                               new_id:   i+100, 
+                               dir:      "test/tasks/#{j}", 
+                               file:     "test/tasks/#{j}/#{i}.task",
+                               new_file: "test/tasks/#{j}/#{i+100}.task"}
+        end
+      end
+      File.open("#{@work_dir}/tasks.log", 'w') do |f|
+        tasks.each do |k,v|
+          f.puts "start;#{v[:id]}-#{v[:dir]};#{v[:title]};#{time};"
+          f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{time};#{time}"
+        end
+      end
+
+      tasks.each do |k,v|
+        Syctask::update_tasks_log(@work_dir, 
+                                  v[:id], 
+                                  v[:new_id],
+                                  v[:new_file])
+      end
+
+      v = tasks.values
+      c = 0
+      File.open("#{@work_dir}/tasks.log", 'r').each_with_index do |line,i|
+        if i % 2 == 1
+          c += 1
+          expected =  "stop;"
+          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
+          expected += "#{time};#{time}\n"
+        else
+          expected =  "start;"
+          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
+          expected += "#{time};\n" 
+        end
+        assert_equal expected, line
+      end
     end
 
     should "move task log file" do
+      Syctask::move_tasks_log(@work_dir)
     end
 
     should "move planned task files" do

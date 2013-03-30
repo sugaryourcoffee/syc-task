@@ -14,7 +14,7 @@ module Syctask
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?
       unless get_files(File.expand_path("~"), "*.task").empty?
-        puts "Error:"
+        puts "Warning:"
         puts "------"
         puts "There are missing system files of syctask, even though tasks are"
         puts "available."
@@ -45,34 +45,35 @@ module Syctask
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
     File.open(RIDX_LOG, 'a') {|f| f.puts Time.now}
     id = 0
-    to_be_renamed_files = {}
+    to_be_renamed = {}
     root = File.expand_path(root)
-    get_all_task_files(root).each_with_index do |file,index|
+    @task_files = task_files(root) if @task_files.nil?
+    @task_files.each_with_index do |file,index|
       id = index + 1
       result = reindex_task(root, file, id)
       # assign tmp_file to new_file for later renaming
-      to_be_renamed_files[result[:tmp_file]] = result[:new_file]
+      to_be_renamed[result[:tmp_file]] = result[:new_file]
       # write new_id, path to IDS
-      save_index(result[:new_id], result[:new_file])
+      save_ids(result[:new_id], result[:new_file])
       # write old_id, new_id, path to index.log
       log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
       # replace old_id with new_id in task.log
-      update_task_log(root, result[:old_id], result[:new_id])
+      update_tasks_log(root, 
+                       result[:old_id], 
+                       result[:new_id], 
+                       result[:new_file])
       # replace old_id with new_id in planned_tasks
-      update_planned_tasks(root, result[:old_id], result[:new_id])
+      update_planned_tasks(root, 
+                           result[:old_id], 
+                           result[:new_id], 
+                           result[:new_file])
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
-    move_task_log_file
-    move_planned_tasks_files
-    move_time_schedule_files
-    update_tracked_task
+    move_task_log_file(root)
+    move_planned_tasks_files(root)
+    move_time_schedule_files(root)
+    update_tracked_task(root)
     save_id(id)
-  end
-
-  # Retrieves all task files in and below the provided dir. Returns an array of
-  # task files
-  def get_all_task_files(dir)
-    get_files(dir, "*.task").keep_if {|file| file.match /\d+\.task$/}
   end
 
   # Re-indexes the tasks' IDs and renames the task files to match the new ID.
@@ -94,10 +95,14 @@ module Syctask
     {old_id: old_id, new_id: new_id, tmp_file: tmp_file, new_file: new_file}
   end
 
-  def save_index(id, file)
+  def save_ids(id, file)
     entry = "#{id},#{file}"
     return if File.exists? IDS and not File.read(IDS).scan(entry).empty?
     File.open(IDS, 'a') {|f| f.puts entry}
+  end
+
+  def save_id(id)
+    File.write(ID,id)
   end
 
   def log_reindexing(old_id, new_id, file)
@@ -111,7 +116,8 @@ module Syctask
     old_entry = "#{old_id}-#{File.dirname(file)}"
     # Append '/' to dir name so already updated task is not subsequently updated
     new_entry = "#{new_id}-#{File.dirname(file)}/"
-    tasks_log_files(dir).each do |f|
+    @tasks_log_files = tasks_log_files(dir) if @tasks_log_files.nil?
+    @tasks_log_files.each do |f|
       tasks_log = File.read(f).gsub(old_entry, new_entry)
       File.write(f, tasks_log)
     end
@@ -127,21 +133,35 @@ module Syctask
     old_entry = "#{File.dirname(file)},#{old_id}"
     # Append '/' to dir name so already updated task is not subsequently updated
     new_entry = "#{File.dirname(file)}/,#{new_id}"
-    planned_tasks_files(dir).each do |file|
+    @planned_tasks_files = planned_tasks_files(dir) if @planned_tasks_files.nil?
+    @planned_tasks_files.each do |file|
       planned_tasks = File.read(file).gsub(old_entry, new_entry)
       File.write(file, planned_tasks)
     end
   end
 
   def update_tracked_task(dir)
-    tracked = get_files(dir, "tracked_tasks")
-    return if tracked.empty?
-    task = File.read(tracked[0])
+    @tracked = get_files(dir, "tracked_tasks") if @tracked.nil?
+    return if @tracked.empty?
+    task = File.read(@tracked[0])
     old_id = task.scan(/(?<=id: )\d+$/)
-    new_id = File.read(IDS).scan(/(?<=^#{old_id},)\d+(?=,)/)
+    old_dir = task.scan(/(?<=dir: ).*$/)
+    puts "#{old_id} #{old_dir}"
+    return if old_id.empty? or old_dir.empty?
+    pattern = %r{(?<=#{old_id[0]},)\d+(?=,#{old_dir[0]}\/\d+\.task)}
+    puts pattern
+    new_id = File.read(RIDX_LOG).scan(pattern)
+    puts "new_id = #{new_id}<"
     task.gsub!("id: #{old_id}", "id: #{new_id}")
+    puts task
     File.write(TRACKED_TASK, task)
-    FileUtils.rm tracked[0] unless IDS == tracked[0]
+    FileUtils.rm @tracked[0] unless TRACKED_TASK == @tracked[0]
+  end
+
+  # Retrieves all task files in and below the provided dir. Returns an array of
+  # task files
+  def task_files(dir)
+    get_files(dir, "*.task").keep_if {|file| file.match /\d+\.task$/}
   end
 
   def planned_tasks_files(dir)
@@ -158,35 +178,6 @@ module Syctask
     get_files(dir, "tasks.log")
   end
 
-  def move_task_log_file(dir)
-    get_files(dir, "tasks.log").each do |f|
-      next if f == TASKS_LOG
-      tasks_log = File.read(f)
-      File.open(TASKS_LOG, 'a') {|t| t.puts tasks_log}
-      FileUtils.mv(f, "#{f}_#{Time.now.strftime("%y%m%d")}")
-    end
-  end
-
-  def move_planned_tasks_files(dir)
-    planned_tasks_files(dir).each do |file|
-      to_file = "#{SYC_DIR}/#{File.basename(file)}"
-      next if file == to_file
-      FileUtils.mv file, to_file
-    end
-  end
-
-  def move_time_schedule_files(dir)
-    time_schedule_files(dir).each do |file|
-      to_file = "#{SYC_DIR}/#{File.basename(file)}" 
-      next if file == to_file
-      FileUtils.mv file, to_file
-    end 
-  end
-
-  def save_id(id)
-    File.write(ID,id)
-  end
-
   def get_files(dir, pattern)
     original_dir = File.expand_path(".")
     Dir.chdir(dir)
@@ -196,4 +187,33 @@ module Syctask
     Dir.chdir(original_dir)
     files
   end
+
+  def move_task_log_file(dir)
+    @tasks_log_files = tasks_log_files(dir) if @tasks_log_files.nil?
+    @tasks_log_files.each do |f|
+      next if f == TASKS_LOG
+      tasks_log = File.read(f)
+      File.open(TASKS_LOG, 'a') {|t| t.puts tasks_log}
+      FileUtils.mv(f, "#{f}_#{Time.now.strftime("%y%m%d")}")
+    end
+  end
+
+  def move_planned_tasks_files(dir)
+    @planned_tasks_files = planned_tasks_files(dir) if @planned_tasks_files.nil?
+    @planned_tasks_files.each do |file|
+      to_file = "#{SYC_DIR}/#{File.basename(file)}"
+      next if file == to_file
+      FileUtils.mv file, to_file
+    end
+  end
+
+  def move_time_schedule_files(dir)
+    @time_schedule_files = time_schedule_files(dir) if @time_schedule_files.nil?
+    @time_schedule_files.each do |file|
+      to_file = "#{SYC_DIR}/#{File.basename(file)}" 
+      next if file == to_file
+      FileUtils.mv file, to_file
+    end 
+  end
+
 end

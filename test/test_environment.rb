@@ -102,7 +102,7 @@ class TestEnvironment < Test::Unit::TestCase
 
     should "retrieve task files" do
       current_dir = File.expand_path(".")
-      tasks = Syctask::get_all_task_files(@work_dir)
+      tasks = Syctask::task_files(@work_dir)
       assert_equal 15, tasks.size
       assert_equal current_dir, File.expand_path(".")
     end
@@ -123,7 +123,7 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "re-index tasks" do
-      tasks = Syctask::get_all_task_files(@work_dir)
+      tasks = Syctask::task_files(@work_dir)
       tasks.each_with_index do |f,i|
         index = i + 100
         result = reindex_task(@work_dir, f, index)
@@ -136,10 +136,10 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "add index to IDS" do
-      tasks = Syctask::get_all_task_files(@work_dir)
+      tasks = Syctask::task_files(@work_dir)
       2.times do
         tasks.each do |f|
-          Syctask::save_index(File.basename(f).scan(/\d+(?=\.task)/)[0], f)
+          Syctask::save_ids(File.basename(f).scan(/\d+(?=\.task)/)[0], f)
         end
         puts "Tasks.size = #{tasks.size}"
         puts "ids.size = #{File.readlines(Syctask::IDS).size}"
@@ -148,7 +148,7 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "add entry to reindexing log" do
-      tasks = Syctask::get_all_task_files(@work_dir)
+      tasks = Syctask::task_files(@work_dir)
       tasks.each_with_index do |f,i|
         index = i + 100
         result = reindex_task(@work_dir, f, index)
@@ -161,7 +161,7 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update planned tasks" do
-      tasks = Syctask::get_all_task_files(@work_dir)
+      tasks = Syctask::task_files(@work_dir)
       planned = Syctask::planned_tasks_files(@work_dir)
       planned.each_with_index do |f,i|
         File.open(f, 'w') do |f|

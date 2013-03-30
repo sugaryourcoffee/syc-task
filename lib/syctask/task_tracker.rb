@@ -83,6 +83,9 @@ module Syctask
 
     # Saves the tracks to the tracked tasks file
     def save_tracks
+      puts @tracks
+      puts WORK_DIR
+      puts TRACKED_TASKS_FILE
       FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
       File.open(TRACKED_TASKS_FILE, 'w') do |file|
         YAML.dump(@tracks, file) 

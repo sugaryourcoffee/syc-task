@@ -43,7 +43,6 @@ module Syctask
 
   def reindex_tasks(root)
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
-    File.open(RIDX_LOG, 'a') {|f| f.puts Time.now}
     id = 0
     to_be_renamed = {}
     root = File.expand_path(root)

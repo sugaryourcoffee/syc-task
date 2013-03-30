@@ -59,13 +59,13 @@ module Syctask
       # replace old_id with new_id in task.log
       update_task_log(root, result[:old_id], result[:new_id])
       # replace old_id with new_id in planned_tasks
-      update_planned_tasks(root, [:old_id], result[:new_id])
+      update_planned_tasks(root, result[:old_id], result[:new_id])
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
     move_task_log_file
     move_planned_tasks_files
     move_time_schedule_files
-    move_tracked_tasks_file
+    update_tracked_task
     save_id(id)
   end
 
@@ -133,6 +133,17 @@ module Syctask
     end
   end
 
+  def update_tracked_task(dir)
+    tracked = get_files(dir, "tracked_tasks")
+    return if tracked.empty?
+    task = File.read(tracked[0])
+    old_id = task.scan(/(?<=id: )\d+$/)
+    new_id = File.read(IDS).scan(/(?<=^#{old_id},)\d+(?=,)/)
+    task.gsub!("id: #{old_id}", "id: #{new_id}")
+    File.write(TRACKED_TASK, task)
+    FileUtils.rm tracked[0] unless IDS == tracked[0]
+  end
+
   def planned_tasks_files(dir)
     pattern = %r{\d{4}-\d{2}-\d{2}_planned_tasks}
     get_files(dir, "*planned_tasks").keep_if {|f| f.match(pattern)}
@@ -170,13 +181,6 @@ module Syctask
       next if file == to_file
       FileUtils.mv file, to_file
     end 
-  end
-
-  def move_tracked_tasks_file(dir)
-    get_files(dir, "tracked_tasks").each do |file|
-      next if file == TRACKED_TASK
-      FileUtils.mv file, TRACKED_TASK
-    end
   end
 
   def save_id(id)

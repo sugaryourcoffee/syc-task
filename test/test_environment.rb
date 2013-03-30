@@ -7,9 +7,10 @@ include Syctask
 class TestEnvironment < Test::Unit::TestCase
 
   context "Test re-indexing helpers" do
-
+    
     def setup
       backup_system_files
+      @time = Time.now
       @work_dir = "test/tasks"
       @service = Syctask::TaskService.new
       FileUtils.mkdir @work_dir unless File.exists? @work_dir
@@ -24,7 +25,7 @@ class TestEnvironment < Test::Unit::TestCase
         FileUtils.touch "#{@work_dir}/2013-0#{i}-17_time_schedule"
       end
       FileUtils.touch "#{@work_dir}/tasks.log"
-      FileUtils.touch "#{@work_dir}/tracked_files"
+      FileUtils.touch "#{@work_dir}/tracked_tasks"
     end
 
     def teardown
@@ -41,13 +42,55 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     def restore_system_files
-      Dir.glob("#{Syctask::SYC_DIR}/*.original").each do |f|
-        FileUtils.mv f, f.sub(".original", "")
+      Dir.glob("#{Syctask::SYC_DIR}/*").each do |f|
+        if f.end_with? ".original" 
+          FileUtils.mv f, f.sub(".original", "") 
+        else
+          FileUtils.rm f 
+        end
       end
     end
 
     # Fills the log file with entries and returns these in a hash
     def make_log_file
+      tasks = {}
+      "a".upto("b") do |j|
+        1.upto(10) do |i|
+          tasks["#{j}#{i}"] = {id:       i,
+                               title:    "Task #{i}",
+                               new_id:   i+100, 
+                               dir:      "test/tasks/#{j}", 
+                               file:     "test/tasks/#{j}/#{i}.task",
+                               new_file: "test/tasks/#{j}/#{i+100}.task"}
+        end
+      end
+      File.open("#{@work_dir}/tasks.log", 'w') do |f|
+        tasks.each do |k,v|
+          f.puts "start;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};"
+          f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};#{@time}"
+        end
+      end
+      tasks
+    end
+
+    def create_tracked_tasks_file
+      File.open("#{@work_dir}/tracked_tasks", 'w') do |f|
+        f.puts("---")
+        f.puts("- !ruby/object:Syctask::Track")
+        f.puts("  dir: /home/pierre/.tasks")
+        f.puts("  id: 68")
+        f.puts("  title: Add unique ID to tasks")
+        f.puts("  started: 2013-03-30 11:54:59 +01:00")
+      end
+    end
+
+    def create_reindex_log_file
+      File.open(Syctask::RIDX_LOG, 'w') do |f|
+        f.puts "33,68,/home/pierre/.tasks/68.task"
+        f.puts "22,57,/home/pierre/.tasks/57.task"
+        f.puts "88,99,/home/pierre/.tasks/99.task"
+        f.puts "68,22,/home/pierre/.tasks/22.task"
+      end
     end
 
     should "retrieve files via get_files" do
@@ -141,24 +184,7 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update tasks log" do
-      time = Time.now
-      tasks = {}
-      "a".upto("b") do |j|
-        1.upto(10) do |i|
-          tasks["#{j}#{i}"] = {id:       i,
-                               title:    "Task #{i}",
-                               new_id:   i+100, 
-                               dir:      "test/tasks/#{j}", 
-                               file:     "test/tasks/#{j}/#{i}.task",
-                               new_file: "test/tasks/#{j}/#{i+100}.task"}
-        end
-      end
-      File.open("#{@work_dir}/tasks.log", 'w') do |f|
-        tasks.each do |k,v|
-          f.puts "start;#{v[:id]}-#{v[:dir]};#{v[:title]};#{time};"
-          f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{time};#{time}"
-        end
-      end
+      tasks = make_log_file
 
       tasks.each do |k,v|
         Syctask::update_tasks_log(@work_dir, 
@@ -174,27 +200,55 @@ class TestEnvironment < Test::Unit::TestCase
           c += 1
           expected =  "stop;"
           expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
-          expected += "#{time};#{time}\n"
+          expected += "#{@time};#{@time}\n"
         else
           expected =  "start;"
           expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
-          expected += "#{time};\n" 
+          expected += "#{@time};\n" 
         end
         assert_equal expected, line
       end
     end
 
+    should "update tracked task" do
+      create_tracked_tasks_file
+      create_reindex_log_file
+      Syctask::update_tracked_task(@work_dir)
+      refute File.exists? "#{@work_dir}/tracked_tasks"
+      assert File.exists? Syctask::TRACKED_TASK
+      assert File.read(Syctask::TRACKED_TASK).scan(/id: 68/)
+    end
+
     should "move task log file" do
-      Syctask::move_tasks_log(@work_dir)
+      tasks = make_log_file
+      assert File.exists? "#{@work_dir}/tasks.log"
+      Syctask::move_task_log_file(@work_dir)
+      refute File.exists? "#{@work_dir}/tasks.log"
+      assert File.exists? Syctask::TASKS_LOG
     end
 
     should "move planned task files" do
+      1.upto(3) do |i|
+        assert File.exists? "#{@work_dir}/2013-0#{i}-17_planned_tasks"
+      end
+      Syctask::move_planned_tasks_files(@work_dir)
+      1.upto(3) do |i|
+        file = "2013-0#{i}-17_planned_tasks"
+        refute File.exists? "#{@work_dir}/#{file}"
+        assert File.exists? "#{Syctask::SYC_DIR}/#{file}"
+      end
     end
 
     should "move time schedule files" do
-    end
-
-    should "move tracked tasks file" do
+      1.upto(3) do |i|
+        assert File.exists? "#{@work_dir}/2013-0#{i}-17_time_schedule"
+      end
+      Syctask::move_time_schedule_files(@work_dir)
+      1.upto(3) do |i|
+        file = "2013-0#{i}-17_time_schedule"
+        refute File.exists? "#{@work_dir}/#{file}"
+        assert File.exists? "#{Syctask::SYC_DIR}/#{file}"
+      end
     end
 
   end

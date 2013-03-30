@@ -7,15 +7,43 @@ module Syctask
   TAGS = SYC_DIR + "/tags"
   DEFAULT_TASKS = SYC_DIR + "/default_tasks"
   TASKS_LOG = SYC_DIR + "/tasks.log"
-  TRACKED_TASK = SYC_DIR + "/tracked_task"
+  TRACKED_TASK = SYC_DIR + "/tracked_tasks"
   RIDX_LOG = SYC_DIR + "/reindex.log"
 
-  def make_environment
+  def check_environment
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
-    FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
+    unless viable?
+      unless get_files(File.expand_path("~"), "*.task").empty?
+        puts "Error:"
+        puts "------"
+        puts "There are missing system files of syctask, even though tasks are"
+        puts "available."
+        puts "If you have upgraded from a version less than 0.1.0 than you may"
+        puts "re-index your tasks. For details see"
+        puts "http://rubygems.org/sugaryourcoffee syc-task 0.1.0"
+        puts "Or you have accidentially deleted system files. In this case also"
+        puts "re-indexing will fix it."
+        print "Re-index your tasks (y/n)? "
+        answer = gets.chomp
+        exit -1 if answer.downcase == "n"
+        print "Re-indexing now"
+        reindex_tasks(File.expand_path("~"))
+        puts "Successfully re-indexed your tasks"
+        puts "A log file of re-indexed tasks can be found at #{RIDX_LOG}"
+      else
+        FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
+        File.write(ID, "0")
+      end
+    end
+  end
+
+  def viable?
+    File.exists? SYC_DIR and File.exists? ID 
   end
 
   def reindex_tasks(root)
+    FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
+    File.open(RIDX_LOG, 'a') {|f| f.puts Time.now}
     id = 0
     to_be_renamed_files = {}
     root = File.expand_path(root)
@@ -44,8 +72,6 @@ module Syctask
   # Retrieves all task files in and below the provided dir. Returns an array of
   # task files
   def get_all_task_files(dir)
-    #Dir.chdir(dir)
-    #Dir.glob("**/*.task", File::FNM_DOTMATCH).
     get_files(dir, "*.task").keep_if {|file| file.match /\d+\.task$/}
   end
 
@@ -56,8 +82,9 @@ module Syctask
   # After all tasks are re-indexed the tmp_file_names have to be renamed to the
   # new_file_names. The renaming is in the responsibility of the calling method.
   def reindex_task(root, file, index)
+    print "."
     task = File.read(file)
-    old_id = task.scan(/(?<=^id: )\d+$/)
+    old_id = task.scan(/(?<=^id: )\d+$/)[0]
     new_id = (index).to_s
     task.gsub!(/(?<=^id: )\d+$/, new_id)
     new_file = "#{File.dirname(file)}/#{new_id}.task"
@@ -69,13 +96,14 @@ module Syctask
 
   def save_index(id, file)
     entry = "#{id},#{file}"
-    return if File.exists? IDS and File.read(IDS).scan(%r{#{entry}})
+    return if File.exists? IDS and not File.read(IDS).scan(entry).empty?
     File.open(IDS, 'a') {|f| f.puts entry}
   end
 
   def log_reindexing(old_id, new_id, file)
     entry = "#{old_id},#{new_id},#{file}"
-    return if File.exists? RIDX_LOG and File.read(RIDX_LOG).scan(%r{#{entry}})
+    return if File.exists? RIDX_LOG and not File.read(RIDX_LOG).
+      scan(entry).empty?
     File.open(RIDX_LOG, 'a') {|f| f.puts entry}
   end
 
@@ -106,15 +134,13 @@ module Syctask
   end
 
   def planned_tasks_files(dir)
-    pattern = "\d{4}-\d{2}-\d{2}_planned_tasks"
-    #dir = File.expand_path("~/.tasks")
-    #Dir.glob("#{dir}/*planned_tasks")
-    get_files(dir, "*planned_tasks").keep_if {|f| f.match(%r{#{pattern}})}
+    pattern = %r{\d{4}-\d{2}-\d{2}_planned_tasks}
+    get_files(dir, "*planned_tasks").keep_if {|f| f.match(pattern)}
   end
 
   def time_schedule_files(dir)
-    pattern = "\d{4}-\d{2}-\d{2}_time_schedule"
-    get_files(dir, "*time_schedule").keep_if {|f| f.match(%r{#{pattern}})}
+    pattern = %r{\d{4}-\d{2}-\d{2}_time_schedule}
+    get_files(dir, "*time_schedule").keep_if {|f| f.match(pattern)}
   end
 
   def tasks_log_files(dir)
@@ -158,7 +184,12 @@ module Syctask
   end
 
   def get_files(dir, pattern)
+    original_dir = File.expand_path(".")
     Dir.chdir(dir)
-    Dir.glob("**/#{pattern}", File::FNM_DOTMATCH).map {|f| File.expand_path(f)}
+    files = Dir.glob("**/#{pattern}", File::FNM_DOTMATCH).map do |f|
+      File.expand_path(f)
+    end
+    Dir.chdir(original_dir)
+    files
   end
 end

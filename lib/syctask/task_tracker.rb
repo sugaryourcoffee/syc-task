@@ -14,9 +14,9 @@ module Syctask
   class TaskTracker
     
     # File name of the file where the tracked files are saved to
-    TRACKED_TASKS_FILE = Syctask::WORK_DIR + '/' + 'tracked_tasks'
+    TRACKED_TASKS_FILE = Syctask::TRACKED_TASK #Syctask::WORK_DIR + '/' + 'tracked_tasks'
     # File name of the task log file
-    TASK_LOG_FILE = Syctask::WORK_DIR + '/' + 'tasks.log'
+    TASK_LOG_FILE = Syctask::TASKS_LOG #Syctask::WORK_DIR + '/' + 'tasks.log'
 
     # Creates a new TaskTracker
     def initialize
@@ -32,6 +32,9 @@ module Syctask
     # * [true,  nil ] if the task is started and no task was running. 
     # * [true,  task] if task is started and the previously running task stopped
     def start(task)
+      raise ArgumentError, "Error: Task without directory.\n"+
+                           "--> Update task with syctask -t <dir> update "+
+                           "#{task.id}" unless task.dir
       index = @tasks.find_index(task)
       return [false, nil] if not index.nil? and index == 0
 

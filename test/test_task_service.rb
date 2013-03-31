@@ -7,13 +7,13 @@ class TestTaskService < Test::Unit::TestCase
 
   # Creates a TaskService object used in each shoulda
   def setup
-    backup_system_files
+    backup_system_files("TestTaskService")
     @service = Syctask::TaskService.new
   end
 
   # Removes files and directories created by the tests
   def teardown
-    restore_system_files
+    restore_system_files("TestTaskService")
     FileUtils.rm_r "test/tasks" if File.exists? "test/tasks"
   end
 

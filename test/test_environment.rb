@@ -9,7 +9,7 @@ class TestEnvironment < Test::Unit::TestCase
   context "Test re-indexing helpers" do
     
     def setup
-      backup_system_files
+      backup_system_files("TestEnvironment")
       @time = Time.now
       @work_dir = "test/tasks"
       @service = Syctask::TaskService.new
@@ -29,26 +29,8 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     def teardown
-      restore_system_files
+      restore_system_files("TestEnvironment")
       FileUtils.rm_r @work_dir if File.exists? @work_dir
-    end
-
-    def backup_system_files
-      system_files = Dir.glob("#{Syctask::SYC_DIR}/*")
-      system_files.each do |f|
-        FileUtils.mv f, f + ".original"
-        FileUtils.touch f
-      end
-    end
-
-    def restore_system_files
-      Dir.glob("#{Syctask::SYC_DIR}/*").each do |f|
-        if f.end_with? ".original" 
-          FileUtils.mv f, f.sub(".original", "") 
-        else
-          FileUtils.rm f 
-        end
-      end
     end
 
     # Fills the log file with entries and returns these in a hash

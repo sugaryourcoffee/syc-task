@@ -107,6 +107,18 @@ class TestEnvironment < Test::Unit::TestCase
       assert_equal current_dir, File.expand_path(".")
     end
 
+    should "initialize max id" do
+      tasks = Syctask::task_files(@work_dir)
+      Syctask::initialize_id(tasks)
+      assert_equal 15, File.read(Syctask::ID).chomp.to_i
+    end
+
+    should "get next id" do
+      Syctask::initialize_id(Syctask::task_files(@work_dir))
+      assert_equal 16, Syctask::next_id
+      assert_equal 17, Syctask::next_id
+    end
+
     should "retrieve tasks.log" do
       log = Syctask::tasks_log_files(@work_dir)
       assert_equal 1, log.size
@@ -124,9 +136,10 @@ class TestEnvironment < Test::Unit::TestCase
 
     should "re-index tasks" do
       tasks = Syctask::task_files(@work_dir)
-      tasks.each_with_index do |f,i|
-        index = i + 100
-        result = reindex_task(@work_dir, f, index)
+      index = tasks.size 
+      tasks.each do |f|
+        index += 1
+        result = reindex_task(f)
         assert_equal index, result[:new_id].to_i
         assert File.basename(f).start_with? result[:old_id]
         refute File.exists? f
@@ -151,7 +164,7 @@ class TestEnvironment < Test::Unit::TestCase
       tasks = Syctask::task_files(@work_dir)
       tasks.each_with_index do |f,i|
         index = i + 100
-        result = reindex_task(@work_dir, f, index)
+        result = reindex_task(f)
         puts result.inspect
         Syctask::log_reindexing(result[:old_id], 
                                 result[:new_id], 

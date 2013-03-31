@@ -9,11 +9,13 @@ class TestTaskScheduler < Test::Unit::TestCase
     # Sets up the test case and initializes the directory for the test tasks to
     # live
     def setup
+      backup_system_files
       @dir = "test/tasks"
     end
 
     # Removes after each test the test task directory
     def teardown
+      restore_system_files
       FileUtils.rm_r @dir if File.exists? @dir
     end
 

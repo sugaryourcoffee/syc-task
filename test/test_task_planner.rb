@@ -10,6 +10,7 @@ class TestTaskPlanner < Test::Unit::TestCase
     
     # Sets up the test and initializes variables used in the tests
     def setup
+      backup_system_files
       @plan_date = '2013-03-01'
       @planned_tasks_file = File.
                             expand_path("~/.tasks/#{@plan_date}_planned_tasks")
@@ -27,6 +28,7 @@ class TestTaskPlanner < Test::Unit::TestCase
 
     # Removes files and directories created during the tests
     def teardown
+      restore_system_files
       FileUtils.rm_r @dir if File.exists? @dir
       FileUtils.rm @planned_tasks_file if File.exists? @planned_tasks_file
     end

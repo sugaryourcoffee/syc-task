@@ -10,7 +10,7 @@ program_desc 'A simple task manager'
 version Syctask::VERSION
 
 desc 'The directory where tasks are saved to'
-default_value File.expand_path('~/.tasks')
+default_value Syctask::WORK_DIR #File.expand_path('~/.tasks')
 arg_name 'TASK_DIR'
 flag [:t,:taskdir]
 

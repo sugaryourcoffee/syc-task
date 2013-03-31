@@ -24,8 +24,7 @@ module Syctask
     # * tags - can be used to searching tasks that belong to a certain category
     def create(dir, options, title)
       create_dir(dir)
-      task = Task.new(options, title, create_id(dir))
-      puts "id = #{next_id}"
+      task = Task.new(options, title, next_id(dir))
       save(dir, task)
       task.id
     end
@@ -73,7 +72,7 @@ module Syctask
     # open tasks
     def find(dir, filter={}, all=true)
       tasks = []
-      Dir.glob("#{dir}/*").sort.each do |file|
+      Dir.glob("#{dir}/*.task").sort.each do |file|
         begin
           File.file?(file) ? task = YAML.load_file(file) : next
         rescue Exception => e
@@ -147,11 +146,12 @@ module Syctask
       FileUtils.mkdir_p dir unless File.exists? dir
     end
 
-    # Creates the task's ID based on the tasks available in the task directory.
-    # The task's file name is in the form ID.task. create_id determines
-    # the biggest number and adds one to create the task's ID.
-    def create_id(dir)
-      tasks = Dir.glob("#{dir}/*")
+    # Checks for the next possible task's ID based on the tasks available in
+    # the task directory. The task's file name is in the form ID.task. 
+    # local_ID seeks for the biggest number and adds one to determine the 
+    # next valid task ID.
+    def local_id(dir)
+      tasks = Dir.glob("#{dir}/*.task")
       ids = []
       tasks.each do |task| 
         id = File.basename(task).scan(/^\d+(?=\.task)/)[0]
@@ -160,10 +160,15 @@ module Syctask
       ids.empty? ? 1 : ids.sort[ids.size-1] + 1
     end
 
-    # Retrieves a new ID for a task.
-    def next_id
+    # Retrieves a new unique ID for a task. If next id is less than the next
+    # ID in the directory a warning is printed and the higher ID is taken as
+    # the next ID.
+    def next_id(dir)
+      local = local_id(dir)
       id = File.readlines(Syctask::ID)[0] if File.exists? Syctask::ID
       id = id ? id.to_i + 1 : 1
+      STDERR.puts "Warning: global id < local id" if id < local
+      id = [id, local].max
       File.open(Syctask::ID, 'w') {|f| f.puts id}
       id      
     end

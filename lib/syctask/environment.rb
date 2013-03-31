@@ -14,24 +14,32 @@ module Syctask
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?
       unless get_files(File.expand_path("~"), "*.task").empty?
+        # Backup ARGV content
+        args = []
+        ARGV.each {|arg| args << arg} unless ARGV.empty?
+        ARGV.clear
+        puts
         puts "Warning:"
-        puts "------"
-        puts "There are missing system files of syctask, even though tasks are"
-        puts "available."
-        puts "If you have upgraded from version 0.0.7 or below than you may"
-        puts "re-index your tasks. For details see"
-        puts "http://rubygems.org/sugaryourcoffee syc-task"
-        puts "Or you have accidentially deleted system files. In this case also"
-        puts "re-indexing will fix it."
-        print "Re-index your tasks (y/n)? "
+        puts "-------"
+        puts "There are missing system files of syc-task, even though tasks "+
+             "are available."
+        puts "If you have upgraded from version 0.0.7 or below than this is "+
+             "due to a changed\nfile structure. For changes in version "+
+             "greater 0.0.7 see"
+        puts "--> https://rubygems.org/gems/syc-task"
+        puts "Or you have accidentially deleted system files. In both cases "+
+             "re-indexing\nwill recover syc-task."
+        print "Do you want to recover syc-task (y/n)? "
         answer = gets.chomp
-        exit -1 if answer.downcase == "n"
-        print "Re-indexing now"
+        exit -1 unless answer.downcase == "y"
         reindex_tasks(File.expand_path("~"))
-        puts "Successfully re-indexed your tasks"
-        puts "A log file of re-indexed tasks can be found at #{RIDX_LOG}"
+        puts "Successfully recovered syc-task"
+        puts "-> A log file of re-indexed tasks can be found at\n"+
+             "#{RIDX_LOG}" if File.exists? RIDX_LOG
         print "Press any key to continue "
         gets
+        # Restore ARGV content
+        args.each {|arg| ARGV << arg} unless args.empty?
       else
         FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
         File.write(ID, "0")
@@ -62,8 +70,11 @@ module Syctask
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
     to_be_renamed = {}
     root = File.expand_path(root)
+    puts "-> Collect task files..."
     task_files = task_files(root)
+    puts "-> Restore ID counter..."
     initialize_id(task_files)
+    print "-> Start re-indexing now..."
     collect_by_id(task_files).each do |id, files|
       next if files.size < 2
       files.each_with_index do |file,i|
@@ -86,9 +97,14 @@ module Syctask
       end
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
+    puts
+    puts "-> Move log file..."
     move_task_log_file(root)
+    puts "-> Move planned task files..."
     move_planned_tasks_files(root)
+    puts "-> Move schedule files..."
     move_time_schedule_files(root)
+    puts "-> Update tracked task file..."
     update_tracked_task(root)
   end
 
@@ -176,27 +192,30 @@ module Syctask
     @tracked = get_files(dir, "tracked_tasks") if @tracked.nil?
     return if @tracked.empty?
     task = File.read(@tracked[0])
-    old_id = task.scan(/(?<=id: )\d+$/)
-    old_dir = task.scan(/(?<=dir: ).*$/)
-    puts "#{old_id} #{old_dir}"
-    return if old_id.empty? or old_dir.empty?
-    pattern = %r{(?<=#{old_id[0]},)\d+(?=,#{old_dir[0]}\/\d+\.task)}
-    puts pattern
-    new_id = File.read(RIDX_LOG).scan(pattern)
-    puts "new_id = #{new_id}<"
-    task.gsub!("id: #{old_id}", "id: #{new_id}")
-    puts task
+    if File.exists? RIDX_LOG
+      old_id = task.scan(/(?<=id: )\d+$/)
+      old_dir = task.scan(/(?<=dir: ).*$/)
+      #puts "#{old_id} #{old_dir}"
+      return if old_id.empty? or old_dir.empty?
+      pattern = %r{(?<=#{old_id[0]},)\d+(?=,#{old_dir[0]}\/\d+\.task)}
+      #puts pattern
+      new_id = File.read(RIDX_LOG).scan(pattern)
+      #puts "new_id = #{new_id}<"
+      task.gsub!("id: #{old_id}", "id: #{new_id}")
+      #puts task
+    end
     File.write(TRACKED_TASK, task)
     FileUtils.rm @tracked[0] unless TRACKED_TASK == @tracked[0]
   end
 
   # Extracts tasks that have no unique id
   def collect_by_id(tasks)
-    extract = Hash.new([])
+    extract = {}
     tasks.each do |task|
-      id = task.scan(/(?<=\/)\d+(?=\.task$)/)
-      extract[id] << task
+      id = task.scan(/(?<=\/)\d+(?=\.task$)/)[0]
+      extract[id].nil? ? extract[id] = [task] : extract[id] << task
     end
+    extract
   end
 
   # Retrieves all task files in and below the provided dir. Returns an array of

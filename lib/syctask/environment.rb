@@ -18,9 +18,9 @@ module Syctask
         puts "------"
         puts "There are missing system files of syctask, even though tasks are"
         puts "available."
-        puts "If you have upgraded from a version less than 0.1.0 than you may"
+        puts "If you have upgraded from version 0.0.7 or below than you may"
         puts "re-index your tasks. For details see"
-        puts "http://rubygems.org/sugaryourcoffee syc-task 0.1.0"
+        puts "http://rubygems.org/sugaryourcoffee syc-task"
         puts "Or you have accidentially deleted system files. In this case also"
         puts "re-indexing will fix it."
         print "Re-index your tasks (y/n)? "
@@ -30,6 +30,8 @@ module Syctask
         reindex_tasks(File.expand_path("~"))
         puts "Successfully re-indexed your tasks"
         puts "A log file of re-indexed tasks can be found at #{RIDX_LOG}"
+        print "Press any key to continue "
+        gets
       else
         FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
         File.write(ID, "0")
@@ -37,42 +39,57 @@ module Syctask
     end
   end
 
+  # Checks if system files are available that are needed for running syc-task.
+  # Returns true if neccessary system files are available, otherwise false.
   def viable?
     File.exists? SYC_DIR and File.exists? ID 
   end
 
+  # Re-indexing of tasks is done when tasks are available but SYC_DIR or ID file
+  # is missing. The ID file contains the last issued task ID. The ID file is
+  # referenced for obtaining the next ID for a new task. Re-indexing is done as
+  # follows:
+  # * Retrieve all tasks in and below the given directory *root*
+  # * Determine the highest ID number and add it to the ID file
+  # * Determine all tasks that don't have a unique ID
+  # * Re-index all tasks not having a unique ID and rename the file names
+  #   accordingly
+  # * Adjust the IDs in the planned_tasks, tasks.log and tracked_tasks files
+  # * Copy all system files planned_tasks, time_schedule, tasks.log, id to the
+  #   SYC_DIR directory if not already in the SYC_DIR directory. This should
+  #   only be if upgrading from version 0.0.7 and below.
   def reindex_tasks(root)
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
-    id = 0
     to_be_renamed = {}
     root = File.expand_path(root)
-    @task_files = task_files(root) if @task_files.nil?
-    @task_files.each_with_index do |file,index|
-      id = index + 1
-      result = reindex_task(root, file, id)
-      # assign tmp_file to new_file for later renaming
-      to_be_renamed[result[:tmp_file]] = result[:new_file]
-      # write new_id, path to IDS
-      save_ids(result[:new_id], result[:new_file])
-      # write old_id, new_id, path to index.log
-      log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
-      # replace old_id with new_id in task.log
-      update_tasks_log(root, 
-                       result[:old_id], 
-                       result[:new_id], 
-                       result[:new_file])
-      # replace old_id with new_id in planned_tasks
-      update_planned_tasks(root, 
-                           result[:old_id], 
-                           result[:new_id], 
-                           result[:new_file])
+    task_files = task_files(root)
+    initialize_id(task_files)
+    collect_by_id(task_files).each do |id, files|
+      next if files.size < 2
+      files.each_with_index do |file,i|
+        next if i == 0 # need to re-index only second and following tasks
+        result = reindex_task(file)
+        # assign tmp_file to new_file for later renaming
+        to_be_renamed[result[:tmp_file]] = result[:new_file]
+        # write new_id, path to IDS
+        log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
+        # replace old_id with new_id in task.log
+        update_tasks_log(root, 
+                         result[:old_id], 
+                         result[:new_id], 
+                         result[:new_file])
+        # replace old_id with new_id in planned_tasks
+        update_planned_tasks(root, 
+                             result[:old_id], 
+                             result[:new_id], 
+                             result[:new_file])
+      end
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
     move_task_log_file(root)
     move_planned_tasks_files(root)
     move_time_schedule_files(root)
     update_tracked_task(root)
-    save_id(id)
   end
 
   # Re-indexes the tasks' IDs and renames the task files to match the new ID.
@@ -81,11 +98,11 @@ module Syctask
   # and hence the new_file_name exists already from a not yet re-indexed task.
   # After all tasks are re-indexed the tmp_file_names have to be renamed to the
   # new_file_names. The renaming is in the responsibility of the calling method.
-  def reindex_task(root, file, index)
+  def reindex_task(file)
     print "."
     task = File.read(file)
     old_id = task.scan(/(?<=^id: )\d+$/)[0]
-    new_id = (index).to_s
+    new_id = next_id.to_s
     task.gsub!(/(?<=^id: )\d+$/, new_id)
     new_file = "#{File.dirname(file)}/#{new_id}.task"
     tmp_file = "#{new_file}_"
@@ -94,14 +111,30 @@ module Syctask
     {old_id: old_id, new_id: new_id, tmp_file: tmp_file, new_file: new_file}
   end
 
+  # Determines the greatest task ID out of the provided tasks and saves it to
+  # the ID file
+  def initialize_id(tasks)
+    pattern = %r{(?<=\/)\d+(?=\.task)}
+    tasks.sort_by! {|t| t.scan(pattern)[0].to_i}
+    save_id(tasks[tasks.size-1].scan(pattern)[0].to_i)
+  end
+
   def save_ids(id, file)
     entry = "#{id},#{file}"
     return if File.exists? IDS and not File.read(IDS).scan(entry).empty?
     File.open(IDS, 'a') {|f| f.puts entry}
   end
 
+  # Save the id to the ID file
   def save_id(id)
     File.write(ID,id)
+  end
+
+  # Retrieve the next unassigned task id
+  def next_id
+    id = File.read(ID).to_i + 1
+    save_id(id)
+    id
   end
 
   def log_reindexing(old_id, new_id, file)
@@ -155,6 +188,15 @@ module Syctask
     puts task
     File.write(TRACKED_TASK, task)
     FileUtils.rm @tracked[0] unless TRACKED_TASK == @tracked[0]
+  end
+
+  # Extracts tasks that have no unique id
+  def collect_by_id(tasks)
+    extract = Hash.new([])
+    tasks.each do |task|
+      id = task.scan(/(?<=\/)\d+(?=\.task$)/)
+      extract[id] << task
+    end
   end
 
   # Retrieves all task files in and below the provided dir. Returns an array of

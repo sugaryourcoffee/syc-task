@@ -10,7 +10,7 @@ module Syctask
   class TaskService
     # Default directory where the tasks are saved to if no directory is
     # specified
-    DEFAULT_DIR = File.expand_path("~/.tasks")
+    DEFAULT_DIR = Syctask::WORK_DIR #File.expand_path("~/.tasks")
 
     # Creates a new task in the specified directory, with the specified options
     # and the specified title. If the directory doesn't exist it is created.
@@ -32,9 +32,9 @@ module Syctask
     # Reads the task with given ID id located in given directory dir. If task
     # does not exist nil is returned otherwise the task is returned
     def read(dir, id)
-      task = read_by_id(id) if dir.nil?
-      return task unless task.nil?
-      #task = nil
+      #task = read_by_id(id) if dir.nil?
+      #return task unless task.nil?
+      task = nil
       Dir.glob("#{dir}/*.task").each do |file|
         task = YAML.load_file(file) if File.file? file
         if not task.nil? and task.class == Syctask::Task and task.id == id.to_i
@@ -114,7 +114,7 @@ module Syctask
     # returned
     def delete(dir, filter)
       deleted = 0
-      Dir.glob("#{dir}/*").each do |file|
+      Dir.glob("#{dir}/*.task").each do |file|
         begin
           File.file?(file) ? task = YAML.load_file(file) : next
         rescue Exception => e

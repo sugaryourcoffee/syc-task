@@ -23,6 +23,7 @@ lib/syctask/meeting.rb
 lib/syctask/times.rb
 lib/syctask/schedule.rb
 lib/sycutil/console.rb
+lib/sycutil/console_timer.rb
 lib/syctask/environment.rb
 lib/syctask/task_tracker.rb
 lib/syctime/time_util.rb

@@ -1,6 +1,7 @@
 require 'fileutils'
 require_relative '../sycutil/console.rb'
 require_relative 'task_service.rb'
+require_relative 'environment.rb'
 
 module Syctask
   # String that is prompted during planning
@@ -12,7 +13,7 @@ module Syctask
   # be prioritized to determine the most to the least important tasks.
   class TaskPlanner
     # The task where the planned tasks are saved to
-    WORK_DIR = File.expand_path("~/.tasks")
+    WORK_DIR = Syctask::SYC_DIR #File.expand_path("~/.tasks")
 
     # Creates a new TaskPlanner
     def initialize

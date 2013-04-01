@@ -3,13 +3,14 @@ require 'gli'
 require 'syctask'
 include GLI::App
 include Syctime
+include Syctask
 
 program_desc 'A simple task manager'
 
 version Syctask::VERSION
 
 desc 'The directory where tasks are saved to'
-default_value File.expand_path('~/.tasks')
+default_value Syctask::WORK_DIR
 arg_name 'TASK_DIR'
 flag [:t,:taskdir]
 
@@ -396,14 +397,18 @@ command :start do |c|
   c.desc 'List currently tracked task'
   c.switch [:l, :list] 
  
-  c.desc 'Number of planned task'
+  c.desc 'ID of planned task'
   c.switch [:p, :plan]
 
   c.action do |global_options,options,args|
+    if args.empty? and not options[:l] and not options[:p]
+      help_now! sprintf("%s", "no arguments and options given").color(:red)
+    end
     tracker = Syctask::TaskTracker.new
     if args[0]
       if options[:plan]
-        task = @planner.get_tasks[args[0].to_i] 
+        task = @planner.get_tasks(Time.now.strftime("%Y-%m-%d"),
+                                  {id: args[0]})[0]
       else
         task = @service.read(global_options[:taskdir], args[0])
       end
@@ -519,6 +524,8 @@ pre do |global,command,options,args|
   # chosen command
   # Use skips_pre before a command to skip this block
   # on that command only
+
+  Syctask::check_environment
 
   @service = Syctask::TaskService.new
   @planner = Syctask::TaskPlanner.new

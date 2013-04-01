@@ -1,4 +1,6 @@
+require 'csv'
 require 'yaml'
+require_relative 'environment.rb'
 
 # Syctask provides functions for managing tasks in a task list
 module Syctask
@@ -8,7 +10,7 @@ module Syctask
   class TaskService
     # Default directory where the tasks are saved to if no directory is
     # specified
-    DEFAULT_DIR = File.expand_path("~/.tasks")
+    DEFAULT_DIR = Syctask::WORK_DIR #File.expand_path("~/.tasks")
 
     # Creates a new task in the specified directory, with the specified options
     # and the specified title. If the directory doesn't exist it is created.
@@ -22,7 +24,7 @@ module Syctask
     # * tags - can be used to searching tasks that belong to a certain category
     def create(dir, options, title)
       create_dir(dir)
-      task = Task.new(options, title, create_id(dir))
+      task = Task.new(options, title, next_id(dir))
       save(dir, task)
       task.id
     end
@@ -30,6 +32,8 @@ module Syctask
     # Reads the task with given ID id located in given directory dir. If task
     # does not exist nil is returned otherwise the task is returned
     def read(dir, id)
+      #task = read_by_id(id) if dir.nil?
+      #return task unless task.nil?
       task = nil
       Dir.glob("#{dir}/*.task").each do |file|
         task = YAML.load_file(file) if File.file? file
@@ -38,6 +42,22 @@ module Syctask
         end
       end
       nil
+    end
+
+    # Reads the task identified by ID. If no task with ID is found nil is
+    # returned otherwise the task
+    def read_by_id(id)
+      return nil unless File.exists? Syctask::IDS
+      CSV.foreach(Syctask::IDS) do |row|
+        task_file = row[1] if row[0] == id  
+        if task_file
+          if File.exists? task_file
+            return YAML.load_file(task_file)
+          else
+            return nil
+          end
+        end 
+      end
     end
 
     # Finds all tasks that match the given filter. The filter can be provided
@@ -52,7 +72,7 @@ module Syctask
     # open tasks
     def find(dir, filter={}, all=true)
       tasks = []
-      Dir.glob("#{dir}/*").sort.each do |file|
+      Dir.glob("#{dir}/*.task").sort.each do |file|
         begin
           File.file?(file) ? task = YAML.load_file(file) : next
         rescue Exception => e
@@ -94,7 +114,7 @@ module Syctask
     # returned
     def delete(dir, filter)
       deleted = 0
-      Dir.glob("#{dir}/*").each do |file|
+      Dir.glob("#{dir}/*.task").each do |file|
         begin
           File.file?(file) ? task = YAML.load_file(file) : next
         rescue Exception => e
@@ -112,7 +132,11 @@ module Syctask
     # ~/.tasks will be set.
     def save(dir, task)
       task.dir = dir.nil? ? DEFAULT_DIR : File.expand_path(dir)
-      File.open("#{task.dir}/#{task.id}.task", 'w') {|f| YAML.dump(task, f)}
+      task_file = "#{task.dir}/#{task.id}.task"
+      unless File.exists? task_file
+        File.open(Syctask::IDS, 'a') {|f| f.puts "#{task.id},#{task_file}"}
+      end
+      File.open(task_file, 'w') {|f| YAML.dump(task, f)}
     end
 
     private
@@ -122,18 +146,32 @@ module Syctask
       FileUtils.mkdir_p dir unless File.exists? dir
     end
 
-    # Creates the task's ID based on the tasks available in the task directory.
-    # The task's file name is in the form ID.task. create_id determines
-    # the biggest number and adds one to create the task's ID.
-    def create_id(dir)
-      tasks = Dir.glob("#{dir}/*")
+    # Checks for the next possible task's ID based on the tasks available in
+    # the task directory. The task's file name is in the form ID.task. 
+    # local_ID seeks for the biggest number and adds one to determine the 
+    # next valid task ID.
+    def local_id(dir)
+      tasks = Dir.glob("#{dir}/*.task")
       ids = []
       tasks.each do |task| 
         id = File.basename(task).scan(/^\d+(?=\.task)/)[0]
         ids << id.to_i if id
       end
       ids.empty? ? 1 : ids.sort[ids.size-1] + 1
-   end
+    end
+
+    # Retrieves a new unique ID for a task. If next id is less than the next
+    # ID in the directory a warning is printed and the higher ID is taken as
+    # the next ID.
+    def next_id(dir)
+      local = local_id(dir)
+      id = File.readlines(Syctask::ID)[0] if File.exists? Syctask::ID
+      id = id ? id.to_i + 1 : 1
+      STDERR.puts "Warning: global id < local id" if id < local
+      id = [id, local].max
+      File.open(Syctask::ID, 'w') {|f| f.puts id}
+      id      
+    end
  
   end
 end

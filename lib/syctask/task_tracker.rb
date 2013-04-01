@@ -1,5 +1,8 @@
+require 'yaml'
+require 'fileutils'
 require_relative 'environment.rb'
 require_relative 'task_service.rb'
+#require_relative '../sycutil/console_timer.rb'
 
 module Syctask
 
@@ -14,9 +17,9 @@ module Syctask
   class TaskTracker
     
     # File name of the file where the tracked files are saved to
-    TRACKED_TASKS_FILE = Syctask::WORK_DIR + '/' + 'tracked_tasks'
+    TRACKED_TASKS_FILE = Syctask::TRACKED_TASK #Syctask::WORK_DIR + '/' + 'tracked_tasks'
     # File name of the task log file
-    TASK_LOG_FILE = Syctask::WORK_DIR + '/' + 'tasks.log'
+    TASK_LOG_FILE = Syctask::TASKS_LOG #Syctask::WORK_DIR + '/' + 'tasks.log'
 
     # Creates a new TaskTracker
     def initialize
@@ -32,6 +35,9 @@ module Syctask
     # * [true,  nil ] if the task is started and no task was running. 
     # * [true,  task] if task is started and the previously running task stopped
     def start(task)
+      raise ArgumentError, "Error: Task without directory.\n"+
+                           "--> Update task with syctask -t <dir> update "+
+                           "#{task.id}" unless task.dir
       index = @tasks.find_index(task)
       return [false, nil] if not index.nil? and index == 0
 
@@ -71,6 +77,7 @@ module Syctask
       @tracks.delete_at(0)
       @tasks.delete_at(0)
       save_tracks
+
       task
     end
 
@@ -119,7 +126,7 @@ module Syctask
   end
 
   # A Track holds a task and stops the time the task is processed. The Track
-  # will print every 5 minutes the elapsed time and the time left to the
+  # will print every second the elapsed time and the time left to the
   # specified Task#duration. 
   class Track
 
@@ -139,17 +146,23 @@ module Syctask
       @dir = task.dir
       @id = task.id
       @title = task.title
+      @duration = task.duration.to_i * 15 * 60
+      @semaphore = "#{Syctask::SYC_DIR}/#{@id}.track"
     end
 
     # Starts the tracking and a timer that will print to STDOUT every 5 minutes
     # the elapsed time and the time left until Task#duration
     def start
       @started ||= Time.now
-      # start a timer that prints title and elapsed time every 5 minutes
+      # start a timer that prints id and elapsed time 
+      FileUtils.touch @semaphore
+      system "ruby lib/sycutil/console_timer.rb "+
+             "#{@duration} #{@id} #{@semaphore} &"
     end
     
     # Stops the task tracking and returns the lead time of the task
     def stop
+      FileUtils.rm @semaphore if @semaphore and File.exists? @semaphore
       @stopped ||= Time.now
       @stopped - @started
     end

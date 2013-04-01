@@ -10,6 +10,7 @@ class TestTaskTracker < Test::Unit::TestCase
 
     # Create variables and tasks for tests
     def setup
+      backup_system_files("TestTaskTracker")
       @origin = Syctask::TaskTracker::TRACKED_TASKS_FILE
       @copy = @origin + '.copy'
       FileUtils.mv @origin, @copy if File.exists? @origin
@@ -23,6 +24,7 @@ class TestTaskTracker < Test::Unit::TestCase
 
     # Remove created files and directories during tests
     def teardown
+      restore_system_files("TestTaskTracker")
       FileUtils.mv @copy, @origin if File.exists? @copy
       FileUtils.rm_r @dir if File.exists? @dir
     end

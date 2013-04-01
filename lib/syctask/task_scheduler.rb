@@ -1,4 +1,5 @@
 require_relative 'schedule.rb'
+require_relative 'environment.rb'
 
 module Syctask
 
@@ -37,7 +38,7 @@ module Syctask
     ASSIGNMENT_PATTERN = /([a-zA-Z]):(\d+(?:,\d+|\d+;)*)/ 
 
     # Working directory
-    WORK_DIR = File.expand_path("~/.tasks")
+    WORK_DIR = Syctask::SYC_DIR #File.expand_path("~/.tasks")
 
     # Creates a new TaskScheduler. 
     def initialize

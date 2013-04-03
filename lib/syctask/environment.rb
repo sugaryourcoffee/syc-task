@@ -69,6 +69,7 @@ module Syctask
   #   only be if upgrading from version 0.0.7 and below.
   def reindex_tasks(root)
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
+    new_id = {}
     to_be_renamed = {}
     root = File.expand_path(root)
     puts "-> Collect task files..."
@@ -81,26 +82,36 @@ module Syctask
       files.each_with_index do |file,i|
         next if i == 0 # need to re-index only second and following tasks
         result = reindex_task(file)
+        # associate old id to new id and new file name
+        if new_id[result[:old_id]].nil?
+          new_id[result[:old_id]] = {result[:dir_name] => result[:new_id]}
+        else
+          new_id[result[:old_id]][result[:dir_name]] = result[:new_id]
+        end 
         # assign tmp_file to new_file for later renaming
         to_be_renamed[result[:tmp_file]] = result[:new_file]
         # write new_id, path to IDS
         log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
         # replace old_id with new_id in task.log
-        update_tasks_log(root, 
-                         result[:old_id], 
-                         result[:new_id], 
-                         result[:new_file])
+#        update_tasks_log(root, 
+#                         result[:old_id], 
+#                         result[:new_id], 
+#                         result[:new_file])
         # replace old_id with new_id in planned_tasks
-        update_planned_tasks(root, 
-                             result[:old_id], 
-                             result[:new_id], 
-                             result[:new_file])
+#        update_planned_tasks(root, 
+#                             result[:old_id], 
+#                             result[:new_id], 
+#                             result[:new_file])
       end
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
     puts
+    puts "-> Update task log file"
+    update_tasks_log(root, new_id)
     puts "-> Move log file..."
     move_task_log_file(root)
+    puts "-> Update planned tasks files"
+    update_planned_tasks(root, new_id)
     puts "-> Move planned task files..."
     move_planned_tasks_files(root)
     puts "-> Move schedule files..."
@@ -121,11 +132,16 @@ module Syctask
     old_id = task.scan(/(?<=^id: )\d+$/)[0]
     new_id = next_id.to_s
     task.gsub!(/(?<=^id: )\d+$/, new_id)
-    new_file = "#{File.dirname(file)}/#{new_id}.task"
+    dir_name = File.dirname(file)
+    new_file = "#{dirname}/#{new_id}.task"
     tmp_file = "#{new_file}_"
     File.write(tmp_file, task)
     File.delete(file)
-    {old_id: old_id, new_id: new_id, tmp_file: tmp_file, new_file: new_file}
+    {old_id: old_id, 
+     new_id: new_id, 
+     tmp_file: tmp_file, 
+     new_file: new_file,
+     dir_name: dir_name}
   end
 
   # Determines the greatest task ID out of the provided tasks and saves it to
@@ -178,7 +194,20 @@ module Syctask
   # files live in the ~/.syc/syctask directory. So the calling method has the
   # responsibility to copy or move the planned tasks files after they have been
   # updated to the new planned tasks directory.
-  def update_planned_tasks(dir, old_id, new_id, file)
+  def update_planned_tasks(dir, new_ids)
+    planned_tasks_files.each do |file|
+      tasks = File.readlines(file)
+      tasks.each_with_index do |task,i|
+        task_dir, old_id = task.split(',')
+        next unless new_ids[old_id]
+        next unless new_ids[old_id][task_dir]
+        tasks[i] = "#{task_dir},#{new_ids[old_id][task_dir]}"   
+      end
+      File.write("#{SYC_DIR}/#{file}", tasks)
+    end
+  end
+
+  def update_planned_tasks_old(dir, old_id, new_id, file)
     old_entry = "#{File.dirname(file)},#{old_id}"
     # Append '/' to dir name so already updated task is not subsequently updated
     new_entry = "#{File.dirname(file)}/,#{new_id}"

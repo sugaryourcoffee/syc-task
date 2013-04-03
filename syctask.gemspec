@@ -34,7 +34,7 @@ lib/sycstring/string_util.rb
   s.extra_rdoc_files = ['README.rdoc','syctask.rdoc']
   s.rdoc_options << '--title' << 'syctask' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
-  s.executables << 'syctask'
+  s.executables << 'syctask' << 'console_timer'
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba')

@@ -156,7 +156,7 @@ module Syctask
       @started ||= Time.now
       # start a timer that prints id and elapsed time 
       FileUtils.touch @semaphore
-      system "ruby lib/sycutil/console_timer.rb "+
+      system "console_timer "+
              "#{@duration} #{@id} #{@semaphore} &"
     end
     

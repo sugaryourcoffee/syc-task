@@ -82,7 +82,7 @@ module Syctask
       files.each_with_index do |file,i|
         next if i == 0 # need to re-index only second and following tasks
         result = reindex_task(file)
-        # associate old id to new id and new file name
+        # associate old id to new id and dir name
         if new_id[result[:old_id]].nil?
           new_id[result[:old_id]] = {result[:dirname] => result[:new_id]}
         else
@@ -92,28 +92,14 @@ module Syctask
         to_be_renamed[result[:tmp_file]] = result[:new_file]
         # write new_id, path to IDS
         log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
-        # replace old_id with new_id in task.log
-#        update_tasks_log(root, 
-#                         result[:old_id], 
-#                         result[:new_id], 
-#                         result[:new_file])
-        # replace old_id with new_id in planned_tasks
-#        update_planned_tasks(root, 
-#                             result[:old_id], 
-#                             result[:new_id], 
-#                             result[:new_file])
       end
     end 
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
     puts
     puts "-> Update task log file"
     update_tasks_log(root, new_id)
-    puts "-> Move log file..."
-    move_task_log_file(root)
     puts "-> Update planned tasks files"
     update_planned_tasks(root, new_id)
-    puts "-> Move planned task files..."
-    move_planned_tasks_files(root)
     puts "-> Move schedule files..."
     move_time_schedule_files(root)
     puts "-> Update tracked task file..."
@@ -177,7 +163,28 @@ module Syctask
     File.open(RIDX_LOG, 'a') {|f| f.puts entry}
   end
 
-  def update_tasks_log(dir, old_id, new_id, file)
+  def update_tasks_log(dir, new_ids)
+    tasks_log_files(dir).each do |file|
+      logs = File.readlines(file)
+      logs.each_with_index do |log,i|
+        old_id = log.scan(/(?<=^start;|^stop;)\d+(?=-)/)[0]
+        next unless new_ids[old_id]
+        task_dir = log.scan(/(?<=^start;#{old_id}-|^stop;#{old_id}-).*(?=;)/)[0]
+        next unless new_ids[old_id][task_dir]
+        logs[i] = log.sub("#{old_id}-#{task_dir}", 
+                          "#{new_ids[old_id][task_dir]}-#{task_dir}")
+      end
+      if file == TASKS_LOG
+        File.write(TASKS_LOG, logs.join("\n"))
+      else
+        #TODO only append a line if it is not already available in TASKS_LOG
+        File.open(TASKS_LOG, 'a') {|f| f.puts logs.join("\n")}
+        FileUtils.rm file
+      end
+    end
+  end
+
+  def update_tasks_log_old(dir, old_id, new_id, file)
     old_entry = "#{old_id}-#{File.dirname(file)}"
     # Append '/' to dir name so already updated task is not subsequently updated
     new_entry = "#{new_id}-#{File.dirname(file)}/"

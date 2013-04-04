@@ -156,8 +156,8 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update planned tasks" do
-      tasks = ["work/tasks,1", "work/tasks,2", "work/tasks/sub,1",
-               "work/tasks,3", "work/tasks,101"]
+      tasks =     ["work/tasks,1", "work/tasks,2", "work/tasks/sub,1",
+                   "work/tasks,3", "work/tasks,101"]
       new_tasks = ["work/tasks,3", "work/tasks,5", "work/tasks/sub,4",
                    "work/tasks,6", "work/tasks,101"]
       planned = Syctask::planned_tasks_files(@work_dir)

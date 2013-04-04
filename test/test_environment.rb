@@ -156,24 +156,24 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update planned tasks" do
-      tasks = Syctask::task_files(@work_dir)
+      tasks = ["work/tasks,1", "work/tasks,2", "work/tasks/sub,1",
+               "work/tasks,3", "work/tasks,101"]
+      new_tasks = ["work/tasks,3", "work/tasks,5", "work/tasks/sub,4",
+                   "work/tasks,6", "work/tasks,101"]
       planned = Syctask::planned_tasks_files(@work_dir)
       planned.each_with_index do |f,i|
         File.open(f, 'w') do |f|
-          f.puts "work/tasks,1"
-          f.puts "work/tasks,2"
+          tasks.each {|task| f.puts task}
         end
       end
-      1.upto(2) do |i|
-        Syctask::update_planned_tasks(@work_dir, 
-                                      i, 
-                                      i+100, 
-                                      "work/tasks/#{i+100}.task")
-      end
+      new_ids = {"1" => {"work/tasks" => "3", "work/tasks/sub" => "4"},
+                 "2" => {"work/tasks" => "5"},
+                 "3" => {"work/tasks" => "6"}}
+      Syctask::update_planned_tasks(@work_dir, new_ids)
       planned.each do |p|
-        File.open(p, 'r').each_with_index do |line,i|
-          expected = "work/tasks/,#{i+1+100}\n"
-          assert_equal expected, line
+        tmp_file = "#{Syctask::SYC_DIR}/#{File.basename(p)}"
+        File.open(tmp_file, 'r').each_with_index do |line,i|
+          assert_equal new_tasks[i], line.chomp
         end
       end
     end

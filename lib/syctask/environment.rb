@@ -84,9 +84,9 @@ module Syctask
         result = reindex_task(file)
         # associate old id to new id and new file name
         if new_id[result[:old_id]].nil?
-          new_id[result[:old_id]] = {result[:dir_name] => result[:new_id]}
+          new_id[result[:old_id]] = {result[:dirname] => result[:new_id]}
         else
-          new_id[result[:old_id]][result[:dir_name]] = result[:new_id]
+          new_id[result[:old_id]][result[:dirname]] = result[:new_id]
         end 
         # assign tmp_file to new_file for later renaming
         to_be_renamed[result[:tmp_file]] = result[:new_file]
@@ -132,7 +132,7 @@ module Syctask
     old_id = task.scan(/(?<=^id: )\d+$/)[0]
     new_id = next_id.to_s
     task.gsub!(/(?<=^id: )\d+$/, new_id)
-    dir_name = File.dirname(file)
+    dirname = File.dirname(file)
     new_file = "#{dirname}/#{new_id}.task"
     tmp_file = "#{new_file}_"
     File.write(tmp_file, task)
@@ -141,7 +141,7 @@ module Syctask
      new_id: new_id, 
      tmp_file: tmp_file, 
      new_file: new_file,
-     dir_name: dir_name}
+     dirname: dirname}
   end
 
   # Determines the greatest task ID out of the provided tasks and saves it to
@@ -195,15 +195,15 @@ module Syctask
   # responsibility to copy or move the planned tasks files after they have been
   # updated to the new planned tasks directory.
   def update_planned_tasks(dir, new_ids)
-    planned_tasks_files.each do |file|
+    planned_tasks_files(dir).each do |file|
       tasks = File.readlines(file)
       tasks.each_with_index do |task,i|
-        task_dir, old_id = task.split(',')
+        task_dir, old_id = task.chomp.split(',')
         next unless new_ids[old_id]
         next unless new_ids[old_id][task_dir]
         tasks[i] = "#{task_dir},#{new_ids[old_id][task_dir]}"   
       end
-      File.write("#{SYC_DIR}/#{file}", tasks)
+      File.write("#{SYC_DIR}/#{File.basename(file)}", tasks.join("\n"))
     end
   end
 

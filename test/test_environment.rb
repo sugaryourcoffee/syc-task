@@ -36,14 +36,21 @@ class TestEnvironment < Test::Unit::TestCase
     # Fills the log file with entries and returns these in a hash
     def make_log_file
       tasks = {}
+      updates = {}
+      id = 0
       "a".upto("b") do |j|
         1.upto(10) do |i|
           tasks["#{j}#{i}"] = {id:       i,
                                title:    "Task #{i}",
-                               new_id:   i+100, 
+                               new_id:   id += 1, 
                                dir:      "test/tasks/#{j}", 
                                file:     "test/tasks/#{j}/#{i}.task",
                                new_file: "test/tasks/#{j}/#{i+100}.task"}
+          if updates["#{i}"].nil?
+            updates["#{i}"] = {"test/tasks/#{j}" => "#{id}"}
+          else
+            updates["#{i}"]["test/tasks/#{j}"] = "#{id}"
+          end
         end
       end
       File.open("#{@work_dir}/tasks.log", 'w') do |f|
@@ -52,7 +59,7 @@ class TestEnvironment < Test::Unit::TestCase
           f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};#{@time}"
         end
       end
-      tasks
+      [tasks, updates]
     end
 
     def create_tracked_tasks_file
@@ -179,26 +186,27 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     should "update tasks log" do
-      tasks = make_log_file
+      tasks, updates = make_log_file
 
-      tasks.each do |k,v|
-        Syctask::update_tasks_log(@work_dir, 
-                                  v[:id], 
-                                  v[:new_id],
-                                  v[:new_file])
-      end
+      task_files = []
+      tasks.values.each {|v| task_files << v[:file]}
+
+      id = Syctask::initialize_id(task_files)
+
+      Syctask::update_tasks_log(@work_dir, updates)
 
       v = tasks.values
       c = 0
-      File.open("#{@work_dir}/tasks.log", 'r').each_with_index do |line,i|
+      puts File.read("#{Syctask::SYC_DIR}/tasks.log")
+      File.open("#{Syctask::SYC_DIR}/tasks.log",'r').each_with_index do |line,i|
         if i % 2 == 1
           c += 1
           expected =  "stop;"
-          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
+          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]};#{v[i-c][:title]};"
           expected += "#{@time};#{@time}\n"
         else
           expected =  "start;"
-          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]}/;#{v[i-c][:title]};"
+          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]};#{v[i-c][:title]};"
           expected += "#{@time};\n" 
         end
         assert_equal expected, line

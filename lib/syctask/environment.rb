@@ -90,7 +90,7 @@ module Syctask
         end 
         # assign tmp_file to new_file for later renaming
         to_be_renamed[result[:tmp_file]] = result[:new_file]
-        # write new_id, path to IDS
+        # document the re-indexing of tasks
         log_reindexing(result[:old_id], result[:new_id], result[:new_file]) 
       end
     end 
@@ -144,9 +144,10 @@ module Syctask
     File.open(IDS, 'a') {|f| f.puts entry}
   end
 
-  # Save the id to the ID file
+  # Save the id to the ID file. Returns the id when save was successful
   def save_id(id)
     File.write(ID,id)
+    id
   end
 
   # Retrieve the next unassigned task id
@@ -169,16 +170,17 @@ module Syctask
       logs.each_with_index do |log,i|
         old_id = log.scan(/(?<=^start;|^stop;)\d+(?=-)/)[0]
         next unless new_ids[old_id]
-        task_dir = log.scan(/(?<=^start;#{old_id}-|^stop;#{old_id}-).*(?=;)/)[0]
+        task_dir = log.
+          scan(/(?<=^start;#{old_id}-|^stop;#{old_id}-).*(?=;.*;.*;.?)/)[0]
         next unless new_ids[old_id][task_dir]
         logs[i] = log.sub("#{old_id}-#{task_dir}", 
                           "#{new_ids[old_id][task_dir]}-#{task_dir}")
       end
       if file == TASKS_LOG
-        File.write(TASKS_LOG, logs.join("\n"))
+        File.write(TASKS_LOG, logs.join)
       else
         #TODO only append a line if it is not already available in TASKS_LOG
-        File.open(TASKS_LOG, 'a') {|f| f.puts logs.join("\n")}
+        File.open(TASKS_LOG, 'a') {|f| f.puts logs.join}
         FileUtils.rm file
       end
     end

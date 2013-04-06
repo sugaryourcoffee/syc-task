@@ -45,6 +45,7 @@ module Syctask
       @options = options
       @options[:note] = 
                   "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]
+      @duration = 2 if @options[:follow_up] or @options[:due_date]
       @id = id
     end
     

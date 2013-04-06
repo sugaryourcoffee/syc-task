@@ -116,7 +116,7 @@ class TestSchedule < Test::Unit::TestCase
 
       schedule.graph.each {|output| puts output}
 
-      assignments = [["A", "0,2,3"],["B", "0,6,9"]]
+      assignments = [["A", "1,2,3"],["B", "1,6,9"]]
       schedule.assign(assignments)
 
       schedule.graph.each {|output| puts output}
@@ -125,7 +125,7 @@ class TestSchedule < Test::Unit::TestCase
 
       schedule.graph.each {|output| puts output}
 
-      assignments = [["A", "2,3"],["B", "0,6,9"]]
+      assignments = [["A", "2,3"],["B", "1,6,9"]]
       schedule.assign(assignments)
 
       schedule.graph.each {|output| puts output}

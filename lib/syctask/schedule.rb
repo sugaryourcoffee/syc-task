@@ -95,8 +95,10 @@ module Syctask
       assignments.each do |assignment|
         number = assignment[0].upcase.ord - "A".ord
         return false if number < 0 or number > @meetings.size
-        assignment[1].split(',').each do |index|
-          @meetings[number].tasks << @tasks[index.to_i] if @tasks[index.to_i]
+        @meetings[number].tasks.clear
+        assignment[1].split(',').each do |id|
+          index = @tasks.find_index{|task| task.id == id.to_i} 
+          @meetings[number].tasks << @tasks[index] if index and @tasks[index]
         end
         @meetings[number].tasks.uniq!
       end

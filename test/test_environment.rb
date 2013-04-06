@@ -219,7 +219,7 @@ class TestEnvironment < Test::Unit::TestCase
       Syctask::update_tracked_task(@work_dir)
       refute File.exists? "#{@work_dir}/tracked_tasks"
       assert File.exists? Syctask::TRACKED_TASK
-      assert File.read(Syctask::TRACKED_TASK).scan(/id: 68/)
+      refute_nil File.read(Syctask::TRACKED_TASK).scan(/id: 22/)
     end
 
     should "move task log file" do

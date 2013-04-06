@@ -85,7 +85,10 @@ module Syctask
         title = titles[index] ? titles[index] : "Meeting #{index}"
         @meetings << Syctask::Meeting.new(busy, title) 
       end
-      raise Exception, "Busy times have to be within work time" unless within?(@meetings, @starts, @ends)
+      raise Exception, 
+        "Busy times have to be within work time" unless within?(@meetings, 
+                                                                @starts, 
+                                                                @ends)
       @tasks = tasks
     end
 
@@ -221,7 +224,7 @@ module Syctask
       positions = {}
       position = 0
       unassigned_tasks.each.with_index do |task, index|
-        duration = task.duration.to_i
+        duration = [(task.remaining.to_i/900+0.5).round, 1].max
         free_time = scan_free(time_line, duration, position)
         position = free_time[0]
         if position.nil?

@@ -91,7 +91,7 @@ class TestTaskScheduler < Test::Unit::TestCase
       assert_equal 5, tasks.size
 
       tasks.each.with_index do |task, index|
-        task.duration = index + 1
+        task.set_duration(units_to_time(index + 1))
         service.save(@dir, task)
       end
 

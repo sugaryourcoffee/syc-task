@@ -65,13 +65,9 @@ module Syctask
       return nil unless @tasks[0]
 
       task = @tasks[0]
-      if task.lead_time
-        task.lead_time += @tracks[0].stop
-      else
-        task.lead_time = @tracks[0].stop
-      end
-
+      task.update_lead_time(@tracks[0].stop)
       @service.save(task.dir, task)
+
       log_task(:stop, @tracks[0])
 
       @tracks.delete_at(0)
@@ -146,7 +142,7 @@ module Syctask
       @dir = task.dir
       @id = task.id
       @title = task.title
-      @duration = task.duration.to_i * 15 * 60
+      @duration = task.remaining.to_i
       @semaphore = "#{Syctask::SYC_DIR}/#{@id}.track"
     end
 

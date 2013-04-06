@@ -42,9 +42,13 @@ module Syctask
         choice = @console.prompt PROMPT_STRING
         case choice
         when 'a'
-          print "Duration (1 = 15 minutes, return 30 minutes): "
-          duration = gets.chomp
-          task.duration = duration.empty? ? 2 : duration
+          duration = 0
+          until duration > 0
+            print "Duration (1 = 15 minutes, RETURN defaults to 30 minutes): "
+            answer = gets.chomp
+            duration = answer.empty? ? 2 : answer.to_i
+          end
+          task.set_duration(units_to_time(duration))
           task.options[:follow_up] = date
           @service.save(task.dir, task)
           planned << task
@@ -170,6 +174,12 @@ module Syctask
     end
 
    private
+
+    # Calculates the time for time units. One time unit equals to 900 seconds or
+    # 15 minutes. The return value is in seconds
+    def units_to_time(units)
+      units * 15 * 60
+    end
 
     # Creates a file where the planned tasks are saved to
     def make_todo_today_file(date)

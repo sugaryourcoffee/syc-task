@@ -6,6 +6,13 @@ include Syctask
 # Overrides Test::Unit::TestCase to add some helper methods for each test
 class Test::Unit::TestCase 
 
+  # Calculates the seconds for the provided time units. One unit is 900
+  # seconds or 15 minutes. This time is used in Syctask#Task e.g. for the
+  # duration. Returns the time in seconds
+  def units_to_time(units)
+    units * 15 * 60
+  end
+
   # Backs up system files before manipulating them in the test
   def backup_system_files(caller)
     #log_system_files("Backup: start/#{caller}") 

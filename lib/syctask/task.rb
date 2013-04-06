@@ -25,9 +25,11 @@ module Syctask
     # ID of the task
     attr_reader :id
     # Duration specifies the planned time for processing the task
-    attr_accessor :duration
+    attr_reader :duration
+    # Remaining time is the duration subtracted by the lead time since last plan
+    attr_reader :remaining
     # Lead time is the time this task has been processed
-    attr_accessor :lead_time
+    attr_reader :lead_time
     # Creation date
     attr_reader :creation_date
     # Update date
@@ -45,7 +47,13 @@ module Syctask
       @options = options
       @options[:note] = 
                   "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]
-      @duration = 2 if @options[:follow_up] or @options[:due_date]
+      if @options[:follow_up] or @options[:due_date]
+        @duration = 2 * 15 * 60
+        @remaining = 2 * 15 * 60
+      else
+        @duration = 0
+        @remaining = 0
+      end
       @id = id
     end
     
@@ -70,6 +78,9 @@ module Syctask
     # supplemented with the new values and not overridden.
     def update(options)
       @update_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
+      if options[:follow_up] or options[:due_date]
+        set_duration(2 * 15 * 60) if @duration.nil?
+      end
       options.keys.each do |key|
         new_value = options[key]
         
@@ -94,6 +105,28 @@ module Syctask
     # otherwise false
     def update?
       !@updated_date.nil?
+    end
+
+    # Sets the duration that this task is planned for processing. Assigns to
+    # remaining the duration time
+    def set_duration(duration)
+      @duration = duration
+      @remaining = duration
+    end
+
+    # Updates the lead time. Adds the lead time to @lead_time and calculates
+    # @remaining
+    def update_lead_time(lead_time)
+      if @lead_time
+        @lead_time += lead_time
+      else
+        @lead_time = lead_time
+      end
+      if @remaining
+        @remaining -= lead_time
+      else
+        @remaining = @duration.to_i - lead_time
+      end
     end
 
     # Marks the task as done. When done than the done date is set. Optionally a

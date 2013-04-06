@@ -107,7 +107,7 @@ class TestSchedule < Test::Unit::TestCase
       tasks = []
       1..10.times do |i|
         task = Syctask::Task.new({}, "Task number #{i+1}", i+1)
-        task.duration = [i+1, 4].min
+        task.set_duration(units_to_time([i+1, 4].min))
         task.dir = "test/tasks"
         tasks << task
       end

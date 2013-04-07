@@ -29,12 +29,12 @@ module Syctask
 
     # When a task is started it is saved with the start time. If a task is
     # already tracked it is stopped (see #stop).  A started task will print 
-    # every 15 minutes a message to the console. 
+    # every second a message to the console if the show parameter is true.
     # start returns
     # * [false, nil ] if the task is already tracked 
     # * [true,  nil ] if the task is started and no task was running. 
     # * [true,  task] if task is started and the previously running task stopped
-    def start(task)
+    def start(task, show=true)
       raise ArgumentError, "Error: Task without directory.\n"+
                            "--> Update task with syctask -t <dir> update "+
                            "#{task.id}" unless task.dir
@@ -44,7 +44,7 @@ module Syctask
       stopped_task = stop
       track = Track.new(task)
 
-      track.start
+      track.start(show)
       log_task(:start, track)
 
       @tracks.insert(0,track)
@@ -146,14 +146,13 @@ module Syctask
       @semaphore = "#{Syctask::SYC_DIR}/#{@id}.track"
     end
 
-    # Starts the tracking and a timer that will print to STDOUT every 5 minutes
+    # Starts the tracking and a timer that will print to STDOUT every second
     # the elapsed time and the time left until Task#duration
-    def start
+    def start(show)
       @started ||= Time.now
       # start a timer that prints id and elapsed time 
       FileUtils.touch @semaphore
-      system "console_timer "+
-             "#{@duration} #{@id} #{@semaphore} &"
+      system "console_timer #{@duration} #{@id} #{@semaphore} &" if show
     end
     
     # Stops the task tracking and returns the lead time of the task

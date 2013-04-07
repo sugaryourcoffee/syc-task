@@ -394,6 +394,9 @@ desc 'Start tracking a task'
 arg_name 'TASK_NUMBER|PLAN|TALK|PHONE|EMAIL'
 command :start do |c|
 
+  c.desc 'Show task timer'
+  c.switch [:t, :timer]
+
   c.desc 'List currently tracked task'
   c.switch [:l, :list] 
  
@@ -414,7 +417,7 @@ command :start do |c|
       end
       help_now! sprintf("%s", 
                         "no task with id #{args[0]}").color(:red) unless task
-      started, stopped = tracker.start(task)
+      started, stopped = tracker.start(task, options[:timer])
       if started
         puts sprintf("--> tracking %s", 
                      "#{task.id} - #{task.title}").color(:green)

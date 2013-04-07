@@ -24,5 +24,20 @@ class TestTimes < Test::Unit::TestCase
       assert_equal 8, time.round_up
     end
 
+    should "calculate time difference" do
+      range = ["8","30"]
+      time = Syctask::Times.new(range)
+      diff = time.diff(Time.local(2013,"apr",7,9,0,0))
+      assert_equal [0,30], diff
+      diff = time.diff(Time.local(2013,"apr",7,9,25,0))
+      assert_equal [0,55], diff
+      diff = time.diff(Time.local(2013,"apr",7,9,30,0))
+      assert_equal [1,0], diff
+      diff = time.diff(Time.local(2013,"apr",7,10,35,0))
+      assert_equal [2,5], diff 
+      diff = time.diff(Time.local(2013,"apr",7,8,30,0))
+      assert_equal [0,0], diff
+    end
+
   end
 end

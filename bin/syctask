@@ -9,6 +9,9 @@ program_desc 'A simple task manager'
 
 version Syctask::VERSION
 
+@settings = Syctask::Settings.new
+@general_purpose_tasks = '|' + @settings.read_tasks.keys.join('|')
+
 desc 'The directory where tasks are saved to'
 default_value Syctask::WORK_DIR
 arg_name 'TASK_DIR'
@@ -17,6 +20,24 @@ flag [:t,:taskdir]
 desc 'Project name where tasks are saved'
 arg_name 'PROJECT'
 flag [:p, :project]
+
+desc 'Settings for syctask'
+command :setting do |c|
+
+  c.desc 'Define general purpose tasks to be used with the start command'
+  c.arg_name 'TASK'
+  c.flag [:g, :general], :must_match => /^\w+(?:,\w+)*/
+  
+  c.action do |global_options,options,args|
+    settings = Syctask::Settings.new
+    filter = [:general]
+    options.keep_if {|key, value| filter.find_index(key)}
+    if options[:general]
+      settings.tasks(options[:general])
+    end
+  end
+
+end
 
 desc 'Create a new task'
 arg_name 'TASK_TITLE'
@@ -391,7 +412,7 @@ command :prio do |c|
 end
 
 desc 'Start tracking a task'
-arg_name 'TASK_NUMBER|PLAN|TALK|PHONE|EMAIL'
+arg_name "TASK_ID#{@general_purpose_tasks}"
 command :start do |c|
 
   c.desc 'Show task timer'
@@ -409,6 +430,9 @@ command :start do |c|
     end
     tracker = Syctask::TaskTracker.new
     if args[0]
+#      general_purpose_task_id = @settings.read_tasks[args[0].downcase]
+#      args[0] = general_purpose_task_id if general_purpose_task_id
+
       if options[:plan]
         task = @planner.get_tasks(Time.now.strftime("%Y-%m-%d"),
                                   {id: args[0]})[0]
@@ -428,13 +452,15 @@ command :start do |c|
       if stopped
         puts sprintf("--> stopped %s",
                      "#{stopped.id} - #{stopped.title}").color(:green)
-        puts sprintf("    %s", "#{string_for_seconds(stopped.lead_time)}").color(:green)
+        puts sprintf("    %s", "#{string_for_seconds(stopped.lead_time)}").
+          color(:green)
       end
     end
     if options[:list]
       task = tracker.tracked_task
       puts sprintf("%s", "--> no task tracked").color(:red) unless task
-      puts sprintf("%s", "--> #{task.id} - #{task.title}").color(:green) if task
+      puts sprintf("%s", "--> #{task.id} - #{task.title}").
+        color(:green) if task
     end
   end
 end
@@ -516,7 +542,8 @@ command :done do |c|
     exit_now!("Task with TASK_NUMBER #{args[0]} does not exist") unless task
     task.done(options[:note])
     @service.save(global_options[:t], task)
-    STDOUT.puts sprintf("Marked task with TASK_NUMBER %d as done", args[0]).color(:green)
+    STDOUT.puts sprintf("Marked task with TASK_NUMBER %d as done", args[0]).
+      color(:green)
     task.print_pretty(options[:c]) if options[:p] 
   end
 end
@@ -533,10 +560,14 @@ pre do |global,command,options,args|
   @service = Syctask::TaskService.new
   @planner = Syctask::TaskPlanner.new
 
-  dir = File.expand_path(global[:t])
-  dir += "/" + global[:p] if global[:p]
-  global[:taskdir] = global[:t] = dir.squeeze("/")
-  
+  if command.name == :start and @settings.read_tasks[args[0].upcase]
+    global[:taskdir] = Syctask::SYC_DIR
+    args[0] = @settings.read_tasks[args[0].upcase].to_s
+  else
+    dir = File.expand_path(global[:t])
+    dir += "/" + global[:p] if global[:p]
+    global[:taskdir] = global[:t] = dir.squeeze("/")
+  end
  
   true
 end

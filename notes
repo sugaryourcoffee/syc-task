@@ -53,3 +53,12 @@ current time   position  diff   positon calculation           result
 10:00           8        [2, 0]  ((2 * 60 + 0) / 15.0).round   8
 11:07          12        [3, 7]  ((3 * 60 + 7) / 15.0).round  12
 
+Define settings
+Define default tasks
+settings --general_tasks plan,talk,meet,break
+general_tasks file
+plan,1
+talk,2
+meet,3
+break,4
+

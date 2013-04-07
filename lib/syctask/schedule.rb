@@ -222,20 +222,28 @@ module Syctask
       unscheduled_tasks = []
       signs = ['x','o']
       positions = {}
-      position = 0
+      current_time = Time.now
       unassigned_tasks.each.with_index do |task, index|
-        duration = [(task.remaining.to_i/900+0.5).round, 1].max
-        free_time = scan_free(time_line, duration, position)
-        position = free_time[0]
-        if position.nil?
+        if task.done?
+          duration = ((task.duration.to_i - task.remaining.to_i)/900).round
+          position = 0
+        else
+          duration = [(task.remaining.to_i/900+0.5).round, 1].max
+          position = position_for_time(current_time)
+        end
+        free_time = scan_free(time_line, 1, position)
+        if free_time[0].nil?
           unscheduled_tasks << task
           next
         end
-        time_line[position..(position + duration-1)] = 
-          signs[index%2] * duration
-        positions[position] = task.id
+        0.upto(duration-1) do |i| 
+          break unless free_time[i]
+          time_line[free_time[i]] = signs[index%2]
+        end
+        positions[free_time[0]] = task.id
       end
 
+      # Create task list
       max_id_size = 1
       @tasks.each {|task| max_id_size = [task.id.to_s.size, max_id_size].max}
       max_ord_size = (@tasks.size - 1).to_s.size
@@ -257,6 +265,7 @@ module Syctask
                              i, task.id, title).color(color)
       end
 
+      # Create task caption
       task_caption = ""
       create_caption(positions).each do |caption| 
         task_caption << sprintf("%s\n", caption).color(WORK_COLOR)
@@ -298,6 +307,14 @@ module Syctask
       end
       lines << ""
       return lines.size - 1
+    end
+
+    # Determines the position within the time line for the given time. Each
+    # position represents a 15 minute duration. Minutes below 8 will be rounded
+    # down otherwise rounded up.
+    def position_for_time(time)
+      diff = @starts.diff(time)
+      ((diff[0] * 60 + diff[1]) / 15.0).round
     end
 
     # Scans the schedule for free time where a task can be added to. Count

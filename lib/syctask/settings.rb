@@ -24,6 +24,8 @@ module Syctask
     def read_tasks
       if File.exists? Syctask::DEFAULT_TASKS
         YAML.load_file(Syctask::DEFAULT_TASKS) 
+      else
+        {}
       end
     end
 

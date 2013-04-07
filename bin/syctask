@@ -472,7 +472,8 @@ command :stop do |c|
     task = tracker.stop
     if task
       puts sprintf("--> stopped %s", "#{task.id} - #{task.title}").color(:green)
-      puts sprintf("    %4s", "#{string_for_seconds(task.lead_time)}").color(:green)
+      puts sprintf("    %4s", "#{string_for_seconds(task.lead_time)}").
+        color(:green)
      else
       puts sprintf("--> %s", "no task tracked").color(:red)
     end
@@ -516,9 +517,9 @@ command :update do |c|
 
     add_task_to_plan @service.read(global_options[:t], args[0]) if success
 
-    STDOUT.puts sprintf("--> sucessfully updated task with TASK_NUMBER %s ", 
+    STDOUT.puts sprintf("--> sucessfully updated task %s ", 
                         args[0]).color(:green) if success
-    STDOUT.puts sprintf("--> could not update task with TASK_NUMBER %s ", 
+    STDOUT.puts sprintf("--> could not update task %s ", 
                         args[0]).color(:red) unless success
   end
 end
@@ -542,8 +543,7 @@ command :done do |c|
     exit_now!("Task with TASK_NUMBER #{args[0]} does not exist") unless task
     task.done(options[:note])
     @service.save(global_options[:t], task)
-    STDOUT.puts sprintf("Marked task with TASK_NUMBER %d as done", args[0]).
-      color(:green)
+    STDOUT.puts sprintf("--> Marked task %d as done", args[0]).color(:green)
     task.print_pretty(options[:c]) if options[:p] 
   end
 end

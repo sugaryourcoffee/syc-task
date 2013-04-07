@@ -95,6 +95,8 @@
   
     <li class="file"><a href="../Rakefile.html">Rakefile</a>
   
+    <li class="file"><a href="../notes.html">notes</a>
+  
     <li class="file"><a href="../syctask_rdoc.html">syctask</a>
   
   </ul>
@@ -137,6 +139,8 @@
   
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="../Object.html">Object</a>
   
     <li><a href="../Sycstring.html">Sycstring</a>
@@ -144,6 +148,8 @@
     <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
+  
+    <li><a href="../TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="../TestEvaluator.html">TestEvaluator</a>
   
@@ -238,7 +244,7 @@ task's lead_time field.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 22</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
   <span class="ruby-ivar">@service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">load_tracks</span>
@@ -263,7 +269,7 @@ task's lead_time field.</p>
         
         <div class="method-heading">
           <span class="method-name">start</span><span
-            class="method-args">(task)</span>
+            class="method-args">(task, show=true)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -273,7 +279,8 @@ task's lead_time field.</p>
           <p>When a task is started it is saved with the start time. If a task is
 already tracked it is stopped (see <a
 href="TaskTracker.html#method-i-stop">stop</a>).  A started task will print
-every 15 minutes a message to the console.  start returns</p>
+every second a message to the console if the show parameter is true. start
+returns</p>
 <ul><li><dl class="rdoc-list label-list"><dt>false, nil 
 <dd>
 <p>if the task is already tracked</p>
@@ -291,15 +298,18 @@ every 15 minutes a message to the console.  start returns</p>
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 34</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">task</span>)
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">show</span>=<span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;Error: Task without directory.\n&quot;</span><span class="ruby-operator">+</span>
+                       <span class="ruby-string">&quot;--&gt; Update task with syctask -t &lt;dir&gt; update &quot;</span><span class="ruby-operator">+</span>
+                       <span class="ruby-node">&quot;#{task.id}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>
   <span class="ruby-identifier">index</span> = <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">return</span> [<span class="ruby-keyword">false</span>, <span class="ruby-keyword">nil</span>] <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">index</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 
   <span class="ruby-identifier">stopped_task</span> = <span class="ruby-identifier">stop</span>
   <span class="ruby-identifier">track</span> = <span class="ruby-constant">Track</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">task</span>)
 
-  <span class="ruby-identifier">track</span>.<span class="ruby-identifier">start</span>
+  <span class="ruby-identifier">track</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">show</span>)
   <span class="ruby-identifier">log_task</span>(<span class="ruby-value">:start</span>, <span class="ruby-identifier">track</span>)
 
   <span class="ruby-ivar">@tracks</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>,<span class="ruby-identifier">track</span>)
@@ -341,23 +351,20 @@ stopped.</p>
 
           
           <div class="method-source-code" id="stop-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 58</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
 
   <span class="ruby-identifier">task</span> = <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">lead_time</span>
-    <span class="ruby-identifier">task</span>.<span class="ruby-identifier">lead_time</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">stop</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">task</span>.<span class="ruby-identifier">lead_time</span> = <span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">stop</span>
-  <span class="ruby-keyword">end</span>
-
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">update_lead_time</span>(<span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">stop</span>)
   <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+
   <span class="ruby-identifier">log_task</span>(<span class="ruby-value">:stop</span>, <span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>])
 
   <span class="ruby-ivar">@tracks</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-value">0</span>)
   <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-value">0</span>)
   <span class="ruby-identifier">save_tracks</span>
+
   <span class="ruby-identifier">task</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- stop-source -->
@@ -386,7 +393,7 @@ stopped.</p>
 
           
           <div class="method-source-code" id="tracked_task-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 78</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tracked_task</span>
   <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
 <span class="ruby-keyword">end</span></pre>

@@ -55,6 +55,8 @@
   
     <li class="file"><a href="./Rakefile.html">Rakefile</a>
   
+    <li class="file"><a href="./notes.html">notes</a>
+  
     <li class="file"><a href="./syctask_rdoc.html">syctask</a>
   
   </ul>
@@ -97,6 +99,8 @@
   
     <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="./Object.html">Object</a>
   
     <li><a href="./Sycstring.html">Sycstring</a>
@@ -104,6 +108,8 @@
     <li><a href="./Syctime.html">Syctime</a>
   
     <li><a href="./TestDefault.html">TestDefault</a>
+  
+    <li><a href="./TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="./TestEvaluator.html">TestEvaluator</a>
   
@@ -256,7 +262,10 @@ to the end of the task plan.</p>
 <h3 id="label-Create+schedule">Create schedule</h3>
 
 <p>The schedule command will print a graphical schedule with assigning the
-tasks added with plan.</p>
+tasks selected with plan. When schedule command is invoked the planned
+tasks are  added at or after the current time within the time schedule.
+Tasks that are done and scheduled in the future are not shown. Tasks done
+and in the past are shown with the actual processing time.</p>
 
 <p>Create a schedule with working time from 8a.m. to 6p.m. and meetings
 between 9a.m. and 9.30a.m. and 1p.m. and 2.45p.m.</p>
@@ -384,14 +393,26 @@ are saved as YAML files and can be edited directly.</p>
 <p>Planned tasks files</p>
 </li></ul>
 
-<p>The planned tasks are save to YYYY-MM-DD_planned_tasks in the default task
-directory. Each task is saved with the tasks directory and the ID.</p>
+<p>The planned tasks are save to YYYY-MM-DD_planned_tasks in syctask’s system
+directory. Each task is saved with the task’s directory and the ID.</p>
 <ul><li>
 <p>Schedule files</p>
 </li></ul>
 
-<p>The schedule is saved to YYYY-MM-DD_schedule in the default task directory.
-The files are saved as YAML files and can be changed manually.</p>
+<p>The schedule is saved to YYYY-MM-DD_time_schedule in the default task
+directory.The files are saved as YAML files and can be changed manually.</p>
+<ul><li>
+<p>Log file</p>
+</li></ul>
+
+<p>When a task is started and stopped this is action is saved to tasks.log</p>
+<ul><li>
+<p>Tracked file</p>
+</li></ul>
+
+<p>A started task is saved to tracked_tasks. A semaphore file is created with
+ID.track when the task ID is started. When the task is stopped the
+semaphore file is deleted.</p>
 
 <h2 id="label-Working+with+syctask">Working with syctask</h2>
 
@@ -436,10 +457,10 @@ scheduled with</p>
 
 <h4 id="label-Start+a+task">Start a task</h4>
 
-<p>To begin I start the first task in the schedule with syctask start 0 (where
-0 is the sequence of the planned tasks, the ID is different e.g. 23)</p>
+<p>To begin I start the first task in the schedule with syctask start -p ID
+(where ID is the ID of the planned (-p) tasks)</p>
 
-<pre>$ syctask start 0</pre>
+<pre>$ syctask start -p 10</pre>
 
 <h4 id="label-End+a+task">End a task</h4>
 
@@ -559,6 +580,34 @@ days task plan</p>
 <p>update, new: when a follow-up or a due date is provided the task is added
 to the provided dates task plan. If both dates are set the task is added to
 both dates task plans</p>
+</li></ul>
+
+<p>Version 0.0.7</p>
+<ul><li>
+<p>updated rdoc</p>
+</li></ul>
+
+<p>Version 0.1.x</p>
+<ul><li>
+<p>IDs are now unique independent of the task or project directory. After
+upgrading from a version 0.0.7 or older the user asked whether to re-index
+the tasks. It is adviced to tar the tasks before re-indexing with</p>
+
+<pre>$ tar cvfz tasks.tar.gz .tasks other_task_directories</pre>
+</li><li>
+<p>start will now show a timer in the upper right corner of the screen when
+started with the -t (–timer) flag.</p>
+
+<pre>$ syctask start 10 -t</pre>
+
+<p>In order to use the task timer ncurses has to be installed as the task
+timer uses tput from the ncurses library.</p>
+</li><li>
+<p>Planned tasks are now added at or after the current time if they are not
+done yet. Done tasks are shown in the past with the actual processing time.
+Done tasks planned for the future are not shown in the schedule.</p>
+</li><li>
+<p>Assigning tasks to meetings in a schedule is now done with the task ID</p>
 </li></ul>
 
 <p>The test files live in the folder test and start with test_.</p>

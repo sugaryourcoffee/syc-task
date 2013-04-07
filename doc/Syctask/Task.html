@@ -98,9 +98,13 @@
     
     <li><a href="#method-i-print_pretty">#print_pretty</a>
     
+    <li><a href="#method-i-set_duration">#set_duration</a>
+    
     <li><a href="#method-i-update">#update</a>
     
     <li><a href="#method-i-update-3F">#update?</a>
+    
+    <li><a href="#method-i-update_lead_time">#update_lead_time</a>
     
   </ul>
 </nav>
@@ -118,6 +122,8 @@
     <li class="file"><a href="../README_rdoc.html">README</a>
   
     <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../notes.html">notes</a>
   
     <li class="file"><a href="../syctask_rdoc.html">syctask</a>
   
@@ -161,6 +167,8 @@
   
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="../Object.html">Object</a>
   
     <li><a href="../Sycstring.html">Sycstring</a>
@@ -168,6 +176,8 @@
     <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
+  
+    <li><a href="../TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="../TestEvaluator.html">TestEvaluator</a>
   
@@ -261,7 +271,7 @@ holds all information about a task.</p>
       <div id="attribute-i-duration" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">duration</span><span
-            class="attribute-access-type">[RW]</span>
+            class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
@@ -287,7 +297,7 @@ holds all information about a task.</p>
       <div id="attribute-i-lead_time" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">lead_time</span><span
-            class="attribute-access-type">[RW]</span>
+            class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
@@ -319,6 +329,19 @@ holds all information about a task.</p>
 </li><li>
 <p>tags - can be used to search for tasks that belong to a certain category</p>
 </li></ul>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-remaining" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">remaining</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Remaining time is the duration subtracted by the lead time since last plan</p>
         
         </div>
       </div>
@@ -375,13 +398,20 @@ time is added.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 42</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">id</span>)
   <span class="ruby-ivar">@creation_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
   <span class="ruby-ivar">@title</span> = <span class="ruby-identifier">title</span>
   <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">options</span>
   <span class="ruby-ivar">@options</span>[<span class="ruby-value">:note</span>] = 
               <span class="ruby-node">&quot;#{@creation_date}\n#{@options[:note]}\n&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:note</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:follow_up</span>] <span class="ruby-keyword">or</span> <span class="ruby-ivar">@options</span>[<span class="ruby-value">:due_date</span>]
+    <span class="ruby-ivar">@duration</span> = <span class="ruby-value">2</span> * <span class="ruby-value">15</span> * <span class="ruby-value">60</span>
+    <span class="ruby-ivar">@remaining</span> = <span class="ruby-value">2</span> * <span class="ruby-value">15</span> * <span class="ruby-value">60</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@duration</span> = <span class="ruby-value">0</span>
+    <span class="ruby-ivar">@remaining</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">id</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
@@ -417,7 +447,7 @@ them regarding the ID  and the dir. If ID is equal then dir is compared</p>
 
           
           <div class="method-source-code" id="3C-3D-3E-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 59</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 68</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-identifier">id_compare</span> = <span class="ruby-ivar">@id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">id_compare</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
@@ -453,7 +483,7 @@ equal true is returned otherwise false</p>
 
           
           <div class="method-source-code" id="3D-3D-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 53</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">==</span>(<span class="ruby-identifier">other</span>)
   <span class="ruby-ivar">@id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">id</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@dir</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">other</span>.<span class="ruby-identifier">dir</span>
 <span class="ruby-keyword">end</span></pre>
@@ -484,7 +514,7 @@ note can be provided.</p>
 
           
           <div class="method-source-code" id="done-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 100</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 134</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">done</span>(<span class="ruby-identifier">note</span>=<span class="ruby-string">&quot;&quot;</span>)
   <span class="ruby-ivar">@done_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>
@@ -517,7 +547,7 @@ note can be provided.</p>
 
           
           <div class="method-source-code" id="done-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 108</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 142</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">done?</span>
   <span class="ruby-operator">!</span><span class="ruby-ivar">@done_date</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -558,7 +588,7 @@ contains, regex :follow_up                      &lt;|=|&gt; :due
 
           
           <div class="method-source-code" id="matches-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 127</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 161</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span> = {})
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">evaluator</span> = <span class="ruby-constant">Evaluator</span>.<span class="ruby-identifier">new</span>
@@ -610,7 +640,7 @@ contains, regex :follow_up                      &lt;|=|&gt; :due
 
           
           <div class="method-source-code" id="print_csv-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 160</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 194</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">print_csv</span>
   <span class="ruby-constant">STDOUT</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">csv_string</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -641,7 +671,7 @@ only id, title, prio, follow-up and due date.</p>
 
           
           <div class="method-source-code" id="print_pretty-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 155</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 189</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">print_pretty</span>(<span class="ruby-identifier">long</span>=<span class="ruby-keyword">false</span>)
   <span class="ruby-identifier">pretty_string</span>(<span class="ruby-identifier">long</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -653,6 +683,38 @@ only id, title, prio, follow-up and due date.</p>
 
         
       </div><!-- print_pretty-method -->
+
+    
+      <div id="method-i-set_duration" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_duration</span><span
+            class="method-args">(duration)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets the duration that this task is planned for processing. Assigns to
+remaining the duration time</p>
+          
+
+          
+          <div class="method-source-code" id="set_duration-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_duration</span>(<span class="ruby-identifier">duration</span>)
+  <span class="ruby-ivar">@duration</span> = <span class="ruby-identifier">duration</span>
+  <span class="ruby-ivar">@remaining</span> = <span class="ruby-identifier">duration</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- set_duration-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- set_duration-method -->
 
     
       <div id="method-i-update" class="method-detail ">
@@ -672,9 +734,12 @@ supplemented with the new values and not overridden.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 70</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 79</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-ivar">@update_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>]
+    <span class="ruby-identifier">set_duration</span>(<span class="ruby-value">2</span> * <span class="ruby-value">15</span> * <span class="ruby-value">60</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@duration</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">options</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">new_value</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">key</span>]
     
@@ -721,7 +786,7 @@ otherwise false</p>
 
           
           <div class="method-source-code" id="update-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 94</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update?</span>
   <span class="ruby-operator">!</span><span class="ruby-ivar">@updated_date</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -733,6 +798,47 @@ otherwise false</p>
 
         
       </div><!-- update-3F-method -->
+
+    
+      <div id="method-i-update_lead_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_lead_time</span><span
+            class="method-args">(lead_time)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Updates the lead time. Adds the lead time to @<a
+href="Task.html#attribute-i-lead_time">#lead_time</a> and calculates
+@remaining</p>
+          
+
+          
+          <div class="method-source-code" id="update_lead_time-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_lead_time</span>(<span class="ruby-identifier">lead_time</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lead_time</span>
+    <span class="ruby-ivar">@lead_time</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">lead_time</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@lead_time</span> = <span class="ruby-identifier">lead_time</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@remaining</span>
+    <span class="ruby-ivar">@remaining</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">lead_time</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@remaining</span> = <span class="ruby-ivar">@duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">lead_time</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update_lead_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update_lead_time-method -->
 
     
     </section><!-- public-instance-method-details -->

@@ -72,6 +72,8 @@
     
     <li><a href="#method-c-new">::new</a>
     
+    <li><a href="#method-i-diff">#diff</a>
+    
     <li><a href="#method-i-round_up">#round_up</a>
     
   </ul>
@@ -90,6 +92,8 @@
     <li class="file"><a href="../README_rdoc.html">README</a>
   
     <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../notes.html">notes</a>
   
     <li class="file"><a href="../syctask_rdoc.html">syctask</a>
   
@@ -133,6 +137,8 @@
   
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="../Object.html">Object</a>
   
     <li><a href="../Sycstring.html">Sycstring</a>
@@ -140,6 +146,8 @@
     <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
+  
+    <li><a href="../TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="../TestEvaluator.html">TestEvaluator</a>
   
@@ -263,6 +271,47 @@ is 15 past 10</p>
   
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
       <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-diff" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">diff</span><span
+            class="method-args">(time = Time.now)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Calculates the difference between this time and the provided time. If no
+time is given the current time is used.</p>
+
+<pre>Example:
+This time  =  9:35
+New time   = 10:20
+diff(time) =  0:45</pre>
+
+<p>Will return [hour,min] in the example [0,45]</p>
+          
+
+          
+          <div class="method-source-code" id="diff-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">diff</span>(<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+  <span class="ruby-identifier">diff_minutes</span> = (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@h</span>) * <span class="ruby-value">60</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@m</span>)
+  <span class="ruby-identifier">diff_h</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">diff_m</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- diff-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- diff-method -->
 
     
       <div id="method-i-round_up" class="method-detail ">

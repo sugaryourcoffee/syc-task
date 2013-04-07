@@ -47,6 +47,8 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
+    <li>test/test_environment.rb
+    <li>test/test_helper.rb
     <li>lib/syctask/schedule.rb
     <li>features/support/env.rb
     <li>bin/syctask
@@ -70,6 +72,10 @@
   <h3 class="section-header">Included Modules</h3>
 
   <ul class="link-list">
+  
+  
+    <li><a class="include" href="Syctask.html">Syctask</a>
+  
   
   
     <li><a class="include" href="Sycstring.html">Sycstring</a>
@@ -113,6 +119,8 @@
   
     <li class="file"><a href="./Rakefile.html">Rakefile</a>
   
+    <li class="file"><a href="./notes.html">notes</a>
+  
     <li class="file"><a href="./syctask_rdoc.html">syctask</a>
   
   </ul>
@@ -155,6 +163,8 @@
   
     <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="./Object.html">Object</a>
   
     <li><a href="./Sycstring.html">Sycstring</a>
@@ -162,6 +172,8 @@
     <li><a href="./Syctime.html">Syctime</a>
   
     <li><a href="./TestDefault.html">TestDefault</a>
+  
+    <li><a href="./TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="./TestEvaluator.html">TestEvaluator</a>
   
@@ -241,7 +253,7 @@
 
           
           <div class="method-source-code" id="add_task_to_plan-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 567</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 577</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task_to_plan</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>]
     <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>])
@@ -278,7 +290,7 @@ time_string</p>
 
           
           <div class="method-source-code" id="extract_time-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 548</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 558</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>)
   <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">downcase</span>

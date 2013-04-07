@@ -93,6 +93,8 @@
   
     <li class="file"><a href="../Rakefile.html">Rakefile</a>
   
+    <li class="file"><a href="../notes.html">notes</a>
+  
     <li class="file"><a href="../syctask_rdoc.html">syctask</a>
   
   </ul>
@@ -135,6 +137,8 @@
   
     <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
   
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
     <li><a href="../Object.html">Object</a>
   
     <li><a href="../Sycstring.html">Sycstring</a>
@@ -142,6 +146,8 @@
     <li><a href="../Syctime.html">Syctime</a>
   
     <li><a href="../TestDefault.html">TestDefault</a>
+  
+    <li><a href="../TestEnvironment.html">TestEnvironment</a>
   
     <li><a href="../TestEvaluator.html">TestEvaluator</a>
   
@@ -173,7 +179,7 @@
   <div id="description" class="description">
     
 <p>A <a href="Track.html">Track</a> holds a task and stops the time the task
-is processed. The <a href="Track.html">Track</a> will print every 5 minutes
+is processed. The <a href="Track.html">Track</a> will print every second
 the elapsed time and the time left to the specified <a
 href="Task.html#attribute-i-duration">Syctask::Task#duration</a>.</p>
 
@@ -285,11 +291,13 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a>.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 138</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 141</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-ivar">@dir</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>
   <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">title</span>
+  <span class="ruby-ivar">@duration</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">remaining</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-ivar">@semaphore</span> = <span class="ruby-node">&quot;#{Syctask::SYC_DIR}/#{@id}.track&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
@@ -311,24 +319,26 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a>.</p>
         
         <div class="method-heading">
           <span class="method-name">start</span><span
-            class="method-args">()</span>
+            class="method-args">(show)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
 
         <div class="method-description">
           
-          <p>Starts the tracking and a timer that will print to STDOUT every 5 minutes
-the elapsed time and the time left until <a
+          <p>Starts the tracking and a timer that will print to STDOUT every second the
+elapsed time and the time left until <a
 href="Task.html#attribute-i-duration">Syctask::Task#duration</a></p>
           
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 146</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">show</span>)
   <span class="ruby-ivar">@started</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-  <span class="ruby-comment"># start a timer that prints title and elapsed time every 5 minutes</span>
+  <span class="ruby-comment"># start a timer that prints id and elapsed time </span>
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-ivar">@semaphore</span>
+  <span class="ruby-identifier">system</span> <span class="ruby-node">&quot;console_timer #{@duration} #{@id} #{@semaphore} &amp;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">show</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- start-source -->
           
@@ -356,8 +366,9 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a></p>
 
           
           <div class="method-source-code" id="stop-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 152</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-ivar">@semaphore</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@semaphore</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@semaphore</span>
   <span class="ruby-ivar">@stopped</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
   <span class="ruby-ivar">@stopped</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@started</span>
 <span class="ruby-keyword">end</span></pre>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class ConsoleTimer - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/sycutil/console_timer.rb
+    <li>bin/console_timer
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-output">#output</a>
+    
+    <li><a href="#method-i-start">#start</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./notes.html">notes</a>
+  
+    <li class="file"><a href="./syctask_rdoc.html">syctask</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Syctask.html">Syctask</a>
+  
+    <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="./Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="./Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="./Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="./Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="./Test.html">Test</a>
+  
+    <li><a href="./Test/Unit.html">Test::Unit</a>
+  
+    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  
+    <li><a href="./Sycutil.html">Sycutil</a>
+  
+    <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Sycstring.html">Sycstring</a>
+  
+    <li><a href="./Syctime.html">Syctime</a>
+  
+    <li><a href="./TestDefault.html">TestDefault</a>
+  
+    <li><a href="./TestEnvironment.html">TestEnvironment</a>
+  
+    <li><a href="./TestEvaluator.html">TestEvaluator</a>
+  
+    <li><a href="./TestMeeting.html">TestMeeting</a>
+  
+    <li><a href="./TestSchedule.html">TestSchedule</a>
+  
+    <li><a href="./TestTask.html">TestTask</a>
+  
+    <li><a href="./TestTaskPlanner.html">TestTaskPlanner</a>
+  
+    <li><a href="./TestTaskScheduler.html">TestTaskScheduler</a>
+  
+    <li><a href="./TestTaskService.html">TestTaskService</a>
+  
+    <li><a href="./TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="./TestTimes.html">TestTimes</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class ConsoleTimer</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="ConsoleTimer.html">ConsoleTimer</a> prints a task and the lead
+time at the upper right corner of the schreen. Invokation example:</p>
+<ul><li>
+<p>Create a semaphore like id.track</p>
+</li><li>
+<p>Console time in a new ruby process</p>
+
+<pre>semaphore = File.expand_path(&quot;~/.syc/syctask/#{id}.track&quot;
+FileUtils.touch semaphore
+system &quot;ruby lib/sycutil/console_timer.rb 60 10 semaphore&quot;</pre>
+</li></ul>
+
+<p>This will start the <a href="ConsoleTimer.html">ConsoleTimer</a> with a
+lead time of 1 minute for task 10. To stop the timer the semaphore has to
+be deleted</p>
+
+<pre>FileUtils.rm semaphore</pre>
+
+<p><a href="ConsoleTimer.html">ConsoleTimer</a> prints a task and the lead
+time at the upper right corner of the schreen. Invokation example:</p>
+<ul><li>
+<p>Create a semaphore like id.track</p>
+</li><li>
+<p>Console time in a new ruby process</p>
+
+<pre>semaphore = File.expand_path(&quot;~/.syc/syctask/#{id}.track&quot;
+FileUtils.touch semaphore
+system &quot;ruby lib/sycutil/console_timer.rb 60 10 semaphore&quot;</pre>
+</li></ul>
+
+<p>This will start the <a href="ConsoleTimer.html">ConsoleTimer</a> with a
+lead time of 1 minute for task 10. To stop the timer the semaphore has to
+be deleted</p>
+
+<pre>FileUtils.rm semaphore</pre>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(time, id, semaphore)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create a new <a href="ConsoleTimer.html">ConsoleTimer</a> with the time to
+count down, the task’s ID and a semaphore. The semaphore is a file named
+id.track where id is equal to the provided id. The semaphore is checked for
+existence. If the semaphore is deleted than <a
+href="ConsoleTimer.html">ConsoleTimer</a> is stopped.</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/sycutil/console_timer.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">id</span>, <span class="ruby-identifier">semaphore</span>)
+  <span class="ruby-ivar">@time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">id</span>
+  <span class="ruby-ivar">@start</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-ivar">@semaphore</span> = <span class="ruby-identifier">semaphore</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-output" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prints the id and the lead time of the currently tracked task. As long as
+the provided time is greater than 0 the time is printed in green, otherwise
+red</p>
+          
+
+          
+          <div class="method-source-code" id="output-source">
+            <pre><span class="ruby-comment"># File lib/sycutil/console_timer.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">output</span>
+  <span class="ruby-identifier">color</span> = <span class="ruby-value">:green</span>
+  <span class="ruby-identifier">difference</span> = <span class="ruby-ivar">@time</span> <span class="ruby-operator">-</span> (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@start</span>).<span class="ruby-identifier">round</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">difference</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">difference</span> = <span class="ruby-identifier">difference</span>.<span class="ruby-identifier">abs</span>
+    <span class="ruby-identifier">color</span> = <span class="ruby-value">:red</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">seconds</span> = <span class="ruby-identifier">difference</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">minutes</span> = <span class="ruby-identifier">difference</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">hours</span>   = <span class="ruby-identifier">difference</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span> 
+  <span class="ruby-identifier">count_down</span> = <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%d: %02d:%02d:%02d&quot;</span>, <span class="ruby-ivar">@id</span>, <span class="ruby-identifier">hours</span>, <span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">seconds</span>)
+  <span class="ruby-identifier">size</span> = <span class="ruby-identifier">count_down</span>.<span class="ruby-identifier">size</span>
+  <span class="ruby-identifier">count_down</span> = <span class="ruby-identifier">count_down</span>.<span class="ruby-identifier">color</span>(<span class="ruby-identifier">color</span>)
+  <span class="ruby-identifier">command</span> = <span class="ruby-string">&quot;tput sc;&quot;</span><span class="ruby-operator">+</span>
+            <span class="ruby-node">&quot;tput cup 0 $(($(tput cols) - #{size}));&quot;</span><span class="ruby-operator">+</span>
+            <span class="ruby-node">&quot;echo #{count_down};tput rc&quot;</span>
+  <span class="ruby-identifier">system</span> <span class="ruby-identifier">command</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- output-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- output-method -->
+
+    
+      <div id="method-i-start" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Starts the timer. The timer is run as long the semaphore is available</p>
+          
+
+          
+          <div class="method-source-code" id="start-source">
+            <pre><span class="ruby-comment"># File lib/sycutil/console_timer.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+  <span class="ruby-identifier">track</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">track</span>
+    <span class="ruby-identifier">sleep</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">output</span>
+    <span class="ruby-identifier">track</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@semaphore</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">exit</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- start-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- start-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

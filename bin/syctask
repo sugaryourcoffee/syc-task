@@ -560,7 +560,8 @@ pre do |global,command,options,args|
   @service = Syctask::TaskService.new
   @planner = Syctask::TaskPlanner.new
 
-  if command.name == :start and @settings.read_tasks[args[0].upcase]
+  if command.name == :start and not args[0].nil? and @settings.
+                                                      read_tasks[args[0].upcase]
     global[:taskdir] = Syctask::SYC_DIR
     args[0] = @settings.read_tasks[args[0].upcase].to_s
   else

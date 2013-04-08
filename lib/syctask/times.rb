@@ -29,9 +29,18 @@ module Syctask
     # Will return [hour,min] in the example [0,45] 
     def diff(time = Time.now)
       diff_minutes = (time.hour - @h) * 60 + (time.min - @m)
-      diff_h = diff_minutes / 60 % 60
-      diff_m = diff_minutes % 60
-      [diff_h, diff_m]
+      signum = diff_minutes == 0 ? 0 : diff_minutes / diff_minutes.abs
+      diff_h = diff_minutes.abs / 60
+      diff_m = diff_minutes.abs % 60
+      if signum < 0
+        if diff_h > 0
+          [signum * diff_h, diff_m]
+        else
+          [diff_h, signum * diff_m]
+        end
+      else
+        [diff_h, diff_m]
+      end
     end
   end
 

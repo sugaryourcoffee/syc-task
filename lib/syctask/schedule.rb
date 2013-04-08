@@ -230,7 +230,8 @@ module Syctask
           position = 0
         else
           duration = [(task.remaining.to_i/900+0.5).round, 1].max
-          position = position_for_time(current_time)
+          position = [0, position_for_time(current_time)].max
+          puts position
         end
         free_time = scan_free(time_line, 1, position)
         if free_time[0].nil?
@@ -315,6 +316,7 @@ module Syctask
     # down otherwise rounded up.
     def position_for_time(time)
       diff = @starts.diff(time)
+      puts diff
       ((diff[0] * 60 + diff[1]) / 15.0).round
     end
 

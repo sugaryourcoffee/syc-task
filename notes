@@ -47,11 +47,14 @@ duration minus remaining. The minimum time shown is 15 minutes.
 |---|---|---|---|---|---|---|---|---|---|---|---|
 8   9  10  11  12  13  14  15  16  17  18  19  20
 
-current time   position  diff   positon calculation           result
- 9:00           4        [1, 0]  ((1 * 60 + 0) / 15.0).round   4 
- 9:10           5        [1,10]  ((1 * 60 + 10)/ 15.0).round   5
-10:00           8        [2, 0]  ((2 * 60 + 0) / 15.0).round   8
-11:07          12        [3, 7]  ((3 * 60 + 7) / 15.0).round  12
+current time   position  diff   positon calculation              result
+ 9:00           4        [ 1,   0] (( 1 * 60 +  0) / 15.0).round   4 
+ 9:10           5        [ 1,  10] (( 1 * 60 + 10) / 15.0).round   5
+10:00           8        [ 2,   0] (( 2 * 60 +  0) / 15.0).round   8
+11:07          12        [ 3,   7] (( 3 * 60 +  7) / 15.0).round  12
+
+ 7:00           0        [-1,   0] ((-1 * 60 +  0) / 15.0).round  -4
+ 7:30           0        [ 0, -30] (( 0 * 60 - 30) / 15.0).round  -2
 
 Define settings
 Define default tasks

@@ -29,6 +29,14 @@ module Syctask
       diffs.max
     end
 
+    def stats(data)
+      diffs = []
+      data.each do |d|
+        diffs << time_for_string(d[2]) - time_for_string(d[1])
+      end
+      [diffs.min, diffs.max, diffs.inject(:+) / diffs.size]
+    end
+    
   end
 
 end

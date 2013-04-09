@@ -28,6 +28,13 @@ class TestStatistics < Test::Unit::TestCase
       assert_equal 600, @stats.max(@tasks)
     end
 
+    should "calculate stats" do
+      min, max, average = @stats.stats(@tasks)
+      assert_equal 60, min
+      assert_equal 600, max
+      assert_equal 60 * (10 + 1) / 2, average
+    end
+
   end
 
 end

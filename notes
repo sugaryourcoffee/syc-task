@@ -20,7 +20,7 @@ ids = {"1" => [/home/user/.tasks/1.task,
                /home/user/2.task],
        ...}
 
-Than re-index tasks that are not unique and associate the old id to the new
+Then re-index tasks that are not unique and associate the old id to the new
 task-files
 
 new_ids = {"1" => {"20" => /home/user/.tasks/project/1.task,
@@ -64,4 +64,14 @@ plan,1
 talk,2
 meet,3
 break,4
+
+Statistics
+2013-04-10 - 2013-04-20 8 working days
+                 total    average   max   min
+working time
+meeting time
+task processing
+unplanned tasks
+done tasks
+open tasks
 

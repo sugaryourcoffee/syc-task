@@ -200,33 +200,21 @@ command :list do |c|
   end
 end
 
-desc 'Show planned tasks'
-arg_name 'DATE'
-command :showplan do |c|
+desc 'Show statistics for time, count and optionally tags'
+arg_name '[FROM[ TO]]'
+command :statistics do |c|
 
-  c.desc 'Print complete task'
-  c.switch [:c, :complete]
+  c.desc 'Show statistics for tags'
+  c.switch [:t, :tags]
 
   c.action do |global_options,options,args|
-    case args[0]
-    when 'today'
-      date = Time.now.strftime("%Y-%m-%d")
-    when 'tomorrow'
-      date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
-    else
-      if args[0] and args[0].match(/\d{4}-\d{2}-\d{2}/)
-        date = args[0] 
-      elsif args[0].nil?
-        date = Time.now.strftime("%Y-%m-%d")
-      end
-    end
-    count = 0
-    @planner.get_tasks(date).each do |task|
-      task.print_pretty(options[:complete])
-      count += 1
-    end
-    STDOUT.puts sprintf("--> planned %d tasks for %s", count, date).
-                        color(:green)
+    from = extract_time(args[0],true) if args[0]
+    from ||= ""
+    to   = extract_time(args[1],true) if args[1]
+    to   ||= ""
+    stats = Syctask::Statistics.new
+    STDOUT.puts stats.report(Syctask::TASKS_LOG, from, to)
+    puts "tags not implemented yet" if options[:tags]
   end
 
 end
@@ -585,24 +573,34 @@ on_error do |exception|
   true
 end
 
-# Extracts the time out of a time string. Accepts 'today', 'tomorrow' or a date
-# in the form 'YYYY-MM-DD'. Returns the date contained in the time_string
-def extract_time(time_string)
+# Extracts the time out of a time string. Accepts 'today', 'tomorrow',
+# 'yesterday' or a date in the form 'YYYY-MM-DD'. Returns the date contained in 
+# the time_string or if time = true in a Time object
+def extract_time(time_string,time=false)
   time_string = 'today' if time_string.nil?
   case time_string.downcase
   when 'today'
-    date = Time.now.strftime("%Y-%m-%d")
+    date = Time.now
+    date = date.strftime("%Y-%m-%d") unless time
   when 'tomorrow'
-    date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
+    date = Time.now + 60 * 60 * 24
+    date = date.strftime("%Y-%m-%d") unless time
+  when 'yesterday'
+    date = Time.now - (60 * 60 * 24)
+    date = date.strftime("%Y-%m-%d") unless time
   else
     if time_string.match(/\d{4}-\d{2}-\d{2}/)
       date = time_string 
+      date = Time.xmlschema("#{time_string}T00:00:00") if time
     elsif nil
-      date = Time.now.strftime("%Y-%m-%d")
+      date = Time.now
+      date = date.strftime("%Y-%m-%d") unless time
     else
-      help_now! "Arguments may be 'today', 'tomorrow', YYYY-MM-DD or <RETURN>"
+      help_now! "Arguments may be 'yesterday', 'today', 'tomorrow', YYYY-MM-DD"+
+                " or <RETURN>"
     end
   end
+  date
 end
 
 # Add task to task plan

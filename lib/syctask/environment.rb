@@ -11,6 +11,17 @@ module Syctask
   TRACKED_TASK = SYC_DIR + "/tracked_tasks"
   RIDX_LOG = SYC_DIR + "/reindex.log"
 
+  def log_task(type, task)
+    File.open(TASKS_LOG, 'a') do |file|
+      log_entry =  "#{type.to_s};"
+      log_entry += "#{task.id};#{task.dir};"
+      log_entry += "#{task.title};"
+      log_entry += "#{Time.now};"
+      log_entry += "#{Time.now}" 
+      file.puts log_entry
+    end
+  end
+
   def check_environment
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?

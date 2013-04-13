@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'rainbow'
 require_relative 'evaluator'
+require_relative 'environment.rb'
 
 # Syctask provides functions for managing tasks in a task list
 module Syctask
@@ -136,6 +137,7 @@ module Syctask
       if note
         options[:note] = "#{@done_date}\n#{note}\n#{@options[:note]}"
       end
+      Syctask::log_task("done", self)
     end
 
     # Checks if this task is done. Returns true if done otherwise false

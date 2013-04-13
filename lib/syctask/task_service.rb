@@ -26,6 +26,7 @@ module Syctask
       create_dir(dir)
       task = Task.new(options, title, next_id(dir))
       save(dir, task)
+      Syctask::log_task("create", task)
       task.id
     end
 
@@ -104,6 +105,7 @@ module Syctask
       if task
         task.update(options) 
         save(dir, task)
+        Syctask::log_task("update", task)
         updated = true
       end
       updated
@@ -123,6 +125,7 @@ module Syctask
         next unless not task.nil? and task.class == Syctask::Task
         if task.matches?(filter)
           deleted += File.delete(file)
+          Syctask::log_task("delete", task)
         end
       end
       deleted

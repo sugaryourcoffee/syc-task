@@ -111,7 +111,7 @@ module Syctask
       FileUtils.mkdir_r Syctask::WORK_DIR unless File.exists? Syctask::WORK_DIR
       File.open(TASK_LOG_FILE, 'a') do |file|
         log_entry =  "#{type.to_s};"
-        log_entry += "#{track.id}-#{track.dir};"
+        log_entry += "#{track.id};#{track.dir};"
         log_entry += "#{track.title};"
         log_entry += "#{track.started};"
         log_entry += "#{track.stopped}" 

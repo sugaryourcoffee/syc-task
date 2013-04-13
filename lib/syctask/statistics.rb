@@ -87,7 +87,7 @@ module Syctask
       time_data  = {}
       time_types = %w{work meeting task}
       count_data = {}
-      count_types = %w{task done update delete}
+      count_types = %w{task create done update delete}
       IO.readlines(file).each do |line|
         values = line.split(";")
         time = time_for_string(values[4])

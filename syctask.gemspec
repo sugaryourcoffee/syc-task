@@ -27,6 +27,7 @@ lib/sycutil/console_timer.rb
 lib/syctask/environment.rb
 lib/syctask/task_tracker.rb
 lib/syctask/settings.rb
+lib/syctask/statistics.rb
 lib/syctime/time_util.rb
 lib/sycstring/string_util.rb
   )

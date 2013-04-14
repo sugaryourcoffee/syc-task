@@ -163,7 +163,7 @@ module Syctask
       work_time, meeting_times = get_times
       time_line = "|---" * (work_time[1]-work_time[0]) + "|"
       meeting_times.each do |time|
-        time_line[time[0]..time[1]] = '/' * (time[1] - time[0]+1)
+        time_line[time[0]..time[1]-1] = '/' * (time[1] - time[0])
       end
 
       task_list, task_caption = assign_tasks_to_graph(time_line)
@@ -231,7 +231,6 @@ module Syctask
         else
           duration = [(task.remaining.to_i/900+0.5).round, 1].max
           position = [0, position_for_time(current_time)].max
-          puts position
         end
         free_time = scan_free(time_line, 1, position)
         if free_time[0].nil?
@@ -316,7 +315,7 @@ module Syctask
     # down otherwise rounded up.
     def position_for_time(time)
       diff = @starts.diff(time)
-      puts diff
+      #puts diff
       ((diff[0] * 60 + diff[1]) / 15.0).round
     end
 

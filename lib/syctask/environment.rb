@@ -15,7 +15,7 @@ module Syctask
     File.open(TASKS_LOG, 'a') do |file|
       log_entry =  "#{type.to_s};"
       log_entry += "#{task.id};#{task.dir};"
-      log_entry += "#{task.title};"
+      log_entry += "#{task.title.gsub(';', '\'semicolon\'')};"
       log_entry += "#{Time.now};"
       log_entry += "#{Time.now}" 
       file.puts log_entry
@@ -179,13 +179,14 @@ module Syctask
     tasks_log_files(dir).each do |file|
       logs = File.readlines(file)
       logs.each_with_index do |log,i|
-        old_id = log.scan(/(?<=^start;|^stop;)\d+(?=-)/)[0]
+        type = log.scan(/^.*?(?=;)/)[0]
+        logs[i] = log.sub!("-",";") if log.scan(/(?<=^#{type};)\d+-/)[0]
+        old_id = log.scan(/(?<=^#{type};)\d+(?=;)/)[0]
         next unless new_ids[old_id]
-        task_dir = log.
-          scan(/(?<=^start;#{old_id}-|^stop;#{old_id}-).*(?=;.*;.*;.?)/)[0]
+        task_dir = log.scan(/(?<=^#{type};#{old_id};).*?(?=;)/)[0]
         next unless new_ids[old_id][task_dir]
-        logs[i] = log.sub("#{old_id}-#{task_dir}", 
-                          "#{new_ids[old_id][task_dir]}-#{task_dir}")
+        logs[i] = log.sub("#{old_id};#{task_dir}", 
+                          "#{new_ids[old_id][task_dir]};#{task_dir}")
       end
       if file == TASKS_LOG
         File.write(TASKS_LOG, logs.join)
@@ -245,14 +246,10 @@ module Syctask
     if File.exists? RIDX_LOG
       old_id = task.scan(/(?<=id: )\d+$/)
       old_dir = task.scan(/(?<=dir: ).*$/)
-      #puts "#{old_id} #{old_dir}"
       return if old_id.empty? or old_dir.empty?
       pattern = %r{(?<=#{old_id[0]},)\d+(?=,#{old_dir[0]}\/\d+\.task)}
-      #puts pattern
       new_id = File.read(RIDX_LOG).scan(pattern)
-      #puts "new_id = #{new_id}<"
       task.gsub!("id: #{old_id}", "id: #{new_id}")
-      #puts task
     end
     File.write(TRACKED_TASK, task)
     FileUtils.rm @tracked[0] unless TRACKED_TASK == @tracked[0]

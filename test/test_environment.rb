@@ -20,6 +20,8 @@ class TestEnvironment < Test::Unit::TestCase
       1.upto(5) do |i|
         @service.create("#{@work_dir}/sub", {}, "task Number #{i}")
       end
+      # Remove the tasks.log file created during the above operations
+      FileUtils.rm Syctask::TASKS_LOG if File.exists? Syctask::TASKS_LOG
       1.upto(3) do |i|
         FileUtils.touch "#{@work_dir}/2013-0#{i}-17_planned_tasks"
         FileUtils.touch "#{@work_dir}/2013-0#{i}-17_time_schedule"
@@ -202,11 +204,11 @@ class TestEnvironment < Test::Unit::TestCase
         if i % 2 == 1
           c += 1
           expected =  "stop;"
-          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]};#{v[i-c][:title]};"
+          expected += "#{v[i-c][:new_id]};#{v[i-c][:dir]};#{v[i-c][:title]};"
           expected += "#{@time};#{@time}\n"
         else
           expected =  "start;"
-          expected += "#{v[i-c][:new_id]}-#{v[i-c][:dir]};#{v[i-c][:title]};"
+          expected += "#{v[i-c][:new_id]};#{v[i-c][:dir]};#{v[i-c][:title]};"
           expected += "#{@time};\n" 
         end
         assert_equal expected, line

@@ -9,7 +9,8 @@ module Syctask
     def report(file, from="", to=from)
 
       from, to, time_log, count_log = logs(file, from, to)
-      report = "#{from.strftime("%Y-%m-%d")} to #{to.strftime("%Y-%m-%d")}\n" +
+      report = sprintf("%s to %s\n", "#{from.strftime("%Y-%m-%d")}".bright,
+                                     "#{to.strftime("%Y-%m-%d")}".bright) +
                sprintf("%23s", "Total".bright) +
                sprintf("%26s", "Min  ".bright) +
                sprintf("%26s", "Max  ".bright) + 

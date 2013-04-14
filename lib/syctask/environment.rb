@@ -50,8 +50,6 @@ module Syctask
   end
 
   def log_meetings(type, busy_time, meetings)
-    puts "log_meetings"
-    puts "#{type} - #{busy_time} - #{meetings}"
     today = Time.now
     logs = File.read(TASKS_LOG)
     time_pat = "#{today.strftime("%Y-%m-%d")} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}"
@@ -63,8 +61,6 @@ module Syctask
       meeting = meetings[i] ? meetings[i] : "Meeting #{i}"
       logs << "#{type};-2;;#{meeting};#{begins};#{ends}\n"
     end
-    puts "--->log meetings<---"
-    puts logs
     File.write(TASKS_LOG, logs)
   end
 

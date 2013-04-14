@@ -130,6 +130,10 @@ class TestSchedule < Test::Unit::TestCase
 
       schedule.graph.each {|output| puts output}
     end
+
+    should "add work time entry to log file" do
+
+    end
   end
 
 end

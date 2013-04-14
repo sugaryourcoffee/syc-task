@@ -29,6 +29,62 @@ class TestTaskScheduler < Test::Unit::TestCase
       end
     end
 
+    should "add work time to log file" do
+      work_time = "8:30-18:30"
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_work_time(work_time)
+      logs = File.read(Syctask::TASKS_LOG)
+      today = Time.now
+      begins = Time.local(today.year,today.mon,today.day,8,30,0)
+      ends   = Time.local(today.year,today.mon,today.day,18,30,0)
+      expected = "work;-1;;work;#{begins};#{ends}"
+      assert_equal expected, logs.scan(expected)[0]
+
+      work_time = "8:00-19:15"
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_work_time(work_time)
+      logs = File.read(Syctask::TASKS_LOG)
+      begins = Time.local(today.year,today.mon,today.day,8,0,0)
+      ends   = Time.local(today.year,today.mon,today.day,19,15,0)
+      expected_new = "work;-1;;work;#{begins};#{ends}"
+      assert_nil logs.scan(expected)[0]
+      assert_equal expected_new, logs.scan(expected_new)[0]
+
+      scheduler.set_work_time(work_time)
+      logs = File.read(Syctask::TASKS_LOG)
+      assert_equal 1, logs.scan(expected_new).size
+    end
+
+    should "Meetings to log file" do
+      work_time = "8:30-18:30"
+      busy_times = "9:00-9:30,10:00-11:00,13:00-14:45"
+      scheduler = Syctask::TaskScheduler.new
+      scheduler.set_work_time(work_time)
+      scheduler.set_busy_times(busy_times)
+      logs = File.read(Syctask::TASKS_LOG)
+      today = Time.now
+      begins = Time.local(today.year,today.mon,today.day,9,00,0)
+      ends   = Time.local(today.year,today.mon,today.day,9,30,0)
+      expected = "meeting;-2;;Meeting 0;#{begins};#{ends}"
+      assert_equal expected, logs.scan(expected)[0]
+
+      busy_times = "10:00-11:15,14:00-18:15"
+      scheduler.set_busy_times(busy_times)
+      logs = File.read(Syctask::TASKS_LOG)
+      begins = Time.local(today.year,today.mon,today.day,10,00,0)
+      ends   = Time.local(today.year,today.mon,today.day,11,15,0)
+      expected_new = "meeting;-2;;Meeting 0;#{begins};#{ends}"
+      assert_nil logs.scan(expected)[0]
+      assert_equal expected_new, logs.scan(expected_new)[0]
+
+      meetings = "Status,Workshop"
+      scheduler.set_meeting_titles(meetings)
+      logs = File.read(Syctask::TASKS_LOG)
+      expected = "meeting;-2;;Status;#{begins};#{ends}"
+      assert_nil logs.scan(expected_new)[0]
+      assert_equal expected, logs.scan(expected)[0]
+    end
+
     should "Scheduler with wrong work and busy time sequence should raise" do
       work_time = "18:30-8:30"
       busy_time = "9:00-9:30,10:00-11:45"

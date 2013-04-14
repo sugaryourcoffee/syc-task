@@ -22,6 +22,56 @@ module Syctask
     end
   end
 
+  def log_work_time(type, work_time)
+    today  = Time.now
+    begins = Time.local(today.year,
+                        today.mon,
+                        today.day,
+                        work_time[0],
+                        work_time[1],
+                        0)
+    ends   = Time.local(today.year,
+                        today.mon,
+                        today.day,
+                        work_time[2],
+                        work_time[3],
+                        0)
+    entry = "#{type};-1;;work;#{begins};#{ends}\n"
+    logs = File.read(TASKS_LOG)
+    return if logs.scan(entry)[0]
+    time_pat = "#{today.strftime("%Y-%m-%d")} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}"
+    pattern = %r{#{type};-1;;work;#{time_pat};#{time_pat}\n}
+    log = logs.scan(pattern)[0]
+    if log and logs.sub!(log, entry)
+      File.write(TASKS_LOG, logs)
+    else
+      File.open(TASKS_LOG, 'a') {|f| f.puts entry}
+    end
+  end
+
+  def log_meetings(type, busy_time, meetings)
+    puts "log_meetings"
+    puts "#{type} - #{busy_time} - #{meetings}"
+    today = Time.now
+    logs = File.read(TASKS_LOG)
+    time_pat = "#{today.strftime("%Y-%m-%d")} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}"
+    pattern = %r{#{type};-2;;.*?;#{time_pat};#{time_pat}\n}
+    logs.gsub!(pattern, "")
+    busy_time.each_with_index do |busy,i|
+      begins = Time.local(today.year,today.mon,today.day,busy[0],busy[1],0)
+      ends   = Time.local(today.year,today.mon,today.day,busy[2],busy[3],0)
+      meeting = meetings[i] ? meetings[i] : "Meeting #{i}"
+      logs << "#{type};-2;;#{meeting};#{begins};#{ends}\n"
+    end
+    puts "--->log meetings<---"
+    puts logs
+    File.write(TASKS_LOG, logs)
+  end
+
+  def schedule_time(date, hours, minutes, seconds)
+    time = Time.local(date.year, date.mon, date.day, hours, minutes, seconds)
+  end
+
   def check_environment
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?

@@ -55,6 +55,7 @@ module Syctask
       unless sequential?(@work_time)
         raise Exception, "Begin time has to be before end time" 
       end
+      Syctask::log_work_time("work", @work_time)
     end
 
     # Set the busy times. Raises an exception if one begin time is after start
@@ -67,12 +68,14 @@ module Syctask
           raise Exception, "Begin time has to be before end time" 
         end
       end
+      Syctask::log_meetings("meeting", @busy_time, @meetings)
     end
 
     # Sets the titles of the meetings (busy times)
     # Invokation: set_meeting_titles("title1,title2,title3")
     def set_meeting_titles(titles)
       @meetings = titles.split(",") if titles
+      Syctask::log_meetings("meeting", @busy_time, @meetings)
     end
 
     # Sets the tasks for scheduling

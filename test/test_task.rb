@@ -7,6 +7,14 @@ class TestTask < Test::Unit::TestCase
 
   context "Task" do
 
+    def setup
+      backup_system_files("TestTask")
+    end
+
+    def teardown
+      restore_system_files("TestTask")
+    end
+
     should "create task with title" do
       task = Syctask::Task.new({}, "Some new task", 1)
       assert_equal 1, task.id

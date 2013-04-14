@@ -7,10 +7,12 @@ class TestTask < Test::Unit::TestCase
 
   context "Task" do
 
+    # Backup system files
     def setup
       backup_system_files("TestTask")
     end
 
+    # Restore system files
     def teardown
       restore_system_files("TestTask")
     end

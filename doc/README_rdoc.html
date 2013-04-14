@@ -75,6 +75,10 @@
   
     <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="./Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -117,6 +121,8 @@
   
     <li><a href="./TestSchedule.html">TestSchedule</a>
   
+    <li><a href="./TestStatistics.html">TestStatistics</a>
+  
     <li><a href="./TestTask.html">TestTask</a>
   
     <li><a href="./TestTaskPlanner.html">TestTaskPlanner</a>
@@ -126,6 +132,8 @@
     <li><a href="./TestTaskService.html">TestTaskService</a>
   
     <li><a href="./TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="./TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="./TestTimes.html">TestTimes</a>
   
@@ -352,6 +360,22 @@ are only removed from the planned tasks and not physically deleted.</p>
 
 <pre>$ syctask delete --plan today --id 8,12</pre>
 
+<h3 id="label-Statistics">Statistics</h3>
+
+<p>Shows statistics for work and meeting times as well as for task processing</p>
+
+<p>Evaluate the complete log file</p>
+
+<pre>$ syctask statistics</pre>
+
+<p>Evaluate work times, meetings and tasks between 2013-01-01 and 2013-04-14</p>
+
+<pre>$ syctask statistics 2013-01-01 2013-04-14</pre>
+
+<p>Evaluate yesterday and today</p>
+
+<pre>$ syctask statistics yesterday today</pre>
+
 <h3 id="label-Task+directory+and+project+directory">Task directory and project directory</h3>
 
 <p>The global options –taskdir and –project determine where the command finds
@@ -379,10 +403,21 @@ prio          -          -     input to prio are planned tasks (see plan)
 scan          x          x     creates scanned tasks in taskdir/project
 schedule      -          -     schedules the planned tasks (see plan)
 start         -          -     starts task from planned tasks (see plan)
+statistics    -          -     shows statistics of time and count
 stop          -          -     stops task from planned task
 update        x          x     updates task in taskdir/project</pre>
 
 <h3 id="label-Files">Files</h3>
+<ul><li>
+<p>ID</p>
+</li></ul>
+
+<p>id file contains the last issued id.</p>
+<ul><li>
+<p>IDS</p>
+</li></ul>
+
+<p>ids file contains all issued ids.</p>
 <ul><li>
 <p>Task files</p>
 </li></ul>
@@ -405,7 +440,8 @@ directory.The files are saved as YAML files and can be changed manually.</p>
 <p>Log file</p>
 </li></ul>
 
-<p>When a task is started and stopped this is action is saved to tasks.log</p>
+<p>Creating schedule and task processings is logged to tasks.log. For example
+when a task is started and stopped this is action is saved to tasks.log.</p>
 <ul><li>
 <p>Tracked file</p>
 </li></ul>
@@ -413,6 +449,15 @@ directory.The files are saved as YAML files and can be changed manually.</p>
 <p>A started task is saved to tracked_tasks. A semaphore file is created with
 ID.track when the task ID is started. When the task is stopped the
 semaphore file is deleted.</p>
+<ul><li>
+<p>General purpose tasks</p>
+</li></ul>
+
+<p>With syctask setting -g PHONE so called general purpose tasks can be
+created. These tasks can be used for time tracking and later statistic
+evaluation to determine the amount of disturbences e.g. by phone. These
+tasks are saved to default_tasks. The general purpose tasks itself are also
+saved to the .syc/syctask directory as regular task files.</p>
 
 <h2 id="label-Working+with+syctask">Working with syctask</h2>
 
@@ -608,6 +653,11 @@ done yet. Done tasks are shown in the past with the actual processing time.
 Done tasks planned for the future are not shown in the schedule.</p>
 </li><li>
 <p>Assigning tasks to meetings in a schedule is now done with the task ID</p>
+</li><li>
+<p>Statistics show statistics about work time, meeting times and task
+processing</p>
+</li><li>
+<p>Meeting time in time line now shows correct duration</p>
 </li></ul>
 
 <p>The test files live in the folder test and start with test_.</p>

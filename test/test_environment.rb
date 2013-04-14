@@ -4,10 +4,12 @@ require_relative '../lib/syctask/environment.rb'
 require_relative '../lib/syctask/task_service.rb'
 include Syctask
 
+# Test the Environment module
 class TestEnvironment < Test::Unit::TestCase
 
   context "Test re-indexing helpers" do
     
+    # Backup system files and create empty system files and tasks for the test 
     def setup
       backup_system_files("TestEnvironment")
       @time = Time.now
@@ -30,6 +32,7 @@ class TestEnvironment < Test::Unit::TestCase
       FileUtils.touch "#{@work_dir}/tracked_tasks"
     end
 
+    # Restore system files and clean directories from test files
     def teardown
       restore_system_files("TestEnvironment")
       FileUtils.rm_r @work_dir if File.exists? @work_dir
@@ -64,6 +67,7 @@ class TestEnvironment < Test::Unit::TestCase
       [tasks, updates]
     end
 
+    # Create tracked_tasks file and add a track
     def create_tracked_tasks_file
       File.open("#{@work_dir}/tracked_tasks", 'w') do |f|
         f.puts("---")
@@ -75,6 +79,7 @@ class TestEnvironment < Test::Unit::TestCase
       end
     end
 
+    # Create the reindex_log file and add some re-indexing logs
     def create_reindex_log_file
       File.open(Syctask::RIDX_LOG, 'w') do |f|
         f.puts "33,68,/home/pierre/.tasks/68.task"

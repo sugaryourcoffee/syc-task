@@ -113,6 +113,10 @@
   
     <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="../Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -155,6 +159,8 @@
   
     <li><a href="../TestSchedule.html">TestSchedule</a>
   
+    <li><a href="../TestStatistics.html">TestStatistics</a>
+  
     <li><a href="../TestTask.html">TestTask</a>
   
     <li><a href="../TestTaskPlanner.html">TestTaskPlanner</a>
@@ -164,6 +170,8 @@
     <li><a href="../TestTaskService.html">TestTaskService</a>
   
     <li><a href="../TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="../TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="../TestTimes.html">TestTimes</a>
   
@@ -300,9 +308,18 @@ diff(time) =  0:45</pre>
             <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">diff</span>(<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
   <span class="ruby-identifier">diff_minutes</span> = (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@h</span>) * <span class="ruby-value">60</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@m</span>)
-  <span class="ruby-identifier">diff_h</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
-  <span class="ruby-identifier">diff_m</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
-  [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+  <span class="ruby-identifier">signum</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span>
+  <span class="ruby-identifier">diff_h</span> = <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">diff_m</span> = <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">signum</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">diff_h</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+      [<span class="ruby-identifier">signum</span> * <span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+    <span class="ruby-keyword">else</span>
+      [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">signum</span> * <span class="ruby-identifier">diff_m</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- diff-source -->
           

@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class TestTaskPlanner - RDoc Documentation</title>
+<title>class TestStatistics - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>test/test_task_planner.rb
+    <li>test/test_statistics.rb
   </ul>
 </nav>
 
@@ -180,11 +180,11 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class TestTaskPlanner</h1>
+  <h1 class="class">class TestStatistics</h1>
 
   <div id="description" class="description">
     
-<p>Tests for the TaskPlanner class</p>
+<p><a href="Test.html">Test</a> the Statistics class</p>
 
   </div><!-- description -->
 
@@ -217,27 +217,43 @@
 
         <div class="method-description">
           
-          <p>Sets up the test and initializes variables used in the tests</p>
+          <p>Create tasks and entries.</p>
+<ul><li>
+<p>Tasks</p>
+
+<pre>start|stop;id;dir;title;start;</pre>
+</li><li>
+<p>Entries</p>
+
+<pre>type;id;dir;title;start;stop
+type = start|stop|work|meeting|done|update|delete</pre>
+</li></ul>
           
 
           
           <div class="method-source-code" id="setup-source">
-            <pre><span class="ruby-comment"># File test/test_task_planner.rb, line 12</span>
+            <pre><span class="ruby-comment"># File test/test_statistics.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
-  <span class="ruby-identifier">backup_system_files</span>(<span class="ruby-string">&quot;TestTaskPlanner&quot;</span>)
-  <span class="ruby-ivar">@plan_date</span> = <span class="ruby-string">'2013-03-01'</span>
-  <span class="ruby-ivar">@planned_tasks_file</span> = <span class="ruby-constant">File</span>.
-                        <span class="ruby-identifier">expand_path</span>(<span class="ruby-node">&quot;~/.tasks/#{@plan_date}_planned_tasks&quot;</span>)
-  <span class="ruby-ivar">@service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@planner</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskPlanner</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@dir</span> = <span class="ruby-string">&quot;test/tasks&quot;</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-ivar">@dir</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@dir</span>
-  <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">options</span> = {<span class="ruby-identifier">descriptions</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;Description of task #{i+1}&quot;</span>,
-               <span class="ruby-identifier">follow_up</span><span class="ruby-operator">:</span> <span class="ruby-string">'2013-03-02'</span>, <span class="ruby-identifier">due</span><span class="ruby-operator">:</span> <span class="ruby-string">'2013-04-02'</span>, <span class="ruby-identifier">prio</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
-               <span class="ruby-identifier">note</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;Note of task #{i+1}&quot;</span>, <span class="ruby-identifier">tags</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;tag#{i+1},tag#{i+2}&quot;</span>}
-    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@dir</span>, <span class="ruby-identifier">options</span>, <span class="ruby-node">&quot;Title of task number #{i+1}&quot;</span>)
+  <span class="ruby-identifier">backup_system_files</span>(<span class="ruby-string">&quot;TestStatistics&quot;</span>)
+  <span class="ruby-ivar">@stats</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Statistics</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@tasks</span> = []
+  <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">10</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@tasks</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">to_s</span>, (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">60</span>*<span class="ruby-identifier">i</span>).<span class="ruby-identifier">to_s</span>]
   <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@entries</span> = <span class="ruby-string">&quot;&quot;</span> 
+  <span class="ruby-identifier">types</span> = <span class="ruby-node">%w{work meeting start stop done update delete}</span>
+  <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">5</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">start</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-value">2013</span>,<span class="ruby-string">&quot;apr&quot;</span>,<span class="ruby-node">&quot;#{i+11}&quot;</span>,<span class="ruby-value">8</span>,<span class="ruby-value">15</span>,<span class="ruby-value">0</span>)
+    <span class="ruby-identifier">stop</span>  = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-value">2013</span>,<span class="ruby-string">&quot;apr&quot;</span>,<span class="ruby-node">&quot;#{i+11}&quot;</span>,<span class="ruby-value">18</span>,<span class="ruby-value">30</span>,<span class="ruby-value">0</span>)
+    <span class="ruby-ivar">@entries</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{types[0]};-1;;work;#{start};#{stop}\n&quot;</span>
+    <span class="ruby-ivar">@entries</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{types[1]};-2;;meeting;#{start+i*60};#{start+i*120}\n&quot;</span>
+    <span class="ruby-value">0</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">9</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-ivar">@entries</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{types[i%5+2]};#{i};test/tasks;&quot;</span><span class="ruby-operator">+</span>
+                  <span class="ruby-node">&quot;task #{i};&quot;</span><span class="ruby-operator">+</span>
+                  <span class="ruby-node">&quot;#{start+i*60};#{start+(i+1)*60}\n&quot;</span>  
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-string">'w'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-ivar">@entries</span>}
 <span class="ruby-keyword">end</span></pre>
           </div><!-- setup-source -->
           
@@ -260,16 +276,14 @@
 
         <div class="method-description">
           
-          <p>Removes files and directories created during the tests</p>
+          <p>Restore the system files</p>
           
 
           
           <div class="method-source-code" id="teardown-source">
-            <pre><span class="ruby-comment"># File test/test_task_planner.rb, line 30</span>
+            <pre><span class="ruby-comment"># File test/test_statistics.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
-  <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-string">&quot;TestTaskPlanner&quot;</span>)
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span> <span class="ruby-ivar">@dir</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@dir</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-ivar">@planned_tasks_file</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@planned_tasks_file</span>
+  <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-string">&quot;TestStatistics&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- teardown-source -->
           

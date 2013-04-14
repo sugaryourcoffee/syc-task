@@ -115,6 +115,10 @@
   
     <li><a href="../../Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="../../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../../Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="../../Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="../../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -157,6 +161,8 @@
   
     <li><a href="../../TestSchedule.html">TestSchedule</a>
   
+    <li><a href="../../TestStatistics.html">TestStatistics</a>
+  
     <li><a href="../../TestTask.html">TestTask</a>
   
     <li><a href="../../TestTaskPlanner.html">TestTaskPlanner</a>
@@ -166,6 +172,8 @@
     <li><a href="../../TestTaskService.html">TestTaskService</a>
   
     <li><a href="../../TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="../../TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="../../TestTimes.html">TestTimes</a>
   
@@ -227,6 +235,7 @@ helper methods for each test</p>
     <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span> <span class="ruby-identifier">f</span>, <span class="ruby-identifier">f</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;.original&quot;</span>
     <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-identifier">f</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-comment">#Uncomment if you want to log backing up system files </span>
   <span class="ruby-comment">#log_system_files(&quot;Backup: end&quot;)</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- backup_system_files-source -->
@@ -250,12 +259,15 @@ helper methods for each test</p>
 
         <div class="method-description">
           
-          
+          <p>Logs the backup and restore of system files. Used by <a
+href="TestCase.html#method-i-backup_system_files">#backup_system_files</a>
+and <a
+href="TestCase.html#method-i-restore_system_files">#restore_system_files</a></p>
           
 
           
           <div class="method-source-code" id="log_system_files-source">
-            <pre><span class="ruby-comment"># File test/test_helper.rb, line 42</span>
+            <pre><span class="ruby-comment"># File test/test_helper.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">log_system_files</span>(<span class="ruby-identifier">message</span>)
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-string">'syctask_test.log'</span>, <span class="ruby-string">'a'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{Time.now} - #{message} #{self}&quot;</span>
@@ -288,7 +300,7 @@ helper methods for each test</p>
 
           
           <div class="method-source-code" id="restore_system_files-source">
-            <pre><span class="ruby-comment"># File test/test_helper.rb, line 28</span>
+            <pre><span class="ruby-comment"># File test/test_helper.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-identifier">caller</span>)
   <span class="ruby-comment">#log_system_files(&quot;Restore: start/#{caller}&quot;)</span>
   <span class="ruby-identifier">originals</span> = []
@@ -300,6 +312,7 @@ helper methods for each test</p>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">originals</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span> <span class="ruby-identifier">o</span>, <span class="ruby-identifier">o</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-string">&quot;.original&quot;</span>, <span class="ruby-string">&quot;&quot;</span>)}
+  <span class="ruby-comment">#Uncomment if you want to log restoration of system files</span>
   <span class="ruby-comment">#log_system_files(&quot;Restore: end&quot;)</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- restore_system_files-source -->

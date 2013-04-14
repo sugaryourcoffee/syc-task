@@ -3,6 +3,7 @@ require 'shoulda'
 
 require_relative '../lib/syctask/statistics.rb'
 
+# Test the Statistics class
 class TestStatistics < Test::Unit::TestCase
 
   context "Statistics" do
@@ -36,6 +37,7 @@ class TestStatistics < Test::Unit::TestCase
       File.open(Syctask::TASKS_LOG, 'w') {|f| f.puts @entries}
     end
 
+    # Restore the system files
     def teardown
       restore_system_files("TestStatistics")
     end

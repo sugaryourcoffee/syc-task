@@ -121,6 +121,10 @@
   
     <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="../Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -163,6 +167,8 @@
   
     <li><a href="../TestSchedule.html">TestSchedule</a>
   
+    <li><a href="../TestStatistics.html">TestStatistics</a>
+  
     <li><a href="../TestTask.html">TestTask</a>
   
     <li><a href="../TestTaskPlanner.html">TestTaskPlanner</a>
@@ -172,6 +178,8 @@
     <li><a href="../TestTaskService.html">TestTaskService</a>
   
     <li><a href="../TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="../TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="../TestTimes.html">TestTimes</a>
   
@@ -471,7 +479,7 @@ Returns true if succeeds</p>
 
           
           <div class="method-source-code" id="get_times-source">
-            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 354</span>
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 356</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_times</span>
   <span class="ruby-identifier">work_time</span> = [<span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">h</span>, <span class="ruby-ivar">@ends</span>.<span class="ruby-identifier">round_up</span>]
   <span class="ruby-identifier">meeting_times</span> = []
@@ -539,7 +547,7 @@ meeting list</p>
   <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span> = <span class="ruby-identifier">get_times</span>
   <span class="ruby-identifier">time_line</span> = <span class="ruby-string">&quot;|---&quot;</span> * (<span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>]) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;|&quot;</span>
   <span class="ruby-identifier">meeting_times</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">time_line</span>[<span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">..</span><span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>]] = <span class="ruby-string">'/'</span> * (<span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">+</span><span class="ruby-value">1</span>)
+    <span class="ruby-identifier">time_line</span>[<span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">..</span><span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-value">1</span>] = <span class="ruby-string">'/'</span> * (<span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>])
   <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">task_list</span>, <span class="ruby-identifier">task_caption</span> = <span class="ruby-identifier">assign_tasks_to_graph</span>(<span class="ruby-identifier">time_line</span>)

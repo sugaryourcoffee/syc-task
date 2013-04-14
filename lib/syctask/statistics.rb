@@ -4,8 +4,11 @@ include Syctime
 
 module Syctask
   
+  # Creates statistics about the work and meeting times as well about the task
+  # processing
   class Statistics
 
+    # Creates a statistics report
     def report(file, from="", to=from)
 
       from, to, time_log, count_log = logs(file, from, to)
@@ -35,6 +38,7 @@ module Syctask
 
     end
 
+    # Creates a report line for the report
     def report_line(key, total, min, max, average)
       report =  sprintf(" %s#{' '*(9-key.size)}", key)
       report << sprintf("%8s#{' '*10}", total)
@@ -43,6 +47,7 @@ module Syctask
       report << sprintf("%8s\n", average)
     end
 
+    # Calculates the average of a task processing, work or meeting time
     def average(data)
       sum = 0
       data.each do |d|
@@ -51,6 +56,7 @@ module Syctask
       sum / data.size
     end
 
+    # Calculates the minimum duration of task processing, work or meeting time
     def min(data)
       diffs = []
       data.each do |d|
@@ -59,6 +65,7 @@ module Syctask
       diffs.min
     end
 
+    # Calculates the maximum duration of task processing, work or meeting time
     def max(data)
       diffs = []
       data.each do |d|
@@ -67,6 +74,8 @@ module Syctask
       diffs.max
     end
 
+    # Calculates total, min, max and average time of task processing, work or
+    # meeting time
     def stats(data)
       diffs = []
       data.each do |d|
@@ -75,6 +84,8 @@ module Syctask
       [diffs.inject(:+), diffs.min, diffs.max, diffs.inject(:+) / diffs.size]
     end
 
+    # Calculates the total, min, max and average count of task processing, 
+    # creation, update, done, delete
     def stats_count(data)
       count = []
       data.each do |key,value|
@@ -83,6 +94,7 @@ module Syctask
       [count.inject(:+), count.min, count.max, count.inject(:+) / count.size]
     end
     
+    # Retrieves the log entries from the log file
     def logs(file, from="", to=from)
       times = []
       time_data  = {}

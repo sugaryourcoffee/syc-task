@@ -4,6 +4,7 @@ require 'shoulda'
 require_relative '../lib/syctime/time_util.rb'
 include Syctime
 
+# Test for TimeUtil class
 class TestTimeUtil < Test::Unit::TestCase
 
   context "TimeUtil" do

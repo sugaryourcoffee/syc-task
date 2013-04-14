@@ -75,6 +75,10 @@
   
     <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="./Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -117,6 +121,8 @@
   
     <li><a href="./TestSchedule.html">TestSchedule</a>
   
+    <li><a href="./TestStatistics.html">TestStatistics</a>
+  
     <li><a href="./TestTask.html">TestTask</a>
   
     <li><a href="./TestTaskPlanner.html">TestTaskPlanner</a>
@@ -126,6 +132,8 @@
     <li><a href="./TestTaskService.html">TestTaskService</a>
   
     <li><a href="./TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="./TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="./TestTimes.html">TestTimes</a>
   
@@ -156,7 +164,7 @@
 <span class="ruby-operator">...</span>}
 </pre>
 
-<p>Than re-index tasks that are not unique and associate the old id to the new
+<p>Then re-index tasks that are not unique and associate the old id to the new
 task-files</p>
 
 <p>new_ids = {“1” =&gt; {“20” =&gt; /home/user/.tasks/project/1.task,</p>
@@ -185,13 +193,26 @@ remaining. The minimum time shown is 15 minutes.</p>
 <p>0123456789012345678901234567890123456789012345678 |—|—|—|—|—|—|—|—|—|—|—|—|
 8   9  10  11  12  13  14  15  16  17  18  19  20</p>
 
-<p>current time   position  diff   positon calculation           result</p>
+<p>current time   position  diff   positon calculation              result</p>
 
-<pre>9:00           4        [1, 0]  ((1 * 60 + 0) / 15.0).round   4 
-9:10           5        [1,10]  ((1 * 60 + 10)/ 15.0).round   5</pre>
+<pre>9:00           4        [ 1,   0] (( 1 * 60 +  0) / 15.0).round   4 
+9:10           5        [ 1,  10] (( 1 * 60 + 10) / 15.0).round   5</pre>
 
-<p>10:00           8        [2, 0]  ((2 * 60 + 0) / 15.0).round   8 11:07     
-12        [3, 7]  ((3 * 60 + 7) / 15.0).round  12</p>
+<p>10:00           8        [ 2,   0] (( 2 * 60 +  0) / 15.0).round   8 11:07 
+12        [ 3,   7] (( 3 * 60 +  7) / 15.0).round  12</p>
+
+<pre>7:00           0        [-1,   0] ((-1 * 60 +  0) / 15.0).round  -4
+7:30           0        [ 0, -30] (( 0 * 60 - 30) / 15.0).round  -2</pre>
+
+<p>Define settings Define default tasks settings –general_tasks
+plan,talk,meet,break general_tasks file plan,1 talk,2 meet,3 break,4</p>
+
+<p>Statistics 2013-04-10 - 2013-04-20 8 working days</p>
+
+<pre>total    average   max   min</pre>
+
+<p>working time meeting time task processing unplanned tasks done tasks open
+tasks</p>
 
 </div>
 

@@ -2,15 +2,24 @@ module Syctask
 
   # Default working directory of the application
   WORK_DIR = File.expand_path('~/.tasks')
+  # System directory of syctask
   SYC_DIR = File.expand_path('~/.syc/syctask')
+  # ID file where the last issued ID is saved
   ID = SYC_DIR + "/id"
+  # File that contains all issued IDs
   IDS = SYC_DIR + "/ids"
+  # File with tags
   TAGS = SYC_DIR + "/tags"
+  # File with the general purpose tasks
   DEFAULT_TASKS = SYC_DIR + "/default_tasks"
+  # Log file that logs all activities of syctask like creation of tasks
   TASKS_LOG = SYC_DIR + "/tasks.log"
+  # File that holds the tracked task
   TRACKED_TASK = SYC_DIR + "/tracked_tasks"
+  # If files are re-indexed during re-indexing these tasks are save here
   RIDX_LOG = SYC_DIR + "/reindex.log"
 
+  # Logs a task regarding create, update, done, delete
   def log_task(type, task)
     File.open(TASKS_LOG, 'a') do |file|
       log_entry =  "#{type.to_s};"
@@ -22,6 +31,7 @@ module Syctask
     end
   end
 
+  # Logs the work time
   def log_work_time(type, work_time)
     today  = Time.now
     begins = Time.local(today.year,
@@ -49,6 +59,7 @@ module Syctask
     end
   end
 
+  # Logs meeting times
   def log_meetings(type, busy_time, meetings)
     today = Time.now
     logs = File.read(TASKS_LOG)
@@ -64,10 +75,8 @@ module Syctask
     File.write(TASKS_LOG, logs)
   end
 
-  def schedule_time(date, hours, minutes, seconds)
-    time = Time.local(date.year, date.mon, date.day, hours, minutes, seconds)
-  end
-
+  # Checks whether all files are available that are needed for syctask's
+  # operation
   def check_environment
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?
@@ -195,6 +204,7 @@ module Syctask
     save_id(tasks[tasks.size-1].scan(pattern)[0].to_i)
   end
 
+  # Saves the ids to ids file
   def save_ids(id, file)
     entry = "#{id},#{file}"
     return if File.exists? IDS and not File.read(IDS).scan(entry).empty?
@@ -214,6 +224,7 @@ module Syctask
     id
   end
 
+  # Logs if a task is re-indexed
   def log_reindexing(old_id, new_id, file)
     entry = "#{old_id},#{new_id},#{file}"
     return if File.exists? RIDX_LOG and not File.read(RIDX_LOG).
@@ -221,6 +232,7 @@ module Syctask
     File.open(RIDX_LOG, 'a') {|f| f.puts entry}
   end
 
+  # Updates the tasks.log file if tasks are re-indexed with the task's new ids
   def update_tasks_log(dir, new_ids)
     tasks_log_files(dir).each do |file|
       logs = File.readlines(file)
@@ -244,6 +256,7 @@ module Syctask
     end
   end
 
+  # TODO delete
   def update_tasks_log_old(dir, old_id, new_id, file)
     old_entry = "#{old_id}-#{File.dirname(file)}"
     # Append '/' to dir name so already updated task is not subsequently updated
@@ -274,6 +287,7 @@ module Syctask
     end
   end
 
+  # TODO delete
   def update_planned_tasks_old(dir, old_id, new_id, file)
     old_entry = "#{File.dirname(file)},#{old_id}"
     # Append '/' to dir name so already updated task is not subsequently updated
@@ -285,6 +299,7 @@ module Syctask
     end
   end
 
+  # Updates tracked_tasks file if task has been re-indexed with new ID
   def update_tracked_task(dir)
     @tracked = get_files(dir, "tracked_tasks") if @tracked.nil?
     return if @tracked.empty?
@@ -317,20 +332,24 @@ module Syctask
     get_files(dir, "*.task").keep_if {|file| file.match /\d+\.task$/}
   end
 
+  # Retrieves all planned task files in and below the given directory
   def planned_tasks_files(dir)
     pattern = %r{\d{4}-\d{2}-\d{2}_planned_tasks}
     get_files(dir, "*planned_tasks").keep_if {|f| f.match(pattern)}
   end
 
+  # Retrieves all schedule files in and below the given directory
   def time_schedule_files(dir)
     pattern = %r{\d{4}-\d{2}-\d{2}_time_schedule}
     get_files(dir, "*time_schedule").keep_if {|f| f.match(pattern)}
   end
 
+  # Retrieves als tasks.log files in and below the given directory
   def tasks_log_files(dir)
     get_files(dir, "tasks.log")
   end
 
+  # Retrieves all files that meet the pattern in and below the given directory
   def get_files(dir, pattern)
     original_dir = File.expand_path(".")
     Dir.chdir(dir)
@@ -341,6 +360,8 @@ module Syctask
     files
   end
 
+  # Moves the tasks.log file to the system directory if not there. Should only
+  # be if upgrading from version 0.0.7 and below
   def move_task_log_file(dir)
     @tasks_log_files = tasks_log_files(dir) if @tasks_log_files.nil?
     @tasks_log_files.each do |f|
@@ -351,6 +372,8 @@ module Syctask
     end
   end
 
+  # Moves the planned tasks file to the system directory if not there. Should 
+  # only be if upgrading from version 0.0.7 and below
   def move_planned_tasks_files(dir)
     @planned_tasks_files = planned_tasks_files(dir) if @planned_tasks_files.nil?
     @planned_tasks_files.each do |file|
@@ -360,6 +383,8 @@ module Syctask
     end
   end
 
+  # Moves the schedule file to the system directory if not there. Should 
+  # only be if upgrading from version 0.0.7 and below
   def move_time_schedule_files(dir)
     @time_schedule_files = time_schedule_files(dir) if @time_schedule_files.nil?
     @time_schedule_files.each do |file|

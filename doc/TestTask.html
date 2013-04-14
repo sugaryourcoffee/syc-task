@@ -64,7 +64,19 @@
 </nav>
 
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-i-setup">#setup</a>
+    
+    <li><a href="#method-i-teardown">#teardown</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -98,6 +110,10 @@
     <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
   
     <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
   
     <li><a href="./Syctask/Task.html">Syctask::Task</a>
   
@@ -141,6 +157,8 @@
   
     <li><a href="./TestSchedule.html">TestSchedule</a>
   
+    <li><a href="./TestStatistics.html">TestStatistics</a>
+  
     <li><a href="./TestTask.html">TestTask</a>
   
     <li><a href="./TestTaskPlanner.html">TestTaskPlanner</a>
@@ -150,6 +168,8 @@
     <li><a href="./TestTaskService.html">TestTaskService</a>
   
     <li><a href="./TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="./TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="./TestTimes.html">TestTimes</a>
   
@@ -182,6 +202,72 @@
 
     <!-- Methods -->
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-setup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">setup</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Backup system files</p>
+          
+
+          
+          <div class="method-source-code" id="setup-source">
+            <pre><span class="ruby-comment"># File test/test_task.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
+  <span class="ruby-identifier">backup_system_files</span>(<span class="ruby-string">&quot;TestTask&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- setup-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- setup-method -->
+
+    
+      <div id="method-i-teardown" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">teardown</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Restore system files</p>
+          
+
+          
+          <div class="method-source-code" id="teardown-source">
+            <pre><span class="ruby-comment"># File test/test_task.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
+  <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-string">&quot;TestTask&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- teardown-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- teardown-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

@@ -167,6 +167,18 @@ Delete tasks with ID 8 and 12 from the planned tasks of today. The tasks are
 only removed from the planned tasks and not physically deleted.
     $ syctask delete --plan today --id 8,12
 
+===Statistics
+Shows statistics for work and meeting times as well as for task processing
+
+Evaluate the complete log file
+    $ syctask statistics
+
+Evaluate work times, meetings and tasks between 2013-01-01 and 2013-04-14
+    $ syctask statistics 2013-01-01 2013-04-14
+
+Evaluate yesterday and today
+    $ syctask statistics yesterday today
+
 ===Task directory and project directory
 The global options --taskdir and --project determine where the command finds
 or creates the tasks. The default task directory is ~/.tasks, so if no task
@@ -192,10 +204,17 @@ In the table the relation of commands to --taskdir and --project are listed.
     scan          x          x     creates scanned tasks in taskdir/project
     schedule      -          -     schedules the planned tasks (see plan)
     start         -          -     starts task from planned tasks (see plan)
+    statistics    -          -     shows statistics of time and count
     stop          -          -     stops task from planned task
     update        x          x     updates task in taskdir/project   
 
 ===Files
+
+* ID
+id file contains the last issued id.
+
+* IDS
+ids file contains all issued ids.
 
 * Task files
 The tasks are named ID.task where ID is any Integer as 10.task. The files are
@@ -209,12 +228,19 @@ directory. Each task is saved with the task's directory and the ID.
 The schedule is saved to YYYY-MM-DD_time_schedule in the default task directory.The files are saved as YAML files and can be changed manually.
 
 * Log file
-When a task is started and stopped this is action is saved to tasks.log
+Creating schedule and task processings is logged to tasks.log. For example when a task is started and stopped this is action is saved to tasks.log.
 
 * Tracked file
 A started task is saved to tracked_tasks. A semaphore file is created with
 ID.track when the task ID is started. When the task is stopped the semaphore
 file is deleted.
+
+* General purpose tasks
+With syctask setting -g PHONE so called general purpose tasks can be created.
+These tasks can be used for time tracking and later statistic evaluation to
+determine the amount of disturbences e.g. by phone. These tasks are saved to
+default_tasks. The general purpose tasks itself are also saved to the
+.syc/syctask directory as regular task files.
 
 ==Working with syctask
 To work with syctask and get the most out of it there is to follow a certain
@@ -358,6 +384,8 @@ Version 0.1.x
   yet. Done tasks are shown in the past with the actual processing time. Done
   tasks planned for the future are not shown in the schedule.
 * Assigning tasks to meetings in a schedule is now done with the task ID
+* Statistics show statistics about work time, meeting times and task processing
+* Meeting time in time line now shows correct duration
 
 The test files live in the folder test and start with test_.
 

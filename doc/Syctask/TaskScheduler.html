@@ -123,6 +123,10 @@
   
     <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
   
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
     <li><a href="../Syctask/Task.html">Syctask::Task</a>
   
     <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
@@ -165,6 +169,8 @@
   
     <li><a href="../TestSchedule.html">TestSchedule</a>
   
+    <li><a href="../TestStatistics.html">TestStatistics</a>
+  
     <li><a href="../TestTask.html">TestTask</a>
   
     <li><a href="../TestTaskPlanner.html">TestTaskPlanner</a>
@@ -174,6 +180,8 @@
     <li><a href="../TestTaskService.html">TestTaskService</a>
   
     <li><a href="../TestTaskTracker.html">TestTaskTracker</a>
+  
+    <li><a href="../TestTimeUtil.html">TestTimeUtil</a>
   
     <li><a href="../TestTimes.html">TestTimes</a>
   
@@ -328,7 +336,7 @@ previous call is available otherwise false</p>
 
           
           <div class="method-source-code" id="restore-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 122</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restore</span>(<span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">busy_time</span>, <span class="ruby-identifier">meetings</span>, <span class="ruby-identifier">assignments</span> = <span class="ruby-identifier">restore_state</span>
   <span class="ruby-ivar">@work_time</span>   = <span class="ruby-identifier">work_time</span>   <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-value">:work_time</span>
@@ -369,7 +377,7 @@ href="http://"9","30","10","45"">set_busy_times([</a>,[“12”,“0”,“13”
 
           
           <div class="method-source-code" id="set_busy_times-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 63</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_busy_times</span>(<span class="ruby-identifier">busy_time</span>)
   <span class="ruby-ivar">@busy_time</span> = <span class="ruby-identifier">process_busy_time</span>(<span class="ruby-identifier">busy_time</span>)
   <span class="ruby-ivar">@busy_time</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">busy</span><span class="ruby-operator">|</span>
@@ -377,6 +385,7 @@ href="http://"9","30","10","45"">set_busy_times([</a>,[“12”,“0”,“13”
       <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>, <span class="ruby-string">&quot;Begin time has to be before end time&quot;</span> 
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_meetings</span>(<span class="ruby-string">&quot;meeting&quot;</span>, <span class="ruby-ivar">@busy_time</span>, <span class="ruby-ivar">@meetings</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- set_busy_times-source -->
           
@@ -405,9 +414,10 @@ href="TaskScheduler.html#method-i-set_meeting_titles">#set_meeting_titles</a>(�
 
           
           <div class="method-source-code" id="set_meeting_titles-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 74</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 76</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_meeting_titles</span>(<span class="ruby-identifier">titles</span>)
   <span class="ruby-ivar">@meetings</span> = <span class="ruby-identifier">titles</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;,&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">titles</span>
+  <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_meetings</span>(<span class="ruby-string">&quot;meeting&quot;</span>, <span class="ruby-ivar">@busy_time</span>, <span class="ruby-ivar">@meetings</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- set_meeting_titles-source -->
           
@@ -436,7 +446,7 @@ href="http://"A","1,2,3"">set_task_assignments([</a>,[“B”,“2,5,6,7”]])</
 
           
           <div class="method-source-code" id="set_task_assignments-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_task_assignments</span>(<span class="ruby-identifier">assignments</span>)
   <span class="ruby-ivar">@assignments</span> = <span class="ruby-identifier">assignments</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-constant">ASSIGNMENT_PATTERN</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;No valid assignment&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@assignments</span>.<span class="ruby-identifier">empty?</span> 
@@ -467,7 +477,7 @@ href="http://"A","1,2,3"">set_task_assignments([</a>,[“B”,“2,5,6,7”]])</
 
           
           <div class="method-source-code" id="set_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 79</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_tasks</span>(<span class="ruby-identifier">tasks</span>)
   <span class="ruby-ivar">@tasks</span> = <span class="ruby-identifier">tasks</span>
 <span class="ruby-keyword">end</span></pre>
@@ -504,6 +514,7 @@ Invokation: <a href="http://"8","0","18","30"">set_work_time(</a>)</p>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">sequential?</span>(<span class="ruby-ivar">@work_time</span>)
     <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>, <span class="ruby-string">&quot;Begin time has to be before end time&quot;</span> 
   <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_work_time</span>(<span class="ruby-string">&quot;work&quot;</span>, <span class="ruby-ivar">@work_time</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- set_work_time-source -->
           
@@ -531,7 +542,7 @@ Invokation: <a href="http://"8","0","18","30"">set_work_time(</a>)</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 136</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_scheduler.rb, line 139</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">schedule</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Schedule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@work_time</span>, <span class="ruby-ivar">@busy_time</span>, <span class="ruby-ivar">@meetings</span>, <span class="ruby-ivar">@tasks</span>)
   <span class="ruby-identifier">schedule</span>.<span class="ruby-identifier">assign</span>(<span class="ruby-ivar">@assignments</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@assignments</span>

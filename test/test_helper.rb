@@ -21,6 +21,7 @@ class Test::Unit::TestCase
       FileUtils.mv f, f + ".original"
       FileUtils.touch f
     end
+    #Uncomment if you want to log backing up system files 
     #log_system_files("Backup: end")
   end
 
@@ -36,9 +37,12 @@ class Test::Unit::TestCase
       end
     end
     originals.each {|o| FileUtils.mv o, o.sub(".original", "")}
+    #Uncomment if you want to log restoration of system files
     #log_system_files("Restore: end")
   end
 
+  # Logs the backup and restore of system files. Used by backup_system_files and
+  # restore_system_files
   def log_system_files(message)
     File.open('syctask_test.log', 'a') do |f|
       f.puts "#{Time.now} - #{message} #{self}"

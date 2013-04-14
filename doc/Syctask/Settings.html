@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
 
-<title>class Sycutil::Console - RDoc Documentation</title>
+<title>class Syctask::Settings - RDoc Documentation</title>
 
 <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
 
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>lib/sycutil/console.rb
+    <li>lib/syctask/settings.rb
   </ul>
 </nav>
 
@@ -70,9 +70,9 @@
 
   <ul class="link-list">
     
-    <li><a href="#method-i-char_if_pressed">#char_if_pressed</a>
+    <li><a href="#method-i-read_tasks">#read_tasks</a>
     
-    <li><a href="#method-i-prompt">#prompt</a>
+    <li><a href="#method-i-tasks">#tasks</a>
     
   </ul>
 </nav>
@@ -180,11 +180,12 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="class">class Sycutil::Console</h1>
+  <h1 class="class">class Syctask::Settings</h1>
 
   <div id="description" class="description">
     
-<p><a href="Console.html">Console</a> provides functions for user input</p>
+<p>Creates settings for syctask that are saved to files and retrieved when
+syctask is started</p>
 
   </div><!-- description -->
 
@@ -206,99 +207,83 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
-      <div id="method-i-char_if_pressed" class="method-detail ">
-        
+      <div id="method-i-read_tasks" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-callseq">
-            char_if_pressed
-          </span>
-          
+          <span class="method-name">read_tasks</span><span
+            class="method-args">()</span>
           <span class="method-click-advice">click to toggle source</span>
-          
         </div>
-        
         
 
         <div class="method-description">
           
-          <p>Listens for key presses and returns the pressed key without pressing return</p>
+          <p>Retrieves the general purpose files from the default_tasks file in the
+syctask system directory</p>
           
 
           
-          <div class="method-source-code" id="char_if_pressed-source">
-            <pre><span class="ruby-comment"># File lib/sycutil/console.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">char_if_pressed</span>
-  <span class="ruby-keyword">begin</span>
-    <span class="ruby-identifier">system</span>(<span class="ruby-string">&quot;stty raw -echo&quot;</span>)
-    <span class="ruby-identifier">c</span> = <span class="ruby-keyword">nil</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">$stdin</span>.<span class="ruby-identifier">ready?</span>
-        <span class="ruby-identifier">c</span> = <span class="ruby-identifier">$stdin</span>.<span class="ruby-identifier">getc</span>
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">chr</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span>
-  <span class="ruby-keyword">ensure</span>
-    <span class="ruby-identifier">system</span> <span class="ruby-string">&quot;stty -raw echo&quot;</span>
+          <div class="method-source-code" id="read_tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_tasks</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>
+    <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>) 
+  <span class="ruby-keyword">else</span>
+    {}
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- char_if_pressed-source -->
+          </div><!-- read_tasks-source -->
           
         </div>
 
         
 
         
-      </div><!-- char_if_pressed-method -->
+      </div><!-- read_tasks-method -->
 
     
-      <div id="method-i-prompt" class="method-detail ">
-        
+      <div id="method-i-tasks" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-callseq">
-            prompt(choice_line) &rarr; char
-          </span>
-          
+          <span class="method-name">tasks</span><span
+            class="method-args">(tasks)</span>
           <span class="method-click-advice">click to toggle source</span>
-          
         </div>
-        
         
 
         <div class="method-description">
           
-          <p>Prompts the user for input.</p>
-
-<p>choice_line is the prompt string. If the prompt string contains a (x)
-sequence x is a valid choice the is relized when pressed and returned.</p>
+          <p>Creates general purpose tasks that can be tracked with syctask start. The
+general purpose files are saved to a file default_tasks in the syctask
+system directory</p>
           
 
           
-          <div class="method-source-code" id="prompt-source">
-            <pre><span class="ruby-comment"># File lib/sycutil/console.rb, line 41</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">prompt</span>(<span class="ruby-identifier">choice_line</span>)
-  <span class="ruby-identifier">pattern</span> = <span class="ruby-regexp">%r(?&lt;=\()./</span>
-  <span class="ruby-identifier">choices</span> = <span class="ruby-identifier">choice_line</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)
-
-  <span class="ruby-identifier">choice</span> = <span class="ruby-keyword">nil</span>
-
-  <span class="ruby-keyword">while</span> <span class="ruby-identifier">choices</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">choice</span>).<span class="ruby-identifier">nil?</span>
-    <span class="ruby-identifier">print</span> <span class="ruby-identifier">choice_line</span> 
-    <span class="ruby-identifier">choice</span> = <span class="ruby-keyword">nil</span>
-    <span class="ruby-identifier">choice</span> = <span class="ruby-identifier">char_if_pressed</span> <span class="ruby-keyword">while</span> <span class="ruby-identifier">choice</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
-    <span class="ruby-identifier">sleep</span> <span class="ruby-value">0.1</span>
-    <span class="ruby-identifier">puts</span>
+          <div class="method-source-code" id="tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks</span>(<span class="ruby-identifier">tasks</span>)
+  <span class="ruby-identifier">service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>
+    <span class="ruby-identifier">general</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">general</span> = {}
   <span class="ruby-keyword">end</span>
-
-  <span class="ruby-identifier">choice</span>
+  <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">','</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">index</span> = <span class="ruby-identifier">general</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">upcase</span>)
+    <span class="ruby-identifier">general</span>[<span class="ruby-identifier">task</span>.<span class="ruby-identifier">upcase</span>] = <span class="ruby-identifier">service</span>.<span class="ruby-identifier">create</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">SYC_DIR</span>,
+                                          {},
+                                          <span class="ruby-identifier">task</span>.<span class="ruby-identifier">upcase</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>, <span class="ruby-string">'w'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">general</span>, <span class="ruby-identifier">f</span>)}
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- prompt-source -->
+          </div><!-- tasks-source -->
           
         </div>
 
         
 
         
-      </div><!-- prompt-method -->
+      </div><!-- tasks-method -->
 
     
     </section><!-- public-instance-method-details -->

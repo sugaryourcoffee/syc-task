@@ -225,11 +225,12 @@ module Syctask
       current_time = Time.now
       unassigned_tasks.each.with_index do |task, index|
         if task.done?
-          duration = [((task.duration.to_i - task.remaining.to_i)/900).round, 
+          duration = [((task.duration.to_i - task.remaining.to_i)/900.0).round, 
                       1].max
           position = 0
         else
-          duration = [(task.remaining.to_i/900+0.5).round, 1].max
+          round = task.remaining.to_i % 900 == 0 ? 0 : 0.5
+          duration = [(task.remaining.to_i/900+round).round, 1].max
           position = [0, position_for_time(current_time)].max
         end
         free_time = scan_free(time_line, 1, position)

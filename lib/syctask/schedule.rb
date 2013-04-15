@@ -219,15 +219,15 @@ module Syctask
     # Assigns the tasks to the timeline in alternation x and o subsequent tasks.
     # Returns the task list and the task caption
     def assign_tasks_to_graph(time_line)
+      done_tasks = []
       unscheduled_tasks = []
       signs = ['x','o']
       positions = {}
       current_time = Time.now
       unassigned_tasks.each.with_index do |task, index|
         if task.done?
-          duration = [((task.duration.to_i - task.remaining.to_i)/900.0).round, 
-                      1].max
-          position = 0
+          done_tasks << task
+          next
         else
           round = task.remaining.to_i % 900 == 0 ? 0 : 0.5
           duration = [(task.remaining.to_i/900+round).round, 1].max
@@ -243,6 +243,25 @@ module Syctask
           time_line[free_time[i]] = signs[index%2]
         end
         positions[free_time[0]] = task.id
+      end
+
+      unless done_tasks.empty?
+        end_position = position_for_time(current_time)
+        max_time_per_task = [end_position / done_tasks.size,1].max
+        done_tasks.each_with_index do |task,index|
+          round = task.remaining.to_i % 900 == 0 ? 0 : 0.5
+          lead_time = task.duration.to_i - task.remaining.to_i
+          duration = [(lead_time/900+round).round, max_time_per_task].min
+          position = 0
+          free_time = scan_free(time_line, 1, position)
+          0.upto(duration-1) do |i|
+            break unless free_time[i]
+            time_line[free_time[i]] = signs[index%2]
+          end
+          puts "#{task.id} #{duration} #{free_time[0]}"
+          puts time_line
+          positions[free_time[0]] = task.id
+        end
       end
 
       # Create task list

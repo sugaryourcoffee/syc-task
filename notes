@@ -75,3 +75,21 @@ unplanned tasks
 done tasks
 open tasks
 
+Add done tasks to time line
+
+Task    Duration
+1       2
+2       3
+3       1
+        xxooox
+
+|---|-xxooxx|
+xxooox
+
+|---xooxxxoo|
+xxooox
+xoox
+
+|--xxooxxxoo|
+xxooox
+xox

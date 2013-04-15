@@ -12,8 +12,10 @@ module Syctask
     def report(file, from="", to=from)
 
       from, to, time_log, count_log = logs(file, from, to)
-      report = sprintf("%s to %s\n", "#{from.strftime("%Y-%m-%d")}".bright,
-                                     "#{to.strftime("%Y-%m-%d")}".bright) +
+      working_days = time_log["work"].count.to_s
+      report = sprintf("%s to %s", "#{from.strftime("%Y-%m-%d")}".bright,
+                                   "#{to.strftime("%Y-%m-%d")}".bright) +
+               sprintf(" (%s working days)\n", working_days.bright) +
                sprintf("%23s", "Total".bright) +
                sprintf("%26s", "Min  ".bright) +
                sprintf("%26s", "Max  ".bright) + 
@@ -100,7 +102,7 @@ module Syctask
       time_data  = {}
       time_types = %w{work meeting task}
       count_data = {}
-      count_types = %w{task create done update delete}
+      count_types = %w{meeting task create done update delete}
       IO.readlines(file).each do |line|
         values = line.split(";")
         time = time_for_string(values[4])

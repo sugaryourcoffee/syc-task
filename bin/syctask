@@ -219,6 +219,17 @@ command :statistics do |c|
 
 end
 
+desc 'Edit task in editor'
+arg_name 'ID'
+command :edit do |c|
+
+  c.action do |global_options,options,args|
+    task_file = "#{global_options[:taskdir]}/#{args[0]}.task" 
+    system "vi #{task_file}" if File.exists? task_file
+  end
+
+end
+
 desc 'Plan or show planned tasks for today, tomorrow or another day'
 arg_name 'DATE'
 command :plan do |c|

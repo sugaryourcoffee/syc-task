@@ -211,7 +211,7 @@ command :statistics do |c|
     from = extract_time(args[0],true) if args[0]
     from ||= ""
     to   = extract_time(args[1],true) if args[1]
-    to   ||= ""
+    to   = from unless to
     stats = Syctask::Statistics.new
     STDOUT.puts stats.report(Syctask::TASKS_LOG, from, to)
     puts "tags not implemented yet" if options[:tags]

@@ -148,6 +148,10 @@ List all tasks in long form
 Search tasks that match a pattern
     $ syctask list --id "<10" --follow_up ">2013-02-25" --title "My \w task"
 
+===Edit task
+Edit a task with ID 10 in vi
+    $ syctask edit 10
+
 ===Update tasks
 Except for title and id all values can be updated. Note and tags are not
 overridden rather supplemented with the update value.

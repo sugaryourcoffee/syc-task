@@ -93,3 +93,11 @@ xoox
 |--xxooxxxoo|
 xxooox
 xox
+
+end_position done_tasks.size index max_duration duration total_duration
+3            2               0     2            1             0
+3            2               1     2            1             1 
+
+max_duration = end_position - done_tasks.size + index - total_duration
+    2               3                2            0+1         0
+    2               3                2            1+1         1 

@@ -70,7 +70,7 @@ class TestStatistics < Test::Unit::TestCase
       assert_equal time.strftime("%Y-%m-%d"), from.strftime("%Y-%m-%d")
       assert_equal time.strftime("%Y-%m-%d"), to.strftime("%Y-%m-%d")
       assert_equal 3, time_log.size
-      assert_equal 4, count_log.size
+      assert_equal 5, count_log.size
     end
 
     should "retrieve report" do

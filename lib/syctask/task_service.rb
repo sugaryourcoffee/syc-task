@@ -125,6 +125,8 @@ module Syctask
         next unless not task.nil? and task.class == Syctask::Task
         if task.matches?(filter)
           deleted += File.delete(file)
+          ids = File.read(Syctask::IDS)
+          File.write(Syctask::IDS, ids.gsub("#{task.id},#{file}",""))
           Syctask::log_task("delete", task)
         end
       end

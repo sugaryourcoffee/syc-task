@@ -277,7 +277,7 @@ command :plan do |c|
 
   c.desc 'Move planned task to another day'
   c.arg_name 'DATE'
-  c.flag [:m, :move], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:m, :move],:must_match => /yesterday|today|tomorrow|\d{4}-\d{2}-\d{2}/
 
   c.desc 'Filter for ID'
   c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'

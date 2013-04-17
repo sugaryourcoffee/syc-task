@@ -360,6 +360,17 @@ module Syctask
     files
   end
 
+  # Retrieve all directories that contain tasks
+  def get_task_dirs(dir)
+    original_dir = File.expand_path(".")
+    Dir.chdir(dir)
+    dirs = Dir.glob("**/*.task", File::FNM_DOTMATCH).map do |f|
+      File.dirname(File.expand_path(f))
+    end
+    Dir.chdir(original_dir)
+    dirs.uniq
+  end
+
   # Moves the tasks.log file to the system directory if not there. Should only
   # be if upgrading from version 0.0.7 and below
   def move_task_log_file(dir)

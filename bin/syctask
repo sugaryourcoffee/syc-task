@@ -39,6 +39,39 @@ command :setting do |c|
 
 end
 
+desc 'Information about tasks and task directories'
+command :info do |c|
+
+  c.desc 'Directory where to start searching the task'
+  c.arg_name 'DIR'
+  c.flag [:d, :dir]
+
+  c.desc 'Find task with the given ID'
+  c.arg_name 'ID'
+  c.flag [:i, :id], :must_match => /^\d+/
+  
+  c.desc 'Show task directories'
+  c.switch [:t, :taskdir]
+
+  c.action do |global_options,options,args|
+    dir = options[:dir]
+    dir ||= "~"
+    dir = File.expand_path(dir)
+    help_now! "Directory #{dir} does not exists" unless File.exists? dir
+    id = options[:id]
+    if id
+      tasks = Syctask::get_files(dir, "#{id}.task")
+      tasks.each {|task| puts task} 
+    end  
+    if options[:taskdir]
+      dirs = Syctask::get_task_dirs(dir)
+      dirs.each {|dir| puts dir}
+      puts sprintf("--> %d task directories found", dirs.count).color(:green)
+    end
+  end
+
+end
+
 desc 'Create a new task'
 arg_name 'TASK_TITLE'
 command :new do |c|

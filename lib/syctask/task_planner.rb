@@ -124,13 +124,15 @@ module Syctask
       save_tasks(planned, true)
     end
 
-    # Moves the specified tasks to the specified date. Returns the count of
-    # moved files
+    # Moves the specified tasks to the specified date. Sets the remaining timer
+    # to at least 15 minutes and sets the duration to the remaining timer's 
+    # values. Returns the count of moved files
     def move_tasks(filter={}, from_date=Time.now.strftime("%Y-%m-%d"), to_date)
       return 0 if from_date == to_date
       moved = get_tasks(from_date, filter)
       moved.each do |task| 
         task.options[:follow_up] = to_date
+        task.set_duration([task.remaining, 900].max)
         @service.save(task.dir, task)
       end
       add_tasks(moved, to_date)

@@ -447,13 +447,19 @@ command :prio do |c|
   c.arg_name 'ID1,ID2,ID3,...'
   c.flag [:o, :order], :must_match => /^\d+(?:,\d+)*/ 
 
+  c.desc 'Put task at specified position'
+  c.arg_name 'POS'
+  c.flag [:p, :position], :must_match => /FIRST|LAST|\d+/
+
   c.action do |global_options,options,args|
     time = extract_time(args[0])
     planner = Syctask::TaskPlanner.new
     if options[:order]
-      ordered, rest = planner.order_tasks(time, options[:order].split(","))
-      puts sprintf("--> put %d task%s into new order and %d appended to end", 
-                   ordered, "#{'s' if ordered > 1}", rest).color(:green)
+      options[:position] ||= 0
+      ordered, rest, pos = planner.order_tasks(time, options[:order].split(","),
+                                               options[:position])
+      puts sprintf("--> put %d task%s out of %s into new order at position %d", 
+                   ordered, "#{'s' if ordered > 1}", rest, pos).color(:green)
     else
       planner.prioritize_tasks(time)
     end

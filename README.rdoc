@@ -413,7 +413,18 @@ Version 0.1.x
   task directories
 * Plan move command sets the duration to the remaining processing time at least
   to 15 minutes
+* With the setting command general purpose tasks can be created like PHONE.
+  These can be used for tracking to analyse how much time for phone calls is
+  occupied
+  setting -l list all general purpose tasks and the default task directory
+* Prio command no takes a position flag together with the order flag to 
+  determine where to insert the newly ordered tasks
+* All commands that take an ID as argument (done, edit, start, update) look up
+  the task file associated to the id in the ids file. If it is found the 
+  provided task directory is not considered for the task file. If the id is not 
+  contained in the ids file the task is looked up in the provided directory
 
+==Tests
 The test files live in the folder test and start with test_.
 
 There is a rake file available to run all tests

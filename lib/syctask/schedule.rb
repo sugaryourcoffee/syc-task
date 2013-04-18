@@ -305,6 +305,7 @@ module Syctask
       counter = 0
       lines = [""]
       positions.each do |position,id|
+        next unless position
         line_id = next_line(position,lines,counter)
         legend = ' ' * [0, position - lines[line_id].size].max + id.to_s
         lines[line_id] += legend

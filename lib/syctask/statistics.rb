@@ -12,7 +12,8 @@ module Syctask
     def report(file, from="", to=from)
 
       from, to, time_log, count_log = logs(file, from, to)
-      working_days = time_log["work"].count.to_s
+      working_days = time_log["work"].count.to_s if time_log["work"]
+      working_days ||= "0"
       report = sprintf("%s to %s", "#{from.strftime("%Y-%m-%d")}".bright,
                                    "#{to.strftime("%Y-%m-%d")}".bright) +
                sprintf(" (%s working days)\n", working_days.bright) +

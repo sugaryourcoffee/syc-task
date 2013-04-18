@@ -486,20 +486,20 @@ command :start do |c|
       help_now! sprintf("%s", 
                         "no task with id #{args[0]}").color(:red) unless task
       started, stopped = tracker.start(task, options[:timer])
-      if started
-        puts sprintf("--> tracking %s", 
-                     "#{task.id} - #{task.title}").color(:green)
-      else
-        puts sprintf("--> allready tracking %s", 
-                     "#{task.id} - #{task.title}").color(:red)
-      end
       if stopped
         puts sprintf("--> stopped %s",
-                     "#{stopped.id} - #{stopped.title}").color(:green)
+                     "#{stopped.id} - #{stopped.title}").color(:yellow)
         puts sprintf("    %s", "#{string_for_seconds(stopped.lead_time)}").
-          color(:green)
+          color(:yellow)
       end
-    end
+      if started
+        puts sprintf("--> started %s", 
+                     "#{task.id} - #{task.title}").color(:green)
+      else
+        puts sprintf("--> allready started %s", 
+                     "#{task.id} - #{task.title}").color(:red)
+      end
+     end
     if options[:list]
       task = tracker.tracked_task
       puts sprintf("%s", "--> no task tracked").color(:red) unless task

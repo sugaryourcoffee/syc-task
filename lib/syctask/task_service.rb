@@ -33,9 +33,9 @@ module Syctask
     # Reads the task with given ID id located in given directory dir. If task
     # does not exist nil is returned otherwise the task is returned
     def read(dir, id)
-      #task = read_by_id(id) if dir.nil?
-      #return task unless task.nil?
-      task = nil
+      task = read_by_id(id)
+      return task unless task.nil?
+      #task = nil
       Dir.glob("#{dir}/*.task").each do |file|
         task = YAML.load_file(file) if File.file? file
         if not task.nil? and task.class == Syctask::Task and task.id == id.to_i
@@ -49,16 +49,10 @@ module Syctask
     # returned otherwise the task
     def read_by_id(id)
       return nil unless File.exists? Syctask::IDS
-      CSV.foreach(Syctask::IDS) do |row|
-        task_file = row[1] if row[0] == id  
-        if task_file
-          if File.exists? task_file
-            return YAML.load_file(task_file)
-          else
-            return nil
-          end
-        end 
-      end
+      ids = File.read(Syctask::IDS)
+      entry = ids.scan(/(^#{id}),(.*\n)/)[0]
+      return YAML.load_file(entry[1].chomp) if entry
+      return nil
     end
 
     # Finds all tasks that match the given filter. The filter can be provided
@@ -99,8 +93,11 @@ module Syctask
     # new value. If note and tags are provided these are added to the existing
     # values.
     def update(dir, id, options)
-      task_file = Dir.glob("#{dir}/#{id}.task")[0]
-      task = YAML.load_file(task_file) if task_file
+      task = read_by_id(id)
+      unless task
+        task_file = Dir.glob("#{dir}/#{id}.task")[0]
+        task = YAML.load_file(task_file) if task_file
+      end
       updated = false
       if task
         task.update(options) 

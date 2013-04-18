@@ -596,7 +596,7 @@ command :done do |c|
     task = @service.read(global_options[:t], args[0])
     exit_now!("Task with TASK_NUMBER #{args[0]} does not exist") unless task
     task.done(options[:note])
-    @service.save(global_options[:t], task)
+    @service.save(task.dir, task)
     STDOUT.puts sprintf("--> Marked task %d as done", args[0]).color(:green)
     task.print_pretty(options[:c]) if options[:p] 
   end

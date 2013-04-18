@@ -274,7 +274,8 @@ arg_name 'ID'
 command :edit do |c|
 
   c.action do |global_options,options,args|
-    task_file = "#{global_options[:taskdir]}/#{args[0]}.task" 
+    task = @service.read(global_options[:taskdir], args[0])
+    task_file = "#{task.dir}/#{task.id}.task"
     system "vi #{task_file}" if File.exists? task_file
   end
 

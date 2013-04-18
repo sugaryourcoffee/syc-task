@@ -68,11 +68,14 @@ module Syctask
 
     # Order tasks in the provided IDs sequence at the specified date. If not all
     # IDs are provided than rest of tasks is appended to the end of the plan. If
-    # a position is provided the ordered tasks are inserted at the specified
-    # position. Returns the count of ordered tasks, the count of the rest of 
-    # the tasks and the position where the ordered tasks have been inserted.
+    # a position (last, first and a number) is provided the ordered tasks are 
+    # inserted at the specified position. Returns the count of ordered tasks,
+    # the count of the rest of the tasks and the position where the ordered 
+    # tasks have been inserted.
     def order_tasks(date, ids, pos=0)
       tasks = get_tasks(date)
+      pos = "0" if pos.class == String and pos.downcase == 'first'
+      pos = tasks.size.to_s if pos.class == String and pos.downcase == 'last'
       ordered = []
       ids.each do |id|
         index = tasks.find_index {|t| t.id == id.to_i}

@@ -449,7 +449,7 @@ command :prio do |c|
 
   c.desc 'Put task at specified position'
   c.arg_name 'POS'
-  c.flag [:p, :position], :must_match => /FIRST|LAST|\d+/
+  c.flag [:p, :position], :must_match => /first|FIRST|last|LAST|\d+/
 
   c.action do |global_options,options,args|
     time = extract_time(args[0])

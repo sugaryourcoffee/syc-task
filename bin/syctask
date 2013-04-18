@@ -97,11 +97,11 @@ command :new do |c|
 
   c.desc 'Follow-up date'
   c.arg_name 'FOLLOW-UP'
-  c.flag [:f, :follow_up], :must_match => /\d{4}-\d{2}-\d{2}/
+  c.flag [:f, :follow_up], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
   
   c.desc 'Due date'
   c.arg_name 'DUE'
-  c.flag [:d, :due_date], :must_match => /\d{4}-\d{2}-\d{2}/
+  c.flag [:d, :due_date], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
 
   c.desc 'Description of the task'
   c.arg_name 'DESCRIPTION'
@@ -116,6 +116,8 @@ command :new do |c|
   c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*/
 
   c.action do |global_options,options,args|
+    options[:follow_up] = extract_time(options[:f]) if options[:f]
+    options[:due_date]  = extract_time(options[:d]) if options[:d]
     filter = [:tags, :description, :prio, :due_date, :follow_up, 
               :note]
     options.keep_if {|key, value| filter.find_index(key)}
@@ -533,11 +535,11 @@ command :update do |c|
 
   c.desc 'Follow-up date'
   c.arg_name 'FOLLOW-UP'
-  c.flag [:f, :follow_up], :must_match => /\d{4}-\d{2}-\d{2}/
+  c.flag [:f, :follow_up], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
   
   c.desc 'Due date'
   c.arg_name 'DUE'
-  c.flag [:d, :due_date], :must_match => /\d{4}-\d{2}-\d{2}/
+  c.flag [:d, :due_date], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
 
   c.desc 'Description of the task'
   c.arg_name 'DESCRIPTION'
@@ -553,6 +555,8 @@ command :update do |c|
 
   c.action do |global_options,options,args|
     help_now! "TASK_NUMBER required" if args.empty?
+    options[:follow_up] = extract_time(options[:f]) if options[:f]
+    options[:due_date]  = extract_time(options[:d]) if options[:d]
     filter = [:tags, :description, :prio, :due_date, :follow_up, 
               :note]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}

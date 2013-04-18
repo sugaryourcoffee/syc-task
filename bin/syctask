@@ -534,7 +534,7 @@ command :stop do |c|
 end
 
 desc 'Update the task'
-arg_name 'TASK_NUMBER'
+arg_name 'ID'
 command :update do |c|
   c.desc 'Priority of the task, 1 highes priority'
   c.arg_name 'PRIO'
@@ -561,7 +561,7 @@ command :update do |c|
   c.flag [:t, :tags], :must_match => /^\w+(?:,\w+)*/
 
   c.action do |global_options,options,args|
-    help_now! "TASK_NUMBER required" if args.empty?
+    help_now! "ID required" if args.empty?
     options[:follow_up] = extract_time(options[:f]) if options[:f]
     options[:due_date]  = extract_time(options[:d]) if options[:d]
     filter = [:tags, :description, :prio, :due_date, :follow_up, 
@@ -580,7 +580,7 @@ command :update do |c|
 end
 
 desc 'Mark task as done'
-arg_name 'TASK_NUMBER'
+arg_name 'ID'
 command :done do |c|
   c.desc 'Print task after marked as done'
   c.switch [:p, :print]
@@ -593,9 +593,9 @@ command :done do |c|
 
   c.action do |global_options,options,args|
     help_now! sprintf("%s", 
-                      'TASK_NUMBER is required').color(:red) if args.empty?
+                      'ID is required').color(:red) if args.empty?
     task = @service.read(global_options[:t], args[0])
-    exit_now!("Task with TASK_NUMBER #{args[0]} does not exist") unless task
+    exit_now!("Task with ID #{args[0]} does not exist") unless task
     task.done(options[:note])
     @service.save(task.dir, task)
     STDOUT.puts sprintf("--> Marked task %d as done", args[0]).color(:green)

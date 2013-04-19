@@ -13,7 +13,8 @@ module Syctask
     # Initializes the Statistics object with the general purpose tassk
     def initialize
       settings = Settings::new
-      @general_purpose_tasks = settings.read_tasks.keys
+      tasks = settings.read_tasks
+      @general_purpose_tasks = tasks.nil? ? [] : tasks.keys
     end
 
     # Creates a statistics report
@@ -124,7 +125,6 @@ module Syctask
         unless from == ""
           next unless Syctime::time_between?(time, from, to)
         end
-        #puts "#{values[3]} - #{@general_purpose_tasks.find_index(values[3])}"
         values[0] = values[3] if @general_purpose_tasks.find_index(values[3])
         values[0] = "task" if values[0] == "stop"
         if count_types.find_index(values[0])

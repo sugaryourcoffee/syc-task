@@ -29,7 +29,8 @@ module Syctask
     # Retrieves the general purpose files from the default_tasks file in the
     # syctask system directory
     def read_tasks
-      if File.exists? Syctask::DEFAULT_TASKS
+      if File.exists? Syctask::DEFAULT_TASKS and not \
+         File.read(Syctask::DEFAULT_TASKS).empty?
         YAML.load_file(Syctask::DEFAULT_TASKS) 
       else
         {}

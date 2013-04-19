@@ -149,6 +149,13 @@ List all tasks in long form
 Search tasks that match a pattern
     $ syctask list --id "<10" --follow_up ">2013-02-25" --title "My \w task"
 
+===Inspect tasks
+Lists each today's unplanned task and allows to edit, delete, mark as done or
+plan
+    $ syctask inspect
+    0016 Create command for inspection
+    (e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (q)uit: 
+
 ===Edit task
 Edit a task with ID 10 in vi
     $ syctask edit 10
@@ -407,7 +414,9 @@ Version 0.1.x
   yet. Done tasks are shown in the past with the actual processing time. Done
   tasks planned for the future are not shown in the schedule.
 * Assigning tasks to meetings in a schedule is now done with the task ID
-* Statistics show statistics about work time, meeting times and task processing
+* Statistics show statistics about work time, meeting times, general purpose
+  tasks and task processing. Total, min, max and average time and count is
+  listed
 * Meeting time in time line now shows correct duration
 * Info command searches for the location of a task and lists all task
   task directories
@@ -423,6 +432,8 @@ Version 0.1.x
   the task file associated to the id in the ids file. If it is found the 
   provided task directory is not considered for the task file. If the id is not 
   contained in the ids file the task is looked up in the provided directory
+* Inspect command allows to list each today's unplanned task to edit, delete,
+  mark as done or plan
 
 ==Tests
 The test files live in the folder test and start with test_.

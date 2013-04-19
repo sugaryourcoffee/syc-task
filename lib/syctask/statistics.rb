@@ -1,5 +1,7 @@
 require 'rainbow'
 require_relative '../syctime/time_util.rb'
+require_relative 'settings.rb'
+
 include Syctime
 
 module Syctask
@@ -7,6 +9,12 @@ module Syctask
   # Creates statistics about the work and meeting times as well about the task
   # processing
   class Statistics
+
+    # Initializes the Statistics object with the general purpose tassk
+    def initialize
+      settings = Settings::new
+      @general_purpose_tasks = settings.read_tasks.keys
+    end
 
     # Creates a statistics report
     def report(file, from="", to=from)
@@ -102,8 +110,12 @@ module Syctask
       times = []
       time_data  = {}
       time_types = %w{work meeting task}
+      time_types << @general_purpose_tasks
+      time_types.flatten!
       count_data = {}
       count_types = %w{meeting task create done update delete}
+      count_types << @general_purpose_tasks
+      count_types.flatten!
       IO.readlines(file).each do |line|
         values = line.split(";")
         time = time_for_string(values[4])
@@ -112,6 +124,8 @@ module Syctask
         unless from == ""
           next unless Syctime::time_between?(time, from, to)
         end
+        #puts "#{values[3]} - #{@general_purpose_tasks.find_index(values[3])}"
+        values[0] = values[3] if @general_purpose_tasks.find_index(values[3])
         values[0] = "task" if values[0] == "stop"
         if count_types.find_index(values[0])
           time = time.strftime("%Y-%m-%d")

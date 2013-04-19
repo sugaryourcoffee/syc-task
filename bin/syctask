@@ -281,6 +281,15 @@ command :edit do |c|
 
 end
 
+desc 'Inspect tasks and edit, delete and mark as done'
+command :inspect do |c|
+
+  c.action do |global_options,options,args|
+    @planner.inspect_tasks(@service.find(global_options[:t], options, false))
+  end
+
+end
+
 desc 'Plan or show planned tasks for today, tomorrow or another day'
 arg_name 'DATE'
 command :plan do |c|

@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'rainbow'
 require_relative '../sycutil/console.rb'
 require_relative 'task_service.rb'
 require_relative 'environment.rb'
@@ -6,6 +7,9 @@ require_relative 'environment.rb'
 module Syctask
   # String that is prompted during planning
   PROMPT_STRING = '(a)dd, (c)omplete, (s)kip, (q)uit: '
+  # String that is prompted during inspect
+  INSPECT_STRING = '(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, '+
+                   '(q)uit: '
   # String that is prompted during prioritization
   PRIORITIZE_STRING = 'Task 1 has (h)igher or (l)ower priority, or (q)uit: '
 
@@ -42,6 +46,64 @@ module Syctask
         choice = @console.prompt PROMPT_STRING
         case choice
         when 'a'
+          duration = 0
+          until duration > 0
+            print "Duration (1 = 15 minutes, RETURN defaults to 30 minutes): "
+            answer = gets.chomp
+            duration = answer.empty? ? 2 : answer.to_i
+          end
+          task.set_duration(units_to_time(duration))
+          task.options[:follow_up] = date
+          @service.save(task.dir, task)
+          planned << task
+          count += 1
+        when 'c'
+          re_display = true
+          redo
+        when 's'
+          #do nothing
+        when 'q'
+          break
+        end
+      end
+      save_tasks(planned)
+      count
+    end
+
+    # Inspect allows to edit, delete and mark tasks as done
+    def inspect_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
+      already_planned = self.get_tasks(date)
+      count = 0
+      re_display = false
+      planned = []
+      tasks.each do |task|
+        next if already_planned.find_index {|t| t == task}
+        unless re_display
+          task.print_pretty
+        else
+          task.print_pretty(true)
+          re_display = false
+        end
+        choice = @console.prompt INSPECT_STRING
+        case choice
+        when 'e'
+          task_file = "#{task.dir}/#{task.id}.task"
+          system "vi #{task_file}" if File.exists? task_file
+          redo
+        when 'd'
+          puts "Enter a note or hit <RETURN>"
+          note = gets.chomp
+          task.done(note)
+          @service.save(task.dir, task)
+          STDOUT.puts sprintf("--> Marked task %d as done", 
+                              task.id).color(:green)
+        when 'l'
+          print "Confirm delete task (Y/n)? "
+          answer = gets.chomp
+          count = @service.delete(task.dir, {id: task.id.to_s}) if answer == "Y"
+          puts sprintf("--> Deleted %d task%s", 
+                       count, count == 1 ? "" : "s").color(:green)
+        when 'p'
           duration = 0
           until duration > 0
             print "Duration (1 = 15 minutes, RETURN defaults to 30 minutes): "

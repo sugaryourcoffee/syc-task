@@ -381,6 +381,20 @@ module Syctask
     dirs.uniq
   end
 
+  # Retrieves all directories that contain tasks and the count of contained
+  # tasks in and below the provided directory
+  def get_task_dirs_and_count(dir)
+    original_dir = File.expand_path(".")
+    Dir.chdir(dir)
+    dirs_and_count = Hash.new(0)
+    Dir.glob("**/*.task", File::FNM_DOTMATCH).each do |f|
+      dirname = File.dirname(File.expand_path(f))
+      dirs_and_count[dirname] += 1
+    end
+    Dir.chdir(original_dir)
+    dirs_and_count
+  end
+
   # Moves the tasks.log file to the system directory if not there. Should only
   # be if upgrading from version 0.0.7 and below
   def move_task_log_file(dir)

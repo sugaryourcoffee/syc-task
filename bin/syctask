@@ -102,9 +102,14 @@ command :info do |c|
       tasks.each {|task| puts sprintf("%s", task).color(:green)} 
     end  
     if options[:taskdir]
-      dirs = Syctask::get_task_dirs(dir)
-      dirs.each {|dir| puts dir}
-      puts sprintf("--> %d task directories found", dirs.count).color(:green)
+      dirs = Syctask::get_task_dirs_and_count(dir)
+      task_count = 0
+      dirs.each do |key,value| 
+        puts "#{key} (#{value})"
+        task_count += value
+      end
+      puts sprintf("--> %d task directories with %d tasks found", 
+                   dirs.length, task_count).color(:green)
     end
   end
 

@@ -28,15 +28,32 @@ command :setting do |c|
   c.arg_name 'TASK'
   c.flag [:g, :general], :must_match => /^\w+(?:,\w+)*/
 
+  c.desc 'Define the default task directory. System default is ~/.tasks'
+  c.arg_name 'DIR'
+  c.flag [:t, :taskdir]
+
   c.desc 'List all settings'
   c.switch [:l, :list]
   
   c.action do |global_options,options,args|
     settings = Syctask::Settings.new
-    filter = [:general, :list]
+    filter = [:general, :taskdir, :list]
     options.keep_if {|key, value| filter.find_index(key)}
     if options[:general]
       settings.tasks(options[:general])
+    end
+
+    if options[:taskdir]
+      puts options[:taskdir]
+      dir = File.expand_path(options[:taskdir]) unless options[:taskdir].empty?
+      if dir
+        unless File.exists? dir
+          FileUtils.mkdir_p dir
+          puts sprintf("--> Created directory %s", File.expand_path(dir)).
+            color(:green)
+        end
+        File.write(Syctask::DEFAULT_TASKS_DIR, dir)
+      end
     end
 
     if options[:list]

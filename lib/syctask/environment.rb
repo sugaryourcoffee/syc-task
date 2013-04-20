@@ -1,7 +1,5 @@
 module Syctask
 
-  # Default working directory of the application
-  WORK_DIR = File.expand_path('~/.tasks')
   # System directory of syctask
   SYC_DIR = File.expand_path('~/.syc/syctask')
   # ID file where the last issued ID is saved
@@ -12,12 +10,24 @@ module Syctask
   TAGS = SYC_DIR + "/tags"
   # File with the general purpose tasks
   DEFAULT_TASKS = SYC_DIR + "/default_tasks"
+  # File that holds the default task directory
+  DEFAULT_TASKS_DIR = SYC_DIR + "/default_tasks_dir"
   # Log file that logs all activities of syctask like creation of tasks
   TASKS_LOG = SYC_DIR + "/tasks.log"
   # File that holds the tracked task
   TRACKED_TASK = SYC_DIR + "/tracked_tasks"
   # If files are re-indexed during re-indexing these tasks are save here
   RIDX_LOG = SYC_DIR + "/reindex.log"
+ 
+  # Reads the default task directory from the DEFAULT_TASKS_DIR file if it
+  # exists. If it exist but doesn't contain a valid directory ~/.tasks is 
+  # returned as default tasks directory
+  dir = File.read(DEFAULT_TASKS_DIR) if File.exists? DEFAULT_TASKS_DIR
+  # User specified default working directory
+  WORK_DIR = dir if not dir.nil? and not dir.empty? and File.exists? dir
+  # Default working directory of the application if no user defined directory is
+  # specified
+  WORK_DIR = File.expand_path('~/.tasks') unless WORK_DIR
 
   # Logs a task regarding create, update, done, delete
   def log_task(type, task)

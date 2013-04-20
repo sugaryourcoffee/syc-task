@@ -325,7 +325,7 @@ directory with the ID and save the files in this directory. If there is an
 existing directory I link to the file from the ID directory
 
 ==Supported platform
-syc-task has been tested with 1.9.3
+syc-task has been tested with 1.9.3. It also works in Windows using Cygwin.
 
 ==Add TAB-completion to syctask
 To activate bash's TAB-completion following lines have to be added to ~/.bashrc
@@ -374,9 +374,9 @@ To print to Dell-B1160w-Mono the following command can be used
 
     $ syctask schedule | lpr -P Dell-B1160w-Mono
 
-==Notes
+==Release Notes
 Version 0.0.1 
-new, update, list and done is implemented.
+Implementation of new, update, list and done commands.
 
 Version 0.0.4
 * delete: deleting tasks or remove tasks from a task plan
@@ -416,15 +416,17 @@ Version 0.1.x
 * Assigning tasks to meetings in a schedule is now done with the task ID
 * Statistics show statistics about work time, meeting times, general purpose
   tasks and task processing. Total, min, max and average time and count is
-  listed
+  listed. If you have used version 0.0.7 it is adviced to delete tasks.log that
+  lives in ~/.tasks before upgrading or in ~/.syc/syctask after upgrading.
+  Otherwise the statistic results seem odd. 
 * Meeting time in time line now shows correct duration
 * Info command searches for the location of a task and lists all task
-  task directories
-* Plan move command sets the duration to the remaining processing time at least
-  to 15 minutes
-* With the setting command general purpose tasks can be created like PHONE.
-  These can be used for tracking to analyse how much time for phone calls is
-  occupied
+  task directories with the tasks contained.
+* Plan move command sets the duration to the remaining processing time but at
+  least to 15 minutes
+* With the setting command the default task directory can be set and general 
+  purpose tasks can be created. A general purpose task can be used for tracking 
+  to analyse how much time for phone calls is occupied.
   setting -l list all general purpose tasks and the default task directory
 * Prio command no takes a position flag together with the order flag to 
   determine where to insert the newly ordered tasks

@@ -23,6 +23,8 @@ module Syctask
       from, to, time_log, count_log = logs(file, from, to)
       working_days = time_log["work"].count.to_s if time_log["work"]
       working_days ||= "0"
+      value_size = {key: 0, total: 0, min: 0, max: 0, average: 0}
+      report_lines = {}
       report = sprintf("%s to %s", "#{from.strftime("%Y-%m-%d")}".bright,
                                    "#{to.strftime("%Y-%m-%d")}".bright) +
                sprintf(" (%s working days)\n", working_days.bright) +
@@ -37,26 +39,56 @@ module Syctask
         min     = Syctime::separated_time_string(min, ":")
         max     = Syctime::separated_time_string(max, ":")
         average = Syctime::separated_time_string(average, ":")
-        report << report_line(key, total, min, max, average)
+        set_max_value_sizes(key, total, min, max, average, value_size)
+        report_lines[key] = [total, min, max, average]
       end
+      
+      report << create_report_line_strings(report_lines, value_size)
 
+      report_lines = {}
+      value_size = {key: 0, total: 0, min: 0, max: 0, average: 0}
+      
       report << sprintf("%s\n", "Count".bright)
       count_log.each do |key,value|
         total, min, max, average = stats_count(value)
-        report << report_line(key, total, min, max, average)
+        set_max_value_sizes(key, total, min, max, average, value_size)
+        report_lines[key] = [total, min, max, average]
       end
 
-      report
+      report << create_report_line_strings(report_lines, value_size)
 
     end
 
+    # Creates report line strings
+    def create_report_line_strings(lines, value_size)
+      report = ""
+      lines.each do |key, value| 
+        total   = value[0]
+        min     = value[1]
+        max     = value[2]
+        average = value[3]
+        report << report_line(key, total, min, max, average, value_size)
+      end
+      report
+    end
+
+    # Determines the max string size of the values
+    def set_max_value_sizes(key, total, min, max, average, value_size)
+      value_size[:key]     = [value_size[:key],     key.size].max
+      value_size[:total]   = [value_size[:total],   total.size].max
+      value_size[:min]     = [value_size[:min],     min.size].max
+      value_size[:max]     = [value_size[:max],     max.size].max
+      value_size[:average] = [value_size[:average], average.size].max 
+    end
+
     # Creates a report line for the report
-    def report_line(key, total, min, max, average)
+    def report_line(key, total, min, max, average, sizes={})
+      key = key[0..8]
       report =  sprintf(" %s#{' '*(9-key.size)}", key)
-      report << sprintf("%8s#{' '*10}", total)
-      report << sprintf("%8s#{' '*10}", min)
-      report << sprintf("%8s#{' '*10}", max)
-      report << sprintf("%8s\n", average)
+      report << sprintf("%#{sizes[:total]}s#{' '*(10-sizes[:total]+8)}", total)
+      report << sprintf("%#{sizes[:min]}s#{' '*(10-sizes[:min]+8)}", min)
+      report << sprintf("%#{sizes[:max]}s#{' '*(10-sizes[:max]+8)}", max)
+      report << sprintf("%#{sizes[:average]}s\n", average)
     end
 
     # Calculates the average of a task processing, work or meeting time

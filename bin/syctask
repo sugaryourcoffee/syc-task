@@ -44,15 +44,21 @@ command :setting do |c|
     end
 
     if options[:taskdir]
+      set_taskdir = true
       puts options[:taskdir]
       dir = File.expand_path(options[:taskdir]) unless options[:taskdir].empty?
       if dir
         unless File.exists? dir
-          FileUtils.mkdir_p dir
-          puts sprintf("--> Created directory %s", File.expand_path(dir)).
-            color(:green)
+          puts sprintf("Directory %s doesn't exist!", dir).color(:red)
+          print sprintf("%s ", "Create it (Y/n)?").color(:red)
+          set_taskdir = gets.chomp == 'Y'
+          if set_taskdir
+            FileUtils.mkdir_p dir
+            puts sprintf("--> Created directory %s", File.expand_path(dir)).
+              color(:green)
+          end
         end
-        File.write(Syctask::DEFAULT_TASKS_DIR, dir)
+        File.write(Syctask::DEFAULT_TASKS_DIR, dir) if set_taskdir
       end
     end
 
@@ -636,6 +642,8 @@ pre do |global,command,options,args|
   # Use skips_pre before a command to skip this block
   # on that command only
 
+  proceed = true
+
   Syctask::check_environment
 
   @service = Syctask::TaskService.new
@@ -651,7 +659,16 @@ pre do |global,command,options,args|
     global[:taskdir] = global[:t] = dir.squeeze("/")
   end
  
-  true
+  if command.name == :new and not File.exists? global[:taskdir]
+    puts sprintf("Directory %s doesn't exist!", global[:taskdir]).color(:red)
+    print sprintf("%s", "Create it (Y/n)? ").color(:red)
+    proceed = STDIN.gets.chomp == 'Y'
+    if proceed
+      FileUtils.mkdir_p global[:taskdir]
+    end 
+  end
+
+  proceed
 end
 
 post do |global,command,options,args|
@@ -663,7 +680,11 @@ end
 on_error do |exception|
   # Error logic here
   # return false to skip default error handling
-  true
+  if exception.to_s == "exit" and exception.status == 0
+    false
+  else
+    true
+  end
 end
 
 # Extracts the time out of a time string. Accepts 'today', 'tomorrow',

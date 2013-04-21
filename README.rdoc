@@ -6,7 +6,8 @@ The application can be installed with
     $ gem install syc-task
 
 == Usage
-syctask provides basic task organizer functions as create, update, list and complete a task. Additional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file. The schedule task will print a graphical timeline of the working day assigning the planned tasks to the timeline. Busy times are marked red. Meetings are listed with associated tasks that are assigned to the meetings.
+syctask provides basic task organizer functions as create, update, list and complete a task. Additional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file. The schedule task 
+command will print a graphical timeline of the working day assigning the planned tasks to the timeline. Busy times are marked red. Meetings are listed with associated tasks that are assigned to the meetings. With the statistics command you can print statistical evaluation of tasks duration and count.
 
 ===Create tasks with new
 Create a new task in the default task directory ~/.tasks
@@ -89,7 +90,14 @@ The plan or schedule command will print the tasks in the specified order
     3:  9 - My second task
 
 If only a part of the tasks is provided the rest of the tasks is appended to
-the end of the task plan.
+the end of the task plan. If you specify a position flag the prioritized tasks are added at the provided position.
+    $ syctask plan -o 7,9 -p 2
+    Tasks
+    -----
+    0:  3 - My first task
+    1: 10 - My fourth task
+    2:  7 - My third task
+    3:  9 - My second task
 
 ===Create schedule
 The schedule command will print a graphical schedule with assigning the tasks
@@ -227,6 +235,7 @@ In the table the relation of commands to --taskdir and --project are listed.
     delete        x          x     deletes the tasks in taskdir/project 
     done          x          x     marks tasks in taskdir/project as done
     help          -          -          
+    inspect       x          x     lists task to edit, done, delete, plan
     list          x          x     lists tasks in taskdir/project
     new           x          x     creates tasks in taskdir/project
     plan          x          x     retrieves tasks to plan from taskdir/projekt
@@ -271,6 +280,9 @@ These tasks can be used for time tracking and later statistic evaluation to
 determine the amount of disturbences e.g. by phone. These tasks are saved to
 default_tasks. The general purpose tasks itself are also saved to the
 .syc/syctask directory as regular task files.
+
+* Default task dir
+The default task that is used e.g. with list is saved to default_tasks_dir. This can be set with the setting command.
 
 ==Working with syctask
 To work with syctask and get the most out of it there is to follow a certain

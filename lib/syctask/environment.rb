@@ -24,10 +24,9 @@ module Syctask
   # returned as default tasks directory
   dir = File.read(DEFAULT_TASKS_DIR) if File.exists? DEFAULT_TASKS_DIR
   # User specified default working directory
-  WORK_DIR = dir if not dir.nil? and not dir.empty? and File.exists? dir
-  # Default working directory of the application if no user defined directory is
-  # specified
-  WORK_DIR = File.expand_path('~/.tasks') unless WORK_DIR
+  work_dir = dir if not dir.nil? and not dir.empty? and File.exists? dir
+  # Set eather user defined work directory or default
+  WORK_DIR = work_dir.nil? ? File.expand_path('~/.tasks') : work_dir
 
   # Logs a task regarding create, update, done, delete
   def log_task(type, task)

@@ -219,7 +219,8 @@ Duration (1 = 15 minutes, return 30 minutes): 3
 <pre>$ syctask plan today --move tomorrow --id 3,5</pre>
 
 <p>This will move the tasks with ID 3 and 5 from the today’s plan to the
-tomorrow’s plan</p>
+tomorrow’s plan. The duration will be set to the remaining processing time
+but at least to 30 minutes.</p>
 
 <h3 id="label-Prioritize+tasks">Prioritize tasks</h3>
 
@@ -334,6 +335,21 @@ Tasks
 
 <pre>$ syctask list --id &quot;&lt;10&quot; --follow_up &quot;&gt;2013-02-25&quot; --title &quot;My \w task&quot;</pre>
 
+<h3 id="label-Inspect+tasks">Inspect tasks</h3>
+
+<p>Lists each today’s unplanned task and allows to edit, delete, mark as done
+or plan</p>
+
+<pre>$ syctask inspect
+0016 Create command for inspection
+(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (q)uit:</pre>
+
+<h3 id="label-Edit+task">Edit task</h3>
+
+<p>Edit a task with ID 10 in vi</p>
+
+<pre>$ syctask edit 10</pre>
+
 <h3 id="label-Update+tasks">Update tasks</h3>
 
 <p>Except for title and id all values can be updated. Note and tags are not
@@ -359,6 +375,32 @@ overridden rather supplemented with the update value.</p>
 are only removed from the planned tasks and not physically deleted.</p>
 
 <pre>$ syctask delete --plan today --id 8,12</pre>
+
+<h3 id="label-Settings">Settings</h3>
+
+<p>The settings command allows to define default values for task directory and
+to create general purpose tasks that can be used for tracking and later
+statistical evaluation.</p>
+
+<p>Create general purpose tasks for phone and talk</p>
+
+<pre>$ syctask setting --general PHONE,TALK</pre>
+
+<p>List all settings</p>
+
+<pre>$ syctask setting --list</pre>
+
+<h3 id="label-Info">Info</h3>
+
+<p>Info searches for the location of a task and lists all task directories</p>
+
+<p>Search for task with id 102</p>
+
+<pre>$ syctask info --id 102</pre>
+
+<p>List all task directories</p>
+
+<pre>$ syctask info --taskdir</pre>
 
 <h3 id="label-Statistics">Statistics</h3>
 
@@ -539,7 +581,7 @@ existing directory I link to the file from the ID directory</p>
 
 <h2 id="label-Supported+platform">Supported platform</h2>
 
-<p>syc-task has been tested with 1.9.3</p>
+<p>syc-task has been tested with 1.9.3. It also works in Windows using Cygwin.</p>
 
 <h2 id="label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</h2>
 
@@ -593,9 +635,9 @@ Dell-B1160w-Mono accepting requests since Sat 16 Mar 2013 04:27:45 PM CET</pre>
 
 <pre>$ syctask schedule | lpr -P Dell-B1160w-Mono</pre>
 
-<h2 id="label-Notes">Notes</h2>
+<h2 id="label-Release+Notes">Release Notes</h2>
 
-<p>Version 0.0.1  new, update, list and done is implemented.</p>
+<p>Version 0.0.1  Implementation of new, update, list and done commands.</p>
 
 <p>Version 0.0.4</p>
 <ul><li>
@@ -654,11 +696,39 @@ Done tasks planned for the future are not shown in the schedule.</p>
 </li><li>
 <p>Assigning tasks to meetings in a schedule is now done with the task ID</p>
 </li><li>
-<p>Statistics show statistics about work time, meeting times and task
-processing</p>
+<p>Statistics show statistics about work time, meeting times, general purpose
+tasks and task processing. Total, min, max and average time and count is
+listed. If you have used version 0.0.7 it is adviced to delete tasks.log
+that lives in ~/.tasks before upgrading or in ~/.syc/syctask after
+upgrading. Otherwise the statistic results seem odd.</p>
 </li><li>
 <p>Meeting time in time line now shows correct duration</p>
+</li><li>
+<p>Info command searches for the location of a task and lists all task task
+directories with the tasks contained.</p>
+</li><li>
+<p>Plan move command sets the duration to the remaining processing time but at
+least to 15 minutes</p>
+</li><li>
+<p>With the setting command the default task directory can be set and general 
+purpose tasks can be created. A general purpose task can be used for
+tracking  to analyse how much time for phone calls is occupied. setting -l
+list all general purpose tasks and the default task directory</p>
+</li><li>
+<p>Prio command no takes a position flag together with the order flag to 
+determine where to insert the newly ordered tasks</p>
+</li><li>
+<p>All commands that take an ID as argument (done, edit, start, update) look
+up the task file associated to the id in the ids file. If it is found the 
+provided task directory is not considered for the task file. If the id is
+not  contained in the ids file the task is looked up in the provided
+directory</p>
+</li><li>
+<p>Inspect command allows to list each today’s unplanned task to edit, delete,
+mark as done or plan</p>
 </li></ul>
+
+<h2 id="label-Tests">Tests</h2>
 
 <p>The test files live in the folder test and start with test_.</p>
 

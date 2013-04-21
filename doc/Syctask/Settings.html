@@ -224,9 +224,9 @@ syctask system directory</p>
 
           
           <div class="method-source-code" id="read_tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 31</span>
+            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">read_tasks</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span>           <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>).<span class="ruby-identifier">empty?</span>
     <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>) 
   <span class="ruby-keyword">else</span>
     {}
@@ -260,7 +260,7 @@ system directory</p>
 
           
           <div class="method-source-code" id="tasks-source">
-            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 13</span>
+            <pre><span class="ruby-comment"># File lib/syctask/settings.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks</span>(<span class="ruby-identifier">tasks</span>)
   <span class="ruby-identifier">service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_TASKS</span>

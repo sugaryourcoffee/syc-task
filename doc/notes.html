@@ -214,6 +214,34 @@ plan,talk,meet,break general_tasks file plan,1 talk,2 meet,3 break,4</p>
 <p>working time meeting time task processing unplanned tasks done tasks open
 tasks</p>
 
+<p>Add done tasks to time line</p>
+
+<p>Task    Duration 1       2 2       3 3       1</p>
+
+<pre>xxooox</pre>
+
+<p>|—|-xxooxx| xxooox</p>
+
+<p>|—xooxxxoo| xxooox xoox</p>
+
+<p>|–xxooxxxoo| xxooox xox</p>
+
+<p>end_position done_tasks.size index max_duration duration total_duration 3  
+2               0     2            1             0 3            2          
+1     2            1             1</p>
+
+<p>max_duration = end_position - done_tasks.size + index - total_duration</p>
+
+<pre>2               3                2            0+1         0
+2               3                2            1+1         1</pre>
+
+<p>prio with position</p>
+
+<p>origin    1)    2) 1         3     1 2         4     4 3         5     2 4 
+1     3 5         2     5</p>
+
+<p>1) syctask -o 3,4,5 -p 0 2) syctask -o 2,3,5 -p 3</p>
+
 </div>
 
 

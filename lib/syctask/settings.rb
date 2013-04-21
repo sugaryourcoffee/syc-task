@@ -1,6 +1,7 @@
 require 'yaml'
 require_relative 'environment.rb'
 
+# Syctask module implements functions for managing tasks
 module Syctask
 
   # Creates settings for syctask that are saved to files and retrieved when

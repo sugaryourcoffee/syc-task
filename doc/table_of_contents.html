@@ -41,9 +41,13 @@
       <li><a href="README_rdoc.html#label-Prioritize+tasks">Prioritize tasks</a>
       <li><a href="README_rdoc.html#label-Create+schedule">Create schedule</a>
       <li><a href="README_rdoc.html#label-List+tasks">List tasks</a>
+      <li><a href="README_rdoc.html#label-Inspect+tasks">Inspect tasks</a>
+      <li><a href="README_rdoc.html#label-Edit+task">Edit task</a>
       <li><a href="README_rdoc.html#label-Update+tasks">Update tasks</a>
       <li><a href="README_rdoc.html#label-Complete+tasks">Complete tasks</a>
       <li><a href="README_rdoc.html#label-Delete+tasks">Delete tasks</a>
+      <li><a href="README_rdoc.html#label-Settings">Settings</a>
+      <li><a href="README_rdoc.html#label-Info">Info</a>
       <li><a href="README_rdoc.html#label-Statistics">Statistics</a>
       <li><a href="README_rdoc.html#label-Task+directory+and+project+directory">Task directory and project directory</a>
       <li><a href="README_rdoc.html#label-Files">Files</a>
@@ -61,7 +65,8 @@
       <li><a href="README_rdoc.html#label-Supported+platform">Supported platform</a>
       <li><a href="README_rdoc.html#label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</a>
       <li><a href="README_rdoc.html#label-Output+to+Printer">Output to Printer</a>
-      <li><a href="README_rdoc.html#label-Notes">Notes</a>
+      <li><a href="README_rdoc.html#label-Release+Notes">Release Notes</a>
+      <li><a href="README_rdoc.html#label-Tests">Tests</a>
       <li><a href="README_rdoc.html#label-License">License</a>
       <li><a href="README_rdoc.html#label-Links">Links</a>
     </ul>
@@ -202,17 +207,19 @@
   
     <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
   
-    <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
-  
     <li class="method"><a href="Syctask/Track.html#method-c-new">::new &mdash; Syctask::Track</a>
   
-    <li class="method"><a href="ConsoleTimer.html#method-c-new">::new &mdash; ConsoleTimer</a>
+    <li class="method"><a href="Syctask/Statistics.html#method-c-new">::new &mdash; Syctask::Statistics</a>
   
-    <li class="method"><a href="Syctask/TaskScheduler.html#method-c-new">::new &mdash; Syctask::TaskScheduler</a>
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
+  
+    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
   
     <li class="method"><a href="Syctask/TaskTracker.html#method-c-new">::new &mdash; Syctask::TaskTracker</a>
   
-    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
+    <li class="method"><a href="Syctask/TaskScheduler.html#method-c-new">::new &mdash; Syctask::TaskScheduler</a>
+  
+    <li class="method"><a href="ConsoleTimer.html#method-c-new">::new &mdash; ConsoleTimer</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-3C-3D-3E">#<=> &mdash; Syctask::Task</a>
   
@@ -246,6 +253,8 @@
   
     <li class="method"><a href="TestEnvironment.html#method-i-create_reindex_log_file">#create_reindex_log_file &mdash; TestEnvironment</a>
   
+    <li class="method"><a href="Syctask/Statistics.html#method-i-create_report_line_strings">#create_report_line_strings &mdash; Syctask::Statistics</a>
+  
     <li class="method"><a href="TestEnvironment.html#method-i-create_tracked_tasks_file">#create_tracked_tasks_file &mdash; TestEnvironment</a>
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-delete">#delete &mdash; Syctask::TaskService</a>
@@ -262,6 +271,10 @@
   
     <li class="method"><a href="Syctask.html#method-i-get_files">#get_files &mdash; Syctask</a>
   
+    <li class="method"><a href="Syctask.html#method-i-get_task_dirs">#get_task_dirs &mdash; Syctask</a>
+  
+    <li class="method"><a href="Syctask.html#method-i-get_task_dirs_and_count">#get_task_dirs_and_count &mdash; Syctask</a>
+  
     <li class="method"><a href="Syctask/TaskPlanner.html#method-i-get_tasks">#get_tasks &mdash; Syctask::TaskPlanner</a>
   
     <li class="method"><a href="Syctask/Schedule.html#method-i-get_times">#get_times &mdash; Syctask::Schedule</a>
@@ -271,6 +284,8 @@
     <li class="method"><a href="Syctask/Evaluator.html#method-i-includes-3F">#includes? &mdash; Syctask::Evaluator</a>
   
     <li class="method"><a href="Syctask.html#method-i-initialize_id">#initialize_id &mdash; Syctask</a>
+  
+    <li class="method"><a href="Syctask/TaskPlanner.html#method-i-inspect_tasks">#inspect_tasks &mdash; Syctask::TaskPlanner</a>
   
     <li class="method"><a href="Syctask.html#method-i-log_meetings">#log_meetings &mdash; Syctask</a>
   
@@ -360,6 +375,8 @@
   
     <li class="method"><a href="Syctask/Task.html#method-i-set_duration">#set_duration &mdash; Syctask::Task</a>
   
+    <li class="method"><a href="Syctask/Statistics.html#method-i-set_max_value_sizes">#set_max_value_sizes &mdash; Syctask::Statistics</a>
+  
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-set_meeting_titles">#set_meeting_titles &mdash; Syctask::TaskScheduler</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-set_task_assignments">#set_task_assignments &mdash; Syctask::TaskScheduler</a>
@@ -372,25 +389,25 @@
   
     <li class="method"><a href="TestTask.html#method-i-setup">#setup &mdash; TestTask</a>
   
-    <li class="method"><a href="TestEnvironment.html#method-i-setup">#setup &mdash; TestEnvironment</a>
+    <li class="method"><a href="TestTaskService.html#method-i-setup">#setup &mdash; TestTaskService</a>
   
     <li class="method"><a href="TestTaskScheduler.html#method-i-setup">#setup &mdash; TestTaskScheduler</a>
   
-    <li class="method"><a href="TestTaskService.html#method-i-setup">#setup &mdash; TestTaskService</a>
+    <li class="method"><a href="TestTaskPlanner.html#method-i-setup">#setup &mdash; TestTaskPlanner</a>
   
-    <li class="method"><a href="TestTaskTracker.html#method-i-setup">#setup &mdash; TestTaskTracker</a>
+    <li class="method"><a href="TestEnvironment.html#method-i-setup">#setup &mdash; TestEnvironment</a>
   
     <li class="method"><a href="TestEvaluator.html#method-i-setup">#setup &mdash; TestEvaluator</a>
   
-    <li class="method"><a href="TestTaskPlanner.html#method-i-setup">#setup &mdash; TestTaskPlanner</a>
+    <li class="method"><a href="TestTaskTracker.html#method-i-setup">#setup &mdash; TestTaskTracker</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-i-show">#show &mdash; Syctask::TaskScheduler</a>
   
     <li class="method"><a href="Sycstring.html#method-i-split_lines">#split_lines &mdash; Sycstring</a>
   
-    <li class="method"><a href="Syctask/TaskTracker.html#method-i-start">#start &mdash; Syctask::TaskTracker</a>
-  
     <li class="method"><a href="Syctask/Track.html#method-i-start">#start &mdash; Syctask::Track</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-i-start">#start &mdash; Syctask::TaskTracker</a>
   
     <li class="method"><a href="ConsoleTimer.html#method-i-start">#start &mdash; ConsoleTimer</a>
   
@@ -398,9 +415,9 @@
   
     <li class="method"><a href="Syctask/Statistics.html#method-i-stats_count">#stats_count &mdash; Syctask::Statistics</a>
   
-    <li class="method"><a href="Syctask/Track.html#method-i-stop">#stop &mdash; Syctask::Track</a>
-  
     <li class="method"><a href="Syctask/TaskTracker.html#method-i-stop">#stop &mdash; Syctask::TaskTracker</a>
+  
+    <li class="method"><a href="Syctask/Track.html#method-i-stop">#stop &mdash; Syctask::Track</a>
   
     <li class="method"><a href="Syctime.html#method-i-string_for_seconds">#string_for_seconds &mdash; Syctime</a>
   
@@ -410,11 +427,11 @@
   
     <li class="method"><a href="Syctask.html#method-i-tasks_log_files">#tasks_log_files &mdash; Syctask</a>
   
-    <li class="method"><a href="TestTaskService.html#method-i-teardown">#teardown &mdash; TestTaskService</a>
+    <li class="method"><a href="TestTaskTracker.html#method-i-teardown">#teardown &mdash; TestTaskTracker</a>
   
     <li class="method"><a href="TestTask.html#method-i-teardown">#teardown &mdash; TestTask</a>
   
-    <li class="method"><a href="TestEnvironment.html#method-i-teardown">#teardown &mdash; TestEnvironment</a>
+    <li class="method"><a href="TestTaskService.html#method-i-teardown">#teardown &mdash; TestTaskService</a>
   
     <li class="method"><a href="TestTaskScheduler.html#method-i-teardown">#teardown &mdash; TestTaskScheduler</a>
   
@@ -422,7 +439,7 @@
   
     <li class="method"><a href="TestTaskPlanner.html#method-i-teardown">#teardown &mdash; TestTaskPlanner</a>
   
-    <li class="method"><a href="TestTaskTracker.html#method-i-teardown">#teardown &mdash; TestTaskTracker</a>
+    <li class="method"><a href="TestEnvironment.html#method-i-teardown">#teardown &mdash; TestEnvironment</a>
   
     <li class="method"><a href="TestDefault.html#method-i-test_the_truth">#test_the_truth &mdash; TestDefault</a>
   

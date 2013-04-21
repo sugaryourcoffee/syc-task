@@ -65,8 +65,6 @@ class TestStatistics < Test::Unit::TestCase
     should "retrieve data from today" do
       time = Time.local(2013,"apr",12,15,10,0)
       from, to, time_log, count_log = @stats.logs(Syctask::TASKS_LOG, time)
-      puts time_log
-      puts count_log
       assert_equal time.strftime("%Y-%m-%d"), from.strftime("%Y-%m-%d")
       assert_equal time.strftime("%Y-%m-%d"), to.strftime("%Y-%m-%d")
       assert_equal 3, time_log.size
@@ -77,10 +75,8 @@ class TestStatistics < Test::Unit::TestCase
       from = Time.local(2013,"apr",12,15,10,0)
       to   = Time.local(2013,"apr",12,15,10,0)
       report = @stats.report(Syctask::TASKS_LOG, from, to)
-      puts report
       refute_empty report
       report = @stats.report(Syctask::TASKS_LOG)
-      puts report
       refute_empty report
     end
 

@@ -150,8 +150,6 @@ class TestEnvironment < Test::Unit::TestCase
         tasks.each do |f|
           Syctask::save_ids(File.basename(f).scan(/\d+(?=\.task)/)[0], f)
         end
-        puts "Tasks.size = #{tasks.size}"
-        puts "ids.size = #{File.readlines(Syctask::IDS).size}"
         assert_equal tasks.size, File.readlines(Syctask::IDS).size 
       end
     end
@@ -161,7 +159,6 @@ class TestEnvironment < Test::Unit::TestCase
       tasks.each_with_index do |f,i|
         index = i + 100
         result = reindex_task(f)
-        puts result.inspect
         Syctask::log_reindexing(result[:old_id], 
                                 result[:new_id], 
                                 result[:new_file])
@@ -204,7 +201,6 @@ class TestEnvironment < Test::Unit::TestCase
 
       v = tasks.values
       c = 0
-      puts File.read("#{Syctask::SYC_DIR}/tasks.log")
       File.open("#{Syctask::SYC_DIR}/tasks.log",'r').each_with_index do |line,i|
         if i % 2 == 1
           c += 1

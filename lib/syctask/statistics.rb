@@ -28,7 +28,7 @@ module Syctask
       report = sprintf("%s to %s", "#{from.strftime("%Y-%m-%d")}".bright,
                                    "#{to.strftime("%Y-%m-%d")}".bright) +
                sprintf(" (%s working days)\n", working_days.bright) +
-               sprintf("%23s", "Total".bright) +
+               sprintf("%24s", "Total".bright) +
                sprintf("%26s", "Min  ".bright) +
                sprintf("%26s", "Max  ".bright) + 
                sprintf("%29s", "Average\n".bright) 
@@ -83,12 +83,18 @@ module Syctask
 
     # Creates a report line for the report
     def report_line(key, total, min, max, average, sizes={})
+      color = :green if key == 'task' 
+      color = :yellow if key == 'unplanned' or @general_purpose_tasks.
+                                                 find_index(key)
       key = key[0..8]
-      report =  sprintf(" %s#{' '*(9-key.size)}", key)
-      report << sprintf("%#{sizes[:total]}s#{' '*(10-sizes[:total]+8)}", total)
-      report << sprintf("%#{sizes[:min]}s#{' '*(10-sizes[:min]+8)}", min)
-      report << sprintf("%#{sizes[:max]}s#{' '*(10-sizes[:max]+8)}", max)
-      report << sprintf("%#{sizes[:average]}s\n", average)
+      report =  sprintf(" %s#{' '*(10-key.size)}", key).color(color)
+      report << sprintf("%#{sizes[:total]}s#{' '*(10-sizes[:total]+8)}", total).
+        color(color)
+      report << sprintf("%#{sizes[:min]}s#{' '*(10-sizes[:min]+8)}", min).
+        color(color)
+      report << sprintf("%#{sizes[:max]}s#{' '*(10-sizes[:max]+8)}", max).
+        color(color)
+      report << sprintf("%#{sizes[:average]}s\n", average).color(color)
     end
 
     # Calculates the average of a task processing, work or meeting time
@@ -168,6 +174,10 @@ module Syctask
         if time_types.find_index(values[0])
           time_data[values[0]] = [] unless time_data[values[0]]
           time_data[values[0]] << [values[4],values[5]]
+          if @general_purpose_tasks.find_index(values[0])
+            time_data['unplanned'] = [] unless time_data['unplanned']
+            time_data['unplanned'] << [values[4],values[5]]
+          end
         end
       end
       from = times.min if from == ""

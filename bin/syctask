@@ -22,7 +22,7 @@ arg_name 'PROJECT'
 flag [:p, :project]
 
 desc 'Settings for syctask'
-command :setting do |c|
+command :settings do |c|
 
   c.desc 'Define general purpose tasks to be used with the start command'
   c.arg_name 'TASK'

@@ -170,6 +170,12 @@ module Syctask
           count_data[values[0]] = {} unless count_data[values[0]]
           count_data[values[0]][time] = 0 unless count_data[values[0]][time]
           count_data[values[0]][time] += 1
+          if @general_purpose_tasks.find_index(values[0])
+            count_data['unplanned'] = {} unless count_data['unplanned']
+            count_data['unplanned'][time] = 0 unless \
+              count_data['unplanned'][time]
+            count_data['unplanned'][time] += 1
+          end 
         end
         if time_types.find_index(values[0])
           time_data[values[0]] = [] unless time_data[values[0]]

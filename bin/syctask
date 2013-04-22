@@ -58,7 +58,11 @@ command :setting do |c|
               color(:green)
           end
         end
-        File.write(Syctask::DEFAULT_TASKS_DIR, dir) if set_taskdir
+        if set_taskdir
+          File.write(Syctask::DEFAULT_TASKS_DIR, dir)
+          puts sprintf("--> Set %s as default task directory", dir).
+            color(:green)
+        end
       end
     end
 
@@ -100,6 +104,7 @@ command :info do |c|
     if id
       tasks = Syctask::get_files(dir, "#{id}.task")
       tasks.each {|task| puts sprintf("%s", task).color(:green)} 
+      puts sprintf("--> No task with ID %s found", id).color(:red)
     end  
     if options[:taskdir]
       dirs = Syctask::get_task_dirs_and_count(dir)
@@ -303,8 +308,16 @@ command :edit do |c|
 
   c.action do |global_options,options,args|
     task = @service.read(global_options[:taskdir], args[0])
-    task_file = "#{task.dir}/#{task.id}.task"
-    system "vi #{task_file}" if File.exists? task_file
+    if task
+      task_file = "#{task.dir}/#{task.id}.task"
+      if File.exists? task_file
+        system "vi #{task_file}" if File.exists? task_file
+      else
+        puts sprintf("--> Task %s doesn't exist", task_file).color(:red)
+      end
+    else
+      puts sprintf("--> Task with ID %s doesnt't exist", args[0]).color(:red)
+    end
   end
 
 end

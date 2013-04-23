@@ -147,6 +147,11 @@ will print
     -----
     0: 1 - My first task
 
+A task that is re-scheduled with
+    $ syctask update 1 -f tomorrow
+
+will be shown as done (green) in the schedule.
+
 ===List tasks
 List tasks that are not marked as done in short form
     $ syctask list
@@ -290,8 +295,8 @@ process.
 
 ===Creating a schedule
 ==== View tasks
-In the morning before I start to work I scan my tasks with syctask list to get
-an overview of my open tasks.
+In the morning before I start to work I scan my tasks with syctask list or 
+syctask inspect to get an overview of my open tasks.
     $ syctask list
     
 ==== Plan tasks
@@ -320,6 +325,12 @@ To begin I start the first task in the schedule with syctask start -p ID (where 
 To end the task I invoke 
     $ syctask stop
 This will stop the last started task
+
+==== Re-schedule a task
+If I cannot finish a task than I update the task with a new follow-up date
+    $ syctask update 23 -f tomorrow
+
+The task will be shown in the today's schedule as done.
 
 ==== Complete a task
 When the task is done I call 

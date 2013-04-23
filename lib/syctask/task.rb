@@ -145,6 +145,15 @@ module Syctask
       !@done_date.nil?
     end
 
+    # Checks if task is scheduled for today. Returns true if follow up or due
+    # date is today otherwise false.
+    def today?
+      evaluator = Evaluator.new
+      today = Time.now.strftime("%Y-%m-%d")
+      evaluator.compare_dates(@options[:follow_up], today) or \
+       evaluator.compare_dates(@options[:due_date], today) 
+    end
+
     # Compares the provided elements in the filter with the correspondent
     # elements in the task. When all comparissons match than true is returned.
     # If one comparisson does not match false is returned. If filter is empty

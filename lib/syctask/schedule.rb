@@ -225,11 +225,7 @@ module Syctask
       positions = {}
       current_time = Time.now
       unassigned_tasks.each.with_index do |task, index|
-        if task.done?
-          #lead_time = task.duration.to_i - task.remaining.to_i
-          #round = lead_time.to_i % 900 == 0 ? 0 : 0.5
-          #duration = [(lead_time/900+round).round, 1].max
-          #done_tasks[task] =  duration
+        if task.done? or not task.today?
           done_tasks << task
           next
         else
@@ -275,7 +271,7 @@ module Syctask
       task_list = sprintf("%s", "Tasks\n").color(:blue)
       task_list << sprintf("%s", "-----\n").color(:blue)
       @tasks.each.with_index do |task, i|
-        if task.done?
+        if task.done? or not task.today?
           color = :green
         elsif unscheduled_tasks.find_index(task)
           color = UNSCHEDULED_COLOR

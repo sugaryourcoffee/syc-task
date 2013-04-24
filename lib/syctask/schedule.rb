@@ -249,12 +249,13 @@ module Syctask
         end_position = position_for_time(current_time) - 1
         total_duration = 0
         done_tasks.each_with_index do |task,index|
+          free_time = scan_free(time_line, 1, 0, end_position)
           lead_time = task.duration.to_i - task.remaining.to_i + 0.0
-          max_duration = [end_position - 
-            (done_tasks.size - index - 1) - total_duration, 0].max
+          max_duration = [free_time.size - 
+            (done_tasks.size - index - 1) - total_duration, 1].max
           duration = [(lead_time/900).round, 1].max
           total_duration += duration = [duration, max_duration].min
-          free_time = scan_free(time_line, 1, 0)
+          puts "#{lead_time}-#{max_duration}-#{duration}-#{free_time.size}"
           0.upto(duration-1) do |i|
             break unless free_time[i]
             time_line[free_time[i]] = signs[index%2]
@@ -342,12 +343,12 @@ module Syctask
     # Scans the schedule for free time where a task can be added to. Count
     # specifies the length of the free time and the position where to start
     # scanning within the graph
-    def scan_free(graph, count, position)
+    def scan_free(graph, count, starts, ends=graph.size)
       pattern = /(?!\/)[\|-]{#{count}}(?<=-|\||\/)/
 
       positions = []
-      index = position
-      while index and index < graph.size
+      index = starts
+      while index and index < ends
         index = graph.index(pattern, index)
         if index
           positions << index

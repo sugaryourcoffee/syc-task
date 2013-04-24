@@ -101,7 +101,7 @@ module Syctask
       updated = false
       if task
         task.update(options) 
-        save(dir, task)
+        save(task.dir, task)
         Syctask::log_task("update", task)
         updated = true
       end

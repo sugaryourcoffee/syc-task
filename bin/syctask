@@ -161,6 +161,7 @@ command :new do |c|
     end
     task_numbers = nil
     args.each do |title|
+      title.gsub!("\n","")
       task_number = @service.create(global_options[:t], options, title)
       add_task_to_plan @service.read(global_options[:t], task_number)
       if task_numbers.nil? 

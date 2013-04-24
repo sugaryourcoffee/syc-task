@@ -251,8 +251,7 @@ module Syctask
         done_tasks.each_with_index do |task,index|
           free_time = scan_free(time_line, 1, 0, end_position)
           lead_time = task.duration.to_i - task.remaining.to_i + 0.0
-          max_duration = [free_time.size - 
-            (done_tasks.size - index - 1) - total_duration, 1].max
+          max_duration = [free_time.size - (done_tasks.size - index - 1), 1].max
           duration = [(lead_time/900).round, 1].max
           total_duration += duration = [duration, max_duration].min
           0.upto(duration-1) do |i|

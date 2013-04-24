@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syc-task (0.1.11)
+    syc-task (0.1.12)
       gli (= 2.5.4)
       rainbow
 

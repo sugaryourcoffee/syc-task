@@ -530,7 +530,7 @@ values.</p>
   <span class="ruby-identifier">updated</span> = <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>
     <span class="ruby-identifier">task</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>) 
-    <span class="ruby-identifier">save</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+    <span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
     <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_task</span>(<span class="ruby-string">&quot;update&quot;</span>, <span class="ruby-identifier">task</span>)
     <span class="ruby-identifier">updated</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-keyword">end</span>

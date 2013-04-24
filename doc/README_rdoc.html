@@ -331,6 +331,12 @@ Tasks
 -----
 0: 1 - My first task</pre>
 
+<p>A task that is re-scheduled with</p>
+
+<pre>$ syctask update 1 -f tomorrow</pre>
+
+<p>will be shown as done (green) in the schedule.</p>
+
 <h3 id="label-List+tasks">List tasks</h3>
 
 <p>List tasks that are not marked as done in short form</p>
@@ -527,8 +533,8 @@ certain process.</p>
 
 <h4 id="label-View+tasks">View tasks</h4>
 
-<p>In the morning before I start to work I scan my tasks with syctask list to
-get an overview of my open tasks.</p>
+<p>In the morning before I start to work I scan my tasks with syctask list or 
+syctask inspect to get an overview of my open tasks.</p>
 
 <pre>$ syctask list</pre>
 
@@ -573,6 +579,14 @@ scheduled with</p>
 <pre>$ syctask stop</pre>
 
 <p>This will stop the last started task</p>
+
+<h4 id="label-Re-schedule+a+task">Re-schedule a task</h4>
+
+<p>If I cannot finish a task than I update the task with a new follow-up date</p>
+
+<pre>$ syctask update 23 -f tomorrow</pre>
+
+<p>The task will be shown in the today’s schedule as done.</p>
 
 <h4 id="label-Complete+a+task">Complete a task</h4>
 

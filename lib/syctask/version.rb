@@ -1,5 +1,5 @@
 # Syctask provides functions for managing tasks in a task list
 module Syctask
   #Holds the version number of syctask
-  VERSION = '0.1.11'
+  VERSION = '0.1.12'
 end

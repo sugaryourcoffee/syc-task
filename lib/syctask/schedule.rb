@@ -246,7 +246,7 @@ module Syctask
       end
 
       unless done_tasks.empty?
-        end_position = position_for_time(current_time) - 1
+        end_position = position_for_time(current_time)
         total_duration = 0
         done_tasks.each_with_index do |task,index|
           free_time = scan_free(time_line, 1, 0, end_position)
@@ -255,12 +255,11 @@ module Syctask
             (done_tasks.size - index - 1) - total_duration, 1].max
           duration = [(lead_time/900).round, 1].max
           total_duration += duration = [duration, max_duration].min
-          puts "#{lead_time}-#{max_duration}-#{duration}-#{free_time.size}"
           0.upto(duration-1) do |i|
             break unless free_time[i]
             time_line[free_time[i]] = signs[index%2]
           end
-          positions[free_time[0]] = task.id
+          positions[free_time[0]] = task.id if free_time[0]
         end
       end
 
@@ -336,7 +335,6 @@ module Syctask
     # down otherwise rounded up.
     def position_for_time(time)
       diff = @starts.diff(time)
-      #puts diff
       ((diff[0] * 60 + diff[1]) / 15.0).round
     end
 
@@ -351,7 +349,7 @@ module Syctask
       while index and index < ends
         index = graph.index(pattern, index)
         if index
-          positions << index
+          positions << index if index < ends
           index += 1
         end
       end

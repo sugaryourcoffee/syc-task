@@ -104,7 +104,8 @@ command :info do |c|
     if id
       tasks = Syctask::get_files(dir, "#{id}.task")
       tasks.each {|task| puts sprintf("%s", task).color(:green)} 
-      puts sprintf("--> No task with ID %s found", id).color(:red)
+      puts sprintf("--> No task with ID %s found", id).
+        color(:red) if tasks.empty?
     end  
     if options[:taskdir]
       dirs = Syctask::get_task_dirs_and_count(dir)

@@ -102,7 +102,9 @@ module Syctask
       else
         @tracks ||= YAML.load_file(TRACKED_TASKS_FILE)
         @tasks = []
-        @tracks.each { |track| @tasks << @service.read(track.dir, track.id) }
+        if @tracks
+          @tracks.each { |track| @tasks << @service.read(track.dir, track.id) }
+        end
       end
     end
 

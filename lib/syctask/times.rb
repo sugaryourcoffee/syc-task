@@ -20,6 +20,13 @@ module Syctask
       @m > 0 ? @h+1 : @h
     end
 
+    # Returns a Time object with the current date and the hour and minute of 
+    # this Times object
+    def time
+      now = Time.now
+      Time.local(now.year,now.mon,now.day,@h,@m,0)
+    end
+
     # Calculates the difference between this time and the provided time. If no
     # time is given the current time is used.
     #     Example:

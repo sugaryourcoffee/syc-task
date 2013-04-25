@@ -41,22 +41,29 @@ module Syctime
   # Translates a time in the ISO 8601 schema to a time object.
   #     2013-04-09 21:45 -200
   def time_for_string(time)
+    puts time
     time = time.scan(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0].sub(' ','T')
     Time.xmlschema(time)
   end
   
-  # Tests whether the time is between from and to. Returns true then otherwise
+  # Tests whether the date is between from and to. Returns true then otherwise
   # false. Time, from and to are Time objects as retrieved from Time.now or
   # Time.local(2013,"apr",13,10,50,0). Alternatively time strings can be
   # provided in the form of "2013-04-13".
-  def time_between?(time, from, to)
-    time = time.strftime("%Y-%m-%d") if time.class == Time
+  def date_between?(date, from, to)
+    date = date.strftime("%Y-%m-%d") if date.class == Time
     from = from.strftime("%Y-%m-%d") if from.class == Time
     to   = to.strftime("%Y-%m-%d")   if to.class   == Time
     time_pattern = /\d{4}-\d{2}-\d{2}/
-    raise ArgumentError if time.scan(time_pattern).empty?
+    raise ArgumentError if date.scan(time_pattern).empty?
     raise ArgumentError if from.scan(time_pattern).empty?
     raise ArgumentError if to.scan(time_pattern).empty?
+    date >= from && date <= to
+  end
+
+  # Checks whether the time is between from and to. Returns true then otherwise
+  # false. time, from and to have to be Time objects.
+  def time_between?(time, from, to)
     time >= from && time <= to
   end
 

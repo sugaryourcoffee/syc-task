@@ -1,7 +1,10 @@
 require_relative 'times.rb'
 require_relative 'meeting.rb'
 require_relative '../sycstring/string_util.rb'
+require_relative '../syctime/time_util.rb'
+
 include Sycstring
+include Syctime
 
 module Syctask
 
@@ -114,7 +117,14 @@ module Syctask
       list << sprintf("%s", "--------\n").color(:red)
       meeting_number = "A"
       @meetings.each do |meeting|
-        list << sprintf("%s - %s\n", meeting_number, meeting.title).color(:red)
+        puts "#{meeting.starts.time} <= #{Time.now} <= #{meeting.ends.time}"
+        hint = "-"
+        hint = "*" if time_between?(Time.now, 
+                                    meeting.starts.time, 
+                                    meeting.ends.time)
+        list << sprintf("%s %s %s\n", meeting_number, 
+                                      hint, 
+                                      meeting.title).color(:red)
         meeting_number.next!
         meeting.tasks.each do |task|
           task_color = task.done? ? :green : :blue
@@ -277,11 +287,16 @@ module Syctask
         else
           color = WORK_COLOR
         end
+
+        hint = "-"
+        hint = "~" unless task.today?
+        hint = "*" if task.tracked?
+
         offset = max_ord_size + max_id_size + 5
         title = split_lines(task.title, 80-offset)
         title = title.chomp.gsub(/\n/, "\n#{' '*offset}")
-        task_list << sprintf("%#{max_ord_size}d: %#{max_id_size}s - %s\n", 
-                             i, task.id, title).color(color)
+        task_list << sprintf("%#{max_ord_size}d: %#{max_id_size}s %s %s\n", 
+                             i, task.id, hint, title).color(color)
       end
 
       # Create task caption

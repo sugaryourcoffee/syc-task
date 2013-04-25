@@ -2,6 +2,7 @@ require 'fileutils'
 require 'rainbow'
 require_relative 'evaluator'
 require_relative 'environment.rb'
+require_relative 'task_tracker.rb'
 
 # Syctask provides functions for managing tasks in a task list
 module Syctask
@@ -152,6 +153,14 @@ module Syctask
       today = Time.now.strftime("%Y-%m-%d")
       evaluator.compare_dates(@options[:follow_up], today) or \
        evaluator.compare_dates(@options[:due_date], today) 
+    end
+
+    # Checks whether the task is currently tracked. Returns true if so otherwise
+    # false
+    def tracked?
+      tracker = Syctask::TaskTracker.new
+      task = tracker.tracked_task
+      task.nil? ? false : task == self
     end
 
     # Compares the provided elements in the filter with the correspondent

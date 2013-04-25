@@ -161,7 +161,7 @@ module Syctask
         times << time
         next if values[0] == "start"
         unless from == ""
-          next unless Syctime::time_between?(time, from, to)
+          next unless Syctime::date_between?(time, from, to)
         end
         values[0] = values[3] if @general_purpose_tasks.find_index(values[3])
         values[0] = "task" if values[0] == "stop"

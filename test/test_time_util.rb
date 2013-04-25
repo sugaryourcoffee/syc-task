@@ -27,26 +27,42 @@ class TestTimeUtil < Test::Unit::TestCase
       end
     end
 
-    should "evaluate time between from and to" do
+    should "evaluate date between from and to" do
       time = Time.local(2013,"apr",13,10,53,0)
       from = Time.local(2013,"apr",12,11,53,0)
       to   = Time.local(2013,"apr",14,9,53,0)
-      assert Syctime::time_between?(time,time,time)
-      assert Syctime::time_between?(time,from,to)
-      assert Syctime::time_between?("2013-04-13",from,to)
-      assert Syctime::time_between?(time,"2013-04-12",to)
-      assert Syctime::time_between?(time,from,"2013-04-14")
+      assert Syctime::date_between?(time,time,time)
+      assert Syctime::date_between?(time,from,to)
+      assert Syctime::date_between?("2013-04-13",from,to)
+      assert Syctime::date_between?(time,"2013-04-12",to)
+      assert Syctime::date_between?(time,from,"2013-04-14")
       time = Time.local(2013,"apr",12,11,55,0)
-      assert Syctime::time_between?(time,from,to)
+      assert Syctime::date_between?(time,from,to)
       time = Time.local(2013,"apr",14,12,48,10)
-      assert Syctime::time_between?(time,from,to)
+      assert Syctime::date_between?(time,from,to)
       time = Time.local(2012,"apr",13,10,53,0)
-      refute Syctime::time_between?(time,from,to)
+      refute Syctime::date_between?(time,from,to)
       time = Time.local(2015,"may",13,10,48,0)
-      refute Syctime::time_between?(time,from,to)
-      assert_raise(ArgumentError) {Syctime::time_between?("20-23-3",from,to)}
-      assert_raise(ArgumentError) {Syctime::time_between?(time,"a-b-2",to)}
-      assert_raise(ArgumentError) {Syctime::time_between?(time,from,"1ab")}
+      refute Syctime::date_between?(time,from,to)
+      assert_raise(ArgumentError) {Syctime::date_between?("20-23-3",from,to)}
+      assert_raise(ArgumentError) {Syctime::date_between?(time,"a-b-2",to)}
+      assert_raise(ArgumentError) {Syctime::date_between?(time,from,"1ab")}
+    end
+
+    should "evaluate time between from and to" do
+      time = Time.now
+      from = time
+      to   = time
+      assert time_between?(time, from, to)
+      from = time - 60
+      to   = time + 60
+      assert time_between?(time, from, to)
+      from = time + 60
+      to   = time - 60
+      refute time_between?(time, from, to)
+      from = time + 60
+      to   = time + 60
+      refute time_between?(time, from, to)
     end
 
     should "create separated time string" do

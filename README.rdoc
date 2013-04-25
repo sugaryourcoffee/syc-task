@@ -150,7 +150,20 @@ will print
 A task that is re-scheduled with
     $ syctask update 1 -f tomorrow
 
-will be shown as done (green) in the schedule.
+will be shown as done (green) in the schedule and instead of separator - it
+shows ~.
+    
+    Tasks
+    ----
+    0: 1 ~ My first task
+
+A started task will be indicated by *
+    
+    $ syctask start 1
+    $ syctask sche
+    Tasks
+    -----
+    0: 1 * My first task
 
 ===List tasks
 List tasks that are not marked as done in short form

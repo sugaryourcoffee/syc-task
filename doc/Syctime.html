@@ -64,6 +64,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-date_between-3F">#date_between?</a>
+    
     <li><a href="#method-i-seconds_to_time">#seconds_to_time</a>
     
     <li><a href="#method-i-separated_time_string">#separated_time_string</a>
@@ -206,6 +208,46 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-date_between-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">date_between?</span><span
+            class="method-args">(date, from, to)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests whether the date is between from and to. Returns true then otherwise
+false. Time, from and to are Time objects as retrieved from Time.now or
+Time.local(2013,“apr”,13,10,50,0). Alternatively time strings can be
+provided in the form of “2013-04-13”.</p>
+          
+
+          
+          <div class="method-source-code" id="date_between-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">date_between?</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
+  <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
+  <span class="ruby-identifier">from</span> = <span class="ruby-identifier">from</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
+  <span class="ruby-identifier">to</span>   = <span class="ruby-identifier">to</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)   <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">class</span>   <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
+  <span class="ruby-identifier">time_pattern</span> = <span class="ruby-regexp">/\d{4}-\d{2}-\d{2}/</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">date</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">date</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">to</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- date_between-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- date_between-3F-method -->
+
+    
       <div id="method-i-seconds_to_time" class="method-detail ">
         
         <div class="method-heading">
@@ -328,23 +370,14 @@ minutes.</p>
 
         <div class="method-description">
           
-          <p>Tests whether the time is between from and to. Returns true then otherwise
-false. Time, from and to are Time objects as retrieved from Time.now or
-Time.local(2013,“apr”,13,10,50,0). Alternatively time strings can be
-provided in the form of “2013-04-13”.</p>
+          <p>Checks whether the time is between from and to. Returns true then otherwise
+false. time, from and to have to be Time objects.</p>
           
 
           
           <div class="method-source-code" id="time_between-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">time_between?</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
-  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
-  <span class="ruby-identifier">from</span> = <span class="ruby-identifier">from</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
-  <span class="ruby-identifier">to</span>   = <span class="ruby-identifier">to</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)   <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">class</span>   <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span>
-  <span class="ruby-identifier">time_pattern</span> = <span class="ruby-regexp">/\d{4}-\d{2}-\d{2}/</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
-  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">to</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- time_between-3F-source -->
@@ -377,6 +410,7 @@ provided in the form of “2013-04-13”.</p>
           <div class="method-source-code" id="time_for_string-source">
             <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">time_for_string</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">time</span>
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">sub</span>(<span class="ruby-string">' '</span>,<span class="ruby-string">'T'</span>)
   <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-identifier">time</span>)
 <span class="ruby-keyword">end</span></pre>

@@ -299,7 +299,7 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a>.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 141</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-ivar">@dir</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>
   <span class="ruby-ivar">@id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span>
@@ -341,7 +341,7 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a></p>
 
           
           <div class="method-source-code" id="start-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 151</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 153</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">show</span>)
   <span class="ruby-ivar">@started</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
   <span class="ruby-comment"># start a timer that prints id and elapsed time </span>
@@ -374,7 +374,7 @@ href="Task.html#attribute-i-duration">Syctask::Task#duration</a></p>
 
           
           <div class="method-source-code" id="stop-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 159</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 161</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
   <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-ivar">@semaphore</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@semaphore</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@semaphore</span>
   <span class="ruby-ivar">@stopped</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>

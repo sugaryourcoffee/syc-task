@@ -76,6 +76,8 @@
     
     <li><a href="#method-i-round_up">#round_up</a>
     
+    <li><a href="#method-i-time">#time</a>
+    
   </ul>
 </nav>
 
@@ -305,7 +307,7 @@ diff(time) =  0:45</pre>
 
           
           <div class="method-source-code" id="diff-source">
-            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 30</span>
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">diff</span>(<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
   <span class="ruby-identifier">diff_minutes</span> = (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@h</span>) * <span class="ruby-value">60</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@m</span>)
   <span class="ruby-identifier">signum</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span>
@@ -359,6 +361,38 @@ diff(time) =  0:45</pre>
 
         
       </div><!-- round_up-method -->
+
+    
+      <div id="method-i-time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a Time object with the current date and the hour and minute of 
+this <a href="Times.html">Times</a> object</p>
+          
+
+          
+          <div class="method-source-code" id="time-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">now</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">now</span>.<span class="ruby-identifier">year</span>,<span class="ruby-identifier">now</span>.<span class="ruby-identifier">mon</span>,<span class="ruby-identifier">now</span>.<span class="ruby-identifier">day</span>,<span class="ruby-ivar">@h</span>,<span class="ruby-ivar">@m</span>,<span class="ruby-value">0</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time-method -->
 
     
     </section><!-- public-instance-method-details -->

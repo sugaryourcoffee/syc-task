@@ -117,7 +117,6 @@ module Syctask
       list << sprintf("%s", "--------\n").color(:red)
       meeting_number = "A"
       @meetings.each do |meeting|
-        puts "#{meeting.starts.time} <= #{Time.now} <= #{meeting.ends.time}"
         hint = "-"
         hint = "*" if time_between?(Time.now, 
                                     meeting.starts.time, 

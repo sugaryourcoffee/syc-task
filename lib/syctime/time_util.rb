@@ -41,7 +41,6 @@ module Syctime
   # Translates a time in the ISO 8601 schema to a time object.
   #     2013-04-09 21:45 -200
   def time_for_string(time)
-    puts time
     time = time.scan(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)[0].sub(' ','T')
     Time.xmlschema(time)
   end

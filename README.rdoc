@@ -436,7 +436,7 @@ Version 0.0.6
 Version 0.0.7
 * updated rdoc
 
-Version 0.1.12
+Version 0.1.14
 * IDs are now unique independent of the task or project directory. After
   upgrading from a version 0.0.7 or older the user asked whether to re-index
   the tasks. It is adviced to tar the tasks before re-indexing with

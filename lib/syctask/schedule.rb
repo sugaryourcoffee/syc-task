@@ -170,6 +170,11 @@ module Syctask
     # list
     def graph
       work_time, meeting_times = get_times
+
+      heading = sprintf("+++ %s - %s-%s +++", Time.now.strftime("%Y-%m-%d"),
+                        @starts.time.strftime("%H:%M"),
+                        @ends.time.strftime("%H:%M")).color(:blue)
+
       time_line = "|---" * (work_time[1]-work_time[0]) + "|"
       meeting_times.each do |time|
         time_line[time[0]..time[1]-1] = '/' * (time[1] - time[0])
@@ -177,7 +182,7 @@ module Syctask
 
       task_list, task_caption = assign_tasks_to_graph(time_line)
 
-      [meeting_list, meeting_caption,
+      [heading.center(80), meeting_list, meeting_caption,
        colorize(time_line), time_caption, 
        task_caption, task_list]
     end

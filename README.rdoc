@@ -436,7 +436,7 @@ Version 0.0.6
 Version 0.0.7
 * updated rdoc
 
-Version 0.1.14
+Version 0.1.15
 * IDs are now unique independent of the task or project directory. After
   upgrading from a version 0.0.7 or older the user asked whether to re-index
   the tasks. It is adviced to tar the tasks before re-indexing with
@@ -446,9 +446,12 @@ Version 0.1.14
       $ syctask start 10 -t
   In order to use the task timer ncurses has to be installed as the task timer
   uses tput from the ncurses library.
+* The schedule has a heading with the schedule's date and the working time
 * Planned tasks are now added at or after the current time if they are not done
-  yet. Done tasks are shown in the past with the actual processing time. Done
-  tasks planned for the future are not shown in the schedule.
+  yet. Done tasks are shown in the past with the actual processing time. Tasks 
+  done before the start of the schedule are not shown in the schedule.
+* Meetings that are at the current time are indicated with a *. Active tasks
+  are indicated with a star, re-scheduled tasks are indicated with a ~.
 * Assigning tasks to meetings in a schedule is now done with the task ID
 * Statistics show statistics about work time, meeting times, general purpose
   tasks and task processing. Total, min, max and average time and count is
@@ -464,7 +467,7 @@ Version 0.1.14
   purpose tasks can be created. A general purpose task can be used for tracking 
   to analyse how much time for phone calls is occupied.
   setting -l list all general purpose tasks and the default task directory
-* Prio command no takes a position flag together with the order flag to 
+* Prio command now takes a position flag together with the order flag to 
   determine where to insert the newly ordered tasks
 * All commands that take an ID as argument (done, edit, start, update) look up
   the task file associated to the id in the ids file. If it is found the 
@@ -472,6 +475,7 @@ Version 0.1.14
   contained in the ids file the task is looked up in the provided directory
 * Inspect command allows to list each today's unplanned task to edit, delete,
   mark as done or plan
+* Update command now has a duration flag to set the task's duration
 
 ==Tests
 The test files live in the folder test and start with test_.

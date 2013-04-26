@@ -21,7 +21,8 @@ class TestSchedule < Test::Unit::TestCase
     end
 
     should "create schedule with start in future and end in past" do
-      expected = [/[\e\[\dm]*(Meetings\n)[\e\[\dm]*/,
+      expected = [/\s+\e\[\d+m\+{3}.*?\+{3}\e\[\dm\s+/,
+                  /[\e\[\dm]*(Meetings\n)[\e\[\dm]*/,
                   /\e\[\d+m\e\[\d+m/,
                   /[\e\[\dm]*(\|---\|)[\e\[\dm]*/,
                   /\d+\s+\d+\s+/,

@@ -335,7 +335,20 @@ Tasks
 
 <pre>$ syctask update 1 -f tomorrow</pre>
 
-<p>will be shown as done (green) in the schedule.</p>
+<p>will be shown as done (green) in the schedule and instead of separator - it
+shows ~.</p>
+
+<pre>Tasks
+----
+0: 1 ~ My first task</pre>
+
+<p>A started task will be indicated by *</p>
+
+<pre>$ syctask start 1
+$ syctask sche
+Tasks
+-----
+0: 1 * My first task</pre>
 
 <h3 id="label-List+tasks">List tasks</h3>
 
@@ -705,7 +718,7 @@ both dates task plans</p>
 <p>updated rdoc</p>
 </li></ul>
 
-<p>Version 0.1.12</p>
+<p>Version 0.1.15</p>
 <ul><li>
 <p>IDs are now unique independent of the task or project directory. After
 upgrading from a version 0.0.7 or older the user asked whether to re-index
@@ -721,9 +734,14 @@ started with the -t (–timer) flag.</p>
 <p>In order to use the task timer ncurses has to be installed as the task
 timer uses tput from the ncurses library.</p>
 </li><li>
+<p>The schedule has a heading with the schedule’s date and the working time</p>
+</li><li>
 <p>Planned tasks are now added at or after the current time if they are not
 done yet. Done tasks are shown in the past with the actual processing time.
-Done tasks planned for the future are not shown in the schedule.</p>
+Tasks  done before the start of the schedule are not shown in the schedule.</p>
+</li><li>
+<p>Meetings that are at the current time are indicated with a *. Active tasks
+are indicated with a star, re-scheduled tasks are indicated with a ~.</p>
 </li><li>
 <p>Assigning tasks to meetings in a schedule is now done with the task ID</p>
 </li><li>
@@ -746,7 +764,7 @@ purpose tasks can be created. A general purpose task can be used for
 tracking  to analyse how much time for phone calls is occupied. setting -l
 list all general purpose tasks and the default task directory</p>
 </li><li>
-<p>Prio command no takes a position flag together with the order flag to 
+<p>Prio command now takes a position flag together with the order flag to 
 determine where to insert the newly ordered tasks</p>
 </li><li>
 <p>All commands that take an ID as argument (done, edit, start, update) look
@@ -757,6 +775,8 @@ directory</p>
 </li><li>
 <p>Inspect command allows to list each today’s unplanned task to edit, delete,
 mark as done or plan</p>
+</li><li>
+<p>Update command now has a duration flag to set the task’s duration</p>
 </li></ul>
 
 <h2 id="label-Tests">Tests</h2>

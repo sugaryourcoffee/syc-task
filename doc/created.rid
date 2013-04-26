@@ -1,6 +1,6 @@
-Thu, 25 Apr 2013 21:14:51 +0200
-./README.rdoc	Wed, 24 Apr 2013 23:09:14 +0200
-./notes	Thu, 18 Apr 2013 19:01:29 +0200
+Fri, 26 Apr 2013 22:40:22 +0200
+./README.rdoc	Fri, 26 Apr 2013 22:40:14 +0200
+./notes	Fri, 26 Apr 2013 20:35:33 +0200
 ./test/test_statistics.rb	Sun, 21 Apr 2013 10:40:08 +0200
 ./test/test_times.rb	Sun, 07 Apr 2013 13:14:21 +0200
 ./test/test_evaluator.rb	Mon, 25 Feb 2013 20:27:50 +0100
@@ -9,7 +9,7 @@ Thu, 25 Apr 2013 21:14:51 +0200
 ./test/test_task_scheduler.rb	Sun, 14 Apr 2013 20:29:42 +0200
 ./test/test_environment.rb	Sun, 21 Apr 2013 10:40:28 +0200
 ./test/test_task_service.rb	Mon, 01 Apr 2013 21:52:24 +0200
-./test/test_schedule.rb	Sun, 14 Apr 2013 16:17:21 +0200
+./test/test_schedule.rb	Fri, 26 Apr 2013 22:30:14 +0200
 ./test/test_task.rb	Sun, 14 Apr 2013 21:38:05 +0200
 ./test/test_helper.rb	Sun, 14 Apr 2013 21:40:56 +0200
 ./test/test_default.rb	Mon, 25 Feb 2013 21:25:09 +0100
@@ -19,24 +19,24 @@ Thu, 25 Apr 2013 21:14:51 +0200
 ./lib/sycutil/console_timer.rb	Mon, 01 Apr 2013 21:52:24 +0200
 ./lib/sycstring/string_util.rb	Mon, 01 Apr 2013 21:52:12 +0200
 ./lib/syctask/settings.rb	Sun, 21 Apr 2013 10:44:39 +0200
-./lib/syctask/version.rb	Wed, 24 Apr 2013 23:05:26 +0200
+./lib/syctask/version.rb	Thu, 25 Apr 2013 21:24:22 +0200
 ./lib/syctask/task_service.rb	Wed, 24 Apr 2013 21:16:29 +0200
 ./lib/syctask/statistics.rb	Thu, 25 Apr 2013 20:50:56 +0200
 ./lib/syctask/task_planner.rb	Fri, 19 Apr 2013 23:31:35 +0200
 ./lib/syctask/task_scheduler.rb	Sun, 14 Apr 2013 14:43:49 +0200
 ./lib/syctask/task_tracker.rb	Thu, 25 Apr 2013 19:52:24 +0200
-./lib/syctask/task.rb	Thu, 25 Apr 2013 19:56:00 +0200
-./lib/syctask/schedule.rb	Thu, 25 Apr 2013 20:38:04 +0200
+./lib/syctask/task.rb	Fri, 26 Apr 2013 21:41:43 +0200
+./lib/syctask/schedule.rb	Fri, 26 Apr 2013 22:22:25 +0200
 ./lib/syctask/environment.rb	Sun, 21 Apr 2013 14:35:47 +0200
 ./lib/syctask/evaluator.rb	Mon, 25 Feb 2013 22:00:04 +0100
 ./lib/syctask/times.rb	Thu, 25 Apr 2013 20:27:19 +0200
 ./lib/syctask/meeting.rb	Thu, 25 Apr 2013 20:23:18 +0200
 ./lib/syctask.rb	Sat, 13 Apr 2013 23:17:57 +0200
-./lib/syctime/time_util.rb	Thu, 25 Apr 2013 20:58:59 +0200
+./lib/syctime/time_util.rb	Thu, 25 Apr 2013 21:26:58 +0200
 ./Gemfile	Sun, 17 Feb 2013 13:22:48 +0100
 ./features/support/env.rb	Mon, 25 Feb 2013 21:22:57 +0100
 ./features/step_definitions/syctask_steps.rb	Sun, 17 Feb 2013 18:27:19 +0100
 ./syctask.rdoc	Sun, 17 Feb 2013 13:22:48 +0100
 ./bin/console_timer	Sat, 06 Apr 2013 15:35:24 +0200
-./bin/syctask	Wed, 24 Apr 2013 23:01:30 +0200
+./bin/syctask	Fri, 26 Apr 2013 21:33:42 +0200
 ./Rakefile	Sun, 17 Feb 2013 22:28:18 +0100

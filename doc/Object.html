@@ -263,7 +263,7 @@
 
           
           <div class="method-source-code" id="add_task_to_plan-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 741</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 745</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task_to_plan</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>]
     <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>])
@@ -300,7 +300,7 @@ in  the time_string or if time = true in a Time object</p>
 
           
           <div class="method-source-code" id="extract_time-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 713</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 717</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>,<span class="ruby-identifier">time</span>=<span class="ruby-keyword">false</span>)
   <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">case</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">downcase</span>

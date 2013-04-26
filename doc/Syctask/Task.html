@@ -526,7 +526,7 @@ note can be provided.</p>
 
           
           <div class="method-source-code" id="done-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 136</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 138</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">done</span>(<span class="ruby-identifier">note</span>=<span class="ruby-string">&quot;&quot;</span>)
   <span class="ruby-ivar">@done_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">note</span>
@@ -560,7 +560,7 @@ note can be provided.</p>
 
           
           <div class="method-source-code" id="done-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 145</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 147</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">done?</span>
   <span class="ruby-operator">!</span><span class="ruby-ivar">@done_date</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -601,7 +601,7 @@ contains, regex :follow_up                      &lt;|=|&gt; :due
 
           
           <div class="method-source-code" id="matches-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 181</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 183</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span> = {})
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">empty?</span>
   <span class="ruby-identifier">evaluator</span> = <span class="ruby-constant">Evaluator</span>.<span class="ruby-identifier">new</span>
@@ -653,7 +653,7 @@ contains, regex :follow_up                      &lt;|=|&gt; :due
 
           
           <div class="method-source-code" id="print_csv-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 214</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 216</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">print_csv</span>
   <span class="ruby-constant">STDOUT</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-identifier">csv_string</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -684,7 +684,7 @@ only id, title, prio, follow-up and due date.</p>
 
           
           <div class="method-source-code" id="print_pretty-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 209</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 211</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">print_pretty</span>(<span class="ruby-identifier">long</span>=<span class="ruby-keyword">false</span>)
   <span class="ruby-identifier">pretty_string</span>(<span class="ruby-identifier">long</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -715,7 +715,7 @@ remaining the duration time</p>
 
           
           <div class="method-source-code" id="set_duration-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 114</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 116</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_duration</span>(<span class="ruby-identifier">duration</span>)
   <span class="ruby-ivar">@duration</span> = <span class="ruby-identifier">duration</span>
   <span class="ruby-ivar">@remaining</span> = <span class="ruby-identifier">duration</span>
@@ -747,7 +747,7 @@ date is today otherwise false.</p>
 
           
           <div class="method-source-code" id="today-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 151</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 153</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">today?</span>
   <span class="ruby-identifier">evaluator</span> = <span class="ruby-constant">Evaluator</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">today</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>)
@@ -780,7 +780,7 @@ false</p>
 
           
           <div class="method-source-code" id="tracked-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 160</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 162</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">tracked?</span>
   <span class="ruby-identifier">tracker</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskTracker</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-identifier">task</span> = <span class="ruby-identifier">tracker</span>.<span class="ruby-identifier">tracked_task</span>
@@ -816,7 +816,9 @@ supplemented with the new values and not overridden.</p>
             <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 81</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-ivar">@update_date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d - %H:%M:%S&quot;</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:duration</span>]
+    <span class="ruby-identifier">set_duration</span>(<span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:duration</span>).<span class="ruby-identifier">to_i</span> * <span class="ruby-value">15</span> * <span class="ruby-value">60</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>] <span class="ruby-keyword">or</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:due_date</span>]
     <span class="ruby-identifier">set_duration</span>(<span class="ruby-value">2</span> * <span class="ruby-value">15</span> * <span class="ruby-value">60</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@duration</span>.<span class="ruby-identifier">nil?</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">options</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span>
@@ -865,7 +867,7 @@ otherwise false</p>
 
           
           <div class="method-source-code" id="update-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 108</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update?</span>
   <span class="ruby-operator">!</span><span class="ruby-ivar">@updated_date</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -897,7 +899,7 @@ href="Task.html#attribute-i-lead_time">#lead_time</a> and calculates
 
           
           <div class="method-source-code" id="update_lead_time-source">
-            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 121</span>
+            <pre><span class="ruby-comment"># File lib/syctask/task.rb, line 123</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_lead_time</span>(<span class="ruby-identifier">lead_time</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lead_time</span>
     <span class="ruby-ivar">@lead_time</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">lead_time</span>

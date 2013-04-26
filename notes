@@ -113,3 +113,12 @@ origin    1)    2)
 
 1) syctask -o 3,4,5 -p 0
 2) syctask -o 2,3,5 -p 3
+
+Determine the position for time in timeline
+-w 8:30-12:45 results in a time line of
+|---|---|---|---|---|
+8   9  10  11  12  13
+
+position_for_time(9) will return position = 2 but it should be 4
+
+That is the position = starts.diff(now) + starts.min / 15

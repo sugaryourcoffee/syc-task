@@ -228,7 +228,7 @@ module Syctask
     # Assigns the tasks to the timeline in alternation x and o subsequent tasks.
     # Returns the task list and the task caption
     def assign_tasks_to_graph(time_line)
-      done_tasks = [] #{}
+      done_tasks = [] 
       unscheduled_tasks = []
       signs = ['x','o']
       positions = {}
@@ -348,7 +348,9 @@ module Syctask
     # down otherwise rounded up.
     def position_for_time(time)
       diff = @starts.diff(time)
-      ((diff[0] * 60 + diff[1]) / 15.0).round
+      # as the time line is always rounded down to the full hour we have to add
+      # the minutes with @starts.m / 15 to get the position for the current time
+      ((diff[0] * 60 + diff[1]) / 15.0).round + @starts.m / 15
     end
 
     # Scans the schedule for free time where a task can be added to. Count

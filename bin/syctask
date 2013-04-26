@@ -600,6 +600,10 @@ command :update do |c|
   c.arg_name 'DUE'
   c.flag [:d, :due_date], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
 
+  c.desc 'Duration'
+  c.arg_name 'DURATION'
+  c.flag :duration, :must_match => /\d+/
+
   c.desc 'Description of the task'
   c.arg_name 'DESCRIPTION'
   c.flag :description
@@ -616,7 +620,7 @@ command :update do |c|
     help_now! "ID required" if args.empty?
     options[:follow_up] = extract_time(options[:f]) if options[:f]
     options[:due_date]  = extract_time(options[:d]) if options[:d]
-    filter = [:tags, :description, :prio, :due_date, :follow_up, 
+    filter = [:tags, :description, :prio, :due_date, :follow_up, :duration, 
               :note]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
 
@@ -624,7 +628,7 @@ command :update do |c|
 
     add_task_to_plan @service.read(global_options[:t], args[0]) if success
 
-    STDOUT.puts sprintf("--> sucessfully updated task %s ", 
+    STDOUT.puts sprintf("--> updated task %s ", 
                         args[0]).color(:green) if success
     STDOUT.puts sprintf("--> could not update task %s ", 
                         args[0]).color(:red) unless success

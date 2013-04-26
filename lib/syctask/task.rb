@@ -80,7 +80,9 @@ module Syctask
     # supplemented with the new values and not overridden.
     def update(options)
       @update_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
-      if options[:follow_up] or options[:due_date]
+      if options[:duration]
+        set_duration(options.delete(:duration).to_i * 15 * 60)
+      elsif options[:follow_up] or options[:due_date]
         set_duration(2 * 15 * 60) if @duration.nil?
       end
       options.keys.each do |key|

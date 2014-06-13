@@ -1,14 +1,14 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_scheduler.rb'
 
 # Tests for the TaskScheduler class
-class TestTaskScheduler < Test::Unit::TestCase
+class TestTaskScheduler < Minitest::Test # Test::Unit::TestCase
 
   context "TaskScheduler" do
     # Sets up the test case and initializes the directory for the test tasks to
     # live
-    def setup
+    setup do
       backup_system_files("TestTaskScheduler")
       @dir = "test/tasks"
     end
@@ -22,11 +22,11 @@ class TestTaskScheduler < Test::Unit::TestCase
     should "create new TaskScheduler" do
       work_time = "8:30-18:30"
       busy_time = "9:00-9:30,10:00-11:45,14:00-15:30"
-      assert_nothing_raised(Exception) do
+      #assert_nothing_raised(Exception) do
         scheduler = Syctask::TaskScheduler.new
         scheduler.set_work_time(work_time)
         scheduler.set_busy_times(busy_time)
-      end
+      #end
     end
 
     should "add work time to log file" do
@@ -88,13 +88,13 @@ class TestTaskScheduler < Test::Unit::TestCase
     should "Scheduler with wrong work and busy time sequence should raise" do
       work_time = "18:30-8:30"
       busy_time = "9:00-9:30,10:00-11:45"
-      assert_raise(Exception) do
+      assert_raises(Exception) do
         scheduler = Syctask::TaskScheduler.new
         scheduler.set_work_time(work_time)
         scheduler.set_busy_times(busy_time)
       end
       busy_time = "9:00-9:30,10:00-10:00"
-      assert_raise(Exception) do
+      assert_raises(Exception) do
         scheduler = Syctask::TaskScheduler.new
         scheduler.set_work_time(work_time)
         scheduler.set_busy_times(busy_time)
@@ -104,7 +104,7 @@ class TestTaskScheduler < Test::Unit::TestCase
     should "raise Exception due to empty work time" do
       work_time = ""
       busy_time = "9:00-10:00"
-      assert_raise(Exception) do
+      assert_raises(Exception) do
         scheduler = Syctask::TaskScheduler.new
         scheduler.set_work_time(work_time)
         scheduler.set_busy_times(busy_time)
@@ -114,11 +114,11 @@ class TestTaskScheduler < Test::Unit::TestCase
     should "not raise exception due to empty busy time" do
       work_time = "8:00-18:00"
       busy_time = ""
-      assert_nothing_raised(Exception) do
+      #assert_nothing_raised(Exception) do
         scheduler = Syctask::TaskScheduler.new
         scheduler.set_work_time(work_time)
         scheduler.set_busy_times(busy_time)
-      end
+      #end
     end
 
     should "print schedule graph" do

@@ -1,10 +1,10 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 
 require_relative '../lib/syctask/statistics.rb'
 
 # Test the Statistics class
-class TestStatistics < Test::Unit::TestCase
+class TestStatistics < Minitest::Test # Test::Unit::TestCase
 
   context "Statistics" do
 
@@ -14,7 +14,7 @@ class TestStatistics < Test::Unit::TestCase
     # * Entries
     #     type;id;dir;title;start;stop
     #     type = start|stop|work|meeting|done|update|delete
-    def setup
+    setup do
       backup_system_files("TestStatistics")
       @stats = Syctask::Statistics.new
       @tasks = []
@@ -38,7 +38,7 @@ class TestStatistics < Test::Unit::TestCase
     end
 
     # Restore the system files
-    def teardown
+    teardown do
       restore_system_files("TestStatistics")
     end
 

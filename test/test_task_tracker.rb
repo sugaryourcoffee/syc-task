@@ -1,15 +1,15 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_tracker.rb'
 require_relative '../lib/syctask/task_service.rb'
 
 # Tests for TaskTracker
-class TestTaskTracker < Test::Unit::TestCase
+class TestTaskTracker < Minitest::Test # Test::Unit::TestCase
 
   context "TaskTracker" do
 
     # Create variables and tasks for tests
-    def setup
+    setup do
       backup_system_files("TestTaskTracker")
       @origin = Syctask::TaskTracker::TRACKED_TASKS_FILE
       @copy = @origin + '.copy'
@@ -23,7 +23,7 @@ class TestTaskTracker < Test::Unit::TestCase
     end
 
     # Remove created files and directories during tests
-    def teardown
+    teardown do
       restore_system_files("TestTaskTracker")
       FileUtils.mv @copy, @origin if File.exists? @copy
       FileUtils.rm_r @dir if File.exists? @dir

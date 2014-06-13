@@ -1,15 +1,15 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_service.rb'
 require_relative '../lib/syctask/task_planner.rb'
 
 # Tests for the TaskPlanner class
-class TestTaskPlanner < Test::Unit::TestCase
+class TestTaskPlanner < Minitest::Test # Test::Unit::TestCase
 
   context "TaskPlanner" do
     
     # Sets up the test and initializes variables used in the tests
-    def setup
+    setup do
       backup_system_files("TestTaskPlanner")
       @plan_date = '2013-03-01'
       @planned_tasks_file = File.
@@ -27,7 +27,7 @@ class TestTaskPlanner < Test::Unit::TestCase
     end
 
     # Removes files and directories created during the tests
-    def teardown
+    teardown do
       restore_system_files("TestTaskPlanner")
       FileUtils.rm_r @dir if File.exists? @dir
       FileUtils.rm @planned_tasks_file if File.exists? @planned_tasks_file

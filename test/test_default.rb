@@ -1,7 +1,7 @@
 require 'test_helper'
 
 # Dummy test
-class TestDefault < Test::Unit::TestCase
+class TestDefault < Minitest::Test # Test::Unit::TestCase
 
   # Always passes the test
   def test_the_truth

@@ -1,9 +1,9 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/task_service'
 
 # Tests for the TaskService
-class TestTaskService < Test::Unit::TestCase
+class TestTaskService < Minitest::Test # Test::Unit::TestCase
 
   # Creates a TaskService object used in each shoulda
   def setup

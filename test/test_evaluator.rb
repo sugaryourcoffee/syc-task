@@ -1,18 +1,21 @@
-require 'test/unit'
+require 'minitest/autorun' #'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/evaluator.rb'
 
 # Tests for the Evaluator class
-class TestEvaluator < Test::Unit::TestCase
+class TestEvaluator < Minitest::Test #Test::Unit::TestCase
 
   context "TestEvaluator" do
 
     # Creates the evaluator object before each shoulda
-    def setup
+    setup do
+      STDERR.puts "create evaluator"
       @evaluator = Syctask::Evaluator.new
+      STDERR.puts "created evaluator #{@evaluator.inspect}"
     end
     
     should "evaluate number comparisson" do
+      STDERR.puts "evaluator #{@evaluator.inspect}"
       assert @evaluator.compare_numbers("1", "<4")
       assert @evaluator.compare_numbers("3", "<4")
       refute @evaluator.compare_numbers("3", ">4")

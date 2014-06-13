@@ -1,9 +1,9 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/meeting.rb'
 
 # Tests for the Meeting class
-class TestMeeting < Test::Unit::TestCase
+class TestMeeting < Minitest::Test #Test::Unit::TestCase
 
   context "Meeting" do
 

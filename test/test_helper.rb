@@ -1,10 +1,10 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'shoulda'
 require_relative '../lib/syctask/task_scheduler.rb'
 include Syctask
 
 # Overrides Test::Unit::TestCase to add some helper methods for each test
-class Test::Unit::TestCase 
+class Minitest::Test # Test::Unit::TestCase 
 
   # Calculates the seconds for the provided time units. One unit is 900
   # seconds or 15 minutes. This time is used in Syctask#Task e.g. for the

@@ -1,16 +1,67 @@
-require 'test/unit'
+require 'minitest/autorun' #'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/environment.rb'
 require_relative '../lib/syctask/task_service.rb'
 include Syctask
 
 # Test the Environment module
-class TestEnvironment < Test::Unit::TestCase
+class TestEnvironment < Minitest::Test #Test::Unit::TestCase
+
+  # Fills the log file with entries and returns these in a hash
+  def make_log_file
+    tasks = {}
+    updates = {}
+    id = 0
+    "a".upto("b") do |j|
+      1.upto(10) do |i|
+        tasks["#{j}#{i}"] = {id:       i,
+                             title:    "Task #{i}",
+                             new_id:   id += 1, 
+                             dir:      "test/tasks/#{j}", 
+                             file:     "test/tasks/#{j}/#{i}.task",
+                             new_file: "test/tasks/#{j}/#{i+100}.task"}
+        if updates["#{i}"].nil?
+          updates["#{i}"] = {"test/tasks/#{j}" => "#{id}"}
+        else
+          updates["#{i}"]["test/tasks/#{j}"] = "#{id}"
+        end
+      end
+    end
+    File.open("#{@work_dir}/tasks.log", 'w') do |f|
+      tasks.each do |k,v|
+        f.puts "start;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};"
+        f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};#{@time}"
+      end
+    end
+    [tasks, updates]
+  end
+
+  # Create tracked_tasks file and add a track
+  def create_tracked_tasks_file
+    File.open("#{@work_dir}/tracked_tasks", 'w') do |f|
+      f.puts("---")
+      f.puts("- !ruby/object:Syctask::Track")
+      f.puts("  dir: /home/pierre/.tasks")
+      f.puts("  id: 68")
+      f.puts("  title: Add unique ID to tasks")
+      f.puts("  started: 2013-03-30 11:54:59 +01:00")
+    end
+  end
+
+  # Create the reindex_log file and add some re-indexing logs
+  def create_reindex_log_file
+    File.open(Syctask::RIDX_LOG, 'w') do |f|
+      f.puts "33,68,/home/pierre/.tasks/68.task"
+      f.puts "22,57,/home/pierre/.tasks/57.task"
+      f.puts "88,99,/home/pierre/.tasks/99.task"
+      f.puts "68,22,/home/pierre/.tasks/22.task"
+    end
+  end
 
   context "Test re-indexing helpers" do
     
     # Backup system files and create empty system files and tasks for the test 
-    def setup
+    setup do
       backup_system_files("TestEnvironment")
       @time = Time.now
       @work_dir = "test/tasks"
@@ -33,60 +84,9 @@ class TestEnvironment < Test::Unit::TestCase
     end
 
     # Restore system files and clean directories from test files
-    def teardown
+    teardown do
       restore_system_files("TestEnvironment")
       FileUtils.rm_r @work_dir if File.exists? @work_dir
-    end
-
-    # Fills the log file with entries and returns these in a hash
-    def make_log_file
-      tasks = {}
-      updates = {}
-      id = 0
-      "a".upto("b") do |j|
-        1.upto(10) do |i|
-          tasks["#{j}#{i}"] = {id:       i,
-                               title:    "Task #{i}",
-                               new_id:   id += 1, 
-                               dir:      "test/tasks/#{j}", 
-                               file:     "test/tasks/#{j}/#{i}.task",
-                               new_file: "test/tasks/#{j}/#{i+100}.task"}
-          if updates["#{i}"].nil?
-            updates["#{i}"] = {"test/tasks/#{j}" => "#{id}"}
-          else
-            updates["#{i}"]["test/tasks/#{j}"] = "#{id}"
-          end
-        end
-      end
-      File.open("#{@work_dir}/tasks.log", 'w') do |f|
-        tasks.each do |k,v|
-          f.puts "start;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};"
-          f.puts "stop;#{v[:id]}-#{v[:dir]};#{v[:title]};#{@time};#{@time}"
-        end
-      end
-      [tasks, updates]
-    end
-
-    # Create tracked_tasks file and add a track
-    def create_tracked_tasks_file
-      File.open("#{@work_dir}/tracked_tasks", 'w') do |f|
-        f.puts("---")
-        f.puts("- !ruby/object:Syctask::Track")
-        f.puts("  dir: /home/pierre/.tasks")
-        f.puts("  id: 68")
-        f.puts("  title: Add unique ID to tasks")
-        f.puts("  started: 2013-03-30 11:54:59 +01:00")
-      end
-    end
-
-    # Create the reindex_log file and add some re-indexing logs
-    def create_reindex_log_file
-      File.open(Syctask::RIDX_LOG, 'w') do |f|
-        f.puts "33,68,/home/pierre/.tasks/68.task"
-        f.puts "22,57,/home/pierre/.tasks/57.task"
-        f.puts "88,99,/home/pierre/.tasks/99.task"
-        f.puts "68,22,/home/pierre/.tasks/22.task"
-      end
     end
 
     should "retrieve files via get_files" do

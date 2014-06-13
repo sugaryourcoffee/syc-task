@@ -1,11 +1,11 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 
 require_relative '../lib/syctime/time_util.rb'
 include Syctime
 
 # Test for TimeUtil class
-class TestTimeUtil < Test::Unit::TestCase
+class TestTimeUtil < Minitest::Test # Test::Unit::TestCase
 
   context "TimeUtil" do
 
@@ -44,9 +44,9 @@ class TestTimeUtil < Test::Unit::TestCase
       refute Syctime::date_between?(time,from,to)
       time = Time.local(2015,"may",13,10,48,0)
       refute Syctime::date_between?(time,from,to)
-      assert_raise(ArgumentError) {Syctime::date_between?("20-23-3",from,to)}
-      assert_raise(ArgumentError) {Syctime::date_between?(time,"a-b-2",to)}
-      assert_raise(ArgumentError) {Syctime::date_between?(time,from,"1ab")}
+      assert_raises(ArgumentError) {Syctime::date_between?("20-23-3",from,to)}
+      assert_raises(ArgumentError) {Syctime::date_between?(time,"a-b-2",to)}
+      assert_raises(ArgumentError) {Syctime::date_between?(time,from,"1ab")}
     end
 
     should "evaluate time between from and to" do

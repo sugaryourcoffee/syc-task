@@ -40,7 +40,8 @@ lib/sycstring/string_util.rb
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba')
+  s.add_development_dependency('shoulda')
   s.add_runtime_dependency('gli','2.5.4')
-  s.add_runtime_dependency('rainbow')
+  s.add_runtime_dependency('rainbow', '1.1.4')
   s.add_runtime_dependency('timeleap')
 end

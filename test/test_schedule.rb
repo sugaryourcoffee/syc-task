@@ -1,9 +1,9 @@
-require 'test/unit'
+require 'minitest/autorun' # 'test/unit'
 require 'shoulda'
 require_relative '../lib/syctask/schedule.rb'
 
 # Tests for the Schedule class
-class TestSchedule < Test::Unit::TestCase
+class TestSchedule < Minitest::Test # Test::Unit::TestCase
 
   context "Schedule" do
 
@@ -65,9 +65,9 @@ class TestSchedule < Test::Unit::TestCase
       time = ["7","9","18","45"]
 
       busy_times = [["7","9","10","35"],["17","10","18","45"]]
-      assert_nothing_raised Exception do
+      #assert_nothing_raised Exception do
         Syctask::Schedule.new(time, busy_times)
-      end
+      #end
 
       busy_times = [["6","0","8","50"],["9","0","10","35"]]
       assert_raises Exception do

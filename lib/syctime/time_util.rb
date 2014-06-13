@@ -50,9 +50,9 @@ module Syctime
   # Time.local(2013,"apr",13,10,50,0). Alternatively time strings can be
   # provided in the form of "2013-04-13".
   def date_between?(date, from, to)
-    date = date.strftime("%Y-%m-%d") if date.class == Time
-    from = from.strftime("%Y-%m-%d") if from.class == Time
-    to   = to.strftime("%Y-%m-%d")   if to.class   == Time
+    date = date.strftime("%Y-%m-%d") if date.class == Time || date.class == Date
+    from = from.strftime("%Y-%m-%d") if from.class == Time || from.class == Date
+    to   =   to.strftime("%Y-%m-%d") if to.class   == Time || to.class   == Date
     time_pattern = /\d{4}-\d{2}-\d{2}/
     raise ArgumentError if date.scan(time_pattern).empty?
     raise ArgumentError if from.scan(time_pattern).empty?

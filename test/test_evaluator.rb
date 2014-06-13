@@ -9,13 +9,10 @@ class TestEvaluator < Minitest::Test #Test::Unit::TestCase
 
     # Creates the evaluator object before each shoulda
     setup do
-      STDERR.puts "create evaluator"
       @evaluator = Syctask::Evaluator.new
-      STDERR.puts "created evaluator #{@evaluator.inspect}"
     end
     
     should "evaluate number comparisson" do
-      STDERR.puts "evaluator #{@evaluator.inspect}"
       assert @evaluator.compare_numbers("1", "<4")
       assert @evaluator.compare_numbers("3", "<4")
       refute @evaluator.compare_numbers("3", ">4")

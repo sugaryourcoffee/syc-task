@@ -11,6 +11,7 @@ require 'sycutil/console.rb'
 require 'syctime/time_util.rb'
 require 'syctask/settings.rb'
 require 'syctask/statistics.rb'
+require 'syctimeleap/time_leap.rb'
 
 # Add requires for other files you add to your project here, so
 # you just need to require this one file in your bin file

@@ -131,11 +131,11 @@ command :new do |c|
 
   c.desc 'Follow-up date'
   c.arg_name 'FOLLOW-UP'
-  c.flag [:f, :follow_up], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:f, :follow_up]
   
   c.desc 'Due date'
   c.arg_name 'DUE'
-  c.flag [:d, :due_date], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:d, :due_date]
 
   c.desc 'Description of the task'
   c.arg_name 'DESCRIPTION'
@@ -192,7 +192,7 @@ desc 'Delete tasks from task list or from task plan'
 command :delete do |c|
   c.desc 'Remove tasks from task plan of today, tomorrow or another date'
   c.arg_name 'DATE'
-  c.flag :plan, :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag :plan
 
   c.desc 'IDs of the tasks to remove'
   c.arg_name 'ID1,ID2,..,IDn'
@@ -203,21 +203,8 @@ command :delete do |c|
     plan = options[:plan]
     filter = [:id]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
+    date = extrac_time(plan)
     if plan
-      case plan
-      when 'today'
-        date = Time.now.strftime("%Y-%m-%d")
-      when 'tomorrow'
-        date = (Time.now + (60*60*24)).strftime("%Y-%m-%d")
-      else
-        if plan.match(/\d{4}-\d{2}-\d{2}/)
-          date = plan
-        elsif nil
-          date = Time.now.strftime("%Y-%m-%d")
-        else
-          help_now! "Arguments may be TODAY, TOMORROW, YYYY-MM-DD or <RETURN>"
-        end
-      end
       count = @planner.remove_tasks(date, options)
       STDOUT.puts sprintf("--> removed %d tasks from task plan of %s", 
                           count, date).color(:green)
@@ -347,7 +334,7 @@ command :plan do |c|
 
   c.desc 'Move planned task to another day'
   c.arg_name 'DATE'
-  c.flag [:m, :move],:must_match => /yesterday|today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:m, :move]
 
   c.desc 'Filter for ID'
   c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
@@ -392,21 +379,8 @@ command :plan do |c|
     filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
               :note, :title]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
-    args[0] = 'today' if args[0].nil?
-    case args[0]
-    when 'today'
-      date = Time.now.strftime("%Y-%m-%d")
-    when 'tomorrow'
-      date = (Time.now + (60 * 60 * 24)).strftime("%Y-%m-%d")
-    else
-      if args[0].match(/\d{4}-\d{2}-\d{2}/)
-        date = args[0] 
-      elsif nil
-        date = Time.now.strftime("%Y-%m-%d")
-      else
-        help_now! "Arguments may be 'today', 'tomorrow', YYYY-MM-DD or <RETURN>"
-      end
-    end
+
+    date = extract_time(args[0])
     if show
       count = 0
       @planner.get_tasks(date, options).each do |task|
@@ -594,11 +568,11 @@ command :update do |c|
 
   c.desc 'Follow-up date'
   c.arg_name 'FOLLOW-UP'
-  c.flag [:f, :follow_up], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:f, :follow_up]
   
   c.desc 'Due date'
   c.arg_name 'DUE'
-  c.flag [:d, :due_date], :must_match => /today|tomorrow|\d{4}-\d{2}-\d{2}/
+  c.flag [:d, :due_date]
 
   c.desc 'Duration'
   c.arg_name 'DURATION'
@@ -716,26 +690,27 @@ end
 # the time_string or if time = true in a Time object
 def extract_time(time_string,time=false)
   time_string = 'today' if time_string.nil?
-  case time_string.downcase
-  when 'today'
-    date = Time.now
-    date = date.strftime("%Y-%m-%d") unless time
-  when 'tomorrow'
-    date = Time.now + 60 * 60 * 24
-    date = date.strftime("%Y-%m-%d") unless time
-  when 'yesterday'
-    date = Time.now - (60 * 60 * 24)
-    date = date.strftime("%Y-%m-%d") unless time
+
+  if time_string.match(/\d{4}-\d{2}-\d{2}/)
+    date = time_string 
+    date = Time.xmlschema("#{time_string}T00:00:00") if time
   else
-    if time_string.match(/\d{4}-\d{2}-\d{2}/)
-      date = time_string 
-      date = Time.xmlschema("#{time_string}T00:00:00") if time
-    elsif nil
-      date = Time.now
-      date = date.strftime("%Y-%m-%d") unless time
-    else
-      help_now! "Arguments may be 'yesterday', 'today', 'tomorrow', YYYY-MM-DD"+
-                " or <RETURN>"
+    timeleap = SycTimeleap::TimeLeap.new
+    begin
+      date = timeleap.send(time_string)
+      date = date.to_s unless time
+    rescue NoMethodError
+      help_now! "Arguments may be 'time distances', YYYY-MM-DD or <RETURN>\n\n"+
+                "time distances are:\n"+
+                "* yesterday|today|tomorrow\n"+
+                "* next|previous_monday|tuesday|...|sunday\n"+
+                "* in|back_10_days|weeks|months|years\n"+
+                "* monday|tuesday|...|sunday_in|back_1_day|week|month|year\n"+
+                "Short forms are also possible:\n"+
+                "* y|tod|tom\n"+
+                "* n|pmo|tu|we|th|fr|sa|su\n"+
+                "* i|b10d|w|m|y\n"+
+                "* mo|tu|we|th|fr|sa|sui|b1d|w|m|y"
     end
   end
   date

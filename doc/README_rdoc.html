@@ -93,11 +93,9 @@
   
     <li><a href="./Syctask/Track.html">Syctask::Track</a>
   
-    <li><a href="./Test.html">Test</a>
+    <li><a href="./Minitest.html">Minitest</a>
   
-    <li><a href="./Test/Unit.html">Test::Unit</a>
-  
-    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+    <li><a href="./Minitest/Test.html">Minitest::Test</a>
   
     <li><a href="./Sycutil.html">Sycutil</a>
   
@@ -159,14 +157,14 @@
 
 <p>syctask provides basic task organizer functions as create, update, list and
 complete a task. Additional functions are to plan tasks you want to
-accomplish today. If you are not sure in which sequence to conduct the task
-you can prioritize them with a pair wise comparisson. You can time tasks
-with start and stop and you can finally extract tasks from a minutes of
-meetings file. The schedule task  command will print a graphical timeline
-of the working day assigning the planned tasks to the timeline. Busy times
-are marked red. Meetings are listed with associated tasks that are assigned
-to the meetings. With the statistics command you can print statistical
-evaluation of tasks duration and count.</p>
+accomplish  today. If you are not sure in which sequence to conduct the
+task you can  prioritize them with a pair wise comparisson. You can time
+tasks with start and  stop and you can finally extract tasks from a minutes
+of meetings file. The  schedule task command will print a graphical
+timeline of the working day  assigning the planned tasks to the timeline.
+Busy times are marked red.  Meetings are listed with associated tasks that
+are assigned to the meetings.  With the statistics command you can print
+statistical evaluation of tasks  duration and count.</p>
 
 <h3 id="label-Create+tasks+with+new">Create tasks with new</h3>
 
@@ -197,9 +195,9 @@ evaluation of tasks duration and count.</p>
 <h3 id="label-Plan+tasks">Plan tasks</h3>
 
 <p>The plan command will print tasks and prompts whether to (a)dd or (s)kip
-the task. If (q)uit is selected the tasks already added will be add to the
-today’s task list. If ©omplete is selected the complete task will be
-printed and the user will be prompted again for adding the task.</p>
+the  task. If (q)uit is selected the tasks already added will be add to the
+today’s  task list. If ©omplete is selected the complete task will be
+printed and the  user will be prompted again for adding the task.</p>
 
 <p>Invoke plan without filter</p>
 
@@ -220,7 +218,7 @@ Duration (1 = 15 minutes, return 30 minutes): 3
 <pre>$ syctask plan today --move tomorrow --id 3,5</pre>
 
 <p>This will move the tasks with ID 3 and 5 from the today’s plan to the
-tomorrow’s plan. The duration will be set to the remaining processing time
+tomorrow’s  plan. The duration will be set to the remaining processing time
 but at least to 30 minutes.</p>
 
 <h3 id="label-Prioritize+tasks">Prioritize tasks</h3>
@@ -268,7 +266,7 @@ plan can be specified with the -o flag</p>
 
 <p>If only a part of the tasks is provided the rest of the tasks is appended
 to the end of the task plan. If you specify a position flag the prioritized
-tasks are added at the provided position.</p>
+tasks  are added at the provided position.</p>
 
 <pre>$ syctask plan -o 7,9 -p 2
 Tasks
@@ -408,8 +406,8 @@ are only removed from the planned tasks and not physically deleted.</p>
 <h3 id="label-Settings">Settings</h3>
 
 <p>The settings command allows to define default values for task directory and
-to create general purpose tasks that can be used for tracking and later
-statistical evaluation.</p>
+to  create general purpose tasks that can be used for tracking and later
+statistical  evaluation.</p>
 
 <p>Create general purpose tasks for phone and talk</p>
 
@@ -453,7 +451,7 @@ statistical evaluation.</p>
 or creates the tasks. The default task directory is ~/.tasks, so if no task
 directory is specified all commands obtain tasks from or create tasks in
 ~/.tasks. If a project is specified the tasks will be saved to or obtained
-from the task directories subdirectory specified with the –project flag.</p>
+from  the task directories subdirectory specified with the –project flag.</p>
 
 <pre>--taskdir  --project   Tasks in
     -           -      default_task_dir
@@ -507,13 +505,13 @@ directory. Each task is saved with the task’s directory and the ID.</p>
 </li></ul>
 
 <p>The schedule is saved to YYYY-MM-DD_time_schedule in the default task
-directory.The files are saved as YAML files and can be changed manually.</p>
+directory. The files are saved as YAML files and can be changed manually.</p>
 <ul><li>
 <p>Log file</p>
 </li></ul>
 
 <p>Creating schedule and task processings is logged to tasks.log. For example
-when a task is started and stopped this is action is saved to tasks.log.</p>
+when  a task is started and stopped this is action is saved to tasks.log.</p>
 <ul><li>
 <p>Tracked file</p>
 </li></ul>
@@ -568,7 +566,7 @@ tasks with</p>
 <h4 id="label-Create+schedule">Create schedule</h4>
 
 <p>I create a schedule with my working hours and meetings that have been
-scheduled with</p>
+scheduled  with</p>
 
 <pre>$ syctask -w &quot;8:00-18:00&quot; -b &quot;9:00-10:00,14:30-16:00&quot; -m &quot;Team,Status&quot;</pre>
 
@@ -580,7 +578,7 @@ scheduled with</p>
 
 <h4 id="label-Start+a+task">Start a task</h4>
 
-<p>To begin I start the first task in the schedule with syctask start -p ID
+<p>To begin I start the first task in the schedule with syctask start -p ID 
 (where ID is the ID of the planned (-p) tasks)</p>
 
 <pre>$ syctask start -p 10</pre>
@@ -779,6 +777,21 @@ mark as done or plan</p>
 <p>Update command now has a duration flag to set the task’s duration</p>
 </li></ul>
 
+<p>Version 0.2.0</p>
+<ul><li>
+<p>Migrated from TestUnit to <a href="Minitest.html">Minitest</a></p>
+</li><li>
+<p>Implemented ([![Gem Version](<a
+href="https://badge.fury.io/rb/timeleap.svg)](http://badge.fury.io/rb/timeleap">badge.fury.io/rb/timeleap.svg)](http://badge.fury.io/rb/timeleap</a>)
+which allows to specify additional time distances to yesterday, today
+tomorrow.  Time distances come in two flavors as long and short forms.
+Examples for long forms are + yesterday|today|tomorrow +
+next|previous_monday|tuesday|…|sunday +
+monday|tuesday|…|sunday_in|back_1_week|month|year +
+in|back_10_days|weeks|months|years Examples for short forms are + y|tod|tom
++ n|pmo|tu|..|su + mo|tu|…|sui|b1w|m|y + i|b10d|w|m|y</p>
+</li></ul>
+
 <h2 id="label-Tests">Tests</h2>
 
 <p>The test files live in the folder test and start with test_.</p>
@@ -816,7 +829,7 @@ href="http://opensource.org/licenses/MIT">MIT License</a></p>
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

@@ -59,7 +59,7 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link"><a href="Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  <p class="link"><a href="Minitest/Test.html">Minitest::Test</a>
   
 </nav>
 
@@ -75,10 +75,6 @@
     <li><a href="#method-i-create_tracked_tasks_file">#create_tracked_tasks_file</a>
     
     <li><a href="#method-i-make_log_file">#make_log_file</a>
-    
-    <li><a href="#method-i-setup">#setup</a>
-    
-    <li><a href="#method-i-teardown">#teardown</a>
     
   </ul>
 </nav>
@@ -135,11 +131,9 @@
   
     <li><a href="./Syctask/Track.html">Syctask::Track</a>
   
-    <li><a href="./Test.html">Test</a>
+    <li><a href="./Minitest.html">Minitest</a>
   
-    <li><a href="./Test/Unit.html">Test::Unit</a>
-  
-    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+    <li><a href="./Minitest/Test.html">Minitest::Test</a>
   
     <li><a href="./Sycutil.html">Sycutil</a>
   
@@ -190,7 +184,7 @@
 
   <div id="description" class="description">
     
-<p><a href="Test.html">Test</a> the Environment module</p>
+<p>Test the Environment module</p>
 
   </div><!-- description -->
 
@@ -228,7 +222,7 @@
 
           
           <div class="method-source-code" id="create_reindex_log_file-source">
-            <pre><span class="ruby-comment"># File test/test_environment.rb, line 83</span>
+            <pre><span class="ruby-comment"># File test/test_environment.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_reindex_log_file</span>
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">RIDX_LOG</span>, <span class="ruby-string">'w'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;33,68,/home/pierre/.tasks/68.task&quot;</span>
@@ -263,7 +257,7 @@
 
           
           <div class="method-source-code" id="create_tracked_tasks_file-source">
-            <pre><span class="ruby-comment"># File test/test_environment.rb, line 71</span>
+            <pre><span class="ruby-comment"># File test/test_environment.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_tracked_tasks_file</span>
   <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-node">&quot;#{@work_dir}/tracked_tasks&quot;</span>, <span class="ruby-string">'w'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-string">&quot;---&quot;</span>)
@@ -300,7 +294,7 @@
 
           
           <div class="method-source-code" id="make_log_file-source">
-            <pre><span class="ruby-comment"># File test/test_environment.rb, line 42</span>
+            <pre><span class="ruby-comment"># File test/test_environment.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">make_log_file</span>
   <span class="ruby-identifier">tasks</span> = {}
   <span class="ruby-identifier">updates</span> = {}
@@ -338,85 +332,6 @@
       </div><!-- make_log_file-method -->
 
     
-      <div id="method-i-setup" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">setup</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Backup system files and create empty system files and tasks for the test</p>
-          
-
-          
-          <div class="method-source-code" id="setup-source">
-            <pre><span class="ruby-comment"># File test/test_environment.rb, line 13</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
-  <span class="ruby-identifier">backup_system_files</span>(<span class="ruby-string">&quot;TestEnvironment&quot;</span>)
-  <span class="ruby-ivar">@time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-  <span class="ruby-ivar">@work_dir</span> = <span class="ruby-string">&quot;test/tasks&quot;</span>
-  <span class="ruby-ivar">@service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir</span> <span class="ruby-ivar">@work_dir</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@work_dir</span>
-  <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">10</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@work_dir</span>, {}, <span class="ruby-node">&quot;task number #{i}&quot;</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">5</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">create</span>(<span class="ruby-node">&quot;#{@work_dir}/sub&quot;</span>, {}, <span class="ruby-node">&quot;task Number #{i}&quot;</span>)
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-comment"># Remove the tasks.log file created during the above operations</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TASKS_LOG</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TASKS_LOG</span>
-  <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-value">3</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-node">&quot;#{@work_dir}/2013-0#{i}-17_planned_tasks&quot;</span>
-    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-node">&quot;#{@work_dir}/2013-0#{i}-17_time_schedule&quot;</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-node">&quot;#{@work_dir}/tasks.log&quot;</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">touch</span> <span class="ruby-node">&quot;#{@work_dir}/tracked_tasks&quot;</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- setup-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- setup-method -->
-
-    
-      <div id="method-i-teardown" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">teardown</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Restore system files and clean directories from test files</p>
-          
-
-          
-          <div class="method-source-code" id="teardown-source">
-            <pre><span class="ruby-comment"># File test/test_environment.rb, line 36</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
-  <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-string">&quot;TestEnvironment&quot;</span>)
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span> <span class="ruby-ivar">@work_dir</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@work_dir</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- teardown-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- teardown-method -->
-
-    
     </section><!-- public-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
@@ -426,7 +341,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

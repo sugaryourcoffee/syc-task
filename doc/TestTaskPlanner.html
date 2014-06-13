@@ -59,24 +59,12 @@
     <nav id="parent-class-section" class="section">
   <h3 class="section-header">Parent</h3>
   
-  <p class="link"><a href="Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+  <p class="link"><a href="Minitest/Test.html">Minitest::Test</a>
   
 </nav>
 
     
-    <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
-
-  <ul class="link-list">
     
-    <li><a href="#method-i-setup">#setup</a>
-    
-    <li><a href="#method-i-teardown">#teardown</a>
-    
-  </ul>
-</nav>
-
   </div>
 
   <div id="project-metadata">
@@ -129,11 +117,9 @@
   
     <li><a href="./Syctask/Track.html">Syctask::Track</a>
   
-    <li><a href="./Test.html">Test</a>
+    <li><a href="./Minitest.html">Minitest</a>
   
-    <li><a href="./Test/Unit.html">Test::Unit</a>
-  
-    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+    <li><a href="./Minitest/Test.html">Minitest::Test</a>
   
     <li><a href="./Sycutil.html">Sycutil</a>
   
@@ -202,87 +188,6 @@
 
     <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
-
-    
-      <div id="method-i-setup" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">setup</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Sets up the test and initializes variables used in the tests</p>
-          
-
-          
-          <div class="method-source-code" id="setup-source">
-            <pre><span class="ruby-comment"># File test/test_task_planner.rb, line 12</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">setup</span>
-  <span class="ruby-identifier">backup_system_files</span>(<span class="ruby-string">&quot;TestTaskPlanner&quot;</span>)
-  <span class="ruby-ivar">@plan_date</span> = <span class="ruby-string">'2013-03-01'</span>
-  <span class="ruby-ivar">@planned_tasks_file</span> = <span class="ruby-constant">File</span>.
-                        <span class="ruby-identifier">expand_path</span>(<span class="ruby-node">&quot;~/.tasks/#{@plan_date}_planned_tasks&quot;</span>)
-  <span class="ruby-ivar">@service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@planner</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskPlanner</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@dir</span> = <span class="ruby-string">&quot;test/tasks&quot;</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-ivar">@dir</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@dir</span>
-  <span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">options</span> = {<span class="ruby-identifier">descriptions</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;Description of task #{i+1}&quot;</span>,
-               <span class="ruby-identifier">follow_up</span><span class="ruby-operator">:</span> <span class="ruby-string">'2013-03-02'</span>, <span class="ruby-identifier">due</span><span class="ruby-operator">:</span> <span class="ruby-string">'2013-04-02'</span>, <span class="ruby-identifier">prio</span><span class="ruby-operator">:</span> <span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>,
-               <span class="ruby-identifier">note</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;Note of task #{i+1}&quot;</span>, <span class="ruby-identifier">tags</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;tag#{i+1},tag#{i+2}&quot;</span>}
-    <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@dir</span>, <span class="ruby-identifier">options</span>, <span class="ruby-node">&quot;Title of task number #{i+1}&quot;</span>)
-  <span class="ruby-keyword">end</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- setup-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- setup-method -->
-
-    
-      <div id="method-i-teardown" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">teardown</span><span
-            class="method-args">()</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Removes files and directories created during the tests</p>
-          
-
-          
-          <div class="method-source-code" id="teardown-source">
-            <pre><span class="ruby-comment"># File test/test_task_planner.rb, line 30</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">teardown</span>
-  <span class="ruby-identifier">restore_system_files</span>(<span class="ruby-string">&quot;TestTaskPlanner&quot;</span>)
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm_r</span> <span class="ruby-ivar">@dir</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@dir</span>
-  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-ivar">@planned_tasks_file</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-ivar">@planned_tasks_file</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- teardown-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- teardown-method -->
-
-    
-    </section><!-- public-instance-method-details -->
-  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->
@@ -290,7 +195,7 @@
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

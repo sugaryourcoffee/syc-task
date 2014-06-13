@@ -6,8 +6,16 @@ The application can be installed with
     $ gem install syc-task
 
 == Usage
-syctask provides basic task organizer functions as create, update, list and complete a task. Additional functions are to plan tasks you want to accomplish today. If you are not sure in which sequence to conduct the task you can prioritize them with a pair wise comparisson. You can time tasks with start and stop and you can finally extract tasks from a minutes of meetings file. The schedule task 
-command will print a graphical timeline of the working day assigning the planned tasks to the timeline. Busy times are marked red. Meetings are listed with associated tasks that are assigned to the meetings. With the statistics command you can print statistical evaluation of tasks duration and count.
+syctask provides basic task organizer functions as create, update, list and 
+complete a task. Additional functions are to plan tasks you want to accomplish 
+today. If you are not sure in which sequence to conduct the task you can 
+prioritize them with a pair wise comparisson. You can time tasks with start and 
+stop and you can finally extract tasks from a minutes of meetings file. The 
+schedule task command will print a graphical timeline of the working day 
+assigning the planned tasks to the timeline. Busy times are marked red. 
+Meetings are listed with associated tasks that are assigned to the meetings. 
+With the statistics command you can print statistical evaluation of tasks 
+duration and count.
 
 ===Create tasks with new
 Create a new task in the default task directory ~/.tasks
@@ -29,9 +37,10 @@ will prompt for task titles. Ctrl-D will end input.
 Except for --description you can also provide short forms for the options.
 
 ===Plan tasks
-The plan command will print tasks and prompts whether to (a)dd or (s)kip the task. If (q)uit is selected the tasks already added will be add to the today's task
-list. If (c)omplete is selected the complete task will be printed and the user
-will be prompted again for adding the task.
+The plan command will print tasks and prompts whether to (a)dd or (s)kip the 
+task. If (q)uit is selected the tasks already added will be add to the today's 
+task list. If (c)omplete is selected the complete task will be printed and the 
+user will be prompted again for adding the task.
 
 Invoke plan without filter
     $ syctask plan
@@ -48,7 +57,8 @@ Invoke plan with a filter
 Move tasks to another days plan
     $ syctask plan today --move tomorrow --id 3,5
 
-This will move the tasks with ID 3 and 5 from the today's plan to the tomorrow's plan. The duration will be set to the remaining processing time but at least to
+This will move the tasks with ID 3 and 5 from the today's plan to the tomorrow's 
+plan. The duration will be set to the remaining processing time but at least to
 30 minutes.
 
 ===Prioritize tasks
@@ -90,7 +100,8 @@ The plan or schedule command will print the tasks in the specified order
     3:  9 - My second task
 
 If only a part of the tasks is provided the rest of the tasks is appended to
-the end of the task plan. If you specify a position flag the prioritized tasks are added at the provided position.
+the end of the task plan. If you specify a position flag the prioritized tasks 
+are added at the provided position.
     $ syctask plan -o 7,9 -p 2
     Tasks
     -----
@@ -206,7 +217,9 @@ only removed from the planned tasks and not physically deleted.
     $ syctask delete --plan today --id 8,12
 
 ===Settings
-The settings command allows to define default values for task directory and to create general purpose tasks that can be used for tracking and later statistical evaluation.
+The settings command allows to define default values for task directory and to 
+create general purpose tasks that can be used for tracking and later statistical 
+evaluation.
 
 Create general purpose tasks for phone and talk
     $ syctask setting --general PHONE,TALK
@@ -239,7 +252,8 @@ Evaluate yesterday and today
 The global options --taskdir and --project determine where the command finds
 or creates the tasks. The default task directory is ~/.tasks, so if no task
 directory is specified all commands obtain tasks from or create tasks in
-~/.tasks. If a project is specified the tasks will be saved to or obtained from the task directories subdirectory specified with the --project flag.
+~/.tasks. If a project is specified the tasks will be saved to or obtained from 
+the task directories subdirectory specified with the --project flag.
 
     --taskdir  --project   Tasks in
         -           -      default_task_dir
@@ -282,10 +296,12 @@ The planned tasks are save to YYYY-MM-DD_planned_tasks in syctask's system
 directory. Each task is saved with the task's directory and the ID.
 
 * Schedule files
-The schedule is saved to YYYY-MM-DD_time_schedule in the default task directory.The files are saved as YAML files and can be changed manually.
+The schedule is saved to YYYY-MM-DD_time_schedule in the default task directory.
+The files are saved as YAML files and can be changed manually.
 
 * Log file
-Creating schedule and task processings is logged to tasks.log. For example when a task is started and stopped this is action is saved to tasks.log.
+Creating schedule and task processings is logged to tasks.log. For example when 
+a task is started and stopped this is action is saved to tasks.log.
 
 * Tracked file
 A started task is saved to tracked_tasks. A semaphore file is created with
@@ -300,7 +316,8 @@ default_tasks. The general purpose tasks itself are also saved to the
 .syc/syctask directory as regular task files.
 
 * Default task dir
-The default task that is used e.g. with list is saved to default_tasks_dir. This can be set with the setting command.
+The default task that is used e.g. with list is saved to default_tasks_dir. 
+This can be set with the setting command.
 
 ==Working with syctask
 To work with syctask and get the most out of it there is to follow a certain
@@ -323,7 +340,8 @@ with
     $ syctask prio
 
 ==== Create schedule
-I create a schedule with my working hours and meetings that have been scheduled with 
+I create a schedule with my working hours and meetings that have been scheduled 
+with 
     $ syctask -w "8:00-18:00" -b "9:00-10:00,14:30-16:00" -m "Team,Status"
 
 ==== Create an agenda
@@ -331,7 +349,8 @@ I assign the topics I want to discuss in the meetings to the meetings with
     syctask schedule -a "A:1,3,6;B:3,5"
     
 ==== Start a task
-To begin I start the first task in the schedule with syctask start -p ID (where ID is the ID of the planned (-p) tasks)
+To begin I start the first task in the schedule with syctask start -p ID 
+(where ID is the ID of the planned (-p) tasks)
     $ syctask start -p 10
 
 ==== End a task
@@ -477,6 +496,21 @@ Version 0.1.15
   mark as done or plan
 * Update command now has a duration flag to set the task's duration
 
+Version 0.2.0
+* Migrated from TestUnit to Minitest
+* Implemented ([![Gem Version](https://badge.fury.io/rb/timeleap.svg)](http://badge.fury.io/rb/timeleap) which allows to specify additional time distances to yesterday, today tomorrow. 
+  Time distances come in two flavors as long and short forms.
+  Examples for long forms are
+  + yesterday|today|tomorrow
+  + next|previous_monday|tuesday|...|sunday
+  + monday|tuesday|...|sunday_in|back_1_week|month|year
+  + in|back_10_days|weeks|months|years
+  Examples for short forms are
+  + y|tod|tom
+  + n|pmo|tu|..|su
+  + mo|tu|...|sui|b1w|m|y
+  + i|b10d|w|m|y
+  
 ==Tests
 The test files live in the folder test and start with test_.
 

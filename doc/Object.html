@@ -159,11 +159,9 @@
   
     <li><a href="./Syctask/Track.html">Syctask::Track</a>
   
-    <li><a href="./Test.html">Test</a>
+    <li><a href="./Minitest.html">Minitest</a>
   
-    <li><a href="./Test/Unit.html">Test::Unit</a>
-  
-    <li><a href="./Test/Unit/TestCase.html">Test::Unit::TestCase</a>
+    <li><a href="./Minitest/Test.html">Minitest::Test</a>
   
     <li><a href="./Sycutil.html">Sycutil</a>
   
@@ -263,7 +261,7 @@
 
           
           <div class="method-source-code" id="add_task_to_plan-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 745</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 720</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task_to_plan</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>]
     <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>])
@@ -300,29 +298,30 @@ in  the time_string or if time = true in a Time object</p>
 
           
           <div class="method-source-code" id="extract_time-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 717</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 691</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>,<span class="ruby-identifier">time</span>=<span class="ruby-keyword">false</span>)
   <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">downcase</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">'today'</span>
-    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">'tomorrow'</span>
-    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">+</span> <span class="ruby-value">60</span> * <span class="ruby-value">60</span> * <span class="ruby-value">24</span>
-    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
-  <span class="ruby-keyword">when</span> <span class="ruby-string">'yesterday'</span>
-    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> (<span class="ruby-value">60</span> * <span class="ruby-value">60</span> * <span class="ruby-value">24</span>)
-    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>)
+    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">time_string</span> 
+    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-node">&quot;#{time_string}T00:00:00&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\d{4}-\d{2}-\d{2}/</span>)
-      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">time_string</span> 
-      <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-node">&quot;#{time_string}T00:00:00&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">nil</span>
-      <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">help_now!</span> <span class="ruby-string">&quot;Arguments may be 'yesterday', 'today', 'tomorrow', YYYY-MM-DD&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot; or &lt;RETURN&gt;&quot;</span>
+    <span class="ruby-identifier">timeleap</span> = <span class="ruby-constant">SycTimeleap</span><span class="ruby-operator">::</span><span class="ruby-constant">TimeLeap</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">timeleap</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">time_string</span>)
+      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
+      <span class="ruby-identifier">help_now!</span> <span class="ruby-string">&quot;Arguments may be 'time distances', YYYY-MM-DD or &lt;RETURN&gt;\n\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;time distances are:\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* yesterday|today|tomorrow\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* next|previous_monday|tuesday|...|sunday\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* in|back_10_days|weeks|months|years\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* monday|tuesday|...|sunday_in|back_1_day|week|month|year\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;Short forms are also possible:\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* y|tod|tom\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* n|pmo|tu|we|th|fr|sa|su\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* i|b10d|w|m|y\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* mo|tu|we|th|fr|sa|sui|b1d|w|m|y&quot;</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">date</span>
@@ -346,7 +345,7 @@ in  the time_string or if time = true in a Time object</p>
 
 <footer id="validator-badges">
   <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
   <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
 </footer>
 

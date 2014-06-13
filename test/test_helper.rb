@@ -18,8 +18,10 @@ class Minitest::Test # Test::Unit::TestCase
     #log_system_files("Backup: start/#{caller}") 
     system_files = Dir.glob("#{Syctask::SYC_DIR}/*")
     system_files.each do |f|
-      FileUtils.mv f, f + ".original"
-      FileUtils.touch f
+      unless f =~ /(\.original(?:\.original)*)/
+        FileUtils.mv f, f + ".original"
+        FileUtils.touch f
+      end
     end
     #Uncomment if you want to log backing up system files 
     #log_system_files("Backup: end")
@@ -36,7 +38,8 @@ class Minitest::Test # Test::Unit::TestCase
         FileUtils.rm f 
       end
     end
-    originals.each {|o| FileUtils.mv o, o.sub(".original", "")}
+    originals.each { |o| FileUtils.mv o, 
+                         o.sub(/(\.original(?:\.original)*)/, "") }
     #Uncomment if you want to log restoration of system files
     #log_system_files("Restore: end")
   end

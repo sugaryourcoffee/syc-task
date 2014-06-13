@@ -5,19 +5,19 @@ require_relative '../lib/syctask/task_service'
 # Tests for the TaskService
 class TestTaskService < Minitest::Test # Test::Unit::TestCase
 
-  # Creates a TaskService object used in each shoulda
-  def setup
-    backup_system_files("TestTaskService")
-    @service = Syctask::TaskService.new
-  end
-
-  # Removes files and directories created by the tests
-  def teardown
-    restore_system_files("TestTaskService")
-    FileUtils.rm_r "test/tasks" if File.exists? "test/tasks"
-  end
-
   context "TaskService" do
+    # Creates a TaskService object used in each shoulda
+    setup do
+      backup_system_files("TestTaskService")
+      @service = Syctask::TaskService.new
+    end
+
+    # Removes files and directories created by the tests
+    teardown do
+      restore_system_files("TestTaskService")
+      FileUtils.rm_r "test/tasks" if File.exists? "test/tasks"
+    end
+
     should "save task with id 1" do
       options = {d: "2013-02-20", f: "2013-02-19", description: "Description"}
       @service.create("test/tasks", options, "This is a new task")

@@ -498,7 +498,7 @@ Version 0.1.15
 
 Version 0.2.0
 * Migrated from TestUnit to Minitest
-* Implemented {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
+* Implemented _timeleap_ {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
   Time distances come in two flavors as long and short forms.
 
   Examples for long forms are

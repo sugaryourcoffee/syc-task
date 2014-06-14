@@ -498,18 +498,20 @@ Version 0.1.15
 
 Version 0.2.0
 * Migrated from TestUnit to Minitest
-* Implemented ([![Gem Version](https://badge.fury.io/rb/timeleap.svg)](http://badge.fury.io/rb/timeleap) which allows to specify additional time distances to yesterday, today tomorrow. 
+* Implemented {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
   Time distances come in two flavors as long and short forms.
+
   Examples for long forms are
-  + yesterday|today|tomorrow
-  + next|previous_monday|tuesday|...|sunday
-  + monday|tuesday|...|sunday_in|back_1_week|month|year
-  + in|back_10_days|weeks|months|years
+  - yesterday|today|tomorrow
+  - next|previous_monday|tuesday|...|sunday
+  - monday|tuesday|...|sunday_in|back_1_week|month|year
+  - in|back_10_days|weeks|months|years
+
   Examples for short forms are
-  + y|tod|tom
-  + n|pmo|tu|..|su
-  + mo|tu|...|sui|b1w|m|y
-  + i|b10d|w|m|y
+  - y|tod|tom
+  - n|pmo|tu|..|su
+  - mo|tu|...|sui|b1w|m|y
+  - i|b10d|w|m|y
   
 ==Tests
 The test files live in the folder test and start with test_.

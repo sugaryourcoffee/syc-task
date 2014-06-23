@@ -203,7 +203,7 @@ command :delete do |c|
     plan = options[:plan]
     filter = [:id]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
-    date = extrac_time(plan)
+    date = extract_time(plan)
     if plan
       count = @planner.remove_tasks(date, options)
       STDOUT.puts sprintf("--> removed %d tasks from task plan of %s", 

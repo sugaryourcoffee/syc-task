@@ -515,6 +515,11 @@ Version 0.2.0
   
 Version 0.2.1
 * Fix a bug in `syctask delete --plan`
+* Add indicator '>' to task list when task contains notes
+* Refactor migration from version 0.0.7 and when user has deleted system files.
+  The user can now specify the directories where the tasks are located and can
+  also define directories to be excluded. This is especially helpful to omit 
+  search in large mounted directories, like from NAS servers.
 
 ==Development
 Pull from Github and then run `bundle install`. Debugging the interface can be

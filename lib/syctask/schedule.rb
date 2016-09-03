@@ -299,6 +299,7 @@ module Syctask
         offset = max_ord_size + max_id_size + 5
         title = split_lines(task.title, 80-offset)
         title = title.chomp.gsub(/\n/, "\n#{' '*offset}")
+        title << ">" if !task.options[:note].nil?
         task_list << sprintf("%#{max_ord_size}d: %#{max_id_size}s %s %s\n", 
                              i, task.id, hint, title).color(color)
       end

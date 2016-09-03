@@ -247,6 +247,7 @@ module Syctask
       
       title = split_lines(@title, 70)
       title = title.chomp.gsub(/\n/, "\n#{' '*7}")
+      title << ">" if !options[:note].nil?
       puts sprintf("%04d - %s", @id, title.bright).color(color)
 
       if @options[:description]

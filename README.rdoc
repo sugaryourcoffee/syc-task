@@ -513,8 +513,12 @@ Version 0.2.0
   - mo|tu|...|sui|b1w|m|y
   - i|b10d|w|m|y
   
-Version 0.2.0
+Version 0.2.1
 * Fix a bug in `syctask delete --plan`
+
+==Development
+Pull from Github and then run `bundle install`. Debugging the interface can be
+done with GLI_DEBUG: `bundle exec env GLI_DEBUG=true bin/syctask`
 
 ==Tests
 The test files live in the folder test and start with test_.

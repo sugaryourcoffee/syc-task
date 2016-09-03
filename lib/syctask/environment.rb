@@ -1,3 +1,5 @@
+require 'find'
+
 module Syctask
 
   # System directory of syctask
@@ -89,26 +91,17 @@ module Syctask
   def check_environment
     FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
     unless viable?
-      unless get_files(File.expand_path("~"), "*.task").empty?
+      recover, whitelisted_dirs, blacklisted_dirs = initialize_or_recover_system
+      case recover
+      when 0
+        FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
+        File.write(ID, "0")
+      when 1
         # Backup ARGV content
         args = []
         ARGV.each {|arg| args << arg} unless ARGV.empty?
         ARGV.clear
-        puts
-        puts "Warning:"
-        puts "-------"
-        puts "There are missing system files of syc-task, even though tasks "+
-             "are available."
-        puts "If you have upgraded from version 0.0.7 or below than this is "+
-             "due to a changed\nfile structure. For changes in version "+
-             "greater 0.0.7 see"
-        puts "--> https://rubygems.org/gems/syc-task"
-        puts "Or you have accidentially deleted system files. In both cases "+
-             "re-indexing\nwill recover syc-task."
-        print "Do you want to recover syc-task (y/n)? "
-        answer = gets.chomp
-        exit -1 unless answer.downcase == "y"
-        reindex_tasks(File.expand_path("~"))
+        reindex_tasks(whitelisted_dirs, blacklisted_dirs)
         puts "Successfully recovered syc-task"
         puts "-> A log file of re-indexed tasks can be found at\n"+
              "#{RIDX_LOG}" if File.exists? RIDX_LOG
@@ -116,9 +109,9 @@ module Syctask
         gets
         # Restore ARGV content
         args.each {|arg| ARGV << arg} unless args.empty?
-      else
-        FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
-        File.write(ID, "0")
+      when 2
+        puts "o.k. - don't do nothing"
+        exit -1
       end
     end
   end
@@ -127,6 +120,73 @@ module Syctask
   # Returns true if neccessary system files are available, otherwise false.
   def viable?
     File.exists? SYC_DIR and File.exists? ID 
+  end
+
+  # Asks the user whether this is a fresh install because of missing system
+  # files. If it is not a fresh install then this might be because of an upgrade
+  # to a version > 0.0.7 or the user accidentally has deleted the system files.
+  # If it is a fresh install the system files are created. Otherwise the user
+  # can select to search for task files and recover the system.
+  # 
+  # intialize_or_recover_system #=> recover, whitelisted_dirs, blacklisted_dirs
+  # recover = 0 just creates the system files as it is fresh install
+  # recover = 1 recover task files
+  # recover = 2 abort, don't recover task files
+  # whitelisted_dirs = array of directories where to search for task files
+  # blacklisted_dirs = array of directories where not to search for task files
+  def initialize_or_recover_system
+    whitelisted_dirs = []
+    blacklisted_dirs = []
+
+    puts "This seems to be a fresh install because there are no system files "+
+         "available."
+    puts "* If this is a fresh install just hit 'y'. "
+    puts "* Otherwise hit 'n' to go to the recovery step."
+    print "Is this a fresh install (y/n)? "
+    answer = gets.chomp
+    if answer.downcase == "y"
+      [0, nil, nil]
+    else
+      puts
+      puts "If you have upgraded from version 0.0.7 or below than this is "+
+           "due to a changed\nfile structure. For changes in version "+
+           "greater 0.0.7 see"
+      puts "--> https://rubygems.org/gems/syc-task"
+      puts "Or you have accidentially deleted system files. In both cases "+
+           "re-indexing\nwill recover syc-task."
+      print "Do you want to recover syc-task (y/n)? "
+      answer = gets.chomp
+      if answer.downcase == "y"
+        puts
+        puts "If you know where your task files are located then you can "+
+             "specify the\ndirectories. Search starts in your home directory."
+        print "Do you want to specify the directories (y/n)? "
+        answer = gets.chomp
+        if answer.downcase == "y"
+          puts "Please enter directories, e.g. ~/.my-tasks ~/work-tasks"
+          whitelisted_dirs = gets.chomp.split(/\s+/)
+                                       .map { |f| File.expand_path(f) }
+        else
+          puts "You don't want to select task directories. It is adviced to "+
+               "exclude mounted \ndirectories as this might take very long to "+
+               "search all directories for task files. Also if it is no " +
+               "stable connection\n the recovery process might be aborted"
+          print "Do you want to exclude directories (y/n)? "
+          if answer.downcase == "y"
+            puts "Please enter directories, e.g. ~/mount ~/.no-tasks"
+            blacklisted_dirs = gets.chomp.split(/\s+/)
+                                         .map { |f| File.expand_path(f) }
+          else
+            whitelisted_dir = [File.expand_path("~")]
+            puts "Searching directories and all sub-directories starting in\n"+
+                 "#{File.expand_path("~")}"
+          end
+        end
+        [1, whitelisted_dirs, blacklisted_dirs]
+      else
+        [2, nil, nil]
+      end
+    end
   end
 
   # Re-indexing of tasks is done when tasks are available but SYC_DIR or ID file
@@ -142,13 +202,12 @@ module Syctask
   # * Copy all system files planned_tasks, time_schedule, tasks.log, id to the
   #   SYC_DIR directory if not already in the SYC_DIR directory. This should
   #   only be if upgrading from version 0.0.7 and below.
-  def reindex_tasks(root)
+  def reindex_tasks(dirs, excluded) #root)
     FileUtils.mkdir_p SYC_DIR unless File.exists? SYC_DIR
     new_id = {}
     to_be_renamed = {}
-    root = File.expand_path(root)
     puts "-> Collect task files..."
-    task_files = task_files(root)
+    task_files = task_files(dirs, excluded)
     puts "-> Restore ID counter..."
     initialize_id(task_files)
     print "-> Start re-indexing now..."
@@ -172,13 +231,13 @@ module Syctask
     to_be_renamed.each {|old_name,new_name| File.rename(old_name, new_name)}
     puts
     puts "-> Update task log file"
-    update_tasks_log(root, new_id)
+    update_tasks_log(dirs, excluded, new_id)
     puts "-> Update planned tasks files"
-    update_planned_tasks(root, new_id)
+    update_planned_tasks(dirs, excluded, new_id)
     puts "-> Move schedule files..."
-    move_time_schedule_files(root)
+    move_time_schedule_files(dirs, excluded)
     puts "-> Update tracked task file..."
-    update_tracked_task(root)
+    update_tracked_task(dirs, excluded)
   end
 
   # Re-indexes the tasks' IDs and renames the task files to match the new ID.
@@ -242,8 +301,8 @@ module Syctask
   end
 
   # Updates the tasks.log file if tasks are re-indexed with the task's new ids
-  def update_tasks_log(dir, new_ids)
-    tasks_log_files(dir).each do |file|
+  def update_tasks_log(dirs, excluded=[], new_ids)
+    tasks_log_files(dirs, excluded).each do |file|
       logs = File.readlines(file)
       logs.each_with_index do |log,i|
         type = log.scan(/^.*?(?=;)/)[0]
@@ -265,26 +324,14 @@ module Syctask
     end
   end
 
-  # TODO delete
-  def update_tasks_log_old(dir, old_id, new_id, file)
-    old_entry = "#{old_id}-#{File.dirname(file)}"
-    # Append '/' to dir name so already updated task is not subsequently updated
-    new_entry = "#{new_id}-#{File.dirname(file)}/"
-    @tasks_log_files = tasks_log_files(dir) if @tasks_log_files.nil?
-    @tasks_log_files.each do |f|
-      tasks_log = File.read(f).gsub(old_entry, new_entry)
-      File.write(f, tasks_log)
-    end
-  end
-
   # Replaces the old ids with the new ids in the planned tasks files. A planned
   # tasks file has the form '2013-03-03_planned_tasks' and lives until syctask's
   # version 0.0.7 in ~/.tasks directory. From version 0.1.0 on the planned tasks
   # files live in the ~/.syc/syctask directory. So the calling method has the
   # responsibility to copy or move the planned tasks files after they have been
   # updated to the new planned tasks directory.
-  def update_planned_tasks(dir, new_ids)
-    planned_tasks_files(dir).each do |file|
+  def update_planned_tasks(dirs, excluded, new_ids)
+    planned_tasks_files(dirs, excluded).each do |file|
       tasks = File.readlines(file)
       tasks.each_with_index do |task,i|
         task_dir, old_id = task.chomp.split(',')
@@ -296,21 +343,9 @@ module Syctask
     end
   end
 
-  # TODO delete
-  def update_planned_tasks_old(dir, old_id, new_id, file)
-    old_entry = "#{File.dirname(file)},#{old_id}"
-    # Append '/' to dir name so already updated task is not subsequently updated
-    new_entry = "#{File.dirname(file)}/,#{new_id}"
-    @planned_tasks_files = planned_tasks_files(dir) if @planned_tasks_files.nil?
-    @planned_tasks_files.each do |file|
-      planned_tasks = File.read(file).gsub(old_entry, new_entry)
-      File.write(file, planned_tasks)
-    end
-  end
-
   # Updates tracked_tasks file if task has been re-indexed with new ID
-  def update_tracked_task(dir)
-    @tracked = get_files(dir, "tracked_tasks") if @tracked.nil?
+  def update_tracked_task(dirs, excluded)
+    @tracked = get_files(dirs, excluded, /tracked_tasks/) if @tracked.nil?
     return if @tracked.empty?
     task = File.read(@tracked[0])
     if File.exists? RIDX_LOG
@@ -337,35 +372,41 @@ module Syctask
 
   # Retrieves all task files in and below the provided dir. Returns an array of
   # task files
-  def task_files(dir)
-    get_files(dir, "*.task").keep_if {|file| file.match /\d+\.task$/}
+  def task_files(dirs, excluded=[])
+    get_files(dirs, excluded, /\d+\.task$/)
   end
 
   # Retrieves all planned task files in and below the given directory
-  def planned_tasks_files(dir)
+  def planned_tasks_files(dirs, excluded=[])
     pattern = %r{\d{4}-\d{2}-\d{2}_planned_tasks}
-    get_files(dir, "*planned_tasks").keep_if {|f| f.match(pattern)}
+    get_files(dirs, excluded, pattern)
   end
 
   # Retrieves all schedule files in and below the given directory
-  def time_schedule_files(dir)
+  def time_schedule_files(dirs, excluded=[])
     pattern = %r{\d{4}-\d{2}-\d{2}_time_schedule}
-    get_files(dir, "*time_schedule").keep_if {|f| f.match(pattern)}
+    get_files(dirs, excluded, pattern)
   end
 
   # Retrieves als tasks.log files in and below the given directory
-  def tasks_log_files(dir)
-    get_files(dir, "tasks.log")
+  def tasks_log_files(dirs, excluded=[])
+    get_files(dirs, excluded, /tasks\.log/)
   end
 
   # Retrieves all files that meet the pattern in and below the given directory
-  def get_files(dir, pattern)
-    original_dir = File.expand_path(".")
-    Dir.chdir(dir)
-    files = Dir.glob("**/#{pattern}", File::FNM_DOTMATCH).map do |f|
-      File.expand_path(f)
+  def get_files(included, excluded=[], pattern)
+    files = []
+    Find.find(*included) do |path|
+      if FileTest.directory?(path)
+        if excluded.include?(path)
+          Find.prune
+        else
+          next
+        end
+      else
+        files << File.expand_path(path) if File.basename(path) =~ pattern  
+      end
     end
-    Dir.chdir(original_dir)
     files
   end
 
@@ -396,8 +437,10 @@ module Syctask
 
   # Moves the tasks.log file to the system directory if not there. Should only
   # be if upgrading from version 0.0.7 and below
-  def move_task_log_file(dir)
-    @tasks_log_files = tasks_log_files(dir) if @tasks_log_files.nil?
+  def move_task_log_file(dirs, excluded)
+    if @tasks_log_files.nil?    
+      @tasks_log_files = tasks_log_files(dirs, excluded) 
+    end
     @tasks_log_files.each do |f|
       next if f == TASKS_LOG
       tasks_log = File.read(f)
@@ -408,8 +451,10 @@ module Syctask
 
   # Moves the planned tasks file to the system directory if not there. Should 
   # only be if upgrading from version 0.0.7 and below
-  def move_planned_tasks_files(dir)
-    @planned_tasks_files = planned_tasks_files(dir) if @planned_tasks_files.nil?
+  def move_planned_tasks_files(dirs, excluded)
+    if @planned_tasks_files.nil?
+      @planned_tasks_files = planned_tasks_files(dirs, excluded) 
+    end
     @planned_tasks_files.each do |file|
       to_file = "#{SYC_DIR}/#{File.basename(file)}"
       next if file == to_file
@@ -419,8 +464,10 @@ module Syctask
 
   # Moves the schedule file to the system directory if not there. Should 
   # only be if upgrading from version 0.0.7 and below
-  def move_time_schedule_files(dir)
-    @time_schedule_files = time_schedule_files(dir) if @time_schedule_files.nil?
+  def move_time_schedule_files(dirs, excluded)
+    if @time_schedule_files.nil?
+      @time_schedule_files = time_schedule_files(dirs, excluded) 
+    end
     @time_schedule_files.each do |file|
       to_file = "#{SYC_DIR}/#{File.basename(file)}" 
       next if file == to_file

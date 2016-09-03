@@ -102,7 +102,7 @@ command :info do |c|
     help_now! "Directory #{dir} does not exists" unless File.exists? dir
     id = options[:id]
     if id
-      tasks = Syctask::get_files(dir, "#{id}.task")
+      tasks = Syctask::get_files(dir, [], /#{id}\.task/)
       tasks.each {|task| puts sprintf("%s", task).color(:green)} 
       puts sprintf("--> No task with ID %s found", id).
         color(:red) if tasks.empty?

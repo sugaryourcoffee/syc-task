@@ -522,8 +522,18 @@ Version 0.2.1
   search in large mounted directories, like from NAS servers.
 
 ==Development
-Pull from Github and then run `bundle install`. Debugging the interface can be
-done with GLI_DEBUG: `bundle exec env GLI_DEBUG=true bin/syctask`
+Pull from Github and then run 
+
+    $ bundle install 
+    
+Debugging the interface can be done with GLI_DEBUG: 
+
+    $ bundle exec env GLI_DEBUG=true bin/syctask
+
+Building and pushing the gemfile to Rubygems
+
+    $ gem build syctask.gemspec
+    $ gem push syc-task-0.2.1.gem
 
 ==Tests
 The test files live in the folder test and start with test_.

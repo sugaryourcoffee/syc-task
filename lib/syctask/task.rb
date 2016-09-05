@@ -285,14 +285,14 @@ module Syctask
     # id;title;description;prio;follow-up;due;note;tags;created;
     # updated|UNCHANGED;DONE|OPEN
     def csv_string
-      string = "\n#{@id};#{@title};"
-      string +" #{@options[:description]};#{@options[:prio]};"
+      string =  "#{@id};#{@title};"
+      string += "#{@options[:description]};#{@options[:prio]};"
       string += "#{@options[:follow_up]};#{@options[:due_date]};"
-      string += "#{@options[:note].gsub(/\n/, '\\n')};"
+      string += "#{@options[:note] ? @options[:note].gsub(/\n/, '\\n') : ""};"
       string += "#{@options[:tags]};"
       string += "#{@creation_date};"
       string += "#{@udpate_date ? "UPDATED" : "UNCHANGED"};"
-      string += "#{@done_date ? "DONE" : "OPEN"}\n"
+      string += "#{@done_date ? "DONE" : "OPEN"}"
       string
     end
 

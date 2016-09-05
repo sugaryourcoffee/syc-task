@@ -225,6 +225,9 @@ command :list do |c|
   c.desc 'Print complete task'
   c.switch [:c, :complete]
 
+  c.desc 'Print as csv separated by ";"'
+  c.switch [:csv]
+
   c.desc 'Filter for ID'
   c.arg_name 'ID1,ID2,ID3|[<|=|>]ID'
   c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|^[<|=|>]\d+/ 
@@ -260,15 +263,20 @@ command :list do |c|
   c.action do |global_options,options,args|
     filter = [:id, :tags, :description, :prio, :due_date, :follow_up, 
               :note, :title]
+    csv = options[:csv]
     all = options[:all]
     complete = options[:complete]
     options.keep_if {|key, value| filter.find_index(key) and value != nil}
     count = 0
     @service.find(global_options[:t], options, all).each do |task|
-      task.print_pretty(complete)
-      count += 1
+      if csv
+        task.print_csv
+      else
+        task.print_pretty(complete)
+        count += 1
+      end
     end      
-    STDOUT.puts sprintf("--> found %d tasks", count).color(:green)
+    STDOUT.puts sprintf("--> found %d tasks", count).color(:green) unless csv
   end
 end
 

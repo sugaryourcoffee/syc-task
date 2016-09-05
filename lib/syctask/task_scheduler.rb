@@ -166,10 +166,14 @@ module Syctask
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       return [[], [], [], []] unless File.exists? state_file
       state = YAML.load_file(state_file)
-      [state[:work_time], 
-       state[:busy_time], 
-       state[:meetings], 
-       state[:assignments]]
+      if state
+        [state[:work_time], 
+         state[:busy_time], 
+         state[:meetings], 
+         state[:assignments]]
+      else
+        [[], [], [], []]
+      end
     end
 
   end

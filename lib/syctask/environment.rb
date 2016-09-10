@@ -3,7 +3,7 @@ require 'find'
 module Syctask
 
   # System directory of syctask
-  SYC_DIR = File.expand_path('~/.syc/syctask')
+  SYC_DIR = File.join(ENV['HOME'], '.syc/syctask') # expand_path('~/.syc/syctask')
   # ID file where the last issued ID is saved
   ID = SYC_DIR + "/id"
   # File that contains all issued IDs
@@ -28,7 +28,7 @@ module Syctask
   # User specified default working directory
   work_dir = dir if not dir.nil? and not dir.empty? and File.exists? dir
   # Set eather user defined work directory or default
-  WORK_DIR = work_dir.nil? ? File.expand_path('~/.tasks') : work_dir
+  WORK_DIR = work_dir.nil? ? File.join(ENV['HOME'], '.tasks') : work_dir
 
   # Logs a task regarding create, update, done, delete
   def log_task(type, task)
@@ -177,9 +177,9 @@ module Syctask
             blacklisted_dirs = gets.chomp.split(/\s+/)
                                          .map { |f| File.expand_path(f) }
           else
-            whitelisted_dir = [File.expand_path("~")]
+            whitelisted_dir = [ENV['HOME']]
             puts "Searching directories and all sub-directories starting in\n"+
-                 "#{File.expand_path("~")}"
+                 "#{ENV['HOME']}"
           end
         end
         [1, whitelisted_dirs, blacklisted_dirs]

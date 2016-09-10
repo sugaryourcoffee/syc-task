@@ -1,0 +1,12 @@
+clean
+clobber
+clobber_package
+clobber_rdoc
+features
+features:wip
+gem
+package
+rdoc
+repackage
+rerdoc
+test

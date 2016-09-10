@@ -97,7 +97,7 @@ command :info do |c|
 
   c.action do |global_options,options,args|
     dir = options[:dir]
-    dir ||= "~"
+    dir ||= ENV['HOME']
     dir = File.expand_path(dir)
     help_now! "Directory #{dir} does not exists" unless File.exists? dir
     id = options[:id]

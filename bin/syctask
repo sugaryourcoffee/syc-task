@@ -184,8 +184,24 @@ desc 'Extract tasks from a file'
 arg_name 'TASK_FILE'
 command :scan do |c|
   c.action do |global_options,options,args|
-    help_now! "You must provide a file to extract tasks from" if args.empty?
-    puts "not implemented yet!"
+    help_now! "You must provide file(s) to extract tasks from" if args.empty?
+    scanner = Syctask::Scanner.new
+    task_numbers = []
+    args.each do |file|
+      scanner.scan(file).each do |title, options| 
+        task_number = @service.create(global_options[:t], options, title)
+        add_task_to_plan @service.read(global_options[:t], task_number)
+        task_numbers << task_number
+      end
+    end
+    
+    if task_numbers.empty?
+      puts
+      help_now! "#{args.join(', ')} doesn't contain tasks"
+    else
+      STDOUT.puts sprintf("%s %s", "--> created tasks with task numbers",
+                          " #{task_numbers.join(', ')}").color(:green)
+    end
   end
 end
 

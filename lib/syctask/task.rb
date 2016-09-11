@@ -13,14 +13,19 @@ module Syctask
 
     include Comparable
 
+    # The fields that can be set for a task
+    FIELDS = ["title", "description", 
+              "follow_up", "due_date", "prio", 
+              "note", "tags"]
     # Holds the options of the task. 
     # Options are
     # * description - additional information about the task
-    # * follow_up - follow-up date of the task
-    # * due - due date of the task
-    # * prio - priority of the task
-    # * note - information about the progress or state of the task
-    # * tags - can be used to search for tasks that belong to a certain category
+    # * follow_up   - follow-up date of the task
+    # * due_date    - due date of the task
+    # * prio        - priority of the task
+    # * note        - information about the progress or state of the task
+    # * tags        - can be used to search for tasks that belong to a certain 
+    #                 category
     attr_accessor :options
     # Title of the class
     attr_reader :title

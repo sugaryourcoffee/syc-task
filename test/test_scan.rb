@@ -17,7 +17,7 @@ class TestScan < Minitest::Test
       restore_system_files("TestTask")
     end
 
-    should "create task fields from a string" do
+    should "create task fields from a string separated with ;" do
       content = <<-HEREDOC
       This is text that should be ignored
       @tasks;
@@ -41,16 +41,74 @@ class TestScan < Minitest::Test
       end
     end
 
-    should "create task from file with all fields" do
+    should "create task from string in markdown notation" do
+      content = <<-HEREDOC
+      This is text that should be ignored
+      And here we go with markdown
+      @tasks|
+      title |description |prio|due_date  |follow_up
+      ------|------------|----|----------|----------
+      Title1|Description1|1   |2016-09-10|2016-09-11
+      Title2|Description2|2   |2016-09-20|2016-09-21
+      Title3|Description3|3   |2016-09-30|2016-09-31
+
+      This is text that should be ignored
+      HEREDOC
+
+      scanner = Scanner.new
+      tasks = scanner.scan(content)
+      assert_equal 3, tasks.size
+
+      tasks.each_with_index do |(title, options), i|
+        i += 1
+        assert_equal "Title#{i}", title
+        assert_equal [:description, :prio, :due_date, :follow_up], options.keys
+        assert_equal ["Description#{i}", "#{i}", 
+                      "2016-09-#{i}0", "2016-09-#{i}1"], options.values
+      end
+
     end
 
-    should "create task from file with last fields omitted" do
-    end
+    should "create tasks from string with multiple annotations" do
+      content = <<-HEREDOC
+      This is text that should be ignored
+      And here we go with markdown
+      @tasks|
+      title |description |prio|due_date  |follow_up
+      ------|------------|----|----------|----------
+      Title1|Description1|1   |2016-09-10|2016-09-11
+      Title2|Description2|2   |2016-09-20|2016-09-21
 
-    should "create task from file with intermediate fields omitted" do
-    end
+      This is text that should be ignored
+      And no we go with on task ommitting the task fields using those from
+      before
+      @task;
+      Title3;Description3;3;2016-09-30;2016-09-31
+      Titlex;Descriptionx;x;2016-09-10;2016-09-11
+      The Titlex should not be scanned
+      But we go now again for @tasks
+      @tasks;
+      Title4;Description4;4;2016-09-40;2016-09-41
+      Title5;Description5;5;2016-09-50;2016-09-51
+      And some other text that separates from following tasks
+      Title6;Description6;6;2016-09-60;2016-09-61
 
-    should "create task from file with intermediate and last fields omitted" do
+      And here is the end 
+      HEREDOC
+
+      STDERR.puts "----------> multiple tasks"
+      scanner = Scanner.new
+      tasks = scanner.scan(content)
+      assert_equal 6, tasks.size
+
+      tasks.each_with_index do |(title, options), i|
+        i += 1
+        assert_equal "Title#{i}", title
+        assert_equal [:description, :prio, :due_date, :follow_up], options.keys
+        assert_equal ["Description#{i}", "#{i}", 
+                      "2016-09-#{i}0", "2016-09-#{i}1"], options.values
+      end
+
     end
 
   end

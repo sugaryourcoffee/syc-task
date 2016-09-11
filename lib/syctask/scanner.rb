@@ -51,23 +51,23 @@ module Syctask
     # Scans a file for tasks
     def scan_file(file)
       File.read_lines(file) do |line|
-        scan_line(line.chomp)
+        scan_line(line.strip)
       end
     end
 
     # Scans a text for tasks
     def scan_text(text)
       text.each_line do |line|
-        scan_line(line.chomp)
+        scan_line(line.strip)
       end
     end
 
     # Scans a string (line) for tasks
     def scan_line(line)
-      if line.strip =~ /^@tasks./
+      if line =~ /^@tasks./
         @scan, @separator = line.scan(/(@tasks)(.)/).flatten
         @scanned = false
-      elsif line.strip =~ /^@task./
+      elsif line =~ /^@task./
         @scan, @separator = line.scan(/(@task)(.)/).flatten
         @scanned = false
       else
@@ -93,9 +93,10 @@ module Syctask
 
     # Scans the 'line' for task values
     def scan_task_line(line)
+      STDERR.puts line.inspect
+      return if line.start_with? '-'
       task_values = line.split(@separator)
       if @task_fields && (@task_fields.size == task_values.size)
-        #@tasks << { title_of(task_values) => options_of(task_values) }
         @tasks[title_of(task_values)] = options_of(task_values)
         @scanned = true
       end
@@ -114,7 +115,7 @@ module Syctask
       task_fields = @task_fields - [:title]
       options = {}
       task_fields.each_with_index do |field, index|
-        options[field] = task_values[index]
+        options[field] = task_values[index].strip
       end
       options
     end

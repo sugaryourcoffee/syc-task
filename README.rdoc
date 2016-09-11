@@ -484,7 +484,7 @@ To print to Dell-B1160w-Mono the following command can be used
     $ syctask schedule | lpr -P Dell-B1160w-Mono
 
 ==Release Notes
-Version 0.0.1 
+===Version 0.0.1 
 Implementation of new, update, list and done commands.
 
 ===Version 0.0.4
@@ -569,9 +569,9 @@ Implementation of new, update, list and done commands.
     - i|b10d|w|m|y
   
 ====Version 0.2.1
- * Fix a bug in `syctask delete --plan`
- * Add indicator '>' to task list when task contains notes
- * Refactor migration from version 0.0.7 and when user has deleted system files.
+* Fix a bug in `syctask delete --plan`
+* Add indicator '>' to task list when task contains notes
+* Refactor migration from version 0.0.7 and when user has deleted system files.
   The user can now specify the directories where the tasks are located and can
   also define directories to be excluded. This is especially helpful to omit 
   search in large mounted directories, like from NAS servers.

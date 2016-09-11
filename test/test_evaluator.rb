@@ -52,6 +52,7 @@ class TestEvaluator < Minitest::Test #Test::Unit::TestCase
       assert @evaluator.includes?("8", "1-9,10,15-20")
       assert @evaluator.includes?("9", "1,2,4-10")
       assert @evaluator.includes?("5", "1,2 - 5,10,4- 8")
+      assert @evaluator.includes?("3", "1,2 - 5,10,4- 8")
     end
 
     should "evaluate string array" do

@@ -79,7 +79,7 @@ module Syctask
     # normalized e.g. 1-5 will become 1,2,3,4,5
     def normalize_ranges(pattern)
       if pattern.include? "-"
-        pattern.split(',').map do |value|
+        pattern.gsub(/\s/, "").split(',').map do |value|
           if value.include? '-' 
             if value =~ /^\d+-\d+$/
               a, b = value.split('-')

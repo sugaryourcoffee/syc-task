@@ -16,6 +16,7 @@ lib/syctask/version.rb
 lib/syctask/task.rb
 lib/syctask/task_service.rb
 lib/syctask/task_planner.rb
+lib/syctask/scanner.rb
 lib/syctask/evaluator.rb
 lib/syctask.rb
 lib/syctask/task_scheduler.rb

@@ -1,4 +1,5 @@
 tasks/
+pkg/
 *.gem
 *.tar
 *.gz

@@ -50,7 +50,7 @@ module Syctask
 
     # Scans a file for tasks
     def scan_file(file)
-      File.read_lines(file) do |line|
+      File.foreach(file) do |line|
         scan_line(line.strip)
       end
     end
@@ -64,11 +64,11 @@ module Syctask
 
     # Scans a string (line) for tasks
     def scan_line(line)
-      if line =~ /^@tasks./
-        @scan, @separator = line.scan(/(@tasks)(.)/).flatten
+      if line =~ /^@tasks./i
+        @scan, @separator = line.scan(/(@tasks)(.)/i).flatten
         @scanned = false
-      elsif line =~ /^@task./
-        @scan, @separator = line.scan(/(@task)(.)/).flatten
+      elsif line =~ /^@task./i
+        @scan, @separator = line.scan(/(@task)(.)/i).flatten
         @scanned = false
       else
         if not @scanned
@@ -93,7 +93,6 @@ module Syctask
 
     # Scans the 'line' for task values
     def scan_task_line(line)
-      STDERR.puts line.inspect
       return if line.start_with? '-'
       task_values = line.split(@separator)
       if @task_fields && (@task_fields.size == task_values.size)
@@ -123,7 +122,7 @@ module Syctask
     # Checks whether multiple tasks should be scanned which is indicated by
     # '@scan == '@tasks'.
     def multiple_scan?
-      @scan == '@tasks'
+      @scan =~ /@tasks/i
     end
   end
 

@@ -36,6 +36,60 @@ will prompt for task titles. Ctrl-D will end input.
 
 Except for --description you can also provide short forms for the options.
 
+===Create tasks by scanning from files
+When writing minutes of meetings tasks that should be followed up in syctask
+can be annotated so they will be recognized by the scan command. The following
+structure shows how to annotade tasks
+
+    Some text before
+
+    @task;
+    title;description;follow_up;due_date,prio
+    Schedule meeting;Invite all developers;2016-09-12;2016-10-12;1
+    Write letter;Practice writing letters;;;3
+
+    Some text after
+
+The above annotation will only scan the next task because of the singular 'task'
+where the task values are separated with ';'. The line after the annotation
+'@task' lists the sequence of the fields of the task. It is also possible to 
+list the tasks in a table, e.g. markdown
+
+    Some text before
+
+    @tasks|
+    title           |description               |follow_up |due_date  |prio
+    ----------------|--------------------------|----------|----------|----
+    Schedule meeting|Invite all developers     |2016-09-12|2016-10-12|1
+    Write letter    |Practice writing letters  |          |          |3
+
+    Some text after
+
+    Call partner    |Ask for project's progress|2016-09-14|          |1
+
+    Even more text 
+
+The example above scans all tasks due to the plural 'tasks'. It also scans all
+tasks that are separated with non-task text and occur after the annotation and 
+confirm to the filed structure. Lines that start with '-' will be ignored. So 
+if you want to skip only a view tasks within a task list prepend them with '-'.
+If you have tasks with different fields then you have to add another annotation
+with the new field structure. 
+
+Possible fields are
+
+    title       - the title of the task
+    description - the description of the task
+    follow_up   - the follow-up date of the task in the form yyyy-mm-dd
+    due_date    - the due-date of the task in the form yyyy-mm-dd
+    prio        - the priority of the task
+    tags        - tags the task is annotated with
+    note        - a note for the task
+
+Scanning tasks from a file
+
+    $ syctask scan 2016-09-10-mom.md 2016-09-09-mom.md
+
 ===Plan tasks
 The plan command will print tasks and prompts whether to (a)dd or (s)kip the 
 task. If (q)uit is selected the tasks already added will be add to the today's 
@@ -57,9 +111,9 @@ Invoke plan with a filter
 Move tasks to another days plan
     $ syctask plan today --move tomorrow --id 3,5
 
-This will move the tasks with ID 3 and 5 from the today's plan to the tomorrow's 
-plan. The duration will be set to the remaining processing time but at least to
-30 minutes.
+This will move the tasks with ID 3 and 5 from the today's plan to the 
+tomorrow's plan. The duration will be set to the remaining processing time but 
+at least to 30 minutes.
 
 ===Prioritize tasks
 Planned tasks can be prioritized in a pair wise comparisson. So each task is
@@ -524,6 +578,7 @@ Version 0.2.1
 Version 0.3.2
 * Add csv output spearated by ';' to the list command
 * Fix bug when schedule file is empty
+* Add scan command to scan tasks from files
 
 ==Development
 Pull from Github and then run 
@@ -551,5 +606,4 @@ syc-task is released under the {MIT License}[http://opensource.org/licenses/MIT]
 
 ==Links
 * [http://www.github.com/sugaryourcoffee/syc-task] - Source code on GitHub
-* [http://syc.dyndns.org/drupal/wiki/syc-task] - Development notebook
-* [https://rubygems.org/gems/syc-backup] - RubyGems
+* [https://rubygems.org/gems/syc-task] - RubyGems

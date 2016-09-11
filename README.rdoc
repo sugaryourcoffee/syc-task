@@ -71,7 +71,7 @@ list the tasks in a table, e.g. markdown
 
 The example above scans all tasks due to the plural 'tasks'. It also scans all
 tasks that are separated with non-task text and occur after the annotation and 
-confirm to the filed structure. Lines that start with '-' will be ignored. So 
+confirm to the field structure. Lines that start with '-' will be ignored. So 
 if you want to skip only a view tasks within a task list prepend them with '-'.
 If you have tasks with different fields then you have to add another annotation
 with the new field structure. 
@@ -585,6 +585,8 @@ Pull from Github and then run
 
     $ bundle install 
     
+New classes have to be added to 'lib/syctask.rb'
+
 Debugging the interface can be done with GLI_DEBUG: 
 
     $ bundle exec env GLI_DEBUG=true bin/syctask
@@ -601,6 +603,14 @@ There is a rake file available to run all tests
 
     $ rake test
    
+The CLI is tested with Cucumber. To run the Cucumber features in verbose mode
+
+    $ cucumber
+
+or if you prefer cleaner output run
+
+    $ rake features
+
 ==License
 syc-task is released under the {MIT License}[http://opensource.org/licenses/MIT]
 

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::Evaluator - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/evaluator.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-compare">#compare</a>
+    
+    <li><a href="#method-i-compare_dates">#compare_dates</a>
+    
+    <li><a href="#method-i-compare_numbers">#compare_numbers</a>
+    
+    <li><a href="#method-i-includes-3F">#includes?</a>
+    
+    <li><a href="#method-i-matches-3F">#matches?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::Evaluator</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="Evaluator.html">Evaluator</a> provides different evaluatons for
+comparing numbers, dates and strings. Also provides methods to check
+whether a value is part  of a list</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="CSV_PATTERN">CSV_PATTERN
+        
+        <dd class="description"><p>Pattern to match comma separated values</p>
+        
+      
+        <dt id="DATE_COMPARE_PATTERN">DATE_COMPARE_PATTERN
+        
+        <dd class="description"><p>Pattern to match a date prepended by &lt;|=|&gt; or a single date</p>
+        
+      
+        <dt id="DATE_PATTERN">DATE_PATTERN
+        
+        <dd class="description"><p>Pattern to match a date in the form of yyyy-mm-dd</p>
+        
+      
+        <dt id="NON_COMPARE_PATTERN">NON_COMPARE_PATTERN
+        
+        <dd class="description"><p>Pattern that matches anything that is not prepended with &lt;|=|&gt;</p>
+        
+      
+        <dt id="NUMBER_COMPARE_PATTERN">NUMBER_COMPARE_PATTERN
+        
+        <dd class="description"><p>Pattern to match operands &lt;|=|&gt; followed by a number or a single
+number</p>
+        
+      
+        <dt id="NUMBER_CSV_PATTERN">NUMBER_CSV_PATTERN
+        
+        <dd class="description"><p>Pattern to match comma separated numbers</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-compare" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compare</span><span
+            class="method-args">(value, operands)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Compares two values regarding &lt;|=|&gt;. Returns true if the comparisson
+succeeds otherwise false. If eather value or operand is nil false is
+returned.</p>
+          
+
+          
+          <div class="method-source-code" id="compare-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compare</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">operands</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">operands</span>[<span class="ruby-value">2</span>]
+    <span class="ruby-identifier">operands</span>[<span class="ruby-value">0</span>] = <span class="ruby-string">&quot;==&quot;</span>
+    <span class="ruby-identifier">operands</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">operands</span>[<span class="ruby-value">2</span>]
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">operands</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;=&quot;</span>
+    <span class="ruby-identifier">operands</span>[<span class="ruby-value">0</span>] = <span class="ruby-string">&quot;==&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">expression</span> = <span class="ruby-node">&quot;#{value} #{operands[0]} #{operands[1]}&quot;</span>
+  <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">expression</span>) 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- compare-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- compare-method -->
+
+    
+      <div id="method-i-compare_dates" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compare_dates</span><span
+            class="method-args">(value, pattern)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Compares two dates regarding &lt;|=|&gt;. Returns true if the comparisson
+succeeds otherwise false. If eather value or pattern is nil false is
+returned.</p>
+          
+
+          
+          <div class="method-source-code" id="compare_dates-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compare_dates</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">pattern</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">DATE_COMPARE_PATTERN</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-identifier">value</span> = <span class="ruby-node">&quot;'#{value}'&quot;</span>
+  <span class="ruby-identifier">captures</span> = <span class="ruby-identifier">result</span>.<span class="ruby-identifier">captures</span>.<span class="ruby-identifier">collect!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> 
+    <span class="ruby-identifier">c</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">DATE_PATTERN</span>) <span class="ruby-operator">?</span> <span class="ruby-node">&quot;'#{c}'&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">c</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">compare</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">captures</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- compare_dates-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- compare_dates-method -->
+
+    
+      <div id="method-i-compare_numbers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compare_numbers</span><span
+            class="method-args">(value, pattern)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Compares two numbers regarding &lt;|=|&gt;. Returns true if the comparisson
+succeeds otherwise false. If eather value or pattern is nil false is
+returned. If value is empty false is returned.</p>
+          
+
+          
+          <div class="method-source-code" id="compare_numbers-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compare_numbers</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">pattern</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">String</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">NUMBER_COMPARE_PATTERN</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">result</span>
+  <span class="ruby-identifier">compare</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">captures</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- compare_numbers-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- compare_numbers-method -->
+
+    
+      <div id="method-i-includes-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">includes?</span><span
+            class="method-args">(value, pattern)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Evaluates whether value is part of the provided csv pattern. Returns true
+if it evaluates to true otherwise false. If value or pattern is nil false
+is returned.</p>
+          
+
+          
+          <div class="method-source-code" id="includes-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">includes?</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">pattern</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">captures</span> = <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-constant">CSV_PATTERN</span>)
+  <span class="ruby-operator">!</span><span class="ruby-identifier">captures</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- includes-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- includes-3F-method -->
+
+    
+      <div id="method-i-matches-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">matches?</span><span
+            class="method-args">(value, regex)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Evaluates if value matches the provided regex. Returns true if a match is
+found. If value or regex is nil false is returned.</p>
+          
+
+          
+          <div class="method-source-code" id="matches-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">regex</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">regex</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-operator">!</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">regex</span>, <span class="ruby-keyword">true</span>)).<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- matches-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- matches-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

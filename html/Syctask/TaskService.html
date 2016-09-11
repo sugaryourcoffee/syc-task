@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::TaskService - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/task_service.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-create">#create</a>
+    
+    <li><a href="#method-i-delete">#delete</a>
+    
+    <li><a href="#method-i-find">#find</a>
+    
+    <li><a href="#method-i-read">#read</a>
+    
+    <li><a href="#method-i-read_by_id">#read_by_id</a>
+    
+    <li><a href="#method-i-save">#save</a>
+    
+    <li><a href="#method-i-update">#update</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::TaskService</h1>
+
+  <div id="description" class="description">
+    
+<p>Provides services to operate tasks as create, read, find, update and save
+<a href="Task.html">Task</a> objects</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="DEFAULT_DIR">DEFAULT_DIR
+        
+        <dd class="description"><p>Default directory where the tasks are saved to if no directory is specified</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">(dir, options, title)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new task in the specified directory, with the specified options
+and the specified title. If the directory doesn’t exist it is created. When
+the task is created it is assigned a unique ID within the directory.
+Options are</p>
+<ul><li>
+<p>description - additional information about the task</p>
+</li><li>
+<p>follow_up - follow-up date of the task</p>
+</li><li>
+<p>due  - due date of the task</p>
+</li><li>
+<p>prio - priority of the task</p>
+</li><li>
+<p>note - information about the progress or state of the task</p>
+</li><li>
+<p>tags - can be used to searching tasks that belong to a certain category</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">title</span>)
+  <span class="ruby-identifier">create_dir</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">task</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">options</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">next_id</span>(<span class="ruby-identifier">dir</span>))
+  <span class="ruby-identifier">save</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_task</span>(<span class="ruby-string">&quot;create&quot;</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create-method -->
+
+    
+      <div id="method-i-delete" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete</span><span
+            class="method-args">(dir, filter)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Deletes tasks in the specified directory that match the provided filter. If
+no filter is provide no task is deleted. The count of deleted tasks is
+returned</p>
+          
+
+          
+          <div class="method-source-code" id="delete-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">filter</span>)
+  <span class="ruby-identifier">deleted</span> = <span class="ruby-value">0</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*.task&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-comment"># If the file is no task but read by YAML ignore it</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span>)
+      <span class="ruby-identifier">deleted</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">file</span>)
+      <span class="ruby-identifier">ids</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">IDS</span>)
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">IDS</span>, <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">&quot;#{task.id},#{file}&quot;</span>,<span class="ruby-string">&quot;&quot;</span>))
+      <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_task</span>(<span class="ruby-string">&quot;delete&quot;</span>, <span class="ruby-identifier">task</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">deleted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- delete-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- delete-method -->
+
+    
+      <div id="method-i-find" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find</span><span
+            class="method-args">(dir, filter={}, all=true)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Finds all tasks that match the given filter. The filter can be provided for
+:id, :title, :description, :follow_up, :due, :tags and :prio. id can be
+eather a selection of IDs ID1,ID2,ID3 or a comparison &lt;|=|&gt;ID. title
+and :description can be a REGEX as /look for d+ examples/ follow-up and
+:due can be &lt;|=|&gt;DATE tags can be eather a selection TAG1,TAG2,TAG3
+or a REGEX /[Ll]ecture/ prio can be &lt;|=|&gt;PRIO  dir is the directory
+where find looks for tasks all specifies whether to consider also completed
+tasks (default) or only open tasks</p>
+          
+
+          
+          <div class="method-source-code" id="find-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">filter</span>={}, <span class="ruby-identifier">all</span>=<span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">tasks</span> = []
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*.task&quot;</span>).<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-comment"># If the file is no task but read by YAML ignore it</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">all</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">done?</span>
+    <span class="ruby-identifier">tasks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">filter</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- find-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- find-method -->
+
+    
+      <div id="method-i-read" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">read</span><span
+            class="method-args">(dir, id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Reads the task with given ID id located in given directory dir. If task
+does not exist nil is returned otherwise the task is returned</p>
+          
+
+          
+          <div class="method-source-code" id="read-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">task</span> = <span class="ruby-identifier">read_by_id</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">task</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-comment">#task = nil</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/*.task&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">file</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">task</span> 
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- read-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- read-method -->
+
+    
+      <div id="method-i-read_by_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">read_by_id</span><span
+            class="method-args">(id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Reads the task identified by ID. If no task with ID is found nil is
+returned otherwise the task</p>
+          
+
+          
+          <div class="method-source-code" id="read_by_id-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_by_id</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">IDS</span>
+  <span class="ruby-identifier">ids</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">IDS</span>)
+  <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-node">%r(^#{id}),(.*\n)/</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">entry</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">chomp</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">entry</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- read_by_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- read_by_id-method -->
+
+    
+      <div id="method-i-save" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save</span><span
+            class="method-args">(dir, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Saves the task to the task directory. If dir is nil the default dir
+~/.tasks will be set.</p>
+          
+
+          
+          <div class="method-source-code" id="save-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 135</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span> = <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-constant">DEFAULT_DIR</span> <span class="ruby-operator">:</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">task_file</span> = <span class="ruby-node">&quot;#{task.dir}/#{task.id}.task&quot;</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">task_file</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">IDS</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{task.id},#{task_file}&quot;</span>}
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">task_file</span>, <span class="ruby-string">'w'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">f</span>)}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- save-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- save-method -->
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">(dir, id, options)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Updates the task with the given id in the given directory dir with the
+provided options.  Options are</p>
+<ul><li>
+<p>description - additional information about the task</p>
+</li><li>
+<p>follow_up - follow-up date of the task</p>
+</li><li>
+<p>due - due date of the task</p>
+</li><li>
+<p>prio - priority of the task</p>
+</li><li>
+<p>note - information about the progress or state of the task</p>
+</li><li>
+<p>tags - can be used to searching tasks that belong to a certain category</p>
+</li></ul>
+
+<p>Except for note and tags the values of the task are overridden with the new
+value. If note and tags are provided these are added to the existing
+values.</p>
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_service.rb, line 95</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>(<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">id</span>, <span class="ruby-identifier">options</span>)
+  <span class="ruby-identifier">task</span> = <span class="ruby-identifier">read_by_id</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">task</span>
+    <span class="ruby-identifier">task_file</span> = <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{dir}/#{id}.task&quot;</span>)[<span class="ruby-value">0</span>]
+    <span class="ruby-identifier">task</span> = <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-identifier">task_file</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">task_file</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">updated</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>
+    <span class="ruby-identifier">task</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">options</span>) 
+    <span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+    <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-identifier">log_task</span>(<span class="ruby-string">&quot;update&quot;</span>, <span class="ruby-identifier">task</span>)
+    <span class="ruby-identifier">updated</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">updated</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

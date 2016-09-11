@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>README - Your application title</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Syctask.html">Syctask</a>
+  
+    <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="./Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="./Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="./Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="./Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="./Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="./Sycutil.html">Sycutil</a>
+  
+    <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Sycstring.html">Sycstring</a>
+  
+    <li><a href="./Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<h1 id="label-Simple+task+organizer">Simple task organizer</h1>
+
+<p>syctask can be used to create, plan, prioritize and schedule tasks.</p>
+
+<h2 id="label-Install">Install</h2>
+
+<p>The application can be installed with</p>
+
+<pre>$ gem install syc-task</pre>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>syctask provides basic task organizer functions as create, update, list and
+complete a task. Additional functions are to plan tasks you want to
+accomplish  today. If you are not sure in which sequence to conduct the
+task you can  prioritize them with a pair wise comparisson. You can time
+tasks with start and  stop and you can finally extract tasks from a minutes
+of meetings file. The  schedule task command will print a graphical
+timeline of the working day  assigning the planned tasks to the timeline.
+Busy times are marked red.  Meetings are listed with associated tasks that
+are assigned to the meetings.  With the statistics command you can print
+statistical evaluation of tasks  duration and count.</p>
+
+<h3 id="label-Create+tasks+with+new">Create tasks with new</h3>
+
+<p>Create a new task in the default task directory ~/.tasks</p>
+
+<pre>$ syctask new &quot;My first task&quot;</pre>
+
+<p>Provide a description</p>
+
+<pre>$ syctask new &quot;My first task&quot; --description &quot;Explanation of my first task&quot;</pre>
+
+<p>Schedule a task with a follow-up and due date</p>
+
+<pre>$ syctask new &quot;My first task&quot; --follow-up &quot;2013-02-25&quot; --due &quot;2013-03-11&quot;</pre>
+
+<p>Set a proirity for a task</p>
+
+<pre>$ syctask new &quot;My first task&quot; --prio 3</pre>
+
+<p>Prompt for task input</p>
+
+<pre>$ syctask new</pre>
+
+<p>will prompt for task titles. Ctrl-D will end input.</p>
+
+<p>Except for –description you can also provide short forms for the options.</p>
+
+<h3 id="label-Create+tasks+by+scanning+from+files">Create tasks by scanning from files</h3>
+
+<p>When writing minutes of meetings tasks that should be followed up in
+syctask can be annotated so they will be recognized by the scan command.
+The following structure shows how to annotade tasks</p>
+
+<pre>Some text before
+
+@task;
+title;description;follow_up;due_date,prio
+Schedule meeting;Invite all developers;2016-09-12;2016-10-12;1
+Write letter;Practice writing letters;;;3
+
+Some text after</pre>
+
+<p>The above annotation will only scan the next task because of the singular
+‘task’ where the task values are separated with ‘;’. The line after the
+annotation ‘@task’ lists the sequence of the fields of the task. It is also
+possible to  list the tasks in a table, e.g. markdown</p>
+
+<pre>Some text before
+
+@tasks|
+title           |description               |follow_up |due_date  |prio
+----------------|--------------------------|----------|----------|----
+Schedule meeting|Invite all developers     |2016-09-12|2016-10-12|1
+Write letter    |Practice writing letters  |          |          |3
+
+Some text after
+
+Call partner    |Ask for project's progress|2016-09-14|          |1
+
+Even more text</pre>
+
+<p>The example above scans all tasks due to the plural ‘tasks’. It also scans
+all tasks that are separated with non-task text and occur after the
+annotation and  confirm to the filed structure. Lines that start with ‘-’
+will be ignored. So  if you want to skip only a view tasks within a task
+list prepend them with ‘-’. If you have tasks with different fields then
+you have to add another annotation with the new field structure.</p>
+
+<p>Possible fields are</p>
+
+<pre>title       - the title of the task
+description - the description of the task
+follow_up   - the follow-up date of the task in the form yyyy-mm-dd
+due_date    - the due-date of the task in the form yyyy-mm-dd
+prio        - the priority of the task
+tags        - tags the task is annotated with
+note        - a note for the task</pre>
+
+<p>Scanning tasks from a file</p>
+
+<pre>$ syctask scan 2016-09-10-mom.md 2016-09-09-mom.md</pre>
+
+<h3 id="label-Plan+tasks">Plan tasks</h3>
+
+<p>The plan command will print tasks and prompts whether to (a)dd or (s)kip
+the  task. If (q)uit is selected the tasks already added will be add to the
+today’s  task list. If ©omplete is selected the complete task will be
+printed and the  user will be prompted again for adding the task.</p>
+
+<p>Invoke plan without filter</p>
+
+<pre>$ syctask plan
+1 - My first task
+(a)dd, (c)omplete, (s)kip, (q)uit? a
+Duration (1 = 15 minutes, return 30 minutes): 3
+--&gt; 1 task(s) planned</pre>
+
+<p>Invoke plan with a filter</p>
+
+<pre>$ syctask plan --id &quot;1,3,5,8&quot;
+1 - My first task
+(a)dd, (c)omplete, (s)kip, (q)uit?</pre>
+
+<p>Move tasks to another days plan</p>
+
+<pre>$ syctask plan today --move tomorrow --id 3,5</pre>
+
+<p>This will move the tasks with ID 3 and 5 from the today’s plan to the 
+tomorrow’s plan. The duration will be set to the remaining processing time
+but  at least to 30 minutes.</p>
+
+<h3 id="label-Prioritize+tasks">Prioritize tasks</h3>
+
+<p>Planned tasks can be prioritized in a pair wise comparisson. So each task
+is compared to all other tasks. The task with the highest priority will
+bubble on top followed by the task with the next highest priority and so
+on.</p>
+
+<pre>$ syctask prio
+ 1: My first task
+ 2: My second task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: h
+ 1: My first task
+ 2: My third task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: l
+ 1: My third task
+ 2: My fourth task
+Task 1 has (h)igher or (l)ower priority, or (q)uit: h
+...</pre>
+
+<p>syctask schedule will then print tasks as follows</p>
+
+<pre>Tasks
+-----
+0: 10 - My fourth task
+1:  7 - My third task
+2:  3 - My first task
+3:  9 - My second task 
+...</pre>
+
+<p>Instead of conducting pairwise comparisson the order of the tasks in the
+plan can be specified with the -o flag</p>
+
+<pre>$ syctask plan -o 7,3,10,9</pre>
+
+<p>The plan or schedule command will print the tasks in the specified order</p>
+
+<pre>Tasks
+-----
+0:  7 - My third task
+1:  3 - My first task
+2: 10 - My fourth task
+3:  9 - My second task</pre>
+
+<p>If only a part of the tasks is provided the rest of the tasks is appended
+to the end of the task plan. If you specify a position flag the prioritized
+tasks  are added at the provided position.</p>
+
+<pre>$ syctask plan -o 7,9 -p 2
+Tasks
+-----
+0:  3 - My first task
+1: 10 - My fourth task
+2:  7 - My third task
+3:  9 - My second task</pre>
+
+<h3 id="label-Create+schedule">Create schedule</h3>
+
+<p>The schedule command will print a graphical schedule with assigning the
+tasks selected with plan. When schedule command is invoked the planned
+tasks are  added at or after the current time within the time schedule.
+Tasks that are done and scheduled in the future are not shown. Tasks done
+and in the past are shown with the actual processing time.</p>
+
+<p>Create a schedule with working time from 8a.m. to 6p.m. and meetings
+between 9a.m. and 9.30a.m. and 1p.m. and 2.45p.m.</p>
+
+<pre>$ syctask schedule -w &quot;8:00-18:00&quot; -b &quot;9:00-9:30,13:00-14:45&quot;</pre>
+
+<p>Add titles to the meetings</p>
+
+<pre>$ syctask schedule -m &quot;Project status,Management meeting&quot;</pre>
+
+<p>The output will be</p>
+
+<pre>Meetings
+--------
+A - Project status
+B - Management meeting
+
+    A               B
+xxx-///-|---|---|---///////-|---|---|---|
+8   9  10  11  12  13  14  15  16  17  18
+1
+
+Tasks
+-----
+0 - 1: My first task</pre>
+
+<p>Adding a task to a meeting</p>
+
+<pre>$ syctask schedule -a &quot;A:0&quot;</pre>
+
+<p>will print</p>
+
+<pre>Meetings
+--------
+A - Project status
+    1 - My first task
+B - Management meeting
+
+    A               B
+----///-|---|---|---///////-|---|---|---|
+8   9  10  11  12  13  14  15  16  17  18
+
+Tasks
+-----
+0: 1 - My first task</pre>
+
+<p>A task that is re-scheduled with</p>
+
+<pre>$ syctask update 1 -f tomorrow</pre>
+
+<p>will be shown as done (green) in the schedule and instead of separator - it
+shows ~.</p>
+
+<pre>Tasks
+----
+0: 1 ~ My first task</pre>
+
+<p>A started task will be indicated by *</p>
+
+<pre>$ syctask start 1
+$ syctask sche
+Tasks
+-----
+0: 1 * My first task</pre>
+
+<h3 id="label-List+tasks">List tasks</h3>
+
+<p>List tasks that are not marked as done in short form</p>
+
+<pre>$ syctask list</pre>
+
+<p>List all tasks in long form</p>
+
+<pre>$ syctask list --all --complete</pre>
+
+<p>Search tasks that match a pattern</p>
+
+<pre>$ syctask list --id &quot;&lt;10&quot; --follow_up &quot;&gt;2013-02-25&quot; --title &quot;My \w task&quot;</pre>
+
+<h3 id="label-Inspect+tasks">Inspect tasks</h3>
+
+<p>Lists each today’s unplanned task and allows to edit, delete, mark as done
+or plan</p>
+
+<pre>$ syctask inspect
+0016 Create command for inspection
+(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (q)uit:</pre>
+
+<h3 id="label-Edit+task">Edit task</h3>
+
+<p>Edit a task with ID 10 in vi</p>
+
+<pre>$ syctask edit 10</pre>
+
+<h3 id="label-Update+tasks">Update tasks</h3>
+
+<p>Except for title and id all values can be updated. Note and tags are not
+overridden rather supplemented with the update value.</p>
+
+<p>Update task with ID 1 and provide some informative note</p>
+
+<pre>$ syctask update 1 --note &quot;Some explanation about the progress on the task&quot;</pre>
+
+<h3 id="label-Complete+tasks">Complete tasks</h3>
+
+<p>Complete the task with ID 1 and provide a final note</p>
+
+<pre>$ syctask done 1 --note &quot;Finalize my first task&quot;</pre>
+
+<h3 id="label-Delete+tasks">Delete tasks</h3>
+
+<p>Delete tasks with ID 1,3 and 5 from the default task directory</p>
+
+<pre>$ syctask delete --id 1,3,5</pre>
+
+<p>Delete tasks with ID 8 and 12 from the planned tasks of today. The tasks
+are only removed from the planned tasks and not physically deleted.</p>
+
+<pre>$ syctask delete --plan today --id 8,12</pre>
+
+<h3 id="label-Settings">Settings</h3>
+
+<p>The settings command allows to define default values for task directory and
+to  create general purpose tasks that can be used for tracking and later
+statistical  evaluation.</p>
+
+<p>Create general purpose tasks for phone and talk</p>
+
+<pre>$ syctask setting --general PHONE,TALK</pre>
+
+<p>List all settings</p>
+
+<pre>$ syctask setting --list</pre>
+
+<h3 id="label-Info">Info</h3>
+
+<p>Info searches for the location of a task and lists all task directories</p>
+
+<p>Search for task with id 102</p>
+
+<pre>$ syctask info --id 102</pre>
+
+<p>List all task directories</p>
+
+<pre>$ syctask info --taskdir</pre>
+
+<h3 id="label-Statistics">Statistics</h3>
+
+<p>Shows statistics for work and meeting times as well as for task processing</p>
+
+<p>Evaluate the complete log file</p>
+
+<pre>$ syctask statistics</pre>
+
+<p>Evaluate work times, meetings and tasks between 2013-01-01 and 2013-04-14</p>
+
+<pre>$ syctask statistics 2013-01-01 2013-04-14</pre>
+
+<p>Evaluate yesterday and today</p>
+
+<pre>$ syctask statistics yesterday today</pre>
+
+<h3 id="label-Task+directory+and+project+directory">Task directory and project directory</h3>
+
+<p>The global options –taskdir and –project determine where the command finds
+or creates the tasks. The default task directory is ~/.tasks, so if no task
+directory is specified all commands obtain tasks from or create tasks in
+~/.tasks. If a project is specified the tasks will be saved to or obtained
+from  the task directories subdirectory specified with the –project flag.</p>
+
+<pre>--taskdir  --project   Tasks in
+    -           -      default_task_dir
+    x           -      task_dir
+    -           x      default_task_dir/project
+    x           x      task_dir/project</pre>
+
+<p>In the table the relation of commands to –taskdir and –project are listed.</p>
+
+<pre>Command  --taskdir  --project  Comment
+delete        x          x     deletes the tasks in taskdir/project 
+done          x          x     marks tasks in taskdir/project as done
+help          -          -          
+inspect       x          x     lists task to edit, done, delete, plan
+list          x          x     lists tasks in taskdir/project
+new           x          x     creates tasks in taskdir/project
+plan          x          x     retrieves tasks to plan from taskdir/projekt
+prio          -          -     input to prio are planned tasks (see plan)
+scan          x          x     creates scanned tasks in taskdir/project
+schedule      -          -     schedules the planned tasks (see plan)
+start         -          -     starts task from planned tasks (see plan)
+statistics    -          -     shows statistics of time and count
+stop          -          -     stops task from planned task
+update        x          x     updates task in taskdir/project</pre>
+
+<h3 id="label-Files">Files</h3>
+<ul><li>
+<p>ID</p>
+</li></ul>
+
+<p>id file contains the last issued id.</p>
+<ul><li>
+<p>IDS</p>
+</li></ul>
+
+<p>ids file contains all issued ids.</p>
+<ul><li>
+<p>Task files</p>
+</li></ul>
+
+<p>The tasks are named ID.task where ID is any Integer as 10.task. The files
+are saved as YAML files and can be edited directly.</p>
+<ul><li>
+<p>Planned tasks files</p>
+</li></ul>
+
+<p>The planned tasks are save to YYYY-MM-DD_planned_tasks in syctask’s system
+directory. Each task is saved with the task’s directory and the ID.</p>
+<ul><li>
+<p>Schedule files</p>
+</li></ul>
+
+<p>The schedule is saved to YYYY-MM-DD_time_schedule in the default task
+directory. The files are saved as YAML files and can be changed manually.</p>
+<ul><li>
+<p>Log file</p>
+</li></ul>
+
+<p>Creating schedule and task processings is logged to tasks.log. For example
+when  a task is started and stopped this is action is saved to tasks.log.</p>
+<ul><li>
+<p>Tracked file</p>
+</li></ul>
+
+<p>A started task is saved to tracked_tasks. A semaphore file is created with
+ID.track when the task ID is started. When the task is stopped the
+semaphore file is deleted.</p>
+<ul><li>
+<p>General purpose tasks</p>
+</li></ul>
+
+<p>With syctask setting -g PHONE so called general purpose tasks can be
+created. These tasks can be used for time tracking and later statistic
+evaluation to determine the amount of disturbences e.g. by phone. These
+tasks are saved to default_tasks. The general purpose tasks itself are also
+saved to the .syc/syctask directory as regular task files.</p>
+<ul><li>
+<p>Default task dir</p>
+</li></ul>
+
+<p>The default task that is used e.g. with list is saved to default_tasks_dir.
+This can be set with the setting command.</p>
+
+<h2 id="label-Working+with+syctask">Working with syctask</h2>
+
+<p>To work with syctask and get the most out of it there is to follow a
+certain process.</p>
+
+<h3 id="label-Creating+a+schedule">Creating a schedule</h3>
+
+<h4 id="label-View+tasks">View tasks</h4>
+
+<p>In the morning before I start to work I scan my tasks with syctask list or 
+syctask inspect to get an overview of my open tasks.</p>
+
+<pre>$ syctask list</pre>
+
+<h4 id="label-Plan+tasks">Plan tasks</h4>
+
+<p>Next I start the planning phase with syctask plan. If I have a specific
+schedule for the day I will filter for the respective tasks</p>
+
+<pre>$ syctask plan</pre>
+
+<h4 id="label-Prioritize+tasks+%28optionally%29">Prioritize tasks (optionally)</h4>
+
+<p>If I want to process the tasks in a specific sequence I prioritize the
+tasks with</p>
+
+<pre>$ syctask prio</pre>
+
+<h4 id="label-Create+schedule">Create schedule</h4>
+
+<p>I create a schedule with my working hours and meetings that have been
+scheduled  with</p>
+
+<pre>$ syctask -w &quot;8:00-18:00&quot; -b &quot;9:00-10:00,14:30-16:00&quot; -m &quot;Team,Status&quot;</pre>
+
+<h4 id="label-Create+an+agenda">Create an agenda</h4>
+
+<p>I assign the topics I want to discuss in the meetings to the meetings with</p>
+
+<pre>syctask schedule -a &quot;A:1,3,6;B:3,5&quot;</pre>
+
+<h4 id="label-Start+a+task">Start a task</h4>
+
+<p>To begin I start the first task in the schedule with syctask start -p ID 
+(where ID is the ID of the planned (-p) tasks)</p>
+
+<pre>$ syctask start -p 10</pre>
+
+<h4 id="label-End+a+task">End a task</h4>
+
+<p>To end the task I invoke</p>
+
+<pre>$ syctask stop</pre>
+
+<p>This will stop the last started task</p>
+
+<h4 id="label-Re-schedule+a+task">Re-schedule a task</h4>
+
+<p>If I cannot finish a task than I update the task with a new follow-up date</p>
+
+<pre>$ syctask update 23 -f tomorrow</pre>
+
+<p>The task will be shown in the today’s schedule as done.</p>
+
+<h4 id="label-Complete+a+task">Complete a task</h4>
+
+<p>When the task is done I call</p>
+
+<pre>$ syctask done 23</pre>
+
+<h3 id="label-Attachements">Attachements</h3>
+<ul><li>
+<p>E-mails</p>
+</li></ul>
+
+<p>If an e-mail creates a task I create a new task with syctask new
+title_of_task. The subject of the e-mail I prepend with the ID and move the
+e-mail to a <strong>open topics</strong> directory.</p>
+<ul><li>
+<p>Files</p>
+</li></ul>
+
+<p>If I create files in the course of a task I create a folder in the task
+directory with the ID and save the files in this directory. If there is an
+existing directory I link to the file from the ID directory</p>
+
+<h2 id="label-Supported+platform">Supported platform</h2>
+
+<p>syc-task has been tested with 1.9.3. It also works in Windows using Cygwin.</p>
+
+<h2 id="label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</h2>
+
+<p>To activate bash’s TAB-completion following lines have to be added to
+~/.bashrc</p>
+
+<pre>complete -F get_syctask_commands syctask
+
+function get_syctask_commands
+{
+  if [ -z $2 ] ; then
+    COMPREPLY=(`syctask help -c`)
+  else
+    COMPREPLY=(`syctask help -c $2`)
+  fi
+}</pre>
+
+<p>After ~/.bashrc has been updated the shell session has to be restarted with</p>
+
+<pre>$ source ~/.bashrc</pre>
+
+<p>Now syctask followed by TAB TAB will print</p>
+
+<pre>$ syctask &lt;TAB&gt;&lt;TAB&gt;
+delete done list plan scan stop _doc help new prio schedule start update</pre>
+
+<p>To complete a command we can type</p>
+
+<pre>$ syctask sch&lt;TAB&gt;</pre>
+
+<p>which will complete to</p>
+
+<pre>$ syctask schedule</pre>
+
+<h2 id="label-Output+to+Printer">Output to Printer</h2>
+
+<p>To print syctask’s output to a printer pipe the command to lpr</p>
+
+<pre>$ syctask schedule | lpr</pre>
+
+<p>This will print the schedule to the default printer.</p>
+
+<p>To determine all available printer lpstat can be used with the lpstat -a
+command</p>
+
+<pre>$ lpstat -a
+Canon-LBP6650-3470 accepting requests since Sat 16 Mar 2013 04:26:15 PM CET
+Dell-B1160w-Mono accepting requests since Sat 16 Mar 2013 04:27:45 PM CET</pre>
+
+<p>To print to Dell-B1160w-Mono the following command can be used</p>
+
+<pre>$ syctask schedule | lpr -P Dell-B1160w-Mono</pre>
+
+<h2 id="label-Release+Notes">Release Notes</h2>
+
+<p>Version 0.0.1  Implementation of new, update, list and done commands.</p>
+
+<p>Version 0.0.4</p>
+<ul><li>
+<p>delete: deleting tasks or remove tasks from a task plan</p>
+</li><li>
+<p>plan: plan tasks and add them to the task plan</p>
+</li><li>
+<p>schedule: create a schedule with work and busy time and assign the tasks
+from the task plan to the free times</p>
+</li></ul>
+
+<p>Version 0.0.6</p>
+<ul><li>
+<p>start: start a task and track the lead time</p>
+</li><li>
+<p>stop: stop the tracking and print the lead time of the task</p>
+</li><li>
+<p>start, stop: the task is logged in the ~/.tasks/task.log file when added
+and when stopped</p>
+</li><li>
+<p>prio: prioritize tasks in the task plan, that is specifying the sequence in
+that the tasks should be conducted</p>
+</li><li>
+<p>plan: –move flag added to move tasks from the specified plan to another
+days task plan</p>
+</li><li>
+<p>update, new: when a follow-up or a due date is provided the task is added
+to the provided dates task plan. If both dates are set the task is added to
+both dates task plans</p>
+</li></ul>
+
+<p>Version 0.0.7</p>
+<ul><li>
+<p>updated rdoc</p>
+</li></ul>
+
+<p>Version 0.1.15</p>
+<ul><li>
+<p>IDs are now unique independent of the task or project directory. After
+upgrading from a version 0.0.7 or older the user asked whether to re-index
+the tasks. It is adviced to tar the tasks before re-indexing with</p>
+
+<pre>$ tar cvfz tasks.tar.gz .tasks other_task_directories</pre>
+</li><li>
+<p>start will now show a timer in the upper right corner of the screen when
+started with the -t (–timer) flag.</p>
+
+<pre>$ syctask start 10 -t</pre>
+
+<p>In order to use the task timer ncurses has to be installed as the task
+timer uses tput from the ncurses library.</p>
+</li><li>
+<p>The schedule has a heading with the schedule’s date and the working time</p>
+</li><li>
+<p>Planned tasks are now added at or after the current time if they are not
+done yet. Done tasks are shown in the past with the actual processing time.
+Tasks  done before the start of the schedule are not shown in the schedule.</p>
+</li><li>
+<p>Meetings that are at the current time are indicated with a *. Active tasks
+are indicated with a star, re-scheduled tasks are indicated with a ~.</p>
+</li><li>
+<p>Assigning tasks to meetings in a schedule is now done with the task ID</p>
+</li><li>
+<p>Statistics show statistics about work time, meeting times, general purpose
+tasks and task processing. Total, min, max and average time and count is
+listed. If you have used version 0.0.7 it is adviced to delete tasks.log
+that lives in ~/.tasks before upgrading or in ~/.syc/syctask after
+upgrading. Otherwise the statistic results seem odd.</p>
+</li><li>
+<p>Meeting time in time line now shows correct duration</p>
+</li><li>
+<p>Info command searches for the location of a task and lists all task task
+directories with the tasks contained.</p>
+</li><li>
+<p>Plan move command sets the duration to the remaining processing time but at
+least to 15 minutes</p>
+</li><li>
+<p>With the setting command the default task directory can be set and general 
+purpose tasks can be created. A general purpose task can be used for
+tracking  to analyse how much time for phone calls is occupied. setting -l
+list all general purpose tasks and the default task directory</p>
+</li><li>
+<p>Prio command now takes a position flag together with the order flag to 
+determine where to insert the newly ordered tasks</p>
+</li><li>
+<p>All commands that take an ID as argument (done, edit, start, update) look
+up the task file associated to the id in the ids file. If it is found the 
+provided task directory is not considered for the task file. If the id is
+not  contained in the ids file the task is looked up in the provided
+directory</p>
+</li><li>
+<p>Inspect command allows to list each today’s unplanned task to edit, delete,
+mark as done or plan</p>
+</li><li>
+<p>Update command now has a duration flag to set the task’s duration</p>
+</li></ul>
+
+<p>Version 0.2.0</p>
+<ul><li>
+<p>Migrated from TestUnit to Minitest</p>
+</li><li>
+<p>Implemented <em>timeleap</em> <a
+href="http://badge.fury.io/rb/timeleap"><img
+src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" /></a> which
+allows to specify additional time distances to yesterday, today tomorrow. 
+Time distances come in two flavors as long and short forms.</p>
+
+<p>Examples for long forms are</p>
+<ul><li>
+<p>yesterday|today|tomorrow</p>
+</li><li>
+<p>next|previous_monday|tuesday|…|sunday</p>
+</li><li>
+<p>monday|tuesday|…|sunday_in|back_1_week|month|year</p>
+</li><li>
+<p>in|back_10_days|weeks|months|years</p>
+</li></ul>
+
+<p>Examples for short forms are</p>
+<ul><li>
+<p>y|tod|tom</p>
+</li><li>
+<p>n|pmo|tu|..|su</p>
+</li><li>
+<p>mo|tu|…|sui|b1w|m|y</p>
+</li><li>
+<p>i|b10d|w|m|y</p>
+</li></ul>
+</li></ul>
+
+<p>Version 0.2.1</p>
+<ul><li>
+<p>Fix a bug in `syctask delete –plan`</p>
+</li><li>
+<p>Add indicator ‘&gt;’ to task list when task contains notes</p>
+</li><li>
+<p>Refactor migration from version 0.0.7 and when user has deleted system
+files. The user can now specify the directories where the tasks are located
+and can also define directories to be excluded. This is especially helpful
+to omit  search in large mounted directories, like from NAS servers.</p>
+</li></ul>
+
+<p>Version 0.3.2</p>
+<ul><li>
+<p>Add csv output spearated by ‘;’ to the list command</p>
+</li><li>
+<p>Fix bug when schedule file is empty</p>
+</li><li>
+<p>Add scan command to scan tasks from files</p>
+</li></ul>
+
+<h2 id="label-Development">Development</h2>
+
+<p>Pull from Github and then run</p>
+
+<pre>$ bundle install</pre>
+
+<p>Debugging the interface can be done with GLI_DEBUG:</p>
+
+<pre>$ bundle exec env GLI_DEBUG=true bin/syctask</pre>
+
+<p>Building and pushing the gemfile to Rubygems</p>
+
+<pre>$ gem build syctask.gemspec
+$ gem push syc-task-0.2.1.gem</pre>
+
+<h2 id="label-Tests">Tests</h2>
+
+<p>The test files live in the folder test and start with test_.</p>
+
+<p>There is a rake file available to run all tests</p>
+
+<pre>$ rake test</pre>
+
+<h2 id="label-License">License</h2>
+
+<p>syc-task is released under the <a
+href="http://opensource.org/licenses/MIT">MIT License</a></p>
+
+<h2 id="label-Links">Links</h2>
+<ul><li><dl class="rdoc-list label-list"><dt><a href="http://www.github.com/sugaryourcoffee/syc-task">www.github.com/sugaryourcoffee/syc-task</a>
+<dd><ul><li>
+<p>Source code on GitHub</p>
+</li></ul>
+</dd></dl>
+</li><li><dl class="rdoc-list label-list"><dt><a href="https://rubygems.org/gems/syc-task">rubygems.org/gems/syc-task</a>
+<dd><ul><li>
+<p>RubyGems</p>
+</li></ul>
+</dd></dl>
+</li></ul>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

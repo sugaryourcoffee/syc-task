@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Syctask - Your application title</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/environment.rb
+    <li>lib/syctask/evaluator.rb
+    <li>lib/syctask/meeting.rb
+    <li>lib/syctask/scanner.rb
+    <li>lib/syctask/schedule.rb
+    <li>lib/syctask/settings.rb
+    <li>lib/syctask/statistics.rb
+    <li>lib/syctask/task.rb
+    <li>lib/syctask/task_planner.rb
+    <li>lib/syctask/task_scheduler.rb
+    <li>lib/syctask/task_service.rb
+    <li>lib/syctask/task_tracker.rb
+    <li>lib/syctask/times.rb
+    <li>lib/syctask/version.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-check_environment">#check_environment</a>
+    
+    <li><a href="#method-i-collect_by_id">#collect_by_id</a>
+    
+    <li><a href="#method-i-get_files">#get_files</a>
+    
+    <li><a href="#method-i-get_task_dirs">#get_task_dirs</a>
+    
+    <li><a href="#method-i-get_task_dirs_and_count">#get_task_dirs_and_count</a>
+    
+    <li><a href="#method-i-initialize_id">#initialize_id</a>
+    
+    <li><a href="#method-i-initialize_or_recover_system">#initialize_or_recover_system</a>
+    
+    <li><a href="#method-i-log_meetings">#log_meetings</a>
+    
+    <li><a href="#method-i-log_reindexing">#log_reindexing</a>
+    
+    <li><a href="#method-i-log_task">#log_task</a>
+    
+    <li><a href="#method-i-log_work_time">#log_work_time</a>
+    
+    <li><a href="#method-i-move_planned_tasks_files">#move_planned_tasks_files</a>
+    
+    <li><a href="#method-i-move_task_log_file">#move_task_log_file</a>
+    
+    <li><a href="#method-i-move_time_schedule_files">#move_time_schedule_files</a>
+    
+    <li><a href="#method-i-next_id">#next_id</a>
+    
+    <li><a href="#method-i-planned_tasks_files">#planned_tasks_files</a>
+    
+    <li><a href="#method-i-reindex_task">#reindex_task</a>
+    
+    <li><a href="#method-i-reindex_tasks">#reindex_tasks</a>
+    
+    <li><a href="#method-i-save_id">#save_id</a>
+    
+    <li><a href="#method-i-save_ids">#save_ids</a>
+    
+    <li><a href="#method-i-task_files">#task_files</a>
+    
+    <li><a href="#method-i-tasks_log_files">#tasks_log_files</a>
+    
+    <li><a href="#method-i-time_schedule_files">#time_schedule_files</a>
+    
+    <li><a href="#method-i-update_planned_tasks">#update_planned_tasks</a>
+    
+    <li><a href="#method-i-update_tasks_log">#update_tasks_log</a>
+    
+    <li><a href="#method-i-update_tracked_task">#update_tracked_task</a>
+    
+    <li><a href="#method-i-viable-3F">#viable?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Syctask.html">Syctask</a>
+  
+    <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="./Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="./Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="./Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="./Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="./Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="./Sycutil.html">Sycutil</a>
+  
+    <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Sycstring.html">Sycstring</a>
+  
+    <li><a href="./Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Syctask</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="Syctask.html">Syctask</a> provides functions for managing tasks in
+a task list.</p>
+
+<p><a href="Syctask.html">Syctask</a> provides functions for managing tasks in
+a task list</p>
+
+<p><a href="Syctask.html">Syctask</a> module implements functions for managing
+tasks</p>
+
+<p><a href="Syctask.html">Syctask</a> provides functions for managing tasks in
+a task list</p>
+
+<p><a href="Syctask.html">Syctask</a> provides functions for managing tasks in
+a task list</p>
+
+<p>require_relative ‘../sycutil/console_timer.rb’</p>
+
+<p><a href="Syctask.html">Syctask</a> provides functions for managing tasks in
+a task list</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="DEFAULT_TASKS">DEFAULT_TASKS
+        
+        <dd class="description"><p>File with the general purpose tasks</p>
+        
+      
+        <dt id="DEFAULT_TASKS_DIR">DEFAULT_TASKS_DIR
+        
+        <dd class="description"><p>File that holds the default task directory</p>
+        
+      
+        <dt id="ID">ID
+        
+        <dd class="description"><p><a href="Syctask.html#ID">ID</a> file where the last issued <a
+href="Syctask.html#ID">ID</a> is saved</p>
+        
+      
+        <dt id="IDS">IDS
+        
+        <dd class="description"><p>File that contains all issued IDs</p>
+        
+      
+        <dt id="INSPECT_STRING">INSPECT_STRING
+        
+        <dd class="description"><p>String that is prompted during inspect</p>
+        
+      
+        <dt id="PRIORITIZE_STRING">PRIORITIZE_STRING
+        
+        <dd class="description"><p>String that is prompted during prioritization</p>
+        
+      
+        <dt id="PROMPT_STRING">PROMPT_STRING
+        
+        <dd class="description"><p>String that is prompted during planning</p>
+        
+      
+        <dt id="RIDX_LOG">RIDX_LOG
+        
+        <dd class="description"><p>If files are re-indexed during re-indexing these tasks are save here</p>
+        
+      
+        <dt id="SYC_DIR">SYC_DIR
+        
+        <dd class="description"><p>System directory of syctask</p>
+        
+      
+        <dt id="TAGS">TAGS
+        
+        <dd class="description"><p>File with tags</p>
+        
+      
+        <dt id="TASKS_LOG">TASKS_LOG
+        
+        <dd class="description"><p>Log file that logs all activities of syctask like creation of tasks</p>
+        
+      
+        <dt id="TRACKED_TASK">TRACKED_TASK
+        
+        <dd class="description"><p>File that holds the tracked task</p>
+        
+      
+        <dt id="VERSION">VERSION
+        
+        <dd class="description"><p>Holds the version number of syctask</p>
+        
+      
+        <dt id="WORK_DIR">WORK_DIR
+        
+        <dd class="description"><p>Set eather user defined work directory or default</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-check_environment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check_environment</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks whether all files are available that are needed for syctask’s
+operation</p>
+          
+
+          
+          <div class="method-source-code" id="check_environment-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check_environment</span>
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-constant">WORK_DIR</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">WORK_DIR</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">viable?</span>
+    <span class="ruby-identifier">recover</span>, <span class="ruby-identifier">whitelisted_dirs</span>, <span class="ruby-identifier">blacklisted_dirs</span> = <span class="ruby-identifier">initialize_or_recover_system</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">recover</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">0</span>
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-constant">SYC_DIR</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">SYC_DIR</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">ID</span>, <span class="ruby-string">&quot;0&quot;</span>)
+    <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>
+      <span class="ruby-comment"># Backup ARGV content</span>
+      <span class="ruby-identifier">args</span> = []
+      <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">args</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">arg</span>} <span class="ruby-keyword">unless</span> <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">clear</span>
+      <span class="ruby-identifier">reindex_tasks</span>(<span class="ruby-identifier">whitelisted_dirs</span>, <span class="ruby-identifier">blacklisted_dirs</span>)
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Successfully recovered syc-task&quot;</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; A log file of re-indexed tasks can be found at\n&quot;</span><span class="ruby-operator">+</span>
+           <span class="ruby-node">&quot;#{RIDX_LOG}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">RIDX_LOG</span>
+      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Press any key to continue &quot;</span>
+      <span class="ruby-identifier">gets</span>
+      <span class="ruby-comment"># Restore ARGV content</span>
+      <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-constant">ARGV</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">arg</span>} <span class="ruby-keyword">unless</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;o.k. - don't do nothing&quot;</span>
+      <span class="ruby-identifier">exit</span> <span class="ruby-value">-1</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- check_environment-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- check_environment-method -->
+
+    
+      <div id="method-i-collect_by_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">collect_by_id</span><span
+            class="method-args">(tasks)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts tasks that have no unique id</p>
+          
+
+          
+          <div class="method-source-code" id="collect_by_id-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 364</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_by_id</span>(<span class="ruby-identifier">tasks</span>)
+  <span class="ruby-identifier">extract</span> = {}
+  <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(?&lt;=\/)\d+(?=\.task$)/</span>)[<span class="ruby-value">0</span>]
+    <span class="ruby-identifier">extract</span>[<span class="ruby-identifier">id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">extract</span>[<span class="ruby-identifier">id</span>] = [<span class="ruby-identifier">task</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">extract</span>[<span class="ruby-identifier">id</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">task</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">extract</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- collect_by_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- collect_by_id-method -->
+
+    
+      <div id="method-i-get_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_files</span><span
+            class="method-args">(included, excluded=[], pattern)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all files that meet the pattern in and below the given directory</p>
+          
+
+          
+          <div class="method-source-code" id="get_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 397</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">included</span>, <span class="ruby-identifier">excluded</span>=[], <span class="ruby-identifier">pattern</span>)
+  <span class="ruby-identifier">files</span> = []
+  <span class="ruby-constant">Find</span>.<span class="ruby-identifier">find</span>(*<span class="ruby-identifier">included</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">FileTest</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">path</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">excluded</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">path</span>)
+        <span class="ruby-constant">Find</span>.<span class="ruby-identifier">prune</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">next</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">path</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">path</span>) <span class="ruby-operator">=~</span> <span class="ruby-identifier">pattern</span>  
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_files-method -->
+
+    
+      <div id="method-i-get_task_dirs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_task_dirs</span><span
+            class="method-args">(dir)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve all directories that contain tasks</p>
+          
+
+          
+          <div class="method-source-code" id="get_task_dirs-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 414</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_task_dirs</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">original_dir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-string">&quot;.&quot;</span>)
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">dirs</span> = <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-string">&quot;**/*.task&quot;</span>, <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">FNM_DOTMATCH</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>))
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">original_dir</span>)
+  <span class="ruby-identifier">dirs</span>.<span class="ruby-identifier">uniq</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_task_dirs-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_task_dirs-method -->
+
+    
+      <div id="method-i-get_task_dirs_and_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_task_dirs_and_count</span><span
+            class="method-args">(dir)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all directories that contain tasks and the count of contained
+tasks in and below the provided directory</p>
+          
+
+          
+          <div class="method-source-code" id="get_task_dirs_and_count-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 426</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_task_dirs_and_count</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">original_dir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-string">&quot;.&quot;</span>)
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">dir</span>)
+  <span class="ruby-identifier">dirs_and_count</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-string">&quot;**/*.task&quot;</span>, <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">FNM_DOTMATCH</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">dirname</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>))
+    <span class="ruby-identifier">dirs_and_count</span>[<span class="ruby-identifier">dirname</span>] <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">chdir</span>(<span class="ruby-identifier">original_dir</span>)
+  <span class="ruby-identifier">dirs_and_count</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_task_dirs_and_count-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_task_dirs_and_count-method -->
+
+    
+      <div id="method-i-initialize_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">initialize_id</span><span
+            class="method-args">(tasks)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Determines the greatest task <a href="Syctask.html#ID">ID</a> out of the
+provided tasks and saves it to the <a href="Syctask.html#ID">ID</a> file</p>
+          
+
+          
+          <div class="method-source-code" id="initialize_id-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 269</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_id</span>(<span class="ruby-identifier">tasks</span>)
+  <span class="ruby-identifier">pattern</span> = <span class="ruby-regexp">%r{(?&lt;=\/)\d+(?=\.task)}</span>
+  <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>}
+  <span class="ruby-identifier">save_id</span>(<span class="ruby-identifier">tasks</span>[<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- initialize_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- initialize_id-method -->
+
+    
+      <div id="method-i-initialize_or_recover_system" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">initialize_or_recover_system</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Asks the user whether this is a fresh install because of missing system
+files. If it is not a fresh install then this might be because of an
+upgrade to a version &gt; 0.0.7 or the user accidentally has deleted the
+system files. If it is a fresh install the system files are created.
+Otherwise the user can select to search for task files and recover the
+system.</p>
+
+<p>intialize_or_recover_system #=&gt; recover, whitelisted_dirs,
+blacklisted_dirs recover = 0 just creates the system files as it is fresh
+install recover = 1 recover task files recover = 2 abort, don’t recover
+task files whitelisted_dirs = array of directories where to search for task
+files blacklisted_dirs = array of directories where not to search for task
+files</p>
+          
+
+          
+          <div class="method-source-code" id="initialize_or_recover_system-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 137</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize_or_recover_system</span>
+  <span class="ruby-identifier">whitelisted_dirs</span> = []
+  <span class="ruby-identifier">blacklisted_dirs</span> = []
+
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;This seems to be a fresh install because there are no system files &quot;</span><span class="ruby-operator">+</span>
+       <span class="ruby-string">&quot;available.&quot;</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;* If this is a fresh install just hit 'y'. &quot;</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;* Otherwise hit 'n' to go to the recovery step.&quot;</span>
+  <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Is this a fresh install (y/n)? &quot;</span>
+  <span class="ruby-identifier">answer</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">answer</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;y&quot;</span>
+    [<span class="ruby-value">0</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>]
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">puts</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;If you have upgraded from version 0.0.7 or below than this is &quot;</span><span class="ruby-operator">+</span>
+         <span class="ruby-string">&quot;due to a changed\nfile structure. For changes in version &quot;</span><span class="ruby-operator">+</span>
+         <span class="ruby-string">&quot;greater 0.0.7 see&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;--&gt; https://rubygems.org/gems/syc-task&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Or you have accidentially deleted system files. In both cases &quot;</span><span class="ruby-operator">+</span>
+         <span class="ruby-string">&quot;re-indexing\nwill recover syc-task.&quot;</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Do you want to recover syc-task (y/n)? &quot;</span>
+    <span class="ruby-identifier">answer</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">answer</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;y&quot;</span>
+      <span class="ruby-identifier">puts</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;If you know where your task files are located then you can &quot;</span><span class="ruby-operator">+</span>
+           <span class="ruby-string">&quot;specify the\ndirectories. Search starts in your home directory.&quot;</span>
+      <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Do you want to specify the directories (y/n)? &quot;</span>
+      <span class="ruby-identifier">answer</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">answer</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;y&quot;</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Please enter directories, e.g. ~/.my-tasks ~/work-tasks&quot;</span>
+        <span class="ruby-identifier">whitelisted_dirs</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">%r\s+/</span>)
+                                     .<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) }
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;You don't want to select task directories. It is adviced to &quot;</span><span class="ruby-operator">+</span>
+             <span class="ruby-string">&quot;exclude mounted \ndirectories as this might take very long to &quot;</span><span class="ruby-operator">+</span>
+             <span class="ruby-string">&quot;search all directories for task files. Also if it is no &quot;</span> <span class="ruby-operator">+</span>
+             <span class="ruby-string">&quot;stable connection\n the recovery process might be aborted&quot;</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Do you want to exclude directories (y/n)? &quot;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">answer</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;y&quot;</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Please enter directories, e.g. ~/mount ~/.no-tasks&quot;</span>
+          <span class="ruby-identifier">blacklisted_dirs</span> = <span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">%r\s+/</span>)
+                                       .<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) }
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">whitelisted_dir</span> = [<span class="ruby-constant">ENV</span>[<span class="ruby-string">'HOME'</span>]]
+          <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Searching directories and all sub-directories starting in\n&quot;</span><span class="ruby-operator">+</span>
+               <span class="ruby-node">&quot;#{ENV['HOME']}&quot;</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      [<span class="ruby-value">1</span>, <span class="ruby-identifier">whitelisted_dirs</span>, <span class="ruby-identifier">blacklisted_dirs</span>]
+    <span class="ruby-keyword">else</span>
+      [<span class="ruby-value">2</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- initialize_or_recover_system-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- initialize_or_recover_system-method -->
+
+    
+      <div id="method-i-log_meetings" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log_meetings</span><span
+            class="method-args">(type, busy_time, meetings)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Logs meeting times</p>
+          
+
+          
+          <div class="method-source-code" id="log_meetings-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log_meetings</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">busy_time</span>, <span class="ruby-identifier">meetings</span>)
+  <span class="ruby-identifier">today</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-identifier">logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">TASKS_LOG</span>)
+  <span class="ruby-identifier">time_pat</span> = <span class="ruby-node">&quot;#{today.strftime(&quot;%Y-%m-%d&quot;)} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}&quot;</span>
+  <span class="ruby-identifier">pattern</span> = <span class="ruby-node">%r{#{type};-2;;.*?;#{time_pat};#{time_pat}\n}</span>
+  <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-identifier">pattern</span>, <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-identifier">busy_time</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">busy</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">begins</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">today</span>.<span class="ruby-identifier">year</span>,<span class="ruby-identifier">today</span>.<span class="ruby-identifier">mon</span>,<span class="ruby-identifier">today</span>.<span class="ruby-identifier">day</span>,<span class="ruby-identifier">busy</span>[<span class="ruby-value">0</span>],<span class="ruby-identifier">busy</span>[<span class="ruby-value">1</span>],<span class="ruby-value">0</span>)
+    <span class="ruby-identifier">ends</span>   = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">today</span>.<span class="ruby-identifier">year</span>,<span class="ruby-identifier">today</span>.<span class="ruby-identifier">mon</span>,<span class="ruby-identifier">today</span>.<span class="ruby-identifier">day</span>,<span class="ruby-identifier">busy</span>[<span class="ruby-value">2</span>],<span class="ruby-identifier">busy</span>[<span class="ruby-value">3</span>],<span class="ruby-value">0</span>)
+    <span class="ruby-identifier">meeting</span> = <span class="ruby-identifier">meetings</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">meetings</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">:</span> <span class="ruby-node">&quot;Meeting #{i}&quot;</span>
+    <span class="ruby-identifier">logs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{type};-2;;#{meeting};#{begins};#{ends}\n&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-identifier">logs</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log_meetings-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log_meetings-method -->
+
+    
+      <div id="method-i-log_reindexing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log_reindexing</span><span
+            class="method-args">(old_id, new_id, file)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Logs if a task is re-indexed</p>
+          
+
+          
+          <div class="method-source-code" id="log_reindexing-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 296</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log_reindexing</span>(<span class="ruby-identifier">old_id</span>, <span class="ruby-identifier">new_id</span>, <span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">entry</span> = <span class="ruby-node">&quot;#{old_id},#{new_id},#{file}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">RIDX_LOG</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">RIDX_LOG</span>).
+    <span class="ruby-identifier">scan</span>(<span class="ruby-identifier">entry</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">RIDX_LOG</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">entry</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log_reindexing-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log_reindexing-method -->
+
+    
+      <div id="method-i-log_task" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log_task</span><span
+            class="method-args">(type, task)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Logs a task regarding create, update, done, delete</p>
+          
+
+          
+          <div class="method-source-code" id="log_task-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log_task</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-string">'a'</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">log_entry</span> =  <span class="ruby-node">&quot;#{type.to_s};&quot;</span>
+    <span class="ruby-identifier">log_entry</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{task.id};#{task.dir};&quot;</span>
+    <span class="ruby-identifier">log_entry</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{task.title.gsub(';', '\'semicolon\'')};&quot;</span>
+    <span class="ruby-identifier">log_entry</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{Time.now};&quot;</span>
+    <span class="ruby-identifier">log_entry</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{Time.now}&quot;</span> 
+    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">log_entry</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log_task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log_task-method -->
+
+    
+      <div id="method-i-log_work_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log_work_time</span><span
+            class="method-args">(type, work_time)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Logs the work time</p>
+          
+
+          
+          <div class="method-source-code" id="log_work_time-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log_work_time</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">work_time</span>)
+  <span class="ruby-identifier">today</span>  = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-identifier">begins</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">today</span>.<span class="ruby-identifier">year</span>,
+                      <span class="ruby-identifier">today</span>.<span class="ruby-identifier">mon</span>,
+                      <span class="ruby-identifier">today</span>.<span class="ruby-identifier">day</span>,
+                      <span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>],
+                      <span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>],
+                      <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">ends</span>   = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">today</span>.<span class="ruby-identifier">year</span>,
+                      <span class="ruby-identifier">today</span>.<span class="ruby-identifier">mon</span>,
+                      <span class="ruby-identifier">today</span>.<span class="ruby-identifier">day</span>,
+                      <span class="ruby-identifier">work_time</span>[<span class="ruby-value">2</span>],
+                      <span class="ruby-identifier">work_time</span>[<span class="ruby-value">3</span>],
+                      <span class="ruby-value">0</span>)
+  <span class="ruby-identifier">entry</span> = <span class="ruby-node">&quot;#{type};-1;;work;#{begins};#{ends}\n&quot;</span>
+  <span class="ruby-identifier">logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">TASKS_LOG</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">entry</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-identifier">time_pat</span> = <span class="ruby-node">&quot;#{today.strftime(&quot;%Y-%m-%d&quot;)} \\d{2}:\\d{2}:\\d{2} [+-]\\d{4}&quot;</span>
+  <span class="ruby-identifier">pattern</span> = <span class="ruby-node">%r{#{type};-1;;work;#{time_pat};#{time_pat}\n}</span>
+  <span class="ruby-identifier">log</span> = <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">log</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-identifier">log</span>, <span class="ruby-identifier">entry</span>)
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-identifier">logs</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">entry</span>}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log_work_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log_work_time-method -->
+
+    
+      <div id="method-i-move_planned_tasks_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">move_planned_tasks_files</span><span
+            class="method-args">(dirs, excluded)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Moves the planned tasks file to the system directory if not there. Should 
+only be if upgrading from version 0.0.7 and below</p>
+          
+
+          
+          <div class="method-source-code" id="move_planned_tasks_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 454</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_planned_tasks_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@planned_tasks_files</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-ivar">@planned_tasks_files</span> = <span class="ruby-identifier">planned_tasks_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@planned_tasks_files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">to_file</span> = <span class="ruby-node">&quot;#{SYC_DIR}/#{File.basename(file)}&quot;</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">file</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">to_file</span>
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span> <span class="ruby-identifier">file</span>, <span class="ruby-identifier">to_file</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- move_planned_tasks_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- move_planned_tasks_files-method -->
+
+    
+      <div id="method-i-move_task_log_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">move_task_log_file</span><span
+            class="method-args">(dirs, excluded)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Moves the tasks.log file to the system directory if not there. Should only
+be if upgrading from version 0.0.7 and below</p>
+          
+
+          
+          <div class="method-source-code" id="move_task_log_file-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 440</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_task_log_file</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tasks_log_files</span>.<span class="ruby-identifier">nil?</span>    
+    <span class="ruby-ivar">@tasks_log_files</span> = <span class="ruby-identifier">tasks_log_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@tasks_log_files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">f</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TASKS_LOG</span>
+    <span class="ruby-identifier">tasks_log</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">f</span>)
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">tasks_log</span>}
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span>(<span class="ruby-identifier">f</span>, <span class="ruby-node">&quot;#{f}_#{Time.now.strftime(&quot;%y%m%d&quot;)}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- move_task_log_file-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- move_task_log_file-method -->
+
+    
+      <div id="method-i-move_time_schedule_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">move_time_schedule_files</span><span
+            class="method-args">(dirs, excluded)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Moves the schedule file to the system directory if not there. Should  only
+be if upgrading from version 0.0.7 and below</p>
+          
+
+          
+          <div class="method-source-code" id="move_time_schedule_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 467</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_time_schedule_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@time_schedule_files</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-ivar">@time_schedule_files</span> = <span class="ruby-identifier">time_schedule_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@time_schedule_files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">to_file</span> = <span class="ruby-node">&quot;#{SYC_DIR}/#{File.basename(file)}&quot;</span> 
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">file</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">to_file</span>
+    <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mv</span> <span class="ruby-identifier">file</span>, <span class="ruby-identifier">to_file</span>
+  <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- move_time_schedule_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- move_time_schedule_files-method -->
+
+    
+      <div id="method-i-next_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">next_id</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieve the next unassigned task id</p>
+          
+
+          
+          <div class="method-source-code" id="next_id-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 289</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">next_id</span>
+  <span class="ruby-identifier">id</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">ID</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+  <span class="ruby-identifier">save_id</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- next_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- next_id-method -->
+
+    
+      <div id="method-i-planned_tasks_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">planned_tasks_files</span><span
+            class="method-args">(dirs, excluded=[])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all planned task files in and below the given directory</p>
+          
+
+          
+          <div class="method-source-code" id="planned_tasks_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 380</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">planned_tasks_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>=[])
+  <span class="ruby-identifier">pattern</span> = <span class="ruby-regexp">%r{\d{4}-\d{2}-\d{2}_planned_tasks}</span>
+  <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-identifier">pattern</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- planned_tasks_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- planned_tasks_files-method -->
+
+    
+      <div id="method-i-reindex_task" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reindex_task</span><span
+            class="method-args">(file)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Re-indexes the tasks’ IDs and renames the task files to match the new <a
+href="Syctask.html#ID">ID</a>. The orginal file is deleted. Returns old_id,
+new_id, tmp_file_name and new_file_name. The task is save with the
+tmp_file_name in case the new <a href="Syctask.html#ID">ID</a> and hence
+the new_file_name exists already from a not yet re-indexed task. After all
+tasks are re-indexed the tmp_file_names have to be renamed to the
+new_file_names. The renaming is in the responsibility of the calling
+method.</p>
+          
+
+          
+          <div class="method-source-code" id="reindex_task-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 249</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reindex_task</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;.&quot;</span>
+  <span class="ruby-identifier">task</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">old_id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(?&lt;=^id: )\d+$/</span>)[<span class="ruby-value">0</span>]
+  <span class="ruby-identifier">new_id</span> = <span class="ruby-identifier">next_id</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">%r(?&lt;=^id: )\d+$/</span>, <span class="ruby-identifier">new_id</span>)
+  <span class="ruby-identifier">dirname</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">new_file</span> = <span class="ruby-node">&quot;#{dirname}/#{new_id}.task&quot;</span>
+  <span class="ruby-identifier">tmp_file</span> = <span class="ruby-node">&quot;#{new_file}_&quot;</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">tmp_file</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">file</span>)
+  {<span class="ruby-identifier">old_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">old_id</span>, 
+   <span class="ruby-identifier">new_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">new_id</span>, 
+   <span class="ruby-identifier">tmp_file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">tmp_file</span>, 
+   <span class="ruby-identifier">new_file</span><span class="ruby-operator">:</span> <span class="ruby-identifier">new_file</span>,
+   <span class="ruby-identifier">dirname</span><span class="ruby-operator">:</span> <span class="ruby-identifier">dirname</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reindex_task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reindex_task-method -->
+
+    
+      <div id="method-i-reindex_tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reindex_tasks</span><span
+            class="method-args">(dirs, excluded)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Re-indexing of tasks is done when tasks are available but <a
+href="Syctask.html#SYC_DIR">SYC_DIR</a> or <a href="Syctask.html#ID">ID</a>
+file is missing. The <a href="Syctask.html#ID">ID</a> file contains the
+last issued task <a href="Syctask.html#ID">ID</a>. The <a
+href="Syctask.html#ID">ID</a> file is referenced for obtaining the next <a
+href="Syctask.html#ID">ID</a> for a new task. Re-indexing is done as
+follows:</p>
+<ul><li>
+<p>Retrieve all tasks in and below the given directory <strong>root</strong></p>
+</li><li>
+<p>Determine the highest <a href="Syctask.html#ID">ID</a> number and add it to
+the <a href="Syctask.html#ID">ID</a> file</p>
+</li><li>
+<p>Determine all tasks that don’t have a unique <a
+href="Syctask.html#ID">ID</a></p>
+</li><li>
+<p>Re-index all tasks not having a unique <a href="Syctask.html#ID">ID</a> and
+rename the file names accordingly</p>
+</li><li>
+<p>Adjust the IDs in the planned_tasks, tasks.log and tracked_tasks files</p>
+</li><li>
+<p>Copy all system files planned_tasks, time_schedule, tasks.log, id to the <a
+href="Syctask.html#SYC_DIR">SYC_DIR</a> directory if not already in the <a
+href="Syctask.html#SYC_DIR">SYC_DIR</a> directory. This should only be if
+upgrading from version 0.0.7 and below.</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="reindex_tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 205</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reindex_tasks</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>) <span class="ruby-comment">#root)</span>
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span> <span class="ruby-constant">SYC_DIR</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">SYC_DIR</span>
+  <span class="ruby-identifier">new_id</span> = {}
+  <span class="ruby-identifier">to_be_renamed</span> = {}
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Collect task files...&quot;</span>
+  <span class="ruby-identifier">task_files</span> = <span class="ruby-identifier">task_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Restore ID counter...&quot;</span>
+  <span class="ruby-identifier">initialize_id</span>(<span class="ruby-identifier">task_files</span>)
+  <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;-&gt; Start re-indexing now...&quot;</span>
+  <span class="ruby-identifier">collect_by_id</span>(<span class="ruby-identifier">task_files</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span>, <span class="ruby-identifier">files</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span>
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-comment"># need to re-index only second and following tasks</span>
+      <span class="ruby-identifier">result</span> = <span class="ruby-identifier">reindex_task</span>(<span class="ruby-identifier">file</span>)
+      <span class="ruby-comment"># associate old id to new id and dir name</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">new_id</span>[<span class="ruby-identifier">result</span>[<span class="ruby-value">:old_id</span>]].<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">new_id</span>[<span class="ruby-identifier">result</span>[<span class="ruby-value">:old_id</span>]] = {<span class="ruby-identifier">result</span>[<span class="ruby-value">:dirname</span>] =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">result</span>[<span class="ruby-value">:new_id</span>]}
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">new_id</span>[<span class="ruby-identifier">result</span>[<span class="ruby-value">:old_id</span>]][<span class="ruby-identifier">result</span>[<span class="ruby-value">:dirname</span>]] = <span class="ruby-identifier">result</span>[<span class="ruby-value">:new_id</span>]
+      <span class="ruby-keyword">end</span> 
+      <span class="ruby-comment"># assign tmp_file to new_file for later renaming</span>
+      <span class="ruby-identifier">to_be_renamed</span>[<span class="ruby-identifier">result</span>[<span class="ruby-value">:tmp_file</span>]] = <span class="ruby-identifier">result</span>[<span class="ruby-value">:new_file</span>]
+      <span class="ruby-comment"># document the re-indexing of tasks</span>
+      <span class="ruby-identifier">log_reindexing</span>(<span class="ruby-identifier">result</span>[<span class="ruby-value">:old_id</span>], <span class="ruby-identifier">result</span>[<span class="ruby-value">:new_id</span>], <span class="ruby-identifier">result</span>[<span class="ruby-value">:new_file</span>]) 
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-identifier">to_be_renamed</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">old_name</span>,<span class="ruby-identifier">new_name</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">rename</span>(<span class="ruby-identifier">old_name</span>, <span class="ruby-identifier">new_name</span>)}
+  <span class="ruby-identifier">puts</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Update task log file&quot;</span>
+  <span class="ruby-identifier">update_tasks_log</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-identifier">new_id</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Update planned tasks files&quot;</span>
+  <span class="ruby-identifier">update_planned_tasks</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-identifier">new_id</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Move schedule files...&quot;</span>
+  <span class="ruby-identifier">move_time_schedule_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;-&gt; Update tracked task file...&quot;</span>
+  <span class="ruby-identifier">update_tracked_task</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reindex_tasks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reindex_tasks-method -->
+
+    
+      <div id="method-i-save_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_id</span><span
+            class="method-args">(id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Save the id to the <a href="Syctask.html#ID">ID</a> file. Returns the id
+when save was successful</p>
+          
+
+          
+          <div class="method-source-code" id="save_id-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 283</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save_id</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">ID</span>,<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">id</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- save_id-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- save_id-method -->
+
+    
+      <div id="method-i-save_ids" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_ids</span><span
+            class="method-args">(id, file)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Saves the ids to ids file</p>
+          
+
+          
+          <div class="method-source-code" id="save_ids-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 276</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save_ids</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">file</span>)
+  <span class="ruby-identifier">entry</span> = <span class="ruby-node">&quot;#{id},#{file}&quot;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">IDS</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">IDS</span>).<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">entry</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">IDS</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">entry</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- save_ids-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- save_ids-method -->
+
+    
+      <div id="method-i-task_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">task_files</span><span
+            class="method-args">(dirs, excluded=[])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all task files in and below the provided dir. Returns an array of
+task files</p>
+          
+
+          
+          <div class="method-source-code" id="task_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 375</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">task_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>=[])
+  <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-regexp">%r\d+\.task$/</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- task_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- task_files-method -->
+
+    
+      <div id="method-i-tasks_log_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tasks_log_files</span><span
+            class="method-args">(dirs, excluded=[])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves als tasks.log files in and below the given directory</p>
+          
+
+          
+          <div class="method-source-code" id="tasks_log_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 392</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tasks_log_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>=[])
+  <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-regexp">%rtasks\.log/</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- tasks_log_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- tasks_log_files-method -->
+
+    
+      <div id="method-i-time_schedule_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_schedule_files</span><span
+            class="method-args">(dirs, excluded=[])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all schedule files in and below the given directory</p>
+          
+
+          
+          <div class="method-source-code" id="time_schedule_files-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 386</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_schedule_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>=[])
+  <span class="ruby-identifier">pattern</span> = <span class="ruby-regexp">%r{\d{4}-\d{2}-\d{2}_time_schedule}</span>
+  <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-identifier">pattern</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_schedule_files-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_schedule_files-method -->
+
+    
+      <div id="method-i-update_planned_tasks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_planned_tasks</span><span
+            class="method-args">(dirs, excluded, new_ids)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Replaces the old ids with the new ids in the planned tasks files. A planned
+tasks file has the form ‘2013-03-03_planned_tasks’ and lives until
+syctask’s version 0.0.7 in ~/.tasks directory. From version 0.1.0 on the
+planned tasks files live in the ~/.syc/syctask directory. So the calling
+method has the responsibility to copy or move the planned tasks files after
+they have been updated to the new planned tasks directory.</p>
+          
+
+          
+          <div class="method-source-code" id="update_planned_tasks-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 333</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_planned_tasks</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-identifier">new_ids</span>)
+  <span class="ruby-identifier">planned_tasks_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tasks</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">readlines</span>(<span class="ruby-identifier">file</span>)
+    <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">task_dir</span>, <span class="ruby-identifier">old_id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">','</span>)
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">new_ids</span>[<span class="ruby-identifier">old_id</span>]
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">new_ids</span>[<span class="ruby-identifier">old_id</span>][<span class="ruby-identifier">task_dir</span>]
+      <span class="ruby-identifier">tasks</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-node">&quot;#{task_dir},#{new_ids[old_id][task_dir]}&quot;</span>   
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;#{SYC_DIR}/#{File.basename(file)}&quot;</span>, <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>))
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update_planned_tasks-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update_planned_tasks-method -->
+
+    
+      <div id="method-i-update_tasks_log" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_tasks_log</span><span
+            class="method-args">(dirs, excluded=[], new_ids)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Updates the tasks.log file if tasks are re-indexed with the task’s new ids</p>
+          
+
+          
+          <div class="method-source-code" id="update_tasks_log-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 304</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_tasks_log</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>=[], <span class="ruby-identifier">new_ids</span>)
+  <span class="ruby-identifier">tasks_log_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">logs</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">readlines</span>(<span class="ruby-identifier">file</span>)
+    <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">log</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-identifier">log</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r^.*?(?=;)/</span>)[<span class="ruby-value">0</span>]
+      <span class="ruby-identifier">logs</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">log</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-string">&quot;-&quot;</span>,<span class="ruby-string">&quot;;&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-node">%r(?&lt;=^#{type};)\d+-/</span>)[<span class="ruby-value">0</span>]
+      <span class="ruby-identifier">old_id</span> = <span class="ruby-identifier">log</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-node">%r(?&lt;=^#{type};)\d+(?=;)/</span>)[<span class="ruby-value">0</span>]
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">new_ids</span>[<span class="ruby-identifier">old_id</span>]
+      <span class="ruby-identifier">task_dir</span> = <span class="ruby-identifier">log</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-node">%r(?&lt;=^#{type};#{old_id};).*?(?=;)/</span>)[<span class="ruby-value">0</span>]
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">new_ids</span>[<span class="ruby-identifier">old_id</span>][<span class="ruby-identifier">task_dir</span>]
+      <span class="ruby-identifier">logs</span>[<span class="ruby-identifier">i</span>] = <span class="ruby-identifier">log</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-node">&quot;#{old_id};#{task_dir}&quot;</span>, 
+                        <span class="ruby-node">&quot;#{new_ids[old_id][task_dir]};#{task_dir}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">file</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TASKS_LOG</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">join</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment">#TODO only append a line if it is not already available in TASKS_LOG</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">TASKS_LOG</span>, <span class="ruby-string">'a'</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">join</span>}
+      <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update_tasks_log-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update_tasks_log-method -->
+
+    
+      <div id="method-i-update_tracked_task" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_tracked_task</span><span
+            class="method-args">(dirs, excluded)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Updates tracked_tasks file if task has been re-indexed with new <a
+href="Syctask.html#ID">ID</a></p>
+          
+
+          
+          <div class="method-source-code" id="update_tracked_task-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 347</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_tracked_task</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>)
+  <span class="ruby-ivar">@tracked</span> = <span class="ruby-identifier">get_files</span>(<span class="ruby-identifier">dirs</span>, <span class="ruby-identifier">excluded</span>, <span class="ruby-regexp">%rtracked_tasks/</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tracked</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tracked</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">task</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-ivar">@tracked</span>[<span class="ruby-value">0</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">RIDX_LOG</span>
+    <span class="ruby-identifier">old_id</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(?&lt;=id: )\d+$/</span>)
+    <span class="ruby-identifier">old_dir</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(?&lt;=dir: ).*$/</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">old_id</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">old_dir</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">pattern</span> = <span class="ruby-node">%r{(?&lt;=#{old_id[0]},)\d+(?=,#{old_dir[0]}\/\d+\.task)}</span>
+    <span class="ruby-identifier">new_id</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">RIDX_LOG</span>).<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">pattern</span>)
+    <span class="ruby-identifier">task</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">&quot;id: #{old_id}&quot;</span>, <span class="ruby-node">&quot;id: #{new_id}&quot;</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">TRACKED_TASK</span>, <span class="ruby-identifier">task</span>)
+  <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">rm</span> <span class="ruby-ivar">@tracked</span>[<span class="ruby-value">0</span>] <span class="ruby-keyword">unless</span> <span class="ruby-constant">TRACKED_TASK</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@tracked</span>[<span class="ruby-value">0</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update_tracked_task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update_tracked_task-method -->
+
+    
+      <div id="method-i-viable-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">viable?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks if system files are available that are needed for running syc-task.
+Returns true if neccessary system files are available, otherwise false.</p>
+          
+
+          
+          <div class="method-source-code" id="viable-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/environment.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">viable?</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">SYC_DIR</span> <span class="ruby-keyword">and</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-constant">ID</span> 
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- viable-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- viable-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

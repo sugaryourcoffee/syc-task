@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::Scanner - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/scanner.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-load_task_fields">#load_task_fields</a>
+    
+    <li><a href="#method-i-multiple_scan-3F">#multiple_scan?</a>
+    
+    <li><a href="#method-i-options_of">#options_of</a>
+    
+    <li><a href="#method-i-scan_file">#scan_file</a>
+    
+    <li><a href="#method-i-scan_line">#scan_line</a>
+    
+    <li><a href="#method-i-scan_task_line">#scan_task_line</a>
+    
+    <li><a href="#method-i-scan_text">#scan_text</a>
+    
+    <li><a href="#method-i-title_of">#title_of</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::Scanner</h1>
+
+  <div id="description" class="description">
+    
+<p>A <a href="Scanner.html">Scanner</a> scans text or files for tasks. The
+task is identified by an annotation</p>
+
+<p>Example</p>
+<hr style="height: 5px">
+
+<p>@tasks; title;description;prio;follow_up Title 1;Description 1;;2016-09-10
+Title 2;Description 2;1;2016-09-20</p>
+
+<p>@tasks; is indicating that tasks are following separated by ‘;’. The next
+line describes to which fields the values belong to. The next lines are the
+actual field values.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-scan" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scan</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The scan type @tasks scan all tasks, @task scan the next task</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-scanned" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scanned</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Indicates whether task has been scanned since last @task(s) annotation</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-separator" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">separator</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The separator that separates task values</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-task_count" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">task_count</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The task counter holding tasks scanned</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-task_fields" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">task_fields</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The task fields</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-tasks" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">tasks</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The scanned tasks</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new scanner</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-ivar">@tasks</span> = {}
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-load_task_fields" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_task_fields</span><span
+            class="method-args">(line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks if the ‘line’ contains task fields. If it contains task fields it
+sets the @<a href="Scanner.html#attribute-i-task_fields">#task_fields</a>
+and returns true, otherwise returns false</p>
+          
+
+          
+          <div class="method-source-code" id="load_task_fields-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_task_fields</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-identifier">task_fields</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@separator</span>)
+  <span class="ruby-keyword">if</span> (<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">FIELDS</span> &amp; <span class="ruby-identifier">task_fields</span>).<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@task_fields</span> = <span class="ruby-identifier">task_fields</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span> }
+    <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- load_task_fields-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- load_task_fields-method -->
+
+    
+      <div id="method-i-multiple_scan-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">multiple_scan?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks whether multiple tasks should be scanned which is indicated by
+‘@scan == ’@tasks’.</p>
+          
+
+          
+          <div class="method-source-code" id="multiple_scan-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">multiple_scan?</span>
+  <span class="ruby-ivar">@scan</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r@tasks/</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- multiple_scan-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- multiple_scan-3F-method -->
+
+    
+      <div id="method-i-options_of" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">options_of</span><span
+            class="method-args">(task_values)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves the task values except for the ‘title’ value and returns a hash
+of the task values</p>
+          
+
+          
+          <div class="method-source-code" id="options_of-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">options_of</span>(<span class="ruby-identifier">task_values</span>)
+  <span class="ruby-identifier">task_values</span> = <span class="ruby-identifier">task_values</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">task_values</span>[<span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:title</span>)]]
+  <span class="ruby-identifier">task_fields</span> = <span class="ruby-ivar">@task_fields</span> <span class="ruby-operator">-</span> [<span class="ruby-value">:title</span>]
+  <span class="ruby-identifier">options</span> = {}
+  <span class="ruby-identifier">task_fields</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">options</span>[<span class="ruby-identifier">field</span>] = <span class="ruby-identifier">task_values</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">strip</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">options</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- options_of-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- options_of-method -->
+
+    
+      <div id="method-i-scan_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scan_file</span><span
+            class="method-args">(file)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Scans a file for tasks</p>
+          
+
+          
+          <div class="method-source-code" id="scan_file-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scan_file</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">foreach</span>(<span class="ruby-identifier">file</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">scan_line</span>(<span class="ruby-identifier">line</span>.<span class="ruby-identifier">strip</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- scan_file-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- scan_file-method -->
+
+    
+      <div id="method-i-scan_line" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scan_line</span><span
+            class="method-args">(line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Scans a string (line) for tasks</p>
+          
+
+          
+          <div class="method-source-code" id="scan_line-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scan_line</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^@tasks./</span>
+    <span class="ruby-ivar">@scan</span>, <span class="ruby-ivar">@separator</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(@tasks)(.)/</span>).<span class="ruby-identifier">flatten</span>
+    <span class="ruby-ivar">@scanned</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^@task./</span>
+    <span class="ruby-ivar">@scan</span>, <span class="ruby-ivar">@separator</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r(@task)(.)/</span>).<span class="ruby-identifier">flatten</span>
+    <span class="ruby-ivar">@scanned</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@scanned</span>
+      <span class="ruby-identifier">load_task_fields</span>(<span class="ruby-identifier">line</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">scan_task_line</span>(<span class="ruby-identifier">line</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">multiple_scan?</span>
+      <span class="ruby-identifier">scan_task_line</span>(<span class="ruby-identifier">line</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- scan_line-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- scan_line-method -->
+
+    
+      <div id="method-i-scan_task_line" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scan_task_line</span><span
+            class="method-args">(line)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Scans the ‘line’ for task values</p>
+          
+
+          
+          <div class="method-source-code" id="scan_task_line-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 95</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scan_task_line</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-string">'-'</span>
+  <span class="ruby-identifier">task_values</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@separator</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@task_fields</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">task_values</span>.<span class="ruby-identifier">size</span>)
+    <span class="ruby-ivar">@tasks</span>[<span class="ruby-identifier">title_of</span>(<span class="ruby-identifier">task_values</span>)] = <span class="ruby-identifier">options_of</span>(<span class="ruby-identifier">task_values</span>)
+    <span class="ruby-ivar">@scanned</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- scan_task_line-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- scan_task_line-method -->
+
+    
+      <div id="method-i-scan_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scan_text</span><span
+            class="method-args">(text)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Scans a text for tasks</p>
+          
+
+          
+          <div class="method-source-code" id="scan_text-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scan_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">each_line</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">scan_line</span>(<span class="ruby-identifier">line</span>.<span class="ruby-identifier">strip</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- scan_text-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- scan_text-method -->
+
+    
+      <div id="method-i-title_of" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">title_of</span><span
+            class="method-args">(task_values)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves the ‘title’ value from the task_values which is an array</p>
+          
+
+          
+          <div class="method-source-code" id="title_of-source">
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">title_of</span>(<span class="ruby-identifier">task_values</span>)
+  <span class="ruby-identifier">task_values</span>[<span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:title</span>)].<span class="ruby-identifier">strip</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- title_of-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- title_of-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

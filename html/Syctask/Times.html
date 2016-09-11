@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::Times - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/times.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-diff">#diff</a>
+    
+    <li><a href="#method-i-round_up">#round_up</a>
+    
+    <li><a href="#method-i-time">#time</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::Times</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="Times.html">Times</a> class represents a time consisting of hour
+and minutes</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-h" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">h</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Hour of the <a href="Times.html">Times</a> object</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-m" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">m</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Minute of the <a href="Times.html">Times</a> object</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(time)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new <a href="Times.html">Times</a> object. time has to be
+provided as an array with the content as [“hour”,“minute”] e.g. [“10”,“15”]
+is 15 past 10</p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-ivar">@h</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_i</span>
+  <span class="ruby-ivar">@m</span> = <span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-diff" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">diff</span><span
+            class="method-args">(time = Time.now)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Calculates the difference between this time and the provided time. If no
+time is given the current time is used.</p>
+
+<pre>Example:
+This time  =  9:35
+New time   = 10:20
+diff(time) =  0:45</pre>
+
+<p>Will return [hour,min] in the example [0,45]</p>
+          
+
+          
+          <div class="method-source-code" id="diff-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">diff</span>(<span class="ruby-identifier">time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+  <span class="ruby-identifier">diff_minutes</span> = (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@h</span>) * <span class="ruby-value">60</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@m</span>)
+  <span class="ruby-identifier">signum</span> = <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">diff_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span>
+  <span class="ruby-identifier">diff_h</span> = <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">diff_m</span> = <span class="ruby-identifier">diff_minutes</span>.<span class="ruby-identifier">abs</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">signum</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">diff_h</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+      [<span class="ruby-identifier">signum</span> * <span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+    <span class="ruby-keyword">else</span>
+      [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">signum</span> * <span class="ruby-identifier">diff_m</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">diff_h</span>, <span class="ruby-identifier">diff_m</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- diff-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- diff-method -->
+
+    
+      <div id="method-i-round_up" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">round_up</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Rounds the time to the next hour if minutes is greater than 0</p>
+          
+
+          
+          <div class="method-source-code" id="round_up-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">round_up</span>
+  <span class="ruby-ivar">@m</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@h</span><span class="ruby-operator">+</span><span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@h</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- round_up-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- round_up-method -->
+
+    
+      <div id="method-i-time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a Time object with the current date and the hour and minute of 
+this <a href="Times.html">Times</a> object</p>
+          
+
+          
+          <div class="method-source-code" id="time-source">
+            <pre><span class="ruby-comment"># File lib/syctask/times.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-identifier">now</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-constant">Time</span>.<span class="ruby-identifier">local</span>(<span class="ruby-identifier">now</span>.<span class="ruby-identifier">year</span>,<span class="ruby-identifier">now</span>.<span class="ruby-identifier">mon</span>,<span class="ruby-identifier">now</span>.<span class="ruby-identifier">day</span>,<span class="ruby-ivar">@h</span>,<span class="ruby-ivar">@m</span>,<span class="ruby-value">0</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

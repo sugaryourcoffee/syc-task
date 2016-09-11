@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::Schedule - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/schedule.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-assign">#assign</a>
+    
+    <li><a href="#method-i-get_times">#get_times</a>
+    
+    <li><a href="#method-i-graph">#graph</a>
+    
+    <li><a href="#method-i-meeting_caption">#meeting_caption</a>
+    
+    <li><a href="#method-i-meeting_list">#meeting_list</a>
+    
+    <li><a href="#method-i-time_caption">#time_caption</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::Schedule</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="Schedule.html">Schedule</a> represents a working day with a start
+and end time, meeting times and titles and tasks. Tasks can also be
+associated to meetings as in an agenda. Invokation example</p>
+
+<pre class="ruby"><span class="ruby-identifier">work</span> = [<span class="ruby-string">&quot;8&quot;</span>,<span class="ruby-string">&quot;30&quot;</span>,<span class="ruby-string">&quot;18&quot;</span>,<span class="ruby-string">&quot;45&quot;</span>]
+<span class="ruby-identifier">busy</span> = [[<span class="ruby-string">&quot;9&quot;</span>,<span class="ruby-string">&quot;0&quot;</span>,<span class="ruby-string">&quot;10&quot;</span>,<span class="ruby-string">&quot;0&quot;</span>],[<span class="ruby-string">&quot;11&quot;</span>,<span class="ruby-string">&quot;30&quot;</span>,<span class="ruby-string">&quot;12&quot;</span>,<span class="ruby-string">&quot;15&quot;</span>]]
+<span class="ruby-identifier">titles</span> = [<span class="ruby-string">&quot;Ruby class room training&quot;</span>,<span class="ruby-string">&quot;Discuss Ruby&quot;</span>]
+<span class="ruby-identifier">tasks</span> = [<span class="ruby-identifier">task1</span>,<span class="ruby-identifier">task2</span>,<span class="ruby-identifier">task3</span>,<span class="ruby-identifier">task4</span>,<span class="ruby-identifier">task5</span>,<span class="ruby-identifier">task6</span>]
+<span class="ruby-identifier">schedule</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Schedule</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">work</span>,<span class="ruby-identifier">busy</span>,<span class="ruby-identifier">titles</span>,<span class="ruby-identifier">tasks</span>)
+<span class="ruby-identifier">schedule</span>.<span class="ruby-identifier">graph</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">output</span><span class="ruby-operator">|</span> <span class="ruby-identifier">puts</span> <span class="ruby-identifier">output</span>}
+</pre>
+
+<p>This will create following output</p>
+
+<pre class="ruby"><span class="ruby-constant">Meetings</span>
+<span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span>
+<span class="ruby-constant">A</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Ruby</span> <span class="ruby-keyword">class</span> <span class="ruby-identifier">room</span> <span class="ruby-identifier">training</span>
+<span class="ruby-constant">B</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Discuss</span> <span class="ruby-constant">Ruby</span>
+
+    <span class="ruby-constant">A</span>         <span class="ruby-constant">B</span>
+<span class="ruby-identifier">xxoo</span><span class="ruby-operator">/</span><span class="ruby-regexp">%r/</span><span class="ruby-operator">/</span><span class="ruby-regexp">%rxxx|-/</span><span class="ruby-operator">/</span><span class="ruby-regexp">%r/</span><span class="ruby-identifier">ooooxoooo</span><span class="ruby-operator">|</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">|</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">|</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">|</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">|</span>
+<span class="ruby-value">8</span>   <span class="ruby-value">9</span>  <span class="ruby-value">10</span>  <span class="ruby-value">11</span>  <span class="ruby-value">12</span>  <span class="ruby-value">13</span>  <span class="ruby-value">14</span>  <span class="ruby-value">15</span>  <span class="ruby-value">16</span>  <span class="ruby-value">17</span>  <span class="ruby-value">18</span>  <span class="ruby-value">19</span>
+<span class="ruby-value">1</span> <span class="ruby-value">2</span>      <span class="ruby-value">3</span>        <span class="ruby-value">4</span>    <span class="ruby-value">5</span>    
+                        <span class="ruby-value">6</span>
+
+<span class="ruby-constant">Tasks</span>
+<span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span><span class="ruby-operator">-</span>
+<span class="ruby-value">0</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task1</span>
+<span class="ruby-value">1</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task2</span>
+<span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">3</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task3</span>
+<span class="ruby-value">3</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task4</span>
+<span class="ruby-value">4</span> <span class="ruby-operator">-</span> <span class="ruby-value">5</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task5</span>
+<span class="ruby-value">5</span> <span class="ruby-operator">-</span> <span class="ruby-value">6</span><span class="ruby-operator">:</span> <span class="ruby-identifier">task6</span>
+</pre>
+
+<p>Subsequent tasks are are displayed in the graph alternating with x and o.
+Meetings are indicated with / and the start is marked with A, B and so on.
+<a href="Task.html">Task</a> IDs are shown below the graph. The graph will
+be printed colored. Meetings in red, free times in green and tasks in blue.
+The past time is shown in black.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="BUSY_COLOR">BUSY_COLOR
+        
+        <dd class="description"><p>Color of meetings</p>
+        
+      
+        <dt id="BUSY_PATTERN">BUSY_PATTERN
+        
+        <dd class="description"><p>Regex scans meetings in the graph</p>
+        
+      
+        <dt id="FREE_COLOR">FREE_COLOR
+        
+        <dd class="description"><p>Color of free times</p>
+        
+      
+        <dt id="FREE_PATTERN">FREE_PATTERN
+        
+        <dd class="description"><p>Regex scans free times in the graph</p>
+        
+      
+        <dt id="GRAPH_PATTERN">GRAPH_PATTERN
+        
+        <dd class="description"><p>Regex scans tasks and free times in the graph</p>
+        
+      
+        <dt id="UNSCHEDULED_COLOR">UNSCHEDULED_COLOR
+        
+        <dd class="description"><p>If tasks cannot be assigned to the working time this color is used</p>
+        
+      
+        <dt id="WORK_COLOR">WORK_COLOR
+        
+        <dd class="description"><p>Color of tasks</p>
+        
+      
+        <dt id="WORK_PATTERN">WORK_PATTERN
+        
+        <dd class="description"><p>Regex scans tasks in the graph</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-ends" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ends</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>End time of working day</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-meetings" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">meetings</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Meetings assigned to the work time</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-starts" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">starts</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Start time of working day</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-tasks" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">tasks</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Tasks assigned to the work time</p>
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(work_time, busy_time=[], titles=[], tasks=[])</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new <a href="Schedule.html">Schedule</a> and initializes work
+time, busy times, titles and tasks. Work time is mandatory, busy times,
+titles and tasks are optional. Values have to be provided as</p>
+<ul><li>
+<p>work time: [start_hour, start_minute, end_hour, end_minute]</p>
+</li><li>
+<p>busy time: [[start_hour, start_minute, end_hour, <a
+href="http://...">end_minute],</a>]</p>
+</li><li>
+<p>titles:    [title,…]</p>
+</li><li>
+<p>tasks:     [task,…]</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">busy_time</span>=[], <span class="ruby-identifier">titles</span>=[], <span class="ruby-identifier">tasks</span>=[])
+  <span class="ruby-ivar">@starts</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>], <span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]])
+  <span class="ruby-ivar">@ends</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Times</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">work_time</span>[<span class="ruby-value">2</span>], <span class="ruby-identifier">work_time</span>[<span class="ruby-value">3</span>]])
+  <span class="ruby-ivar">@meetings</span> = []
+  <span class="ruby-identifier">titles</span> <span class="ruby-operator">||=</span> []
+  <span class="ruby-identifier">busy_time</span>.<span class="ruby-identifier">each</span>.<span class="ruby-identifier">with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">busy</span>,<span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">title</span> = <span class="ruby-identifier">titles</span>[<span class="ruby-identifier">index</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">titles</span>[<span class="ruby-identifier">index</span>] <span class="ruby-operator">:</span> <span class="ruby-node">&quot;Meeting #{index}&quot;</span>
+    <span class="ruby-ivar">@meetings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Meeting</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">busy</span>, <span class="ruby-identifier">title</span>) 
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Exception</span>, 
+    <span class="ruby-string">&quot;Busy times have to be within work time&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">within?</span>(<span class="ruby-ivar">@meetings</span>, 
+                                                            <span class="ruby-ivar">@starts</span>, 
+                                                            <span class="ruby-ivar">@ends</span>)
+  <span class="ruby-ivar">@tasks</span> = <span class="ruby-identifier">tasks</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-assign" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">assign</span><span
+            class="method-args">(assignments)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets the assignments containing tasks that are assigned to meetings.
+Returns true if succeeds</p>
+          
+
+          
+          <div class="method-source-code" id="assign-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">assign</span>(<span class="ruby-identifier">assignments</span>)
+  <span class="ruby-identifier">assignments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">assignment</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">number</span> = <span class="ruby-identifier">assignment</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">ord</span> <span class="ruby-operator">-</span> <span class="ruby-string">&quot;A&quot;</span>.<span class="ruby-identifier">ord</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">number</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">number</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@meetings</span>.<span class="ruby-identifier">size</span>
+    <span class="ruby-ivar">@meetings</span>[<span class="ruby-identifier">number</span>].<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">clear</span>
+    <span class="ruby-identifier">assignment</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">','</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">index</span> = <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">find_index</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_i</span>} 
+      <span class="ruby-ivar">@meetings</span>[<span class="ruby-identifier">number</span>].<span class="ruby-identifier">tasks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@tasks</span>[<span class="ruby-identifier">index</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">index</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@tasks</span>[<span class="ruby-identifier">index</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@meetings</span>[<span class="ruby-identifier">number</span>].<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">uniq!</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- assign-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- assign-method -->
+
+    
+      <div id="method-i-get_times" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_times</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves the work and busy times transformed to the time line scale</p>
+          
+
+          
+          <div class="method-source-code" id="get_times-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 396</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_times</span>
+  <span class="ruby-identifier">work_time</span> = [<span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">h</span>, <span class="ruby-ivar">@ends</span>.<span class="ruby-identifier">round_up</span>]
+  <span class="ruby-identifier">meeting_times</span> = []
+  <span class="ruby-ivar">@meetings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meeting</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">meeting_time</span> = <span class="ruby-constant">Array</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">2</span>)
+    <span class="ruby-identifier">meeting_time</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">hour_offset</span>(<span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">h</span>, <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">starts</span>.<span class="ruby-identifier">h</span>) <span class="ruby-operator">+</span> 
+      <span class="ruby-identifier">minute_offset</span>(<span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">starts</span>.<span class="ruby-identifier">m</span>)
+    <span class="ruby-identifier">meeting_time</span>[<span class="ruby-value">1</span>] = <span class="ruby-identifier">hour_offset</span>(<span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">h</span>, <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">ends</span>.<span class="ruby-identifier">h</span>) <span class="ruby-operator">+</span> 
+      <span class="ruby-identifier">minute_offset</span>(<span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">ends</span>.<span class="ruby-identifier">m</span>)
+    <span class="ruby-identifier">meeting_times</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">meeting_time</span>
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@meetings</span>
+  
+  <span class="ruby-identifier">times</span> = [<span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- get_times-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- get_times-method -->
+
+    
+      <div id="method-i-graph" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">graph</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>graph first creates creates the time line. Then the busy times are added.
+After that the tasks are added to the time line and the task caption and
+task list is created. graph returns the graph, task caption, task list and
+meeting list</p>
+<ul><li>
+<p>time line</p>
+</li><li>
+<p>add meetings to time line</p>
+</li><li>
+<p>add tasks to time line</p>
+</li><li>
+<p>create task caption</p>
+</li><li>
+<p>create task list</p>
+</li><li>
+<p>create meeting caption</p>
+</li><li>
+<p>create meeting list</p>
+</li><li>
+<p>return time line, task caption, task list, meeting caption and meeting</p>
+</li></ul>
+
+<p>list</p>
+          
+
+          
+          <div class="method-source-code" id="graph-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">graph</span>
+  <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span> = <span class="ruby-identifier">get_times</span>
+
+  <span class="ruby-identifier">heading</span> = <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;+++ %s - %s-%s +++&quot;</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>),
+                    <span class="ruby-ivar">@starts</span>.<span class="ruby-identifier">time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>),
+                    <span class="ruby-ivar">@ends</span>.<span class="ruby-identifier">time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%H:%M&quot;</span>)).<span class="ruby-identifier">color</span>(<span class="ruby-value">:blue</span>)
+
+  <span class="ruby-identifier">time_line</span> = <span class="ruby-string">&quot;|---&quot;</span> * (<span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>]) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;|&quot;</span>
+  <span class="ruby-identifier">meeting_times</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">time_line</span>[<span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>]<span class="ruby-operator">..</span><span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>]<span class="ruby-operator">-</span><span class="ruby-value">1</span>] = <span class="ruby-string">'/'</span> * (<span class="ruby-identifier">time</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">time</span>[<span class="ruby-value">0</span>])
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">task_list</span>, <span class="ruby-identifier">task_caption</span> = <span class="ruby-identifier">assign_tasks_to_graph</span>(<span class="ruby-identifier">time_line</span>)
+
+  [<span class="ruby-identifier">heading</span>.<span class="ruby-identifier">center</span>(<span class="ruby-value">80</span>), <span class="ruby-identifier">meeting_list</span>, <span class="ruby-identifier">meeting_caption</span>,
+   <span class="ruby-identifier">colorize</span>(<span class="ruby-identifier">time_line</span>), <span class="ruby-identifier">time_caption</span>, 
+   <span class="ruby-identifier">task_caption</span>, <span class="ruby-identifier">task_list</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- graph-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- graph-method -->
+
+    
+      <div id="method-i-meeting_caption" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">meeting_caption</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a meeting caption and returns it for printing</p>
+          
+
+          
+          <div class="method-source-code" id="meeting_caption-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 137</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">meeting_caption</span>
+  <span class="ruby-identifier">work_time</span>, <span class="ruby-identifier">meeting_times</span> = <span class="ruby-identifier">get_times</span>
+  <span class="ruby-identifier">caption</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">meeting_number</span> = <span class="ruby-string">&quot;A&quot;</span>
+  <span class="ruby-identifier">meeting_times</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">times</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">caption</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">' '</span> * (<span class="ruby-identifier">times</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">caption</span>.<span class="ruby-identifier">size</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">meeting_number</span> 
+    <span class="ruby-identifier">meeting_number</span>.<span class="ruby-identifier">next!</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-identifier">caption</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- meeting_caption-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- meeting_caption-method -->
+
+    
+      <div id="method-i-meeting_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">meeting_list</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a meeting list for printing. Returns the meeting list</p>
+          
+
+          
+          <div class="method-source-code" id="meeting_list-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">meeting_list</span>
+  <span class="ruby-identifier">list</span> = <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-string">&quot;Meetings\n&quot;</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
+  <span class="ruby-identifier">list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-string">&quot;--------\n&quot;</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
+  <span class="ruby-identifier">meeting_number</span> = <span class="ruby-string">&quot;A&quot;</span>
+  <span class="ruby-ivar">@meetings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meeting</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">hint</span> = <span class="ruby-string">&quot;-&quot;</span>
+    <span class="ruby-identifier">hint</span> = <span class="ruby-string">&quot;*&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_between?</span>(<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>, 
+                                <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">starts</span>.<span class="ruby-identifier">time</span>, 
+                                <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">ends</span>.<span class="ruby-identifier">time</span>)
+    <span class="ruby-identifier">list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s %s %s\n&quot;</span>, <span class="ruby-identifier">meeting_number</span>, 
+                                  <span class="ruby-identifier">hint</span>, 
+                                  <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">title</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
+    <span class="ruby-identifier">meeting_number</span>.<span class="ruby-identifier">next!</span>
+    <span class="ruby-identifier">meeting</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">task_color</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">done?</span> <span class="ruby-operator">?</span> <span class="ruby-value">:green</span> <span class="ruby-operator">:</span> <span class="ruby-value">:blue</span>
+      <span class="ruby-identifier">list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%5s - %s\n&quot;</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">title</span>).<span class="ruby-identifier">color</span>(<span class="ruby-identifier">task_color</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>      
+  <span class="ruby-identifier">list</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- meeting_list-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- meeting_list-method -->
+
+    
+      <div id="method-i-time_caption" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_caption</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the time caption for the time line</p>
+          
+
+          
+          <div class="method-source-code" id="time_caption-source">
+            <pre><span class="ruby-comment"># File lib/syctask/schedule.rb, line 149</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_caption</span>
+  <span class="ruby-identifier">work_time</span> = <span class="ruby-identifier">get_times</span>[<span class="ruby-value">0</span>]
+  <span class="ruby-identifier">caption</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">work_time</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">upto</span>(<span class="ruby-identifier">work_time</span>[<span class="ruby-value">1</span>]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">time</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">caption</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">9</span> <span class="ruby-operator">?</span> <span class="ruby-string">' '</span> * <span class="ruby-value">3</span> <span class="ruby-operator">:</span> <span class="ruby-string">' '</span> * <span class="ruby-value">2</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;%s&quot;</span>, <span class="ruby-identifier">caption</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_caption-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_caption-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

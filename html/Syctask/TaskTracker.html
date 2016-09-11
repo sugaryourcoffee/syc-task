@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Syctask::TaskTracker - Your application title</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctask/task_tracker.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-start">#start</a>
+    
+    <li><a href="#method-i-stop">#stop</a>
+    
+    <li><a href="#method-i-tracked_task">#tracked_task</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Syctask.html">Syctask</a>
+  
+    <li><a href="../Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="../Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="../Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="../Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="../Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="../Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="../Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="../Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="../Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="../Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="../Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="../Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="../Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="../Sycutil.html">Sycutil</a>
+  
+    <li><a href="../Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="../ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../Sycstring.html">Sycstring</a>
+  
+    <li><a href="../Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Syctask::TaskTracker</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="TaskTracker.html">TaskTracker</a> provides methods to start a task
+and stop a task. The objective is to track the processing time for a task.
+The processing time can be analyzed with the TaskStatistics class. When a
+task is started it is saved to the started_tasks file. If another task is
+started the currently active task is stopped and the newly started file is
+put on top of the started_tasks file. When stopping a task the currently
+started tasks will be returned and one of the idling tasks can be
+restarted. When a task is stopped the processing time is added to the
+task's lead_time field.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <!-- Constants -->
+    <section id="constants-list" class="section">
+      <h3 class="section-header">Constants</h3>
+      <dl>
+      
+        <dt id="TASK_LOG_FILE">TASK_LOG_FILE
+        
+        <dd class="description"><p>File name of the task log file</p>
+        
+      
+        <dt id="TRACKED_TASKS_FILE">TRACKED_TASKS_FILE
+        
+        <dd class="description"><p>File name of the file where the tracked files are saved to</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new <a href="TaskTracker.html">TaskTracker</a></p>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-ivar">@service</span> = <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">TaskService</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">load_tracks</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-start" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start</span><span
+            class="method-args">(task, show=true)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a task is started it is saved with the start time. If a task is
+already tracked it is stopped (see <a
+href="TaskTracker.html#method-i-stop">stop</a>).  A started task will print
+every second a message to the console if the show parameter is true. start
+returns</p>
+<ul><li><dl class="rdoc-list label-list"><dt>false, nil 
+<dd>
+<p>if the task is already tracked</p>
+</dd></dl>
+</li><li><dl class="rdoc-list label-list"><dt>true,  nil 
+<dd>
+<p>if the task is started and no task was running.</p>
+</dd></dl>
+</li><li><dl class="rdoc-list label-list"><dt>true,  task
+<dd>
+<p>if task is started and the previously running task stopped</p>
+</dd></dl>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="start-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">show</span>=<span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;Error: Task without directory.\n&quot;</span><span class="ruby-operator">+</span>
+                       <span class="ruby-string">&quot;--&gt; Update task with syctask -t &lt;dir&gt; update &quot;</span><span class="ruby-operator">+</span>
+                       <span class="ruby-node">&quot;#{task.id}&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>
+  <span class="ruby-identifier">index</span> = <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">task</span>)
+  <span class="ruby-keyword">return</span> [<span class="ruby-keyword">false</span>, <span class="ruby-keyword">nil</span>] <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">index</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+
+  <span class="ruby-identifier">stopped_task</span> = <span class="ruby-identifier">stop</span>
+  <span class="ruby-identifier">track</span> = <span class="ruby-constant">Track</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">task</span>)
+
+  <span class="ruby-identifier">track</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">show</span>)
+  <span class="ruby-identifier">log_task</span>(<span class="ruby-value">:start</span>, <span class="ruby-identifier">track</span>)
+
+  <span class="ruby-ivar">@tracks</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>,<span class="ruby-identifier">track</span>)
+
+  <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-value">0</span>,<span class="ruby-identifier">task</span>)
+
+  <span class="ruby-identifier">save_tracks</span>
+
+  [<span class="ruby-keyword">true</span>, <span class="ruby-identifier">stopped_task</span>]
+  
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- start-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- start-method -->
+
+    
+      <div id="method-i-stop" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">stop</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>When a task is stopped it is removed from the started_tasks file and the
+processing time is added to the lead_time field of the task. <a
+href="TaskTracker.html#method-i-stop">stop</a> returns the stopped task in
+an Array or an empty Array if no task is running an hence no task can be
+stopped.</p>
+          
+
+          
+          <div class="method-source-code" id="stop-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
+
+  <span class="ruby-identifier">task</span> = <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
+  <span class="ruby-identifier">task</span>.<span class="ruby-identifier">update_lead_time</span>(<span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">stop</span>)
+  <span class="ruby-ivar">@service</span>.<span class="ruby-identifier">save</span>(<span class="ruby-identifier">task</span>.<span class="ruby-identifier">dir</span>, <span class="ruby-identifier">task</span>)
+
+  <span class="ruby-identifier">log_task</span>(<span class="ruby-value">:stop</span>, <span class="ruby-ivar">@tracks</span>[<span class="ruby-value">0</span>])
+
+  <span class="ruby-ivar">@tracks</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">save_tracks</span>
+
+  <span class="ruby-identifier">task</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- stop-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- stop-method -->
+
+    
+      <div id="method-i-tracked_task" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tracked_task</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves the currently tracked task returns nil if no task is tracked</p>
+          
+
+          
+          <div class="method-source-code" id="tracked_task-source">
+            <pre><span class="ruby-comment"># File lib/syctask/task_tracker.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tracked_task</span>
+  <span class="ruby-ivar">@tasks</span>[<span class="ruby-value">0</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- tracked_task-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- tracked_task-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

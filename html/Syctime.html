@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Syctime - Your application title</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>lib/syctime/time_util.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-date_between-3F">#date_between?</a>
+    
+    <li><a href="#method-i-seconds_to_time">#seconds_to_time</a>
+    
+    <li><a href="#method-i-separated_time_string">#separated_time_string</a>
+    
+    <li><a href="#method-i-string_for_seconds">#string_for_seconds</a>
+    
+    <li><a href="#method-i-time_between-3F">#time_between?</a>
+    
+    <li><a href="#method-i-time_for_string">#time_for_string</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Syctask.html">Syctask</a>
+  
+    <li><a href="./Syctask/Evaluator.html">Syctask::Evaluator</a>
+  
+    <li><a href="./Syctask/Meeting.html">Syctask::Meeting</a>
+  
+    <li><a href="./Syctask/Scanner.html">Syctask::Scanner</a>
+  
+    <li><a href="./Syctask/Schedule.html">Syctask::Schedule</a>
+  
+    <li><a href="./Syctask/Settings.html">Syctask::Settings</a>
+  
+    <li><a href="./Syctask/Statistics.html">Syctask::Statistics</a>
+  
+    <li><a href="./Syctask/Task.html">Syctask::Task</a>
+  
+    <li><a href="./Syctask/TaskPlanner.html">Syctask::TaskPlanner</a>
+  
+    <li><a href="./Syctask/TaskScheduler.html">Syctask::TaskScheduler</a>
+  
+    <li><a href="./Syctask/TaskService.html">Syctask::TaskService</a>
+  
+    <li><a href="./Syctask/TaskTracker.html">Syctask::TaskTracker</a>
+  
+    <li><a href="./Syctask/Times.html">Syctask::Times</a>
+  
+    <li><a href="./Syctask/Track.html">Syctask::Track</a>
+  
+    <li><a href="./Sycutil.html">Sycutil</a>
+  
+    <li><a href="./Sycutil/Console.html">Sycutil::Console</a>
+  
+    <li><a href="./ConsoleTimer.html">ConsoleTimer</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Sycstring.html">Sycstring</a>
+  
+    <li><a href="./Syctime.html">Syctime</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Syctime</h1>
+
+  <div id="description" class="description">
+    
+<p>Functions for time operations</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-date_between-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">date_between?</span><span
+            class="method-args">(date, from, to)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests whether the date is between from and to. Returns true then otherwise
+false. Time, from and to are Time objects as retrieved from Time.now or
+Time.local(2013,“apr”,13,10,50,0). Alternatively time strings can be
+provided in the form of “2013-04-13”.</p>
+          
+
+          
+          <div class="method-source-code" id="date_between-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">date_between?</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
+  <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Date</span>
+  <span class="ruby-identifier">from</span> = <span class="ruby-identifier">from</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Date</span>
+  <span class="ruby-identifier">to</span>   =   <span class="ruby-identifier">to</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">class</span>   <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">class</span>   <span class="ruby-operator">==</span> <span class="ruby-constant">Date</span>
+  <span class="ruby-identifier">time_pattern</span> = <span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-identifier">time_pattern</span>).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">date</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">date</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">to</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- date_between-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- date_between-3F-method -->
+
+    
+      <div id="method-i-seconds_to_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">seconds_to_time</span><span
+            class="method-args">(seconds)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Translates seconds to years, months, weeks, days, hours, minutes and
+seconds The return value is an array [seconds,…,years]</p>
+          
+
+          
+          <div class="method-source-code" id="seconds_to_time-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">seconds_to_time</span>(<span class="ruby-identifier">seconds</span>)
+  <span class="ruby-identifier">seconds</span> = <span class="ruby-identifier">seconds</span>.<span class="ruby-identifier">round</span>
+  <span class="ruby-identifier">duration</span> = []
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>                         <span class="ruby-comment"># seconds</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>                    <span class="ruby-comment"># minutes</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">24</span>               <span class="ruby-comment"># hours</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">24</span> <span class="ruby-operator">%</span> <span class="ruby-value">7</span>           <span class="ruby-comment"># days</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">24</span> <span class="ruby-operator">/</span> <span class="ruby-value">7</span> <span class="ruby-operator">%</span> <span class="ruby-value">4</span>       <span class="ruby-comment"># weeks</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">24</span> <span class="ruby-operator">/</span> <span class="ruby-value">7</span> <span class="ruby-operator">/</span> <span class="ruby-value">4</span> <span class="ruby-operator">%</span> <span class="ruby-value">12</span>  <span class="ruby-comment"># months</span>
+  <span class="ruby-identifier">duration</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">24</span> <span class="ruby-operator">/</span> <span class="ruby-value">7</span> <span class="ruby-operator">/</span> <span class="ruby-value">4</span> <span class="ruby-operator">/</span> <span class="ruby-value">12</span>  <span class="ruby-comment"># years</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- seconds_to_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- seconds_to_time-method -->
+
+    
+      <div id="method-i-separated_time_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">separated_time_string</span><span
+            class="method-args">(seconds, separator)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a time string separating hours, minutes and seconds with the
+provided separator like 12:50:33</p>
+          
+
+          
+          <div class="method-source-code" id="separated_time_string-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">separated_time_string</span>(<span class="ruby-identifier">seconds</span>, <span class="ruby-identifier">separator</span>)
+  <span class="ruby-identifier">secs</span>  = <span class="ruby-identifier">seconds</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">mins</span>  = <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
+  <span class="ruby-identifier">hours</span> = <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> 
+  <span class="ruby-identifier">time_string</span> = <span class="ruby-identifier">sprintf</span>(<span class="ruby-node">&quot;%02d#{separator}%02d#{separator}%02d&quot;</span>, <span class="ruby-identifier">hours</span>, <span class="ruby-identifier">mins</span>, <span class="ruby-identifier">secs</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- separated_time_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- separated_time_string-method -->
+
+    
+      <div id="method-i-string_for_seconds" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">string_for_seconds</span><span
+            class="method-args">(seconds)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Translates seconds into a time string like 1 year 2 weeks 5 days 10
+minutes.</p>
+          
+
+          
+          <div class="method-source-code" id="string_for_seconds-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">string_for_seconds</span>(<span class="ruby-identifier">seconds</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">seconds_to_time</span>(<span class="ruby-identifier">seconds</span>)
+  <span class="ruby-identifier">time_name</span> = [<span class="ruby-string">'year'</span>,<span class="ruby-string">'month'</span>,<span class="ruby-string">'week'</span>,<span class="ruby-string">'day'</span>,<span class="ruby-string">'hour'</span>,<span class="ruby-string">'minute'</span>,<span class="ruby-string">'second'</span>]
+  <span class="ruby-identifier">time_string</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">time</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">part</span>,<span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">time_string</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">' '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">time_name</span>[<span class="ruby-identifier">index</span>] <span class="ruby-operator">+</span> <span class="ruby-string">' '</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">time_string</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">' '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">time_name</span>[<span class="ruby-identifier">index</span>] <span class="ruby-operator">+</span> <span class="ruby-string">'s '</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">time_string</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- string_for_seconds-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- string_for_seconds-method -->
+
+    
+      <div id="method-i-time_between-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_between?</span><span
+            class="method-args">(time, from, to)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks whether the time is between from and to. Returns true then otherwise
+false. time, from and to have to be Time objects.</p>
+          
+
+          
+          <div class="method-source-code" id="time_between-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_between?</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
+  <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">to</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_between-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_between-3F-method -->
+
+    
+      <div id="method-i-time_for_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">time_for_string</span><span
+            class="method-args">(time)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Translates a time in the ISO 8601 schema to a time object.</p>
+
+<pre>2013-04-09 21:45 -200</pre>
+          
+
+          
+          <div class="method-source-code" id="time_for_string-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">time_for_string</span>(<span class="ruby-identifier">time</span>)
+  <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">sub</span>(<span class="ruby-string">' '</span>,<span class="ruby-string">'T'</span>)
+  <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-identifier">time</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- time_for_string-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- time_for_string-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.1.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

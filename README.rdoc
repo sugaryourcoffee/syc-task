@@ -550,38 +550,41 @@ Version 0.1.15
   mark as done or plan
 * Update command now has a duration flag to set the task's duration
 
-Version 0.2.0
-* Migrated from TestUnit to Minitest
-* Implemented _timeleap_ {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
+=Version 0.2.0
+ * Migrated from TestUnit to Minitest
+ * Implemented _timeleap_ {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
   Time distances come in two flavors as long and short forms.
 
-  Examples for long forms are
-  - yesterday|today|tomorrow
-  - next|previous_monday|tuesday|...|sunday
-  - monday|tuesday|...|sunday_in|back_1_week|month|year
-  - in|back_10_days|weeks|months|years
+    Examples for long forms are
+    - yesterday|today|tomorrow
+    - next|previous_monday|tuesday|...|sunday
+    - monday|tuesday|...|sunday_in|back_1_week|month|year
+    - in|back_10_days|weeks|months|years
 
-  Examples for short forms are
-  - y|tod|tom
-  - n|pmo|tu|..|su
-  - mo|tu|...|sui|b1w|m|y
-  - i|b10d|w|m|y
+    Examples for short forms are
+    - y|tod|tom
+    - n|pmo|tu|..|su
+    - mo|tu|...|sui|b1w|m|y
+    - i|b10d|w|m|y
   
-Version 0.2.1
-* Fix a bug in `syctask delete --plan`
-* Add indicator '>' to task list when task contains notes
-* Refactor migration from version 0.0.7 and when user has deleted system files.
+=Version 0.2.1
+ * Fix a bug in `syctask delete --plan`
+ * Add indicator '>' to task list when task contains notes
+ * Refactor migration from version 0.0.7 and when user has deleted system files.
   The user can now specify the directories where the tasks are located and can
   also define directories to be excluded. This is especially helpful to omit 
   search in large mounted directories, like from NAS servers.
 
-Version 0.3.1
-* Add csv output spearated by ';' to the list command
-* Fix bug when schedule file is empty
-* Add scan command to scan tasks from files
+=Version 0.3.1
+ * Add csv output spearated by ';' to the list command
+ * Fix bug when schedule file is empty
+ * Add scan command to scan tasks from files
 
-Version 0.3.2
-* Fix bux of missing class lib/syctask/scanner.rb
+=Version 0.3.2
+ * Fix bugs of missing class lib/syctask/scanner.rb
+
+=Version 0.4.2
+ * delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25 
 
 ==Development
 Pull from Github and then run 

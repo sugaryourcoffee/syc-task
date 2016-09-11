@@ -47,6 +47,13 @@ class TestEvaluator < Minitest::Test #Test::Unit::TestCase
       refute @evaluator.includes?("3", "")
     end
 
+    should "evaluate number array with ranges" do
+      assert @evaluator.includes?("3", "1,2-5,6,7")
+      assert @evaluator.includes?("8", "1-9,10,15-20")
+      assert @evaluator.includes?("9", "1,2,4-10")
+      assert @evaluator.includes?("5", "1,2 - 5,10,4- 8")
+    end
+
     should "evaluate string array" do
       assert @evaluator.includes?("speach", "speach,lecture")
       refute @evaluator.includes?("talk", "speach,lecture")

@@ -64,7 +64,7 @@ module Syctask
     # is returned. 
     def includes?(value, pattern)
       return false if value.nil? or pattern.nil?
-      captures = pattern.scan(CSV_PATTERN)
+      captures = normalize_ranges(pattern).scan(CSV_PATTERN)
       !captures.find_index(value.to_s).nil?
     end
 
@@ -75,6 +75,26 @@ module Syctask
       !value.match(Regexp.new(regex, true)).nil?
     end
 
+    # Checks if the pattern contains number ranges then the ranges are 
+    # normalized e.g. 1-5 will become 1,2,3,4,5
+    def normalize_ranges(pattern)
+      if pattern.include? "-"
+        pattern.split(',').map do |value|
+          if value.include? '-' 
+            if value =~ /^\d+-\d+$/
+              a, b = value.split('-')
+              Array(a..b)
+            else
+              value
+            end
+          else 
+            value =~ /^\d+$/ ? value.to_i : value
+          end
+        end.uniq.join(',')
+      else
+        pattern
+      end
+    end
   end
 
 end

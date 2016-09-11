@@ -212,8 +212,8 @@ command :delete do |c|
   c.flag :plan
 
   c.desc 'IDs of the tasks to remove'
-  c.arg_name 'ID1,ID2,..,IDn'
-  c.flag [:i, :id], :must_match => /^\d+(?:,\d+)*|\d+/ 
+  c.arg_name 'ID1,ID2,ID3-ID4,...,IDn'
+  c.flag [:i, :id], :must_match => /^\d+(?:,\d+|-\d+)*|\d+/ 
 
   c.action do |global_options,options,args|
     help_now! "You must provide tasks ids to delete" unless options[:id]

@@ -184,7 +184,8 @@ desc 'Extract tasks from a file'
 arg_name 'TASK_FILE'
 command :scan do |c|
   c.action do |global_options,options,args|
-    puts "scan command not implemented yet"
+    help_now! "You must provide a file to extract tasks from" if args.empty?
+    puts "not implemented yet!"
   end
 end
 

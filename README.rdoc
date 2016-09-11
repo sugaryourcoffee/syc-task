@@ -575,7 +575,7 @@ Version 0.2.1
   also define directories to be excluded. This is especially helpful to omit 
   search in large mounted directories, like from NAS servers.
 
-Version 0.3.2
+Version 0.3.1
 * Add csv output spearated by ';' to the list command
 * Fix bug when schedule file is empty
 * Add scan command to scan tasks from files

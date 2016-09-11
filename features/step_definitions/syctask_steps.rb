@@ -48,4 +48,53 @@ Given(/^I have a file "([^"]*)" file with "([^"]*)" tasks and all fields set$/) 
   HEREDOC
   File.write(mom, mom_tasks)
 end
+  
+Then(/^the files "([^"]*)" should exist$/) do |files|
+  STDERR.puts "/tmp/ - #{Dir['/tmp/mom*']}"
+  files.split(',').reduce(true) do |result, file| 
+    (File.exist? file.strip) && result
+  end
+end
 
+Given(/^I have a file "([^"]*)" with @tasks and @task annotations with different fields$/) do |file|
+  content = <<-HEREDOC
+  This is a text that should be ignored
+
+  Now several tasks are listed
+  @tasks;
+  title;description;prio
+  Title1;Description1;1
+  Title2;Description2;2
+
+  Nothing to scan. But next only one task to scan
+  @task;
+  title;prio
+  Title3;3
+  Title4;4
+
+  And nothing to scan
+  HEREDOC
+
+  File.write(file, content)
+end
+
+Given(/^I have a file "([^"]*)" with @tasks annotation$/) do |file|
+  content = <<-HEREDOC
+  This is a text that should be ignored
+
+  Now several tasks are listed
+  @tasks;
+  title;description;prio
+  Title1;Description1;1
+  Title2;Description2;2
+
+  Nothing to scan. But next more tasks to scan
+  Title3;Description3;3
+  Title4;Description4;4
+
+  And nothing to scan
+  HEREDOC
+
+  File.write(file, content)
+
+end

@@ -73,7 +73,7 @@ class TestScan < Minitest::Test
       content = <<-HEREDOC
       This is text that should be ignored
       And here we go with markdown
-      @tasks|
+      @TaSks|
       title |description |prio|due_date  |follow_up
       ------|------------|----|----------|----------
       Title1|Description1|1   |2016-09-10|2016-09-11
@@ -96,7 +96,6 @@ class TestScan < Minitest::Test
       And here is the end 
       HEREDOC
 
-      STDERR.puts "----------> multiple tasks"
       scanner = Scanner.new
       tasks = scanner.scan(content)
       assert_equal 6, tasks.size

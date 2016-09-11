@@ -487,13 +487,13 @@ To print to Dell-B1160w-Mono the following command can be used
 Version 0.0.1 
 Implementation of new, update, list and done commands.
 
-Version 0.0.4
+===Version 0.0.4
 * delete: deleting tasks or remove tasks from a task plan
 * plan: plan tasks and add them to the task plan
 * schedule: create a schedule with work and busy time and assign the tasks from
   the task plan to the free times
 
-Version 0.0.6
+===Version 0.0.6
 * start: start a task and track the lead time
 * stop: stop the tracking and print the lead time of the task
 * start, stop: the task is logged in the ~/.tasks/task.log file when added and
@@ -506,10 +506,10 @@ Version 0.0.6
   the provided dates task plan. If both dates are set the task is added to both
   dates task plans
 
-Version 0.0.7
+===Version 0.0.7
 * updated rdoc
 
-Version 0.1.15
+===Version 0.1.15
 * IDs are now unique independent of the task or project directory. After
   upgrading from a version 0.0.7 or older the user asked whether to re-index
   the tasks. It is adviced to tar the tasks before re-indexing with
@@ -550,10 +550,11 @@ Version 0.1.15
   mark as done or plan
 * Update command now has a duration flag to set the task's duration
 
-=Version 0.2.0
- * Migrated from TestUnit to Minitest
- * Implemented _timeleap_ {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] which allows to specify additional time distances to yesterday, today tomorrow. 
-  Time distances come in two flavors as long and short forms.
+====Version 0.2.0
+* Migrated from TestUnit to Minitest
+* Implemented _timeleap_ {<img src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" />}[http://badge.fury.io/rb/timeleap] 
+  which allows to specify additional time distances to yesterday, today 
+  tomorrow. Time distances come in two flavors as long and short forms.
 
     Examples for long forms are
     - yesterday|today|tomorrow
@@ -567,7 +568,7 @@ Version 0.1.15
     - mo|tu|...|sui|b1w|m|y
     - i|b10d|w|m|y
   
-=Version 0.2.1
+====Version 0.2.1
  * Fix a bug in `syctask delete --plan`
  * Add indicator '>' to task list when task contains notes
  * Refactor migration from version 0.0.7 and when user has deleted system files.
@@ -575,16 +576,16 @@ Version 0.1.15
   also define directories to be excluded. This is especially helpful to omit 
   search in large mounted directories, like from NAS servers.
 
-=Version 0.3.1
- * Add csv output spearated by ';' to the list command
- * Fix bug when schedule file is empty
- * Add scan command to scan tasks from files
+====Version 0.3.1
+* Add csv output spearated by ';' to the list command
+* Fix bug when schedule file is empty
+* Add scan command to scan tasks from files
 
-=Version 0.3.2
- * Fix bugs of missing class lib/syctask/scanner.rb
+====Version 0.3.2
+* Fix bugs of missing class lib/syctask/scanner.rb
 
-=Version 0.4.2
- * delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25 
+====Version 0.4.2
+* delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25 
 
 ==Development
 Pull from Github and then run 

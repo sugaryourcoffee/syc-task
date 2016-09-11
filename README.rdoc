@@ -580,6 +580,9 @@ Version 0.3.1
 * Fix bug when schedule file is empty
 * Add scan command to scan tasks from files
 
+Version 0.3.2
+* Fix bux of missing class lib/syctask/scanner.rb
+
 ==Development
 Pull from Github and then run 
 

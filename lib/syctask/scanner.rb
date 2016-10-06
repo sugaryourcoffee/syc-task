@@ -102,7 +102,8 @@ module Syctask
       end
     end
 
-    # Retrieves the 'title' value from the task_values which is an array
+    # Retrieves the 'title' value from the task_values. If title column value
+    # is missing an ArgumentError is trown
     def title_of(task_values)
       if @task_fields.index(:title).nil?
         raise ArgumentError, "scan: No 'title' header column found"

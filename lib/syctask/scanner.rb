@@ -104,6 +104,10 @@ module Syctask
 
     # Retrieves the 'title' value from the task_values which is an array
     def title_of(task_values)
+      if @task_fields.index(:title).nil?
+        raise ArgumentError, "scan: No 'title' header column found"
+      end
+
       task_values[@task_fields.index(:title)].strip
     end
 

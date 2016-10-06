@@ -65,6 +65,22 @@ class TestScan < Minitest::Test
       end
     end
 
+    should "throw error if title column value is missing" do
+      content = <<-HEREDOC
+      This is text that should be ignored
+      @tasks;
+      Topic ; Description ; Prio ; Due_Date ; Follow_Up
+      Title1 ; Description1 ; 1 ; 2016-09-10 ; 2016-09-11
+      Title2 ; Description2 ; 2 ; 2016-09-20 ; 2016-09-21
+
+      This is text that should be ignored
+      HEREDOC
+
+      assert_raises ArgumentError do
+        Scanner.new.scan(content)
+      end
+    end
+
     should "create task from string in markdown notation" do
       content = <<-HEREDOC
       This is text that should be ignored

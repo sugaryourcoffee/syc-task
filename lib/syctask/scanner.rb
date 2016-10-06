@@ -83,7 +83,8 @@ module Syctask
     # sets the @task_fields and returns true, otherwise returns false
     def load_task_fields(line)
       task_fields = line.split(@separator)
-      if (Syctask::Task::FIELDS & task_fields).empty?
+      if (Syctask::Task::FIELDS & task_fields.map(&:strip)
+                                             .map(&:downcase)).empty?
         false
       else
         @task_fields = task_fields.map { |f| f.strip.downcase.to_sym }

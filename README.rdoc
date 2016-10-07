@@ -58,6 +58,7 @@ list the tasks in a table, e.g. markdown
     Some text before
 
     @tasks|
+
     title           |description               |follow_up |due_date  |prio
     ----------------|--------------------------|----------|----------|----
     Schedule meeting|Invite all developers     |2016-09-12|2016-10-12|1
@@ -72,19 +73,34 @@ list the tasks in a table, e.g. markdown
 The example above scans all tasks due to the plural 'tasks'. It also scans all
 tasks that are separated with non-task text and occur after the annotation and 
 confirm to the field structure. Lines that start with '-' will be ignored. So 
-if you want to skip only a view tasks within a task list prepend them with '-'.
+if you want to skip only a few tasks within a task list prepend them with '-'.
 If you have tasks with different fields then you have to add another annotation
 with the new field structure. 
 
 Possible fields are
 
-    title       - the title of the task
+    title       - the title of the task - mandatory field!
     description - the description of the task
     follow_up   - the follow-up date of the task in the form yyyy-mm-dd
     due_date    - the due-date of the task in the form yyyy-mm-dd
     prio        - the priority of the task
     tags        - tags the task is annotated with
     note        - a note for the task
+
+As inidcated in the list the title column is mandatory. Without the title column
+scan will raise an error during a scan. 
+
+Fields that are not part of the above list will be ignored. 
+
+    # | Title                                | Who
+    - | ------------------------------------ | ---
+    1 | Schedule meeting with all developers | Me
+    2 | Write letter to practice writing     | You
+
+In the table only the column Title will be scanned. The '#' and 'Who' column 
+will be ignored during scan. This table is also a table for a minimum scan
+structure.  You need at least to provide a title column so the scan function
+will recognize the table as a task list.
 
 Scanning tasks from a file
 
@@ -586,6 +602,8 @@ Implementation of new, update, list and done commands.
 
 ====Version 0.4.2
 * delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25 
+* scan will ignore columns that are not part of a syctask task
+* Fix bug when scanning tables that have spaces between separator and column
 
 ==Development
 Pull from Github and then run 

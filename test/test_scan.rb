@@ -65,6 +65,30 @@ class TestScan < Minitest::Test
       end
     end
 
+    should "Ignore columns with unknown header columns" do
+      content = <<-HEREDOC
+      This is text that should be ignored
+      @tasks;
+      # ;Title ; Description ; ignore; Prio ; Due_Date ; Follow_Up; ignore
+      1;Title1 ; Description1 ; ignore; 1 ; 2016-09-10 ; 2016-09-11; ignore
+      2;Title2 ; Description2 ; ignore; 2 ; 2016-09-20 ; 2016-09-21; ignore
+
+      This is text that should be ignored
+      HEREDOC
+
+      scanner = Scanner.new
+      tasks = scanner.scan(content)
+      assert_equal 2, tasks.size
+
+      tasks.each_with_index do |(title, options), i|
+        i += 1
+        assert_equal "Title#{i}", title
+        assert_equal [:description, :prio, :due_date, :follow_up], options.keys
+        assert_equal ["Description#{i}", "#{i}", 
+                      "2016-09-#{i}0", "2016-09-#{i}1"], options.values
+      end
+    end
+
     should "throw error if title column value is missing" do
       content = <<-HEREDOC
       This is text that should be ignored

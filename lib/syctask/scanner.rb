@@ -82,9 +82,11 @@ module Syctask
     # Checks if the 'line' contains task fields. If it contains task fields it
     # sets the @task_fields and returns true, otherwise returns false
     def load_task_fields(line)
-      task_fields = line.split(@separator)
-      if (Syctask::Task::FIELDS & task_fields.map(&:strip)
-                                             .map(&:downcase)).empty?
+      task_fields = line.split(@separator).map do |field|
+        field.strip.downcase
+      end
+
+      if (Syctask::Task::FIELDS & task_fields).empty?
         false
       else
         @task_fields = task_fields.map { |f| f.strip.downcase.to_sym }
@@ -120,7 +122,9 @@ module Syctask
       task_fields = @task_fields - [:title]
       options = {}
       task_fields.each_with_index do |field, index|
-        options[field] = task_values[index].strip
+        if Syctask::Task::FIELDS.include?(field.to_s) 
+          options[field] = task_values[index].strip
+        end
       end
       options
     end

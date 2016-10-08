@@ -242,7 +242,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="average-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 101</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 107</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">average</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">sum</span> = <span class="ruby-value">0</span>
   <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
@@ -276,7 +276,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="create_report_line_strings-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 63</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_report_line_strings</span>(<span class="ruby-identifier">lines</span>, <span class="ruby-identifier">value_size</span>)
   <span class="ruby-identifier">report</span> = <span class="ruby-string">&quot;&quot;</span>
   <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span> 
@@ -314,7 +314,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="logs-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 148</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 154</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">logs</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">from</span>=<span class="ruby-string">&quot;&quot;</span>, <span class="ruby-identifier">to</span>=<span class="ruby-identifier">from</span>)
   <span class="ruby-identifier">times</span> = []
   <span class="ruby-identifier">time_data</span>  = {}
@@ -385,7 +385,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="max-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 119</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">max</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">diffs</span> = []
   <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
@@ -419,7 +419,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="min-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 110</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 116</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">min</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">diffs</span> = []
   <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
@@ -455,6 +455,12 @@ general purpose tassk</p>
           <div class="method-source-code" id="report-source">
             <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">report</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">from</span>=<span class="ruby-string">&quot;&quot;</span>, <span class="ruby-identifier">to</span>=<span class="ruby-identifier">from</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot;Warning: Statistics log file %s&quot;</span>, 
+                   <span class="ruby-identifier">file</span>.<span class="ruby-identifier">bright</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>) <span class="ruby-operator">+</span>
+           <span class="ruby-identifier">sprintf</span>(<span class="ruby-string">&quot; is missing!\n%sNo statistics available!\n&quot;</span>, 
+                   <span class="ruby-string">&quot; &quot;</span>*<span class="ruby-value">9</span>).<span class="ruby-identifier">color</span>(<span class="ruby-value">:red</span>)
+  <span class="ruby-keyword">end</span>
 
   <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>, <span class="ruby-identifier">time_log</span>, <span class="ruby-identifier">count_log</span> = <span class="ruby-identifier">logs</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
   <span class="ruby-identifier">working_days</span> = <span class="ruby-identifier">time_log</span>[<span class="ruby-string">&quot;work&quot;</span>].<span class="ruby-identifier">count</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_log</span>[<span class="ruby-string">&quot;work&quot;</span>]
@@ -520,7 +526,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="report_line-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 85</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 91</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">report_line</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">total</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">average</span>, <span class="ruby-identifier">sizes</span>={})
   <span class="ruby-identifier">color</span> = <span class="ruby-value">:green</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-string">'task'</span> 
   <span class="ruby-identifier">color</span> = <span class="ruby-value">:yellow</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-string">'unplanned'</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@general_purpose_tasks</span>.
@@ -561,7 +567,7 @@ general purpose tassk</p>
 
           
           <div class="method-source-code" id="set_max_value_sizes-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 76</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_max_value_sizes</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">total</span>, <span class="ruby-identifier">min</span>, <span class="ruby-identifier">max</span>, <span class="ruby-identifier">average</span>, <span class="ruby-identifier">value_size</span>)
   <span class="ruby-identifier">value_size</span>[<span class="ruby-value">:key</span>]     = [<span class="ruby-identifier">value_size</span>[<span class="ruby-value">:key</span>],     <span class="ruby-identifier">key</span>.<span class="ruby-identifier">size</span>].<span class="ruby-identifier">max</span>
   <span class="ruby-identifier">value_size</span>[<span class="ruby-value">:total</span>]   = [<span class="ruby-identifier">value_size</span>[<span class="ruby-value">:total</span>],   <span class="ruby-identifier">total</span>.<span class="ruby-identifier">size</span>].<span class="ruby-identifier">max</span>
@@ -596,7 +602,7 @@ meeting time</p>
 
           
           <div class="method-source-code" id="stats-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 129</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stats</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">diffs</span> = []
   <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
@@ -631,7 +637,7 @@ creation, update, done, delete</p>
 
           
           <div class="method-source-code" id="stats_count-source">
-            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 139</span>
+            <pre><span class="ruby-comment"># File lib/syctask/statistics.rb, line 145</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">stats_count</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">count</span> = []
   <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>

@@ -334,7 +334,10 @@ and returns true, otherwise returns false</p>
           <div class="method-source-code" id="load_task_fields-source">
             <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 84</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load_task_fields</span>(<span class="ruby-identifier">line</span>)
-  <span class="ruby-identifier">task_fields</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@separator</span>)
+  <span class="ruby-identifier">task_fields</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@separator</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">field</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">%r(?&lt;=.)-(?=.)/</span>, <span class="ruby-string">&quot;_&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
   <span class="ruby-keyword">if</span> (<span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">FIELDS</span> &amp; <span class="ruby-identifier">task_fields</span>).<span class="ruby-identifier">empty?</span>
     <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">else</span>
@@ -369,7 +372,7 @@ and returns true, otherwise returns false</p>
 
           
           <div class="method-source-code" id="multiple_scan-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 124</span>
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 134</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">multiple_scan?</span>
   <span class="ruby-ivar">@scan</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r@tasks/</span>
 <span class="ruby-keyword">end</span></pre>
@@ -400,13 +403,15 @@ of the task values</p>
 
           
           <div class="method-source-code" id="options_of-source">
-            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 112</span>
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 120</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">options_of</span>(<span class="ruby-identifier">task_values</span>)
   <span class="ruby-identifier">task_values</span> = <span class="ruby-identifier">task_values</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">task_values</span>[<span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:title</span>)]]
   <span class="ruby-identifier">task_fields</span> = <span class="ruby-ivar">@task_fields</span> <span class="ruby-operator">-</span> [<span class="ruby-value">:title</span>]
   <span class="ruby-identifier">options</span> = {}
   <span class="ruby-identifier">task_fields</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">options</span>[<span class="ruby-identifier">field</span>] = <span class="ruby-identifier">task_values</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">strip</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Syctask</span><span class="ruby-operator">::</span><span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">FIELDS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>) 
+      <span class="ruby-identifier">options</span>[<span class="ruby-identifier">field</span>] = <span class="ruby-identifier">task_values</span>[<span class="ruby-identifier">index</span>].<span class="ruby-identifier">strip</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">options</span>
 <span class="ruby-keyword">end</span></pre>
@@ -510,7 +515,7 @@ of the task values</p>
 
           
           <div class="method-source-code" id="scan_task_line-source">
-            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 95</span>
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">scan_task_line</span>(<span class="ruby-identifier">line</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">start_with?</span> <span class="ruby-string">'-'</span>
   <span class="ruby-identifier">task_values</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@separator</span>)
@@ -572,13 +577,18 @@ of the task values</p>
 
         <div class="method-description">
           
-          <p>Retrieves the ‘title’ value from the task_values which is an array</p>
+          <p>Retrieves the ‘title’ value from the task_values. If title column value is
+missing an ArgumentError is trown</p>
           
 
           
           <div class="method-source-code" id="title_of-source">
-            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 105</span>
+            <pre><span class="ruby-comment"># File lib/syctask/scanner.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">title_of</span>(<span class="ruby-identifier">task_values</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:title</span>).<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;scan: No 'title' header column found&quot;</span>
+  <span class="ruby-keyword">end</span>
+
   <span class="ruby-identifier">task_values</span>[<span class="ruby-ivar">@task_fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:title</span>)].<span class="ruby-identifier">strip</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- title_of-source -->

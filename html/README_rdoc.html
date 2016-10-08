@@ -179,6 +179,7 @@ possible to  list the tasks in a table, e.g. markdown</p>
 <pre>Some text before
 
 @tasks|
+
 title           |description               |follow_up |due_date  |prio
 ----------------|--------------------------|----------|----------|----
 Schedule meeting|Invite all developers     |2016-09-12|2016-10-12|1
@@ -192,14 +193,14 @@ Even more text</pre>
 
 <p>The example above scans all tasks due to the plural ‘tasks’. It also scans
 all tasks that are separated with non-task text and occur after the
-annotation and  confirm to the filed structure. Lines that start with ‘-’
-will be ignored. So  if you want to skip only a view tasks within a task
+annotation and  confirm to the field structure. Lines that start with ‘-’
+will be ignored. So  if you want to skip only a few tasks within a task
 list prepend them with ‘-’. If you have tasks with different fields then
 you have to add another annotation with the new field structure.</p>
 
 <p>Possible fields are</p>
 
-<pre>title       - the title of the task
+<pre>title       - the title of the task - mandatory field!
 description - the description of the task
 follow_up   - the follow-up date of the task in the form yyyy-mm-dd
 due_date    - the due-date of the task in the form yyyy-mm-dd
@@ -207,7 +208,25 @@ prio        - the priority of the task
 tags        - tags the task is annotated with
 note        - a note for the task</pre>
 
-<p>Scanning tasks from a file</p>
+<p>Note: follow_up and due_date can also be written as Follow-up and Due-Date.
+Also case is ignored.</p>
+
+<p>As inidcated in the list the title column is mandatory. Without the title
+column scan will raise an error during a scan.</p>
+
+<p>Fields that are not part of the above list will be ignored.</p>
+
+<pre># | Title                                | Who
+- | ------------------------------------ | ---
+1 | Schedule meeting with all developers | Me
+2 | Write letter to practice writing     | You</pre>
+
+<p>In the table only the column Title will be scanned. The ‘#’ and ‘Who’
+column  will be ignored during scan. This table is also a table for a
+minimum scan structure.  You need at least to provide a title column so the
+scan function will recognize the table as a task list.</p>
+
+<p>Scanning tasks from files</p>
 
 <pre>$ syctask scan 2016-09-10-mom.md 2016-09-09-mom.md</pre>
 
@@ -383,12 +402,12 @@ Tasks
 
 <h3 id="label-Inspect+tasks">Inspect tasks</h3>
 
-<p>Lists each today’s unplanned task and allows to edit, delete, mark as done
-or plan</p>
+<p>Lists each unplanned task and allows to edit, delete, mark as done or plan
+for today or another day</p>
 
 <pre>$ syctask inspect
 0016 Create command for inspection
-(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (q)uit:</pre>
+(e)dit, (d)one, de(l)ete, (p)lan, da(t)e, (c)omplete, (s)kip, (b)ack, (q)uit</pre>
 
 <h3 id="label-Edit+task">Edit task</h3>
 
@@ -698,9 +717,11 @@ Dell-B1160w-Mono accepting requests since Sat 16 Mar 2013 04:27:45 PM CET</pre>
 
 <h2 id="label-Release+Notes">Release Notes</h2>
 
-<p>Version 0.0.1  Implementation of new, update, list and done commands.</p>
+<h3 id="label-Version+0.0.1+">Version 0.0.1 </h3>
 
-<p>Version 0.0.4</p>
+<p>Implementation of new, update, list and done commands.</p>
+
+<h3 id="label-Version+0.0.4">Version 0.0.4</h3>
 <ul><li>
 <p>delete: deleting tasks or remove tasks from a task plan</p>
 </li><li>
@@ -710,7 +731,7 @@ Dell-B1160w-Mono accepting requests since Sat 16 Mar 2013 04:27:45 PM CET</pre>
 from the task plan to the free times</p>
 </li></ul>
 
-<p>Version 0.0.6</p>
+<h3 id="label-Version+0.0.6">Version 0.0.6</h3>
 <ul><li>
 <p>start: start a task and track the lead time</p>
 </li><li>
@@ -730,12 +751,12 @@ to the provided dates task plan. If both dates are set the task is added to
 both dates task plans</p>
 </li></ul>
 
-<p>Version 0.0.7</p>
+<h3 id="label-Version+0.0.7">Version 0.0.7</h3>
 <ul><li>
 <p>updated rdoc</p>
 </li></ul>
 
-<p>Version 0.1.15</p>
+<h3 id="label-Version+0.1.15">Version 0.1.15</h3>
 <ul><li>
 <p>IDs are now unique independent of the task or project directory. After
 upgrading from a version 0.0.7 or older the user asked whether to re-index
@@ -796,40 +817,30 @@ mark as done or plan</p>
 <p>Update command now has a duration flag to set the task’s duration</p>
 </li></ul>
 
-<p>Version 0.2.0</p>
+<h4 id="label-Version+0.2.0">Version 0.2.0</h4>
 <ul><li>
 <p>Migrated from TestUnit to Minitest</p>
 </li><li>
 <p>Implemented <em>timeleap</em> <a
 href="http://badge.fury.io/rb/timeleap"><img
-src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" /></a> which
-allows to specify additional time distances to yesterday, today tomorrow. 
+src="https://badge.fury.io/rb/timeleap.svg" alt="Gem Version" /></a>  which
+allows to specify additional time distances to yesterday, today  tomorrow.
 Time distances come in two flavors as long and short forms.</p>
 
-<p>Examples for long forms are</p>
-<ul><li>
-<p>yesterday|today|tomorrow</p>
-</li><li>
-<p>next|previous_monday|tuesday|…|sunday</p>
-</li><li>
-<p>monday|tuesday|…|sunday_in|back_1_week|month|year</p>
-</li><li>
-<p>in|back_10_days|weeks|months|years</p>
+<pre>Examples for long forms are
+- yesterday|today|tomorrow
+- next|previous_monday|tuesday|...|sunday
+- monday|tuesday|...|sunday_in|back_1_week|month|year
+- in|back_10_days|weeks|months|years
+
+Examples for short forms are
+- y|tod|tom
+- n|pmo|tu|..|su
+- mo|tu|...|sui|b1w|m|y
+- i|b10d|w|m|y</pre>
 </li></ul>
 
-<p>Examples for short forms are</p>
-<ul><li>
-<p>y|tod|tom</p>
-</li><li>
-<p>n|pmo|tu|..|su</p>
-</li><li>
-<p>mo|tu|…|sui|b1w|m|y</p>
-</li><li>
-<p>i|b10d|w|m|y</p>
-</li></ul>
-</li></ul>
-
-<p>Version 0.2.1</p>
+<h4 id="label-Version+0.2.1">Version 0.2.1</h4>
 <ul><li>
 <p>Fix a bug in `syctask delete –plan`</p>
 </li><li>
@@ -841,7 +852,7 @@ and can also define directories to be excluded. This is especially helpful
 to omit  search in large mounted directories, like from NAS servers.</p>
 </li></ul>
 
-<p>Version 0.3.2</p>
+<h4 id="label-Version+0.3.1">Version 0.3.1</h4>
 <ul><li>
 <p>Add csv output spearated by ‘;’ to the list command</p>
 </li><li>
@@ -850,11 +861,40 @@ to omit  search in large mounted directories, like from NAS servers.</p>
 <p>Add scan command to scan tasks from files</p>
 </li></ul>
 
+<h4 id="label-Version+0.3.2">Version 0.3.2</h4>
+<ul><li>
+<p>Fix bugs of missing class lib/syctask/scanner.rb</p>
+</li></ul>
+
+<h4 id="label-Version+0.4.2">Version 0.4.2</h4>
+<ul><li>
+<p>delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25</p>
+</li><li>
+<p>inspect can now go back in the task list</p>
+</li><li>
+<p>inspect will now show the updated task after making changes to the task in 
+edit</p>
+</li><li>
+<p>inspect allows to specify a follow_up date</p>
+</li><li>
+<p>scan will ignore columns that are not part of a syctask task</p>
+</li><li>
+<p>scan recognizes ‘Follow-up’ as well as ‘follow_up’ now. That is an
+underscore can be replaced with ‘-’</p>
+</li><li>
+<p>Fix bug when scanning tables that have spaces between separator and column</p>
+</li><li>
+<p>When tasks.log file is missing `syctask inspect` prints warning with reason
+why statistics cannot be printed</p>
+</li></ul>
+
 <h2 id="label-Development">Development</h2>
 
 <p>Pull from Github and then run</p>
 
 <pre>$ bundle install</pre>
+
+<p>New classes have to be added to ‘lib/syctask.rb’</p>
 
 <p>Debugging the interface can be done with GLI_DEBUG:</p>
 
@@ -872,6 +912,15 @@ $ gem push syc-task-0.2.1.gem</pre>
 <p>There is a rake file available to run all tests</p>
 
 <pre>$ rake test</pre>
+
+<p>The CLI is tested with Cucumber. To run the Cucumber features in verbose
+mode</p>
+
+<pre>$ cucumber</pre>
+
+<p>or if you prefer cleaner output run</p>
+
+<pre>$ rake features</pre>
 
 <h2 id="label-License">License</h2>
 

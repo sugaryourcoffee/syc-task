@@ -80,6 +80,8 @@
     
     <li><a href="#method-i-matches-3F">#matches?</a>
     
+    <li><a href="#method-i-normalize_ranges">#normalize_ranges</a>
+    
   </ul>
 </nav>
 
@@ -352,7 +354,7 @@ is returned.</p>
             <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">includes?</span>(<span class="ruby-identifier">value</span>, <span class="ruby-identifier">pattern</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">nil?</span>
-  <span class="ruby-identifier">captures</span> = <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-constant">CSV_PATTERN</span>)
+  <span class="ruby-identifier">captures</span> = <span class="ruby-identifier">normalize_ranges</span>(<span class="ruby-identifier">pattern</span>).<span class="ruby-identifier">scan</span>(<span class="ruby-constant">CSV_PATTERN</span>)
   <span class="ruby-operator">!</span><span class="ruby-identifier">captures</span>.<span class="ruby-identifier">find_index</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>).<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- includes-3F-source -->
@@ -395,6 +397,52 @@ found. If value or regex is nil false is returned.</p>
 
         
       </div><!-- matches-3F-method -->
+
+    
+      <div id="method-i-normalize_ranges" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">normalize_ranges</span><span
+            class="method-args">(pattern)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks if the pattern contains number ranges then the ranges are 
+normalized e.g. 1-5 will become 1,2,3,4,5</p>
+          
+
+          
+          <div class="method-source-code" id="normalize_ranges-source">
+            <pre><span class="ruby-comment"># File lib/syctask/evaluator.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">normalize_ranges</span>(<span class="ruby-identifier">pattern</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&quot;-&quot;</span>
+    <span class="ruby-identifier">pattern</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">%r\s/</span>, <span class="ruby-string">&quot;&quot;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">','</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">'-'</span> 
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^\d+-\d+$/</span>
+          <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">'-'</span>)
+          <span class="ruby-constant">Array</span>(<span class="ruby-identifier">a</span><span class="ruby-operator">..</span><span class="ruby-identifier">b</span>)
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">value</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">else</span> 
+        <span class="ruby-identifier">value</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">%r^\d+$/</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">pattern</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- normalize_ranges-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- normalize_ranges-method -->
 
     
     </section><!-- public-instance-method-details -->

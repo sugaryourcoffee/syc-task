@@ -98,8 +98,6 @@
     
     <li><a href="#method-i-add_task_to_plan">#add_task_to_plan</a>
     
-    <li><a href="#method-i-extract_time">#extract_time</a>
-    
   </ul>
 </nav>
 
@@ -208,7 +206,7 @@
 
           
           <div class="method-source-code" id="add_task_to_plan-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 745</span>
+            <pre><span class="ruby-comment"># File bin/syctask, line 714</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_task_to_plan</span>(<span class="ruby-identifier">task</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>]
     <span class="ruby-ivar">@planner</span>.<span class="ruby-identifier">add_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">task</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:follow_up</span>])
@@ -225,62 +223,6 @@
 
         
       </div><!-- add_task_to_plan-method -->
-
-    
-      <div id="method-i-extract_time" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">extract_time</span><span
-            class="method-args">(time_string,time=false)</span>
-          <span class="method-click-advice">click to toggle source</span>
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Extracts the time out of a time string. Accepts ‘today’, ‘tomorrow’,
-‘yesterday’ or a date in the form ‘YYYY-MM-DD’. Returns the date contained
-in  the time_string or if time = true in a Time object</p>
-          
-
-          
-          <div class="method-source-code" id="extract_time-source">
-            <pre><span class="ruby-comment"># File bin/syctask, line 716</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>,<span class="ruby-identifier">time</span>=<span class="ruby-keyword">false</span>)
-  <span class="ruby-identifier">time_string</span> = <span class="ruby-string">'today'</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">nil?</span>
-
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>)
-    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">time_string</span> 
-    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-node">&quot;#{time_string}T00:00:00&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">timeleap</span> = <span class="ruby-constant">SycTimeleap</span><span class="ruby-operator">::</span><span class="ruby-constant">TimeLeap</span>.<span class="ruby-identifier">new</span>
-    <span class="ruby-keyword">begin</span>
-      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">timeleap</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">time_string</span>)
-      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
-    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
-      <span class="ruby-identifier">help_now!</span> <span class="ruby-string">&quot;Arguments may be 'time distances', YYYY-MM-DD or &lt;RETURN&gt;\n\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;time distances are:\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* yesterday|today|tomorrow\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* next|previous_monday|tuesday|...|sunday\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* in|back_10_days|weeks|months|years\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* monday|tuesday|...|sunday_in|back_1_day|week|month|year\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;Short forms are also possible:\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* y|tod|tom\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* n|pmo|tu|we|th|fr|sa|su\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* i|b10d|w|m|y\n&quot;</span><span class="ruby-operator">+</span>
-                <span class="ruby-string">&quot;* mo|tu|we|th|fr|sa|sui|b1d|w|m|y&quot;</span>
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">date</span>
-<span class="ruby-keyword">end</span></pre>
-          </div><!-- extract_time-source -->
-          
-        </div>
-
-        
-
-        
-      </div><!-- extract_time-method -->
 
     
     </section><!-- public-instance-method-details -->

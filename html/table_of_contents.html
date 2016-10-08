@@ -65,6 +65,16 @@
       <li><a href="README_rdoc.html#label-Add+TAB-completion+to+syctask">Add TAB-completion to syctask</a>
       <li><a href="README_rdoc.html#label-Output+to+Printer">Output to Printer</a>
       <li><a href="README_rdoc.html#label-Release+Notes">Release Notes</a>
+      <li><a href="README_rdoc.html#label-Version+0.0.1+">Version 0.0.1 </a>
+      <li><a href="README_rdoc.html#label-Version+0.0.4">Version 0.0.4</a>
+      <li><a href="README_rdoc.html#label-Version+0.0.6">Version 0.0.6</a>
+      <li><a href="README_rdoc.html#label-Version+0.0.7">Version 0.0.7</a>
+      <li><a href="README_rdoc.html#label-Version+0.1.15">Version 0.1.15</a>
+      <li><a href="README_rdoc.html#label-Version+0.2.0">Version 0.2.0</a>
+      <li><a href="README_rdoc.html#label-Version+0.2.1">Version 0.2.1</a>
+      <li><a href="README_rdoc.html#label-Version+0.3.1">Version 0.3.1</a>
+      <li><a href="README_rdoc.html#label-Version+0.3.2">Version 0.3.2</a>
+      <li><a href="README_rdoc.html#label-Version+0.4.2">Version 0.4.2</a>
       <li><a href="README_rdoc.html#label-Development">Development</a>
       <li><a href="README_rdoc.html#label-Tests">Tests</a>
       <li><a href="README_rdoc.html#label-License">License</a>
@@ -142,27 +152,27 @@
 <h2 id="methods">Methods</h2>
 <ul>
   
-    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
-  
     <li class="method"><a href="Syctask/TaskPlanner.html#method-c-new">::new &mdash; Syctask::TaskPlanner</a>
   
     <li class="method"><a href="Syctask/TaskScheduler.html#method-c-new">::new &mdash; Syctask::TaskScheduler</a>
   
-    <li class="method"><a href="Syctask/TaskTracker.html#method-c-new">::new &mdash; Syctask::TaskTracker</a>
+    <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
   
-    <li class="method"><a href="Syctask/Track.html#method-c-new">::new &mdash; Syctask::Track</a>
+    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
+  
+    <li class="method"><a href="Syctask/Statistics.html#method-c-new">::new &mdash; Syctask::Statistics</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-c-new">::new &mdash; Syctask::TaskTracker</a>
   
     <li class="method"><a href="Syctask/Meeting.html#method-c-new">::new &mdash; Syctask::Meeting</a>
   
     <li class="method"><a href="Syctask/Scanner.html#method-c-new">::new &mdash; Syctask::Scanner</a>
   
-    <li class="method"><a href="Syctask/Task.html#method-c-new">::new &mdash; Syctask::Task</a>
-  
     <li class="method"><a href="ConsoleTimer.html#method-c-new">::new &mdash; ConsoleTimer</a>
   
-    <li class="method"><a href="Syctask/Schedule.html#method-c-new">::new &mdash; Syctask::Schedule</a>
+    <li class="method"><a href="Syctask/Track.html#method-c-new">::new &mdash; Syctask::Track</a>
   
-    <li class="method"><a href="Syctask/Statistics.html#method-c-new">::new &mdash; Syctask::Statistics</a>
+    <li class="method"><a href="Syctask/Times.html#method-c-new">::new &mdash; Syctask::Times</a>
   
     <li class="method"><a href="Syctask/Task.html#method-i-3C-3D-3E">#<=> &mdash; Syctask::Task</a>
   
@@ -204,7 +214,7 @@
   
     <li class="method"><a href="Syctask/Task.html#method-i-done-3F">#done? &mdash; Syctask::Task</a>
   
-    <li class="method"><a href="Object.html#method-i-extract_time">#extract_time &mdash; Object</a>
+    <li class="method"><a href="Syctime.html#method-i-extract_time">#extract_time &mdash; Syctime</a>
   
     <li class="method"><a href="Syctask/TaskService.html#method-i-find">#find &mdash; Syctask::TaskService</a>
   
@@ -240,9 +250,9 @@
   
     <li class="method"><a href="Syctask/Statistics.html#method-i-logs">#logs &mdash; Syctask::Statistics</a>
   
-    <li class="method"><a href="Syctask/Task.html#method-i-matches-3F">#matches? &mdash; Syctask::Task</a>
-  
     <li class="method"><a href="Syctask/Evaluator.html#method-i-matches-3F">#matches? &mdash; Syctask::Evaluator</a>
+  
+    <li class="method"><a href="Syctask/Task.html#method-i-matches-3F">#matches? &mdash; Syctask::Task</a>
   
     <li class="method"><a href="Syctask/Statistics.html#method-i-max">#max &mdash; Syctask::Statistics</a>
   
@@ -263,6 +273,8 @@
     <li class="method"><a href="Syctask/Scanner.html#method-i-multiple_scan-3F">#multiple_scan? &mdash; Syctask::Scanner</a>
   
     <li class="method"><a href="Syctask.html#method-i-next_id">#next_id &mdash; Syctask</a>
+  
+    <li class="method"><a href="Syctask/Evaluator.html#method-i-normalize_ranges">#normalize_ranges &mdash; Syctask::Evaluator</a>
   
     <li class="method"><a href="Syctask/Scanner.html#method-i-options_of">#options_of &mdash; Syctask::Scanner</a>
   
@@ -338,19 +350,19 @@
   
     <li class="method"><a href="Sycstring.html#method-i-split_lines">#split_lines &mdash; Sycstring</a>
   
+    <li class="method"><a href="ConsoleTimer.html#method-i-start">#start &mdash; ConsoleTimer</a>
+  
     <li class="method"><a href="Syctask/TaskTracker.html#method-i-start">#start &mdash; Syctask::TaskTracker</a>
   
     <li class="method"><a href="Syctask/Track.html#method-i-start">#start &mdash; Syctask::Track</a>
-  
-    <li class="method"><a href="ConsoleTimer.html#method-i-start">#start &mdash; ConsoleTimer</a>
   
     <li class="method"><a href="Syctask/Statistics.html#method-i-stats">#stats &mdash; Syctask::Statistics</a>
   
     <li class="method"><a href="Syctask/Statistics.html#method-i-stats_count">#stats_count &mdash; Syctask::Statistics</a>
   
-    <li class="method"><a href="Syctask/TaskTracker.html#method-i-stop">#stop &mdash; Syctask::TaskTracker</a>
-  
     <li class="method"><a href="Syctask/Track.html#method-i-stop">#stop &mdash; Syctask::Track</a>
+  
+    <li class="method"><a href="Syctask/TaskTracker.html#method-i-stop">#stop &mdash; Syctask::TaskTracker</a>
   
     <li class="method"><a href="Syctime.html#method-i-string_for_seconds">#string_for_seconds &mdash; Syctime</a>
   
@@ -391,6 +403,8 @@
     <li class="method"><a href="Syctask.html#method-i-update_tasks_log">#update_tasks_log &mdash; Syctask</a>
   
     <li class="method"><a href="Syctask.html#method-i-update_tracked_task">#update_tracked_task &mdash; Syctask</a>
+  
+    <li class="method"><a href="Syctime.html#method-i-valid_date-3F">#valid_date? &mdash; Syctime</a>
   
     <li class="method"><a href="Syctask.html#method-i-viable-3F">#viable? &mdash; Syctask</a>
   

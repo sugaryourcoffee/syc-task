@@ -66,6 +66,8 @@
     
     <li><a href="#method-i-date_between-3F">#date_between?</a>
     
+    <li><a href="#method-i-extract_time">#extract_time</a>
+    
     <li><a href="#method-i-seconds_to_time">#seconds_to_time</a>
     
     <li><a href="#method-i-separated_time_string">#separated_time_string</a>
@@ -75,6 +77,8 @@
     <li><a href="#method-i-time_between-3F">#time_between?</a>
     
     <li><a href="#method-i-time_for_string">#time_for_string</a>
+    
+    <li><a href="#method-i-valid_date-3F">#valid_date?</a>
     
   </ul>
 </nav>
@@ -189,7 +193,7 @@ provided in the form of “2013-04-13”.</p>
 
           
           <div class="method-source-code" id="date_between-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 52</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">date_between?</span>(<span class="ruby-identifier">date</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
   <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">date</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Date</span>
   <span class="ruby-identifier">from</span> = <span class="ruby-identifier">from</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Time</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">from</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Date</span>
@@ -210,6 +214,60 @@ provided in the form of “2013-04-13”.</p>
       </div><!-- date_between-3F-method -->
 
     
+      <div id="method-i-extract_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_time</span><span
+            class="method-args">(time_string,time=false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the time out of a time string. Accepts ‘today’, ‘tomorrow’,
+‘yesterday’ or a date in the form ‘YYYY-MM-DD’. Returns the date contained 
+in the time_string or if time = true in a Time object</p>
+          
+
+          
+          <div class="method-source-code" id="extract_time-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 93</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_time</span>(<span class="ruby-identifier">time_string</span>,<span class="ruby-identifier">time</span>=<span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">time_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>)
+    <span class="ruby-identifier">date</span> = <span class="ruby-identifier">time_string</span> 
+    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-node">&quot;#{time_string}T00:00:00&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">time</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">timeleap</span> = <span class="ruby-constant">SycTimeleap</span><span class="ruby-operator">::</span><span class="ruby-constant">TimeLeap</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">timeleap</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">time_string</span>)
+      <span class="ruby-identifier">date</span> = <span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">time</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NoMethodError</span>
+      <span class="ruby-identifier">help_now!</span> <span class="ruby-string">&quot;Arguments may be 'time distances', YYYY-MM-DD or &lt;RETURN&gt;\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;\ntime distances are:\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* yesterday|today|tomorrow\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* next|previous_monday|tuesday|...|sunday\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* in|back_10_days|weeks|months|years\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* monday|tuesday|...|sunday_in|back_1_day|week|month|year\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;Short forms are also possible:\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* y|tod|tom\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* n|pmo|tu|we|th|fr|sa|su\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* i|b10d|w|m|y\n&quot;</span><span class="ruby-operator">+</span>
+                <span class="ruby-string">&quot;* mo|tu|we|th|fr|sa|sui|b1d|w|m|y&quot;</span>
+     <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">date</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- extract_time-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- extract_time-method -->
+
+    
       <div id="method-i-seconds_to_time" class="method-detail ">
         
         <div class="method-heading">
@@ -227,7 +285,7 @@ seconds The return value is an array [seconds,…,years]</p>
 
           
           <div class="method-source-code" id="seconds_to_time-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 8</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 9</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">seconds_to_time</span>(<span class="ruby-identifier">seconds</span>)
   <span class="ruby-identifier">seconds</span> = <span class="ruby-identifier">seconds</span>.<span class="ruby-identifier">round</span>
   <span class="ruby-identifier">duration</span> = []
@@ -266,7 +324,7 @@ provided separator like 12:50:33</p>
 
           
           <div class="method-source-code" id="separated_time_string-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 34</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">separated_time_string</span>(<span class="ruby-identifier">seconds</span>, <span class="ruby-identifier">separator</span>)
   <span class="ruby-identifier">secs</span>  = <span class="ruby-identifier">seconds</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
   <span class="ruby-identifier">mins</span>  = <span class="ruby-identifier">seconds</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>
@@ -300,7 +358,7 @@ minutes.</p>
 
           
           <div class="method-source-code" id="string_for_seconds-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 21</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">string_for_seconds</span>(<span class="ruby-identifier">seconds</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">seconds_to_time</span>(<span class="ruby-identifier">seconds</span>)
   <span class="ruby-identifier">time_name</span> = [<span class="ruby-string">'year'</span>,<span class="ruby-string">'month'</span>,<span class="ruby-string">'week'</span>,<span class="ruby-string">'day'</span>,<span class="ruby-string">'hour'</span>,<span class="ruby-string">'minute'</span>,<span class="ruby-string">'second'</span>]
@@ -338,7 +396,7 @@ false. time, from and to have to be Time objects.</p>
 
           
           <div class="method-source-code" id="time_between-3F-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 65</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 66</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">time_between?</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">from</span>, <span class="ruby-identifier">to</span>)
   <span class="ruby-identifier">time</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">from</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">time</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">to</span>
 <span class="ruby-keyword">end</span></pre>
@@ -370,7 +428,7 @@ false. time, from and to have to be Time objects.</p>
 
           
           <div class="method-source-code" id="time_for_string-source">
-            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 43</span>
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">time_for_string</span>(<span class="ruby-identifier">time</span>)
   <span class="ruby-identifier">time</span> = <span class="ruby-identifier">time</span>.<span class="ruby-identifier">scan</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/</span>)[<span class="ruby-value">0</span>].<span class="ruby-identifier">sub</span>(<span class="ruby-string">' '</span>,<span class="ruby-string">'T'</span>)
   <span class="ruby-constant">Time</span>.<span class="ruby-identifier">xmlschema</span>(<span class="ruby-identifier">time</span>)
@@ -383,6 +441,51 @@ false. time, from and to have to be Time objects.</p>
 
         
       </div><!-- time_for_string-method -->
+
+    
+      <div id="method-i-valid_date-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">valid_date?</span><span
+            class="method-args">(date_string)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks whether the date is a valid date in the form of yyyy-mm-dd. If it’s
+no valid date false is returned otherwise true</p>
+          
+
+          
+          <div class="method-source-code" id="valid_date-3F-source">
+            <pre><span class="ruby-comment"># File lib/syctime/time_util.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">valid_date?</span>(<span class="ruby-identifier">date_string</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">date_string</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">%r\d{4}-\d{2}-\d{2}/</span>)
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">date_string</span>)
+      <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">SycTimeleap</span><span class="ruby-operator">::</span><span class="ruby-constant">TimeLeap</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">date_string</span>)
+      <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">rescue</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- valid_date-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- valid_date-3F-method -->
 
     
     </section><!-- public-instance-method-details -->

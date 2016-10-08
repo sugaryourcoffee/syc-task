@@ -46,7 +46,9 @@ module Syctask
     end
 
     # Reads the task identified by ID. If no task with ID is found nil is
-    # returned otherwise the task
+    # returned otherwise the task.
+    # Note: This method might return nil even though the task exists. You should
+    # always use #read instead.
     def read_by_id(id)
       return nil unless File.exists? Syctask::IDS
       ids = File.read(Syctask::IDS)

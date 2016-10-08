@@ -92,7 +92,7 @@ module Syctask
         when 'e'
           task_file = "#{task.dir}/#{task.id}.task"
           system "vi #{task_file}" if File.exists? task_file
-          tasks[index] = @service.read_by_id(task.id)
+          tasks[index] = @service.read(task.dir, task.id)
           redo
         when 'd'
           puts "Enter a note or hit <RETURN>"

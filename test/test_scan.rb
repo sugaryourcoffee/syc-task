@@ -65,6 +65,30 @@ class TestScan < Minitest::Test
       end
     end
 
+    should "create task fields from humanized field sepearators" do
+      content = <<-HEREDOC
+      This is text that should be ignored
+      @tasks;
+      Title ; Description ; Prio ; Due-Date ; Follow-Up
+      Title1 ; Description1 ; 1 ; 2016-09-10 ; 2016-09-11
+      Title2 ; Description2 ; 2 ; 2016-09-20 ; 2016-09-21
+
+      This is text that should be ignored
+      HEREDOC
+
+      scanner = Scanner.new
+      tasks = scanner.scan(content)
+      assert_equal 2, tasks.size
+
+      tasks.each_with_index do |(title, options), i|
+        i += 1
+        assert_equal "Title#{i}", title
+        assert_equal [:description, :prio, :due_date, :follow_up], options.keys
+        assert_equal ["Description#{i}", "#{i}", 
+                      "2016-09-#{i}0", "2016-09-#{i}1"], options.values
+      end
+    end
+
     should "Ignore columns with unknown header columns" do
       content = <<-HEREDOC
       This is text that should be ignored

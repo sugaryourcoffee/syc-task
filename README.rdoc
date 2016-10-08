@@ -257,11 +257,11 @@ Search tasks that match a pattern
     $ syctask list --id "<10" --follow_up ">2013-02-25" --title "My \w task"
 
 ===Inspect tasks
-Lists each today's unplanned task and allows to edit, delete, mark as done or
-plan
+Lists each unplanned task and allows to edit, delete, mark as done or
+plan for today
     $ syctask inspect
     0016 Create command for inspection
-    (e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (q)uit: 
+    (e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (b)ack, (q)uit: 
 
 ===Edit task
 Edit a task with ID 10 in vi
@@ -602,6 +602,9 @@ Implementation of new, update, list and done commands.
 
 ====Version 0.4.2
 * delete command can take now ranges of ids, e.g. 1,2,4-8,5,20-25 
+* inspect can now go back in the task list
+* inspect will now show the updated task after making changes to the task in 
+  edit
 * scan will ignore columns that are not part of a syctask task
 * Fix bug when scanning tables that have spaces between separator and column
 

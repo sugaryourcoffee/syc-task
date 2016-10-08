@@ -612,6 +612,8 @@ Implementation of new, update, list and done commands.
 * scan recognizes 'Follow-up' as well as 'follow_up' now. That is an underscore
   can be replaced with '-'
 * Fix bug when scanning tables that have spaces between separator and column
+* When tasks.log file is missing `syctask inspect` prints warning with reason
+  why statistics cannot be printed
 
 ==Development
 Pull from Github and then run 

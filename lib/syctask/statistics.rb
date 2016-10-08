@@ -19,6 +19,12 @@ module Syctask
 
     # Creates a statistics report
     def report(file, from="", to=from)
+      unless File.exists? file
+        return sprintf("Warning: Statistics log file %s", 
+                       file.bright).color(:red) +
+               sprintf(" is missing!\n%sNo statistics available!\n", 
+                       " "*9).color(:red)
+      end
 
       from, to, time_log, count_log = logs(file, from, to)
       working_days = time_log["work"].count.to_s if time_log["work"]

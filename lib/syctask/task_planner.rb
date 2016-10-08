@@ -9,7 +9,7 @@ module Syctask
   PROMPT_STRING = '(a)dd, (c)omplete, (s)kip, (q)uit: '
   # String that is prompted during inspect
   INSPECT_STRING = '(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, '+
-                   '(q)uit: '
+                   '(b)ack, (q)uit: '
   # String that is prompted during prioritization
   PRIORITIZE_STRING = 'Task 1 has (h)igher or (l)ower priority, or (q)uit: '
 
@@ -72,12 +72,14 @@ module Syctask
 
     # Inspect allows to edit, delete and mark tasks as done
     def inspect_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
-      already_planned = self.get_tasks(date)
+      already_planned_tasks = self.get_tasks(date)
+      tasks = tasks - already_planned_tasks
       count = 0
       re_display = false
       planned = []
-      tasks.each do |task|
-        next if already_planned.find_index {|t| t == task}
+      index = 0
+      while index < tasks.length
+        task = tasks[index]
         unless re_display
           task.print_pretty
         else
@@ -95,14 +97,16 @@ module Syctask
           note = gets.chomp
           task.done(note)
           @service.save(task.dir, task)
+          tasks.delete(task)
           STDOUT.puts sprintf("--> Marked task %d as done", 
                               task.id).color(:green)
         when 'l'
           print "Confirm delete task (Y/n)? "
           answer = gets.chomp
-          count = @service.delete(task.dir, {id: task.id.to_s}) if answer == "Y"
+          del = @service.delete(task.dir, {id: task.id.to_s}) if answer == "Y"
+          tasks.delete(task)
           puts sprintf("--> Deleted %d task%s", 
-                       count, count == 1 ? "" : "s").color(:green)
+                       del, del == 1 ? "" : "s").color(:green)
         when 'p'
           duration = 0
           until duration > 0
@@ -114,12 +118,15 @@ module Syctask
           task.options[:follow_up] = date
           @service.save(task.dir, task)
           planned << task
+          tasks.delete(task)
           count += 1
         when 'c'
           re_display = true
           redo
+        when 'b'
+          index -= 1 if index > 0
         when 's'
-          #do nothing
+          index += 1
         when 'q'
           break
         end

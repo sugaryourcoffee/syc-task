@@ -129,8 +129,8 @@ module Syctask
         when 't'
           begin
             print "Date (yyyy-mm-dd or 'time distance', e.g. tom, i2d, nfr): "
-            date = gets.chomp
-          end until valid_date?(date)
+            specific_date = gets.chomp
+          end until valid_date?(specific_date)
 
           duration = 0
           until duration > 0
@@ -140,11 +140,15 @@ module Syctask
           end
 
           task.set_duration(units_to_time(duration))
-          task.options[:follow_up] = extract_time(date)
+          task.options[:follow_up] = extract_time(specific_date)
           @service.save(task.dir, task)
-          planned << task
-          tasks.delete(task)
-          count += 1
+          if task.options[:follow_up] == date
+            planned << task
+            tasks.delete(task)
+            count += 1
+          else
+            index += 1
+          end
         when 'c'
           re_display = true
           redo
@@ -289,8 +293,8 @@ module Syctask
       @todo_today_file = WORK_DIR+"/"+file_name
     end
 
-    # Save the tasks to a file. If override is true the file is overriden
-    # otherwise the tasks are appended
+    # Save the tasks to the todo_today_file. If override is true the file is
+    # overriden otherwise the tasks are appended
     def save_tasks(tasks, override=false)
       mode = override ? 'w' : 'a'
       FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR

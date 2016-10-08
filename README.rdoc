@@ -87,6 +87,9 @@ Possible fields are
     tags        - tags the task is annotated with
     note        - a note for the task
 
+Note: follow_up and due_date can also be written as Follow-up and Due-Date. Also
+case is ignored.
+
 As inidcated in the list the title column is mandatory. Without the title column
 scan will raise an error during a scan. 
 
@@ -102,7 +105,7 @@ will be ignored during scan. This table is also a table for a minimum scan
 structure.  You need at least to provide a title column so the scan function
 will recognize the table as a task list.
 
-Scanning tasks from a file
+Scanning tasks from files
 
     $ syctask scan 2016-09-10-mom.md 2016-09-09-mom.md
 
@@ -606,6 +609,8 @@ Implementation of new, update, list and done commands.
 * inspect will now show the updated task after making changes to the task in 
   edit
 * scan will ignore columns that are not part of a syctask task
+* scan recognizes 'Follow-up' as well as 'follow_up' now. That is an underscore
+  can be replaced with '-'
 * Fix bug when scanning tables that have spaces between separator and column
 
 ==Development

@@ -1,4 +1,5 @@
 require 'time'
+require 'syctimeleap/time_leap.rb'
 
 # Functions for time operations
 module Syctime
@@ -64,6 +65,55 @@ module Syctime
   # false. time, from and to have to be Time objects.
   def time_between?(time, from, to)
     time >= from && time <= to
+  end
+
+  # Checks whether the date is a valid date in the form of yyyy-mm-dd. If it's
+  # no valid date false is returned otherwise true
+  def valid_date?(date_string)
+    if date_string.match(/\d{4}-\d{2}-\d{2}/)
+      begin
+        Date.parse(date_string)
+        return true
+      rescue ArgumentError
+        return false
+      end
+    else
+      begin
+        SycTimeleap::TimeLeap.new.send(date_string)
+        return true
+      rescue
+        return false
+      end
+    end
+  end
+
+  # Extracts the time out of a time string. Accepts 'today', 'tomorrow',
+  # 'yesterday' or a date in the form 'YYYY-MM-DD'. Returns the date contained 
+  # in the time_string or if time = true in a Time object
+  def extract_time(time_string,time=false)
+    if time_string.match(/\d{4}-\d{2}-\d{2}/)
+      date = time_string 
+      date = Time.xmlschema("#{time_string}T00:00:00") if time
+    else
+      timeleap = SycTimeleap::TimeLeap.new
+      begin
+        date = timeleap.send(time_string)
+        date = date.to_s unless time
+      rescue NoMethodError
+        help_now! "Arguments may be 'time distances', YYYY-MM-DD or <RETURN>\n"+
+                  "\ntime distances are:\n"+
+                  "* yesterday|today|tomorrow\n"+
+                  "* next|previous_monday|tuesday|...|sunday\n"+
+                  "* in|back_10_days|weeks|months|years\n"+
+                  "* monday|tuesday|...|sunday_in|back_1_day|week|month|year\n"+
+                  "Short forms are also possible:\n"+
+                  "* y|tod|tom\n"+
+                  "* n|pmo|tu|we|th|fr|sa|su\n"+
+                  "* i|b10d|w|m|y\n"+
+                  "* mo|tu|we|th|fr|sa|sui|b1d|w|m|y"
+       end
+    end
+    date
   end
 
 end

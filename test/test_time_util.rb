@@ -70,6 +70,11 @@ class TestTimeUtil < Minitest::Test # Test::Unit::TestCase
       assert_equal "01:10:30", Syctime::separated_time_string(4230, ":")
     end
 
+    should "check whether string is a valid time string" do
+      assert Syctime::valid_date?("2016-10-08")
+      refute Syctime::valid_date?("2000-00-00")
+      refute Syctime::valid_date?("abcd-ef-gh")
+    end
   end
 
 end

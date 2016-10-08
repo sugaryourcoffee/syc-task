@@ -260,11 +260,11 @@ Search tasks that match a pattern
     $ syctask list --id "<10" --follow_up ">2013-02-25" --title "My \w task"
 
 ===Inspect tasks
-Lists each unplanned task and allows to edit, delete, mark as done or
-plan for today
+Lists each unplanned task and allows to edit, delete, mark as done or plan for
+today or another day
     $ syctask inspect
     0016 Create command for inspection
-    (e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, (b)ack, (q)uit: 
+    (e)dit, (d)one, de(l)ete, (p)lan, da(t)e, (c)omplete, (s)kip, (b)ack, (q)uit
 
 ===Edit task
 Edit a task with ID 10 in vi
@@ -608,6 +608,7 @@ Implementation of new, update, list and done commands.
 * inspect can now go back in the task list
 * inspect will now show the updated task after making changes to the task in 
   edit
+* inspect allows to specify a follow_up date
 * scan will ignore columns that are not part of a syctask task
 * scan recognizes 'Follow-up' as well as 'follow_up' now. That is an underscore
   can be replaced with '-'

@@ -31,12 +31,12 @@ module Syctask
     # duration will be set to 30 minutes which equals two time chunks. The
     # count of planned tasks is returned
     def plan_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
-      already_planned = self.get_tasks(date)
+      already_planned_tasks = self.get_tasks(date)
+      tasks = tasks.delete_if { |t| already_planned_tasks.include?(t) }
       count = 0
       re_display = false
       planned = []
       tasks.each do |task|
-        next if already_planned.find_index {|t| t == task}
         unless re_display
           task.print_pretty
         else
@@ -73,7 +73,7 @@ module Syctask
     # Inspect allows to edit, delete and mark tasks as done
     def inspect_tasks(tasks, date=Time.now.strftime("%Y-%m-%d"))
       already_planned_tasks = self.get_tasks(date)
-      tasks = tasks - already_planned_tasks
+      tasks = tasks.delete_if { |t| already_planned_tasks.include?(t) }
       count = 0
       re_display = false
       planned = []
@@ -91,6 +91,7 @@ module Syctask
         when 'e'
           task_file = "#{task.dir}/#{task.id}.task"
           system "vi #{task_file}" if File.exists? task_file
+          tasks[index] = @service.read_by_id(task.id)
           redo
         when 'd'
           puts "Enter a note or hit <RETURN>"

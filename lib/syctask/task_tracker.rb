@@ -104,6 +104,8 @@ module Syctask
         @tasks = []
         if @tracks
           @tracks.each { |track| @tasks << @service.read(track.dir, track.id) }
+        else
+          @tracks = []
         end
       end
     end

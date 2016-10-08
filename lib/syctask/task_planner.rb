@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'rainbow'
 require_relative '../sycutil/console.rb'
+require_relative '../syctime/time_util.rb'
 require_relative 'task_service.rb'
 require_relative 'environment.rb'
 
@@ -8,8 +9,8 @@ module Syctask
   # String that is prompted during planning
   PROMPT_STRING = '(a)dd, (c)omplete, (s)kip, (q)uit: '
   # String that is prompted during inspect
-  INSPECT_STRING = '(e)dit, (d)one, de(l)ete, (p)lan, (c)omplete, (s)kip, '+
-                   '(b)ack, (q)uit: '
+  INSPECT_STRING = '(e)dit, (d)one, de(l)ete, (p)lan, da(t)e, (c)omplete, '+
+                   '(s)kip, (b)ack, (q)uit: '
   # String that is prompted during prioritization
   PRIORITIZE_STRING = 'Task 1 has (h)igher or (l)ower priority, or (q)uit: '
 
@@ -105,9 +106,13 @@ module Syctask
           print "Confirm delete task (Y/n)? "
           answer = gets.chomp
           del = @service.delete(task.dir, {id: task.id.to_s}) if answer == "Y"
-          tasks.delete(task)
-          puts sprintf("--> Deleted %d task%s", 
-                       del, del == 1 ? "" : "s").color(:green)
+          if del.nil? or del == 0
+            puts sprintf("--> Task not deleted").color(:green)
+          else del > 0
+            tasks.delete(task)
+            puts sprintf("--> Deleted %d task%s", 
+                         del, del == 1 ? "" : "s").color(:green)
+          end
         when 'p'
           duration = 0
           until duration > 0
@@ -117,6 +122,25 @@ module Syctask
           end
           task.set_duration(units_to_time(duration))
           task.options[:follow_up] = date
+          @service.save(task.dir, task)
+          planned << task
+          tasks.delete(task)
+          count += 1
+        when 't'
+          begin
+            print "Date (yyyy-mm-dd or 'time distance', e.g. tom, i2d, nfr): "
+            date = gets.chomp
+          end until valid_date?(date)
+
+          duration = 0
+          until duration > 0
+            print "Duration (1 = 15 minutes, RETURN defaults to 30 minutes): "
+            answer = gets.chomp
+            duration = answer.empty? ? 2 : answer.to_i
+          end
+
+          task.set_duration(units_to_time(duration))
+          task.options[:follow_up] = extract_time(date)
           @service.save(task.dir, task)
           planned << task
           tasks.delete(task)

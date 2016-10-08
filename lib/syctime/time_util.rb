@@ -91,6 +91,8 @@ module Syctime
   # 'yesterday' or a date in the form 'YYYY-MM-DD'. Returns the date contained 
   # in the time_string or if time = true in a Time object
   def extract_time(time_string,time=false)
+    time_string = 'today' if time_string.nil?
+
     if time_string.match(/\d{4}-\d{2}-\d{2}/)
       date = time_string 
       date = Time.xmlschema("#{time_string}T00:00:00") if time

@@ -6,6 +6,7 @@ spec = Gem::Specification.new do |s|
   s.author = 'Pierre Sugar'
   s.email = 'pierre@sugaryourcoffee.de'
   s.homepage = 'https://github.com/sugaryourcoffee/syc-task'
+  s.license = 'MIT'
   s.platform = Gem::Platform::RUBY
   s.summary = 'Simple task organizer'
   s.description = File.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
@@ -42,7 +43,7 @@ lib/sycstring/string_util.rb
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba')
   s.add_development_dependency('shoulda')
-  s.add_runtime_dependency('gli','2.5.4')
+  s.add_runtime_dependency('gli', '2.5.4')
   s.add_runtime_dependency('rainbow', '1.1.4')
   s.add_runtime_dependency('timeleap')
 end

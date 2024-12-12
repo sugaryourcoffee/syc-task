@@ -16,7 +16,7 @@ class TestTaskScheduler < Minitest::Test # Test::Unit::TestCase
     # Removes after each test the test task directory
     def teardown
       restore_system_files("TestTaskScheduler")
-      FileUtils.rm_r @dir if File.exists? @dir
+      FileUtils.rm_r @dir if File.exist? @dir
     end
 
     should "create new TaskScheduler" do

@@ -153,7 +153,7 @@ module Syctask
                busy_time: busy_time, 
                meetings: meetings, 
                assignments: assignments}
-      FileUtils.mkdir WORK_DIR unless File.exists? WORK_DIR
+      FileUtils.mkdir WORK_DIR unless File.exist? WORK_DIR
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       File.open(state_file, 'w') do |file|
         YAML.dump(state, file)
@@ -164,7 +164,7 @@ module Syctask
     # time, meetings and assignments
     def restore_state
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
-      return [[], [], [], []] unless File.exists? state_file
+      return [[], [], [], []] unless File.exist? state_file
       state = YAML.load_file(state_file)
       if state
         [state[:work_time], 

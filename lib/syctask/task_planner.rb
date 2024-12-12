@@ -91,7 +91,7 @@ module Syctask
         case choice
         when 'e'
           task_file = "#{task.dir}/#{task.id}.task"
-          system "vi #{task_file}" if File.exists? task_file
+          system "vi #{task_file}" if File.exist? task_file
           tasks[index] = @service.read(task.dir, task.id)
           redo
         when 'd'
@@ -275,7 +275,7 @@ module Syctask
           task = @service.read(dir, id)
           tasks << task if not task.nil? and task.matches?(filter)
         end
-      end if File.exists? @todo_today_file
+      end if File.exist? @todo_today_file
       tasks
     end
 
@@ -297,7 +297,7 @@ module Syctask
     # overriden otherwise the tasks are appended
     def save_tasks(tasks, override=false)
       mode = override ? 'w' : 'a'
-      FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
+      FileUtils.mkdir_p WORK_DIR unless File.exist? WORK_DIR
       File.open(@todo_today_file, mode) do |file|
         tasks.each do |task|
           file.puts("#{task.dir},#{task.id}")

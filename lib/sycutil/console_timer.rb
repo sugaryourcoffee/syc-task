@@ -32,7 +32,7 @@ class ConsoleTimer
     while track
       sleep 1
       output
-      track = File.exists? @semaphore
+      track = File.exist? @semaphore
     end
     exit 0
   end

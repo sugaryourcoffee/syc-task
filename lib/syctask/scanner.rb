@@ -40,7 +40,7 @@ module Syctask
     # It checks if 'content' is a file and if it exists scans the file otherwise
     # it asumes the content to be text and scans accordingly.
     def scan(content)
-      if File.exists? content
+      if File.exist? content
         scan_file(content)
       else
         scan_text(content)

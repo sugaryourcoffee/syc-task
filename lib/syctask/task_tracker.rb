@@ -86,7 +86,7 @@ module Syctask
 
     # Saves the tracks to the tracked tasks file
     def save_tracks
-      FileUtils.mkdir_p WORK_DIR unless File.exists? WORK_DIR
+      FileUtils.mkdir_p WORK_DIR unless File.exist? WORK_DIR
       File.open(TRACKED_TASKS_FILE, 'w') do |file|
         YAML.dump(@tracks, file) 
       end
@@ -96,7 +96,7 @@ module Syctask
     # @tracks. If no tracked tasks exist @tracks and @tasks will be
     # empty
     def load_tracks
-      unless File.exists? TRACKED_TASKS_FILE
+      unless File.exist? TRACKED_TASKS_FILE
         @tracks = []
         @tasks = []
       else
@@ -112,7 +112,7 @@ module Syctask
 
     # Logs the start and stop of a task.
     def log_task(type, track)
-      FileUtils.mkdir_r Syctask::WORK_DIR unless File.exists? Syctask::WORK_DIR
+      FileUtils.mkdir_r Syctask::WORK_DIR unless File.exist? Syctask::WORK_DIR
       File.open(TASK_LOG_FILE, 'a') do |file|
         log_entry =  "#{type.to_s};"
         log_entry += "#{track.id};#{track.dir};"
@@ -161,7 +161,7 @@ module Syctask
     
     # Stops the task tracking and returns the lead time of the task
     def stop
-      FileUtils.rm @semaphore if @semaphore and File.exists? @semaphore
+      FileUtils.rm @semaphore if @semaphore and File.exist? @semaphore
       @stopped ||= Time.now
       @stopped - @started
     end

@@ -50,7 +50,7 @@ module Syctask
     # Note: This method might return nil even though the task exists. You should
     # always use #read instead.
     def read_by_id(id)
-      return nil unless File.exists? Syctask::IDS
+      return nil unless File.exist? Syctask::IDS
       ids = File.read(Syctask::IDS)
       entry = ids.scan(/(^#{id}),(.*\n)/)[0]
       return YAML.load_file(entry[1].chomp) if entry
@@ -137,7 +137,7 @@ module Syctask
     def save(dir, task)
       task.dir = dir.nil? ? DEFAULT_DIR : File.expand_path(dir)
       task_file = "#{task.dir}/#{task.id}.task"
-      unless File.exists? task_file
+      unless File.exist? task_file
         File.open(Syctask::IDS, 'a') {|f| f.puts "#{task.id},#{task_file}"}
       end
       File.open(task_file, 'w') {|f| YAML.dump(task, f)}
@@ -147,7 +147,7 @@ module Syctask
 
     # Creates the task directory if it does not exist
     def create_dir(dir)
-      FileUtils.mkdir_p dir unless File.exists? dir
+      FileUtils.mkdir_p dir unless File.exist? dir
     end
 
     # Checks for the next possible task's ID based on the tasks available in
@@ -169,7 +169,7 @@ module Syctask
     # the next ID.
     def next_id(dir)
       local = local_id(dir)
-      id = File.readlines(Syctask::ID)[0] if File.exists? Syctask::ID
+      id = File.readlines(Syctask::ID)[0] if File.exist? Syctask::ID
       id = id ? id.to_i + 1 : 1
       STDERR.puts "Warning: global id < local id" if id < local
       id = [id, local].max

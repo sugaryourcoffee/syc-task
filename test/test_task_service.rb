@@ -15,7 +15,7 @@ class TestTaskService < Minitest::Test # Test::Unit::TestCase
     # Removes files and directories created by the tests
     teardown do
       restore_system_files("TestTaskService")
-      FileUtils.rm_r "test/tasks" if File.exists? "test/tasks"
+      FileUtils.rm_r "test/tasks" if File.exist? "test/tasks"
     end
 
     should "save task with id 1" do

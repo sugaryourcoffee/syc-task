@@ -4,7 +4,7 @@ When /^I get help for "([^"]*)"$/ do |app_name|
 end
 
 Given /^no task is available in "(.*?)"$/ do |directory|
-  FileUtils.rm Dir.glob("#{directory}/*") if File.exists? directory
+  FileUtils.rm Dir.glob("#{directory}/*") if File.exist? directory
 end
 
 Given(/^no task is available in the default task directory$/) do
@@ -32,7 +32,7 @@ end
 # end
 
 Given(/^the task directory "([^"]*)" doesn't exist$/) do |task_dir|
-  FileUtils.rm_r task_dir if File.exists? task_dir
+  FileUtils.rm_r task_dir if File.exist? task_dir
 end
 
 Given(/^I have a file "([^"]*)" file with "([^"]*)" tasks and all fields set$/) do |mom, tasks|

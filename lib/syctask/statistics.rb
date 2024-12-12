@@ -19,7 +19,7 @@ module Syctask
 
     # Creates a statistics report
     def report(file, from="", to=from)
-      unless File.exists? file
+      unless File.exist? file
         return sprintf("Warning: Statistics log file %s", 
                        file.bright).color(:red) +
                sprintf(" is missing!\n%sNo statistics available!\n", 

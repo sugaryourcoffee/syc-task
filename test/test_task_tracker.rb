@@ -13,7 +13,7 @@ class TestTaskTracker < Minitest::Test # Test::Unit::TestCase
       backup_system_files("TestTaskTracker")
       @origin = Syctask::TaskTracker::TRACKED_TASKS_FILE
       @copy = @origin + '.copy'
-      FileUtils.mv @origin, @copy if File.exists? @origin
+      FileUtils.mv @origin, @copy if File.exist? @origin
       @dir = 'test/tasks'
       @service = Syctask::TaskService.new
       @ids = []
@@ -25,8 +25,8 @@ class TestTaskTracker < Minitest::Test # Test::Unit::TestCase
     # Remove created files and directories during tests
     teardown do
       restore_system_files("TestTaskTracker")
-      FileUtils.mv @copy, @origin if File.exists? @copy
-      FileUtils.rm_r @dir if File.exists? @dir
+      FileUtils.mv @copy, @origin if File.exist? @copy
+      FileUtils.rm_r @dir if File.exist? @dir
     end
 
     should "create task tracker" do

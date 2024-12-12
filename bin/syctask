@@ -48,7 +48,7 @@ command :settings do |c|
       puts options[:taskdir]
       dir = File.expand_path(options[:taskdir]) unless options[:taskdir].empty?
       if dir
-        unless File.exists? dir
+        unless File.exist? dir
           puts sprintf("Directory %s doesn't exist!", dir).color(:red)
           print sprintf("%s ", "Create it (Y/n)?").color(:red)
           set_taskdir = gets.chomp == 'Y'
@@ -99,7 +99,7 @@ command :info do |c|
     dir = options[:dir]
     dir ||= ENV['HOME']
     dir = File.expand_path(dir)
-    help_now! "Directory #{dir} does not exists" unless File.exists? dir
+    help_now! "Directory #{dir} does not exists" unless File.exist? dir
     id = options[:id]
     if id
       tasks = Syctask::get_files(dir, [], /#{id}\.task/)
@@ -324,8 +324,8 @@ command :edit do |c|
     task = @service.read(global_options[:taskdir], args[0])
     if task
       task_file = "#{task.dir}/#{task.id}.task"
-      if File.exists? task_file
-        system "vi #{task_file}" if File.exists? task_file
+      if File.exist? task_file
+        system "vi #{task_file}" if File.exist? task_file
       else
         puts sprintf("--> Task %s doesn't exist", task_file).color(:red)
       end
@@ -682,7 +682,7 @@ pre do |global,command,options,args|
     global[:taskdir] = global[:t] = dir.squeeze("/")
   end
  
-  if command.name == :new and not File.exists? global[:taskdir]
+  if command.name == :new and not File.exist? global[:taskdir]
     puts sprintf("Directory %s doesn't exist!", global[:taskdir]).color(:red)
     print sprintf("%s", "Create it (Y/n)? ").color(:red)
     proceed = STDIN.gets.chomp == 'Y'

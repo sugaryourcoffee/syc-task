@@ -66,7 +66,7 @@ class TestEnvironment < Minitest::Test #Test::Unit::TestCase
       @time = Time.now
       @work_dir = "test/tasks"
       @service = Syctask::TaskService.new
-      FileUtils.mkdir @work_dir unless File.exists? @work_dir
+      FileUtils.mkdir @work_dir unless File.exist? @work_dir
       1.upto(10) do |i|
         @service.create(@work_dir, {}, "task number #{i}")
       end
@@ -74,7 +74,7 @@ class TestEnvironment < Minitest::Test #Test::Unit::TestCase
         @service.create("#{@work_dir}/sub", {}, "task Number #{i}")
       end
       # Remove the tasks.log file created during the above operations
-      FileUtils.rm Syctask::TASKS_LOG if File.exists? Syctask::TASKS_LOG
+      FileUtils.rm Syctask::TASKS_LOG if File.exist? Syctask::TASKS_LOG
       1.upto(3) do |i|
         FileUtils.touch "#{@work_dir}/2013-0#{i}-17_planned_tasks"
         FileUtils.touch "#{@work_dir}/2013-0#{i}-17_time_schedule"
@@ -86,7 +86,7 @@ class TestEnvironment < Minitest::Test #Test::Unit::TestCase
     # Restore system files and clean directories from test files
     teardown do
       restore_system_files("TestEnvironment")
-      FileUtils.rm_r @work_dir if File.exists? @work_dir
+      FileUtils.rm_r @work_dir if File.exist? @work_dir
     end
 
     should "retrieve files via get_files" do
@@ -138,8 +138,8 @@ class TestEnvironment < Minitest::Test #Test::Unit::TestCase
         result = reindex_task(f)
         assert_equal index, result[:new_id].to_i
         assert File.basename(f).start_with? result[:old_id]
-        refute File.exists? f
-        assert File.exists? result[:tmp_file] 
+        refute File.exist? f
+        assert File.exist? result[:tmp_file] 
         assert_equal "#{File.dirname(f)}/#{index}.task", result[:new_file]
       end 
     end
@@ -220,40 +220,40 @@ class TestEnvironment < Minitest::Test #Test::Unit::TestCase
       create_tracked_tasks_file
       create_reindex_log_file
       Syctask::update_tracked_task([@work_dir], [])
-      refute File.exists? "#{@work_dir}/tracked_tasks"
-      assert File.exists? Syctask::TRACKED_TASK
+      refute File.exist? "#{@work_dir}/tracked_tasks"
+      assert File.exist? Syctask::TRACKED_TASK
       refute_nil File.read(Syctask::TRACKED_TASK).scan(/id: 22/)
     end
 
     should "move task log file" do
       tasks = make_log_file
-      assert File.exists? "#{@work_dir}/tasks.log"
+      assert File.exist? "#{@work_dir}/tasks.log"
       Syctask::move_task_log_file([@work_dir], [])
-      refute File.exists? "#{@work_dir}/tasks.log"
-      assert File.exists? Syctask::TASKS_LOG
+      refute File.exist? "#{@work_dir}/tasks.log"
+      assert File.exist? Syctask::TASKS_LOG
     end
 
     should "move planned task files" do
       1.upto(3) do |i|
-        assert File.exists? "#{@work_dir}/2013-0#{i}-17_planned_tasks"
+        assert File.exist? "#{@work_dir}/2013-0#{i}-17_planned_tasks"
       end
       Syctask::move_planned_tasks_files([@work_dir], [])
       1.upto(3) do |i|
         file = "2013-0#{i}-17_planned_tasks"
-        refute File.exists? "#{@work_dir}/#{file}"
-        assert File.exists? "#{Syctask::SYC_DIR}/#{file}"
+        refute File.exist? "#{@work_dir}/#{file}"
+        assert File.exist? "#{Syctask::SYC_DIR}/#{file}"
       end
     end
 
     should "move time schedule files" do
       1.upto(3) do |i|
-        assert File.exists? "#{@work_dir}/2013-0#{i}-17_time_schedule"
+        assert File.exist? "#{@work_dir}/2013-0#{i}-17_time_schedule"
       end
       Syctask::move_time_schedule_files([@work_dir], [])
       1.upto(3) do |i|
         file = "2013-0#{i}-17_time_schedule"
-        refute File.exists? "#{@work_dir}/#{file}"
-        assert File.exists? "#{Syctask::SYC_DIR}/#{file}"
+        refute File.exist? "#{@work_dir}/#{file}"
+        assert File.exist? "#{Syctask::SYC_DIR}/#{file}"
       end
     end
 

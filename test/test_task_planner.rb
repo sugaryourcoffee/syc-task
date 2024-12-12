@@ -17,7 +17,7 @@ class TestTaskPlanner < Minitest::Test # Test::Unit::TestCase
       @service = Syctask::TaskService.new
       @planner = Syctask::TaskPlanner.new
       @dir = "test/tasks"
-      FileUtils.mkdir_p @dir unless File.exists? @dir
+      FileUtils.mkdir_p @dir unless File.exist? @dir
       1..5.times do |i|
         options = {descriptions: "Description of task #{i+1}",
                    follow_up: '2013-03-02', due: '2013-04-02', prio: i+1,
@@ -29,8 +29,8 @@ class TestTaskPlanner < Minitest::Test # Test::Unit::TestCase
     # Removes files and directories created during the tests
     teardown do
       restore_system_files("TestTaskPlanner")
-      FileUtils.rm_r @dir if File.exists? @dir
-      FileUtils.rm @planned_tasks_file if File.exists? @planned_tasks_file
+      FileUtils.rm_r @dir if File.exist? @dir
+      FileUtils.rm @planned_tasks_file if File.exist? @planned_tasks_file
     end
 
     should "plan tasks listing all tasks" do

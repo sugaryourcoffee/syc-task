@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
     lib/sycstring/string_util.rb
   ]
   s.require_paths << 'lib'
-  s.has_rdoc = true
+# s.has_rdoc = true
   s.extra_rdoc_files = ['README.rdoc', 'syctask.rdoc']
   s.rdoc_options << '--title' << 'syctask' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'

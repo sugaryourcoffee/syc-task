@@ -165,7 +165,7 @@ module Syctask
     def restore_state
       state_file = WORK_DIR+'/'+Time.now.strftime("%Y-%m-%d_time_schedule")
       return [[], [], [], []] unless File.exist? state_file
-      state = YAML.load_file(state_file)
+      state = YAML.safe_load_file(state_file, permitted_classes: [Syctask::Task, Symbol])
       if state
         [state[:work_time], 
          state[:busy_time], 

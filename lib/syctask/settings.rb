@@ -14,7 +14,8 @@ module Syctask
     def tasks(tasks)
       service = Syctask::TaskService.new
       if File.exist? Syctask::DEFAULT_TASKS
-        general = YAML.load_file(Syctask::DEFAULT_TASKS)
+        general = YAML.safe_load_file(Syctask::DEFAULT_TASKS, 
+                                      permitted_classes: [Syctask::Task, Symbol])
       else
         general = {}
       end
@@ -32,7 +33,8 @@ module Syctask
     def read_tasks
       if File.exist? Syctask::DEFAULT_TASKS and not \
          File.read(Syctask::DEFAULT_TASKS).empty?
-        YAML.load_file(Syctask::DEFAULT_TASKS) 
+        YAML.safe_load_file(Syctask::DEFAULT_TASKS,
+                            permitted_classes: [Syctask::Task, Symbol]) 
       else
         {}
       end

@@ -2,7 +2,7 @@ require 'yaml'
 require 'fileutils'
 require_relative 'environment.rb'
 require_relative 'task_service.rb'
-#require_relative '../sycutil/console_timer.rb'
+# require_relative '../sycutil/console_timer.rb'
 
 module Syctask
 
@@ -100,7 +100,7 @@ module Syctask
         @tracks = []
         @tasks = []
       else
-        @tracks ||= YAML.load_file(TRACKED_TASKS_FILE)
+        @tracks ||= YAML.safe_load_file(TRACKED_TASKS_FILE, permitted_classes: [Syctask::Task, Symbol])
         @tasks = []
         if @tracks
           @tracks.each { |track| @tasks << @service.read(track.dir, track.id) }

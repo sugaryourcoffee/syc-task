@@ -37,7 +37,7 @@ module Syctask
       return task unless task.nil?
       #task = nil
       Dir.glob("#{dir}/*.task").each do |file|
-        task = YAML.load_file(file) if File.file? file
+        task = YAML.safe_load_file(file, permitted_classes: [Syctask::Task, Symbol]) if File.file? file
         if not task.nil? and task.class == Syctask::Task and task.id == id.to_i
           return task 
         end
@@ -53,7 +53,8 @@ module Syctask
       return nil unless File.exist? Syctask::IDS
       ids = File.read(Syctask::IDS)
       entry = ids.scan(/(^#{id}),(.*\n)/)[0]
-      return YAML.load_file(entry[1].chomp) if entry
+      return YAML.safe_load_file(entry[1].chomp,
+                                 permitted_classes: [Syctask::Task, Symbol]) if entry
       return nil
     end
 
@@ -71,7 +72,7 @@ module Syctask
       tasks = []
       Dir.glob("#{dir}/*.task").sort.each do |file|
         begin
-          File.file?(file) ? task = YAML.load_file(file) : next
+          File.file?(file) ? task = YAML.safe_load_file(file, permitted_classes: [Syctask::Task, Symbol]) : next
         rescue Exception => e
           next # If the file is no task but read by YAML ignore it
         end
@@ -98,7 +99,7 @@ module Syctask
       task = read_by_id(id)
       unless task
         task_file = Dir.glob("#{dir}/#{id}.task")[0]
-        task = YAML.load_file(task_file) if task_file
+        task = YAML.safe_load_file(task_file, permitted_classes: [Syctask::Task, Symbol]) if task_file
       end
       updated = false
       if task
@@ -117,7 +118,7 @@ module Syctask
       deleted = 0
       Dir.glob("#{dir}/*.task").each do |file|
         begin
-          File.file?(file) ? task = YAML.load_file(file) : next
+          File.file?(file) ? task = YAML.safe_load_file(file, permitted_classes: [Syctask::Task, Symbol]) : next
         rescue Exception => e
           next # If the file is no task but read by YAML ignore it
         end

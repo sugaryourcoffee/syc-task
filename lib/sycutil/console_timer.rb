@@ -14,7 +14,6 @@ require 'rainbow'
 # To stop the timer the semaphore has to be deleted
 #    FileUtils.rm semaphore
 class ConsoleTimer
-
   # Create a new ConsoleTimer with the time to count down, the task's ID and a
   # semaphore. The semaphore is a file named id.track where id is equal to the
   # provided id. The semaphore is checked for existence. If the semaphore is
@@ -49,16 +48,15 @@ class ConsoleTimer
     end
     seconds = difference % 60
     minutes = difference / 60 % 60
-    hours   = difference / 60 / 60 % 60 
-    count_down = sprintf("%d: %02d:%02d:%02d", @id, hours, minutes, seconds)
+    hours   = difference / 60 / 60 % 60
+    count_down = format('%d: %02d:%02d:%02d', @id, hours, minutes, seconds)
     size = count_down.size
     count_down = count_down.color(color)
-    command = "tput sc;"+
-              "tput cup 0 $(($(tput cols) - #{size}));"+
+    command = 'tput sc;' +
+              "tput cup 0 $(($(tput cols) - #{size}));" +
               "echo #{count_down};tput rc"
     system command
   end
-
 end
 
 # Expects to receive parameters duration, id and semaphore
@@ -71,5 +69,3 @@ if ARGV.size == 3
 else
   exit -1
 end
-
-

@@ -108,7 +108,7 @@ module Syctask
           del = @service.delete(task.dir, {id: task.id.to_s}) if answer == "Y"
           if del.nil? or del == 0
             puts sprintf("--> Task not deleted").color(:green)
-          else del > 0
+          elsif del > 0
             tasks.delete(task)
             puts sprintf("--> Deleted %d task%s", 
                          del, del == 1 ? "" : "s").color(:green)

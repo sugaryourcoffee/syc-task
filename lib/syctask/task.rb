@@ -1,30 +1,28 @@
 require 'fileutils'
 require 'rainbow'
 require_relative 'evaluator'
-require_relative 'environment.rb'
-require_relative 'task_tracker.rb'
+require_relative 'environment'
+require_relative 'task_tracker'
 
 # Syctask provides functions for managing tasks in a task list
 module Syctask
-
   # A Task is the basic element of the task list and holds all information
   # about a task.
   class Task
-
     include Comparable
 
     # The fields that can be set for a task
-    FIELDS = ["title", "description", 
-              "follow_up", "due_date", "prio", 
-              "note", "tags"]
-    # Holds the options of the task. 
+    FIELDS = %w[title description
+                follow_up due_date prio
+                note tags]
+    # Holds the options of the task.
     # Options are
     # * description - additional information about the task
     # * follow_up   - follow-up date of the task
     # * due_date    - due date of the task
     # * prio        - priority of the task
     # * note        - information about the progress or state of the task
-    # * tags        - can be used to search for tasks that belong to a certain 
+    # * tags        - can be used to search for tasks that belong to a certain
     #                 category
     attr_accessor :options
     # Title of the class
@@ -48,12 +46,14 @@ module Syctask
 
     # Creates a new task. If the options contain a note than the current date
     # and time is added.
-    def initialize(options={}, title, id)
-      @creation_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
+    def initialize(options = {}, title, id)
+      @creation_date = Time.now.strftime('%Y-%m-%d - %H:%M:%S')
       @title = title
       @options = options
-      @options[:note] = 
-                  "#{@creation_date}\n#{@options[:note]}\n" if @options[:note]
+      if @options[:note]
+        @options[:note] =
+          "#{@creation_date}\n#{@options[:note]}\n"
+      end
       if @options[:follow_up] or @options[:due_date]
         @duration = 2 * 15 * 60
         @remaining = 2 * 15 * 60
@@ -63,14 +63,14 @@ module Syctask
       end
       @id = id
     end
-    
-    # Compares this task with another task regarding id and dir. If both are 
+
+    # Compares this task with another task regarding id and dir. If both are
     # equal true is returned otherwise false
     def ==(other)
       @id == other.id and @dir == other.dir
     end
 
-    # Compares this Task to the other task and compares them regarding the ID 
+    # Compares this Task to the other task and compares them regarding the ID
     # and the dir. If ID is equal then dir is compared
     def <=>(other)
       id_compare = @id.to_i <=> other.id.to_i
@@ -84,7 +84,7 @@ module Syctask
     # Updates the task with new values. Except for note and tags which are
     # supplemented with the new values and not overridden.
     def update(options)
-      @update_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
+      @update_date = Time.now.strftime('%Y-%m-%d - %H:%M:%S')
       if options[:duration]
         set_duration(options.delete(:duration).to_i * 15 * 60)
       elsif options[:follow_up] or options[:due_date]
@@ -92,22 +92,22 @@ module Syctask
       end
       options.keys.each do |key|
         new_value = options[key]
-        
+
         case key
         when :note
           new_value = "#{@update_date}\n#{new_value}\n#{@options[key]}"
         when :tags
           unless @options[key].nil?
-            if @options[key].include? new_value
-              new_value = @options[key]
-            else
-              new_value = "#{@options[key]},#{new_value}"
-            end
+            new_value = if @options[key].include? new_value
+                          @options[key]
+                        else
+                          "#{@options[key]},#{new_value}"
+                        end
           end
         end
 
         @options[key] = new_value
-      end 
+      end
     end
 
     # Checks whether this task has been updated. Returns true if updated
@@ -140,12 +140,10 @@ module Syctask
 
     # Marks the task as done. When done than the done date is set. Optionally a
     # note can be provided.
-    def done(note="")
-      @done_date = Time.now.strftime("%Y-%m-%d - %H:%M:%S")
-      if note
-        options[:note] = "#{@done_date}\n#{note}\n#{@options[:note]}"
-      end
-      Syctask::log_task("done", self)
+    def done(note = '')
+      @done_date = Time.now.strftime('%Y-%m-%d - %H:%M:%S')
+      options[:note] = "#{@done_date}\n#{note}\n#{@options[:note]}" if note
+      Syctask.log_task('done', self)
     end
 
     # Checks if this task is done. Returns true if done otherwise false
@@ -157,9 +155,9 @@ module Syctask
     # date is today otherwise false.
     def today?
       evaluator = Evaluator.new
-      today = Time.now.strftime("%Y-%m-%d")
+      today = Time.now.strftime('%Y-%m-%d')
       evaluator.compare_dates(@options[:follow_up], today) or \
-       evaluator.compare_dates(@options[:due_date], today) 
+        evaluator.compare_dates(@options[:due_date], today)
     end
 
     # Checks whether the task is currently tracked. Returns true if so otherwise
@@ -173,7 +171,7 @@ module Syctask
     # Compares the provided elements in the filter with the correspondent
     # elements in the task. When all comparissons match than true is returned.
     # If one comparisson does not match false is returned. If filter is empty
-    # than true is returned. The values can be compared regarding <, =, > or 
+    # than true is returned. The values can be compared regarding <, =, > or
     # whether the task's value is part of a list of provided values. It is also
     # possible to provide a regex as a filter. Following comparissons are
     # available
@@ -187,6 +185,7 @@ module Syctask
     # :due                            <|=|>
     def matches?(filter = {})
       return true if filter.empty?
+
       evaluator = Evaluator.new
       filter.each do |key, value|
         matches = false
@@ -195,8 +194,8 @@ module Syctask
           matches = evaluator.matches?(@title, value)
         when :description
           matches = evaluator.matches?(@options[:description], value)
-        when :id, :i, "id", "i"
-          matches = (evaluator.includes?(@id, value) or 
+        when :id, :i, 'id', 'i'
+          matches = (evaluator.includes?(@id, value) or
                      evaluator.compare_numbers(@id, value))
         when :prio, :p
           matches = (evaluator.includes?(@options[:prio], value) or
@@ -213,7 +212,7 @@ module Syctask
 
     # Prints the task in a formatted way eather all values when long is true
     # or only id, title, prio, follow-up and due date.
-    def print_pretty(long=false)
+    def print_pretty(long = false)
       pretty_string(long)
     end
 
@@ -235,12 +234,12 @@ module Syctask
     def create_task_id
       tasks = dir.glob("#{@dir}/*")
       ids = []
-      tasks.each {|task| ids << task.scan(/^\d+(?=\.task)/)[0].to_i }
-      if ids.empty?
-        @id = 1
-      elsif
-        @id = ids[ids.size-1] + 1
-      end
+      tasks.each { |task| ids << task.scan(/^\d+(?=\.task)/)[0].to_i }
+      @id = if ids.empty?
+              1
+            else
+              ids[ids.size - 1] + 1
+            end
     end
 
     # Prints the task formatted. Values that are nil are not printed. A type all
@@ -248,41 +247,53 @@ module Syctask
     # prio, follow-up and due date are printed.
     def pretty_string(long)
       color = :default
-      color = :green if self.done?
-      
+      color = :green if done?
+
       title = split_lines(@title, 70)
-      title = title.chomp.gsub(/\n/, "\n#{' '*7}")
-      title << ">" if !options[:note].nil?
-      puts sprintf("%04d - %s", @id, title.bright).color(color)
+      title = title.chomp.gsub(/\n/, "\n#{' ' * 7}")
+      title << '>' unless options[:note].nil?
+      puts format('%04d - %s', @id, title.bright).color(color)
 
       if @options[:description]
         description = split_lines(@options[:description].chomp, 70)
-        description = description.chomp.gsub(/\n/, "\n#{' '*7}")
-        puts sprintf("%6s %s", " ", description.chomp).color(color) 
+        description = description.chomp.gsub(/\n/, "\n#{' ' * 7}")
+        puts format('%6s %s', ' ', description.chomp).color(color)
       end
-      puts sprintf("%6s Prio: %s", " ", @options[:prio]).
-        color(color) if @options[:prio]
-      puts sprintf("%6s Follow-up: %s", " ", @options[:follow_up]).
-        color(color) if @options[:follow_up]
-      puts sprintf("%6s Due: %s", " ", @options[:due_date]).
-        color(color) if @options[:due_date]
-      if long
-        if @options[:note]
-          note = split_lines(@options[:note].chomp, 70)
-          note = note.chomp.
-            gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*9}") 
-          note = note.
-            gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' '*7}")
-          puts sprintf("%6s %s", " ", note.chomp).color(color)
-        end
-        puts sprintf("%6s Tags: %s", " ", @options[:tags]).
-          color(color) if @options[:tags]
-        puts sprintf("%6s Created: %s", " ", @creation_date).color(color)
-        puts sprintf("%6s Updated: %s", " ", @update_date).
-          color(color) if @update_date
-        puts sprintf("%6s Closed: %s", " ", @done_date).
-          color(color) if @done_date
+      if @options[:prio]
+        puts format('%6s Prio: %s', ' ', @options[:prio])
+          .color(color)
       end
+      if @options[:follow_up]
+        puts format('%6s Follow-up: %s', ' ', @options[:follow_up])
+          .color(color)
+      end
+      if @options[:due_date]
+        puts format('%6s Due: %s', ' ', @options[:due_date])
+          .color(color)
+      end
+      return unless long
+
+      if @options[:note]
+        note = split_lines(@options[:note].chomp, 70)
+        note = note.chomp
+                   .gsub(/\n(?!\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' ' * 9}")
+        note = note
+               .gsub(/\n(?=\d{4}-\d{2}-\d{2} - \d{2}:\d{2}:\d{2})/, "\n#{' ' * 7}")
+        puts format('%6s %s', ' ', note.chomp).color(color)
+      end
+      if @options[:tags]
+        puts format('%6s Tags: %s', ' ', @options[:tags])
+          .color(color)
+      end
+      puts format('%6s Created: %s', ' ', @creation_date).color(color)
+      if @update_date
+        puts format('%6s Updated: %s', ' ', @update_date)
+          .color(color)
+      end
+      return unless @done_date
+
+      puts format('%6s Closed: %s', ' ', @done_date)
+        .color(color)
     end
 
     # Prints all values as a csv separated with ";". This string can be read by
@@ -293,22 +304,22 @@ module Syctask
       string =  "#{@id};#{@title};"
       string += "#{@options[:description]};#{@options[:prio]};"
       string += "#{@options[:follow_up]};#{@options[:due_date]};"
-      string += "#{@options[:note] ? @options[:note].gsub(/\n/, '\\n') : ""};"
+      string += "#{@options[:note] ? @options[:note].gsub(/\n/, '\\n') : ''};"
       string += "#{@options[:tags]};"
       string += "#{@creation_date};"
-      string += "#{@udpate_date ? "UPDATED" : "UNCHANGED"};"
-      string += "#{@done_date ? "DONE" : "OPEN"}"
+      string += "#{@udpate_date ? 'UPDATED' : 'UNCHANGED'};"
+      string += "#{@done_date ? 'DONE' : 'OPEN'}"
       string
     end
 
     # Splits a string to size (chars) less or equal to length
     def split_lines(string, length)
-      lines = string.squeeze(" ").split("\n")
+      lines = string.squeeze(' ').split("\n")
       i = 0
       new_lines = []
-      new_lines[i] = ""
+      new_lines[i] = ''
       lines.each do |line|
-        line.squeeze(" ").split.each do |w|
+        line.squeeze(' ').split.each do |w|
           if new_lines[i].length + w.length < length
             new_lines[i] += "#{w} "
           else
@@ -317,13 +328,11 @@ module Syctask
           end
         end
         i += 1
-        new_lines[i] = ""
+        new_lines[i] = ''
       end
-      text = ""
-      new_lines.each {|l| text << "#{l}\n"}
+      text = ''
+      new_lines.each { |l| text << "#{l}\n" }
       text.chomp
     end
-
   end
-
 end

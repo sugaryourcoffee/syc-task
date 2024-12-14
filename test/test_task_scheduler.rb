@@ -144,6 +144,7 @@ class TestTaskScheduler < Minitest::Test # Test::Unit::TestCase
       end 
 
       tasks = service.find(@dir, {id: ids.join(',')}, false)
+
       assert_equal 5, tasks.size
 
       tasks.each.with_index do |task, index|

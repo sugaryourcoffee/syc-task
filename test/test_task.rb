@@ -42,10 +42,10 @@ class TestTask < Minitest::Test # Test::Unit::TestCase
 
     should "add note to task's existing note" do
       task = Syctask::Task.new({note: "This is my first note"}, "Some task", 1)
-      assert_match /This is my first note/, task.options[:note]
+      assert_match (/This is my first note/), task.options[:note]
       options = {note: "And this is my second note"}
       task.update(options)
-      assert_match /And this is my second note/, task.options[:note]
+      assert_match (/And this is my second note/), task.options[:note]
     end
 
     should "add tag to task's existing tags" do

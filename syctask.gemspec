@@ -42,13 +42,13 @@ Gem::Specification.new do |s|
   s.rdoc_options << '--title' << 'syctask' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'syctask' << 'console_timer'
-  s.add_development_dependency('aruba')
-  s.add_development_dependency('rake')
-  s.add_development_dependency('rdoc')
-  s.add_development_dependency('shoulda')
-  s.add_development_dependency('byebug')
-  s.add_development_dependency('ruby-lsp')
+  s.add_development_dependency('aruba', '~> 2.2.0')
+  s.add_development_dependency('byebug', '~> 11.1.3')
+  s.add_development_dependency('rake', '~> 13.2.1')
+  s.add_development_dependency('rdoc', '~> 6.9.0')
+  s.add_development_dependency('ruby-lsp', '~> 0.22.1')
+  s.add_development_dependency('shoulda', '~> 4.0.0')
   s.add_runtime_dependency('gli', '2.22')
   s.add_runtime_dependency('rainbow', '1.1.4')
-  s.add_runtime_dependency('timeleap')
+  s.add_runtime_dependency('timeleap', '~> 0.0.1')
 end

@@ -453,7 +453,9 @@ directory with the ID and save the files in this directory. If there is an
 existing directory I link to the file from the ID directory
 
 ==Supported platform
-syc-task has been tested with 1.9.3. It also works in Windows using Cygwin.
+syc-task up to version 0.4.2 has been tested with Ruby 1.9.3. Version 0.4.2 also runs
+with Ruby 2.7. It also works in Windows using Cygwin. Version 1.0.0 has been upgraded
+to Ruby 3.2.
 
 ==Add TAB-completion to syctask
 To activate bash's TAB-completion following lines have to be added to ~/.bashrc

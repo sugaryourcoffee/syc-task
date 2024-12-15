@@ -100,7 +100,11 @@ module Syctask
         @tracks = []
         @tasks = []
       else
-        @tracks ||= YAML.safe_load_file(TRACKED_TASKS_FILE, permitted_classes: [Syctask::Task, Symbol])
+        @tracks ||= YAML.safe_load_file(TRACKED_TASKS_FILE,
+                                        permitted_classes: [Syctask::Task,
+                                                            Syctask::Track,
+                                                            Time,
+                                                            Symbol])
         @tasks = []
         if @tracks
           @tracks.each { |track| @tasks << @service.read(track.dir, track.id) }

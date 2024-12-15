@@ -190,6 +190,8 @@ added at or after the current time within the time schedule. Tasks that are done
 and scheduled in the future are not shown. Tasks done and in the past are shown
 with the actual processing time.
 
+The day starts at 00:00 and ends at 23:59. So 24:00 should be 00:00.
+
 Create a schedule with working time from 8a.m. to 6p.m. and meetings between
 9a.m. and 9.30a.m. and 1p.m. and 2.45p.m.
     $ syctask schedule -w "8:00-18:00" -b "9:00-9:30,13:00-14:45"
@@ -415,7 +417,7 @@ with
 ==== Create schedule
 I create a schedule with my working hours and meetings that have been scheduled 
 with 
-    $ syctask -w "8:00-18:00" -b "9:00-10:00,14:30-16:00" -m "Team,Status"
+    $ syctask schedule -w "8:00-18:00" -b "9:00-10:00,14:30-16:00" -m "Team,Status"
 
 ==== Create an agenda
 I assign the topics I want to discuss in the meetings to the meetings with

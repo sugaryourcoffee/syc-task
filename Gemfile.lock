@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    syc-task (0.4.2)
+    syc-task (1.0.0)
       gli (= 2.22)
       rainbow (= 1.1.4)
       timeleap

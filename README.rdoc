@@ -616,6 +616,9 @@ Implementation of new, update, list and done commands.
 * When tasks.log file is missing `syctask inspect` prints warning with reason
   why statistics cannot be printed
 
+====Version 1.0.0
+* Upgrade to Ruby 3.2.2
+
 ==Development
 Pull from Github and then run 
 

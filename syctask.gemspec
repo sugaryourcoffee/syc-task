@@ -48,6 +48,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rdoc', '~> 6.9.0')
   s.add_development_dependency('ruby-lsp', '~> 0.22.1')
   s.add_development_dependency('shoulda', '~> 4.0.0')
+  s.add_development_dependency('sycersion', '~> 0.2.1')
   s.add_runtime_dependency('gli', '2.22')
   s.add_runtime_dependency('rainbow', '1.1.4')
   s.add_runtime_dependency('timeleap', '~> 0.0.1')

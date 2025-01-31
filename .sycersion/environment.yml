@@ -1,0 +1,5 @@
+---
+- ".sycersion/version"
+- 1.0.0
+- lib/syctask/version.rb
+- VERSION = '1.0.0'
